@@ -11,7 +11,7 @@ import sim.domain.Coalition;
 import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
 import sim.domain.statics.SquadronType;
-import sim.main.CampaignState;
+import sim.main.CampaignSettings;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -38,7 +38,7 @@ public class CoalitionItemListener implements ItemListener {
     public void itemStateChanged(ItemEvent e) {
         // Get the faction side that was selected, as well as the factions associated with that side
         FactionSide side = FactionSide.valueOf(((JRadioButton)e.getSource()).getText());
-        Coalition coalition = CampaignState.getCoalitionBySide(side);
+        Coalition coalition = CampaignSettings.getCoalitionBySide(side);
         List<Faction> coalitionFactions = coalition.getFactionList();
         selectedSide = side;
 
@@ -46,7 +46,7 @@ public class CoalitionItemListener implements ItemListener {
         List<SquadronType> validSquadrons = new ArrayList<>();
         for(SquadronType sqd : SquadronType.values()) {
             for(Faction faction : coalitionFactions) {
-                if(sqd.getFactionUser().equals(faction) && sqd.getEra().contains(CampaignState.getSelectedEra())) {
+                if(sqd.getFactionUser().equals(faction) && sqd.getEra().contains(CampaignSettings.getSelectedEra())) {
                     validSquadrons.add(sqd);
                 }
             }

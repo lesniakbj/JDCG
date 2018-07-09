@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import sim.main.CampaignState;
+import sim.main.CampaignSettings;
 import ui.constants.FileActions;
 import ui.constants.UIAction;
 import ui.constants.ViewActions;
@@ -59,7 +59,7 @@ public class MenuItemListener implements ActionListener {
                 int option = JOptionPane.showConfirmDialog(null,"Are you sure you want to leave Campaign Creation without saving?");
                 switch(option) {
                     case JOptionPane.OK_OPTION:
-                        CampaignState.clearState();
+                        CampaignSettings.clearState();
                         newCampaignDialog.dispose();
                         break;
                     case JOptionPane.NO_OPTION:

@@ -9,7 +9,7 @@ import sim.domain.statics.FactionSide;
 import sim.domain.statics.MapConstants;
 import sim.domain.statics.SquadronType;
 
-public class CampaignState {
+public class CampaignSettings {
     private static GameMap selectedMap;
     private static Coalition redforCoalition;
     private static Coalition blueforCoalition;
@@ -121,7 +121,7 @@ public class CampaignState {
     }
 
     public static String getStateString() {
-        return "CampaignState{" +
+        return "CampaignSettings{" +
                 "\t" + selectedMap + ",\n" +
                 "\t" + redforCoalition + ",\n" +
                 "\t" + blueforCoalition + ",\n" +

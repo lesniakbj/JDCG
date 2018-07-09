@@ -12,7 +12,7 @@ import javax.swing.event.ChangeListener;
 import sim.domain.Coalition;
 import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
-import sim.main.CampaignState;
+import sim.main.CampaignSettings;
 import ui.containers.NewCampaignOverviewPanel;
 
 public class PanelChangeListener implements ChangeListener {
@@ -38,21 +38,21 @@ public class PanelChangeListener implements ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         // Save campaign state
-        CampaignState.setMapSelection(mapSelector.getSelectedMap());
-        CampaignState.setBlueforCoalition(new Coalition(getCoalitionFactions(factionSelector, BLUEFOR)));
-        CampaignState.setRedforCoalition(new Coalition(getCoalitionFactions(factionSelector, REDFOR)));
-        CampaignState.setNeutralCoalition(new Coalition(getCoalitionFactions(factionSelector, NEUTRAL)));
-        CampaignState.setSelectedEra(eraSelectionListener.getSelectedEra());
-        CampaignState.setSelectedCampaignType(eraSelectionListener.getSelectedType());
-        CampaignState.setPlayerSelectedSide(coalitionSelectionListener.getSelectedSide());
-        CampaignState.setSelectedSquadron(squadronSelectionListener.getSelectedSquadron());
+        CampaignSettings.setMapSelection(mapSelector.getSelectedMap());
+        CampaignSettings.setBlueforCoalition(new Coalition(getCoalitionFactions(factionSelector, BLUEFOR)));
+        CampaignSettings.setRedforCoalition(new Coalition(getCoalitionFactions(factionSelector, REDFOR)));
+        CampaignSettings.setNeutralCoalition(new Coalition(getCoalitionFactions(factionSelector, NEUTRAL)));
+        CampaignSettings.setSelectedEra(eraSelectionListener.getSelectedEra());
+        CampaignSettings.setSelectedCampaignType(eraSelectionListener.getSelectedType());
+        CampaignSettings.setPlayerSelectedSide(coalitionSelectionListener.getSelectedSide());
+        CampaignSettings.setSelectedSquadron(squadronSelectionListener.getSelectedSquadron());
 
         // Update the overview panel
-        overviewPanel.setMapSelection(CampaignState.getSelectedMap());
-        overviewPanel.setSelectedEra(CampaignState.getSelectedEra());
-        overviewPanel.setCampaignType(CampaignState.getSelectedCampaignType());
-        overviewPanel.setSelectedSide(CampaignState.getPlayerSelectedSide());
-        overviewPanel.setSelectedSquadron(CampaignState.getSelectedSquadron());
+        overviewPanel.setMapSelection(CampaignSettings.getSelectedMap());
+        overviewPanel.setSelectedEra(CampaignSettings.getSelectedEra());
+        overviewPanel.setCampaignType(CampaignSettings.getSelectedCampaignType());
+        overviewPanel.setSelectedSide(CampaignSettings.getPlayerSelectedSide());
+        overviewPanel.setSelectedSquadron(CampaignSettings.getSelectedSquadron());
         overviewPanel.repaint();
     }
 
