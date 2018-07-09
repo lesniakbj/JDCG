@@ -3,12 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a3a02b9e-cc5d-4d1a-868b-ef329b54872f" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/squadron/VMA211.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/squadron/VMA251.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/squadron/VMFA115.jpg" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,38 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AircraftType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="35" lean-forward="true" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1573#1730#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SquadronType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="26" column="105" selection-start-line="26" selection-start-column="105" selection-end-line="26" selection-end-column="105" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#SquadronType#0;class#SquadronType#0" expanded="true" />
-                <element signature="method#fromName#0;class#SquadronType#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="StaticLists.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="35" column="108" selection-start-line="35" selection-start-column="108" selection-end-line="35" selection-end-column="108" />
+            <state relative-caret-position="178">
+              <caret line="35" column="106" lean-forward="true" selection-start-line="35" selection-start-column="106" selection-end-line="35" selection-end-column="106" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -116,12 +83,12 @@
         <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" />
         <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-1928" />
     <option name="y" value="-1082" />
     <option name="width" value="1918" />
@@ -267,8 +234,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-1082" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-1928" y="-1082" width="1936" height="1056" extended-state="7" />
     <layout>
       <window_info anchor="right" id="Palette" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -278,9 +244,9 @@
       <window_info anchor="right" id="Capture Analysis" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32900432" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32900432" />
       <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" weight="0.32900432" />
+      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.32900432" />
       <window_info id="Capture Tool" />
       <window_info id="Designer" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
@@ -501,21 +467,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="35" lean-forward="true" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1573#1730#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="26" column="105" selection-start-line="26" selection-start-column="105" selection-end-line="26" selection-end-column="105" />
+        <state relative-caret-position="80">
+          <caret line="44" column="27" lean-forward="true" selection-start-line="44" selection-start-column="27" selection-end-line="44" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#SquadronType#0;class#SquadronType#0" expanded="true" />
@@ -524,10 +479,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-128">
+          <caret line="18" column="35" lean-forward="true" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1573#1730#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="35" column="108" selection-start-line="35" selection-start-column="108" selection-end-line="35" selection-end-column="108" />
+        <state relative-caret-position="178">
+          <caret line="35" column="106" lean-forward="true" selection-start-line="35" selection-start-column="106" selection-end-line="35" selection-end-column="106" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
