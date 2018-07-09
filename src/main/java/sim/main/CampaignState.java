@@ -6,6 +6,8 @@ import sim.domain.statics.CampaignType;
 import sim.domain.statics.ConflictEra;
 import sim.domain.statics.MapConstants;
 
+import java.util.ArrayList;
+
 public class CampaignState {
     private static Map selectedMap;
     private static Coalition redforCoalition;
@@ -13,6 +15,15 @@ public class CampaignState {
     private static Coalition neutralCoalition;
     private static ConflictEra selectedEra;
     private static CampaignType selectedCampaignType;
+
+    static {
+        selectedMap = new Map(MapConstants.CAUCASUS);
+        redforCoalition = new Coalition(new ArrayList<>());
+        blueforCoalition = new Coalition(new ArrayList<>());
+        neutralCoalition = new Coalition(new ArrayList<>());
+        selectedEra = ConflictEra.MODERN;
+        selectedCampaignType = CampaignType.OFFENSIVE;
+    }
 
     public static void setBlueforCoalition(Coalition coalition) {
         blueforCoalition = coalition;
@@ -41,12 +52,37 @@ public class CampaignState {
         selectedCampaignType = type;
     }
 
+    public static Map getSelectedMap() {
+        return selectedMap;
+    }
+
+    public static Coalition getRedforCoalition() {
+        return redforCoalition;
+    }
+
+    public static Coalition getBlueforCoalition() {
+        return blueforCoalition;
+    }
+
+    public static Coalition getNeutralCoalition() {
+        return neutralCoalition;
+    }
+
+    public static ConflictEra getSelectedEra() {
+        return selectedEra;
+    }
+
+    public static CampaignType getSelectedCampaignType() {
+        return selectedCampaignType;
+    }
+
     public static void clearState() {
         selectedMap = null;
         redforCoalition = null;
         blueforCoalition = null;
         neutralCoalition = null;
         selectedEra = null;
+        selectedCampaignType = null;
     }
 
     public static String getStateString() {

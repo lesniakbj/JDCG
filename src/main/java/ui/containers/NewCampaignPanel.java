@@ -5,21 +5,14 @@ import sim.domain.statics.ConflictEra;
 import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
 import sim.domain.statics.MapConstants;
+import sim.main.CampaignState;
 import ui.listeners.EraSelectionListener;
 import ui.listeners.MapSelectionListener;
 import ui.listeners.MoveFactionActionListener;
 import ui.listeners.PanelChangeListener;
+import ui.util.SpringUtilities;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -32,6 +25,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -43,6 +37,7 @@ public class NewCampaignPanel extends JPanel {
     private static MapSelectionListener mapSelectionListener;
     private static MoveFactionActionListener buttonListener;
     private static EraSelectionListener eraSelectionListener;
+    private static NewCampaignOverviewPanel overviewPanel;
 
     private static final int MAP_WIDTH = 550;
     private static final String[] FACTION_COLUMNS = {"Faction Name", "Faction Strength"};
@@ -55,12 +50,17 @@ public class NewCampaignPanel extends JPanel {
         pane.addTab("Factions", createFactionsPanel());
         pane.addTab("Era", createEraPanel());
         pane.addTab("Squadron", createSquadronPanel());
-        pane.addTab("Campaign Overview", new JPanel());
+        pane.addTab("Campaign Overview", createCampaignOverviewPanel());
 
         // Create the pane action listener to save state on changes
-        pane.addChangeListener(new PanelChangeListener(mapSelectionListener, buttonListener, eraSelectionListener));
+        pane.addChangeListener(new PanelChangeListener(mapSelectionListener, buttonListener, eraSelectionListener, overviewPanel));
 
         this.add(pane, BorderLayout.NORTH);
+    }
+
+    private JPanel createCampaignOverviewPanel() {
+        overviewPanel = new NewCampaignOverviewPanel();
+        return overviewPanel;
     }
 
     private Component createSquadronPanel() {
@@ -204,7 +204,7 @@ public class NewCampaignPanel extends JPanel {
 
     private JPanel generateNeutralFactionTable() {
         // Load the list of factions for display
-        List<Faction> defaultFactionList = List.of(Faction.values());
+        List<Faction> defaultFactionList = Arrays.asList(Faction.values());
 
         // Create the panel
         String[][] data = generateColumnData(defaultFactionList);

@@ -19,6 +19,10 @@ public class Map {
         this.airfields = Airfield.getAirfieldsForMap(mapSelection);
     }
 
+    public String getMapName() {
+        return mapSelection.getMapName();
+    }
+
     @Override
     public String toString() {
         return "Map{" +

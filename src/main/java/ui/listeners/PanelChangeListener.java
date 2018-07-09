@@ -4,8 +4,9 @@ import sim.domain.Coalition;
 import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
 import sim.main.CampaignState;
+import ui.containers.NewCampaignOverviewPanel;
 
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class PanelChangeListener implements ChangeListener {
     private MapSelectionListener mapSelector;
     private MoveFactionActionListener factionSelector;
     private EraSelectionListener eraSelectionListener;
+    private NewCampaignOverviewPanel overviewPanel;
 
-    public PanelChangeListener(MapSelectionListener mapSelector, MoveFactionActionListener factionSelector, EraSelectionListener eraSelectionListener) {
+    public PanelChangeListener(MapSelectionListener mapSelector, MoveFactionActionListener factionSelector, EraSelectionListener eraSelectionListener, NewCampaignOverviewPanel overviewPanel) {
         this.mapSelector = mapSelector;
         this.factionSelector = factionSelector;
         this.eraSelectionListener = eraSelectionListener;
+        this.overviewPanel = overviewPanel;
     }
 
     @Override
@@ -34,8 +37,23 @@ public class PanelChangeListener implements ChangeListener {
         CampaignState.setBlueforCoalition(new Coalition(getCoalitionFactions(factionSelector, BLUFOR)));
         CampaignState.setRedforCoalition(new Coalition(getCoalitionFactions(factionSelector, REDFOR)));
         CampaignState.setNeutralCoalition(new Coalition(getCoalitionFactions(factionSelector, NEUTRAL)));
-        CampaignState.setSelectedEra(eraSelectionListener.getSelectedEra());
-        CampaignState.setSelectedCampaignType(eraSelectionListener.getSelectedType());
+
+        if(eraSelectionListener.getSelectedEra() != null) {
+            CampaignState.setSelectedEra(eraSelectionListener.getSelectedEra());
+        }
+
+        if(eraSelectionListener.getSelectedType() != null) {
+            CampaignState.setSelectedCampaignType(eraSelectionListener.getSelectedType());
+        }
+
+        // Update the overview panel
+        overviewPanel.setMapSelection(CampaignState.getSelectedMap());
+        overviewPanel.setBlueforCoalition(CampaignState.getBlueforCoalition());
+        overviewPanel.setRedforCoalition(CampaignState.getRedforCoalition());
+        overviewPanel.setNeutralCoalition(CampaignState.getNeutralCoalition());
+        overviewPanel.setSelectedEra(CampaignState.getSelectedEra());
+        overviewPanel.setCampaignType(CampaignState.getSelectedCampaignType());
+        overviewPanel.repaint();
     }
 
     private List<Faction> getCoalitionFactions(MoveFactionActionListener factionSelector, FactionSide side) {
