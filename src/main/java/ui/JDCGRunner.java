@@ -2,7 +2,7 @@ package ui;
 
 import ui.containers.JDCGUIFrame;
 
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 public class JDCGRunner {
     public static void main(String[] args) {

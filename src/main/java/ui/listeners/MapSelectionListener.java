@@ -3,10 +3,9 @@ package ui.listeners;
 import sim.domain.statics.MapConstants;
 import ui.containers.MapSelectionPanel;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.Border;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;

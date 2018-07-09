@@ -1,28 +1,30 @@
 package sim.main;
 
 import sim.domain.Coalition;
-import sim.domain.Map;
-import sim.domain.statics.CampaignType;
-import sim.domain.statics.ConflictEra;
-import sim.domain.statics.MapConstants;
+import sim.domain.GameMap;
+import sim.domain.statics.*;
 
 import java.util.ArrayList;
 
 public class CampaignState {
-    private static Map selectedMap;
+    private static GameMap selectedMap;
     private static Coalition redforCoalition;
     private static Coalition blueforCoalition;
     private static Coalition neutralCoalition;
     private static ConflictEra selectedEra;
     private static CampaignType selectedCampaignType;
+    private static FactionSide playerSelectedSide;
+    private static Squadron selectedSquadron;
 
     static {
-        selectedMap = new Map(MapConstants.CAUCASUS);
+        selectedMap = new GameMap(MapConstants.CAUCASUS);
         redforCoalition = new Coalition(new ArrayList<>());
         blueforCoalition = new Coalition(new ArrayList<>());
         neutralCoalition = new Coalition(new ArrayList<>());
         selectedEra = ConflictEra.MODERN;
         selectedCampaignType = CampaignType.OFFENSIVE;
+        playerSelectedSide = FactionSide.BLUFOR;
+        selectedSquadron = Squadron.NONE;
     }
 
     public static void setBlueforCoalition(Coalition coalition) {
@@ -39,7 +41,7 @@ public class CampaignState {
 
     public static void setMapSelection(MapConstants mapSelection) {
         if(selectedMap == null) {
-            selectedMap = new Map(mapSelection);
+            selectedMap = new GameMap(mapSelection);
         }
         selectedMap.changeMap(mapSelection);
     }
@@ -52,7 +54,15 @@ public class CampaignState {
         selectedCampaignType = type;
     }
 
-    public static Map getSelectedMap() {
+    public static void setPlayerSelectedSide(FactionSide selectedSide) {
+        playerSelectedSide = selectedSide;
+    }
+
+    public static void setSelectedSquadron(Squadron selectedSqd) {
+        selectedSquadron = selectedSqd;
+    }
+
+    public static GameMap getSelectedMap() {
         return selectedMap;
     }
 
@@ -76,6 +86,14 @@ public class CampaignState {
         return selectedCampaignType;
     }
 
+    public static FactionSide getPlayerSelectedSide() {
+        return playerSelectedSide;
+    }
+
+    public static Squadron getSelectedSquadron() {
+        return selectedSquadron;
+    }
+
     public static void clearState() {
         selectedMap = null;
         redforCoalition = null;
@@ -83,6 +101,8 @@ public class CampaignState {
         neutralCoalition = null;
         selectedEra = null;
         selectedCampaignType = null;
+        playerSelectedSide = null;
+        selectedSquadron = null;
     }
 
     public static String getStateString() {
@@ -93,6 +113,8 @@ public class CampaignState {
                 "\t" + neutralCoalition + ",\n" +
                 "\t" + selectedEra + ",\n" +
                 "\t" + selectedCampaignType + ",\n" +
+                "\t" + playerSelectedSide + ",\n" +
+                "\t" + selectedSquadron + ",\n" +
                 "}";
     }
 }

@@ -6,10 +6,7 @@ import ui.constants.UIAction;
 import ui.constants.ViewActions;
 import ui.containers.NewCampaignPanel;
 
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;

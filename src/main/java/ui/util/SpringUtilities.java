@@ -30,7 +30,6 @@ package ui.util;/*
  */
 
 import javax.swing.*;
-import javax.swing.SpringLayout;
 import java.awt.*;
 
 /**

@@ -4,7 +4,7 @@ import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
 import ui.containers.NewCampaignPanel;
 
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -5,11 +5,11 @@ import sim.domain.statics.MapConstants;
 
 import java.util.List;
 
-public class Map {
+public class GameMap {
     private MapConstants mapSelection;
     private List<Airfield> airfields;
 
-    public Map(MapConstants mapSelection) {
+    public GameMap(MapConstants mapSelection) {
         this.mapSelection = mapSelection;
         this.airfields = Airfield.getAirfieldsForMap(mapSelection);
     }

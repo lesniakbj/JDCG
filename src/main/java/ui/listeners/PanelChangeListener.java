@@ -3,6 +3,7 @@ package ui.listeners;
 import sim.domain.Coalition;
 import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
+import sim.domain.statics.Squadron;
 import sim.main.CampaignState;
 import ui.containers.NewCampaignOverviewPanel;
 
@@ -12,9 +13,7 @@ import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static sim.domain.statics.FactionSide.BLUFOR;
-import static sim.domain.statics.FactionSide.NEUTRAL;
-import static sim.domain.statics.FactionSide.REDFOR;
+import static sim.domain.statics.FactionSide.*;
 
 public class PanelChangeListener implements ChangeListener {
     // Listeners used in panels, to make selections
@@ -46,13 +45,20 @@ public class PanelChangeListener implements ChangeListener {
             CampaignState.setSelectedCampaignType(eraSelectionListener.getSelectedType());
         }
 
+        //if(squadronSelectionListener.getSelectedCoalition() != null) {
+            CampaignState.setPlayerSelectedSide(FactionSide.BLUFOR);
+        //}
+
+        //if(squadronSelectionListener.getSelectedSquadron() != null) {
+            CampaignState.setSelectedSquadron(Squadron.NONE);
+        //}
+
         // Update the overview panel
         overviewPanel.setMapSelection(CampaignState.getSelectedMap());
-        overviewPanel.setBlueforCoalition(CampaignState.getBlueforCoalition());
-        overviewPanel.setRedforCoalition(CampaignState.getRedforCoalition());
-        overviewPanel.setNeutralCoalition(CampaignState.getNeutralCoalition());
         overviewPanel.setSelectedEra(CampaignState.getSelectedEra());
         overviewPanel.setCampaignType(CampaignState.getSelectedCampaignType());
+        overviewPanel.setSelectedSide(CampaignState.getPlayerSelectedSide());
+        overviewPanel.setSelectedSquadron(CampaignState.getSelectedSquadron());
         overviewPanel.repaint();
     }
 

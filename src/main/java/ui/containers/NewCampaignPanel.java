@@ -1,37 +1,24 @@
 package ui.containers;
 
-import sim.domain.statics.CampaignType;
-import sim.domain.statics.ConflictEra;
-import sim.domain.statics.Faction;
-import sim.domain.statics.FactionSide;
-import sim.domain.statics.MapConstants;
-import sim.main.CampaignState;
+import sim.domain.statics.*;
 import ui.listeners.EraSelectionListener;
 import ui.listeners.MapSelectionListener;
 import ui.listeners.MoveFactionActionListener;
 import ui.listeners.PanelChangeListener;
-import ui.util.SpringUtilities;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
-import static ui.util.ImageScaleUtil.NORMAL_IMAGE_RATIO;
-import static ui.util.ImageScaleUtil.tryLoadImage;
+import static ui.util.ImageScaleUtil.*;
 
 public class NewCampaignPanel extends JPanel {
     private static MapSelectionListener mapSelectionListener;
