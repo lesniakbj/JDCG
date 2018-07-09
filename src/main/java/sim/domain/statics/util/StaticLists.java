@@ -33,6 +33,7 @@ public class StaticLists {
 
     // Commonly used task lists
     public static final List<Task> ALL_TASKS = Arrays.asList(Task.values());
+    public static final List<Task> AIR_SUPERIORITY = Arrays.asList(Task.CAP, Task.INTERCEPT, Task.ESCORT);
     public static final List<Task> STRIKE_FIGHTER = Arrays.asList(Task.CAP, Task.INTERCEPT, Task.GROUND_STRIKE, Task.CAS);
     public static final List<Task> FLEET_DEFENSE = Arrays.asList(Task.CAP, Task.INTERCEPT, Task.ESCORT);
     public static final List<Task> GROUND_STRIKE = Arrays.asList(Task.CAS, Task.GROUND_STRIKE);
@@ -41,6 +42,7 @@ public class StaticLists {
 
     // Commonly used Aircraft Lists
     public static final List<AircraftType> USER_AVAILABLE_AIRCRAFT = Arrays.asList(AircraftType.A_10_C, AircraftType.FA_18C, AircraftType.F_15C);
+    public static final List<AircraftType> AIR_FORCE_AIR_SUPERIORITY_AVAILABLE_AIRCRAFT = Collections.singletonList(AircraftType.F_15C);
     public static final List<AircraftType> NAVY_COMPLETE_ERA_AIRCRAFT = Arrays.asList(AircraftType.F_4, AircraftType.F_14A, AircraftType.F_14D, AircraftType.FA_18C, AircraftType.FA_18E);
     public static final List<AircraftType> NAVY_MODERN_ERA_AIRCRAFT = Arrays.asList(AircraftType.F_14A, AircraftType.F_14D, AircraftType.FA_18C, AircraftType.FA_18E);
     public static final List<AircraftType> GROUND_STRIKE_COMPLETE_ERAS = Arrays.asList(AircraftType.P_51, AircraftType.F_86, AircraftType.F_4, AircraftType.A_10_C);

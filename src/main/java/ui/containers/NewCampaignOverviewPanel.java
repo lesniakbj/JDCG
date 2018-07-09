@@ -1,9 +1,11 @@
 package ui.containers;
 
+import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -21,19 +23,29 @@ public class NewCampaignOverviewPanel extends JPanel {
     private Map<String, JLabel> labelMapping;
 
     public NewCampaignOverviewPanel() {
-        setLayout(new SpringLayout());
+        setLayout(new BorderLayout());
 
+        // Main Campaign Data
+        JPanel container = new JPanel();
+        container.setLayout(new SpringLayout());
         labelMapping = new HashMap<>();
         for(String labelString : labels) {
             JLabel label = new JLabel(labelString);
             JLabel data = new JLabel();
             label.setLabelFor(data);
-            add(label);
-            add(data);
+            container.add(label);
+            container.add(data);
             labelMapping.put(labelString, data);
         }
+        SpringUtilities.makeCompactGrid(container, 7, 2, 435, 300,10, 6);
 
-        SpringUtilities.makeCompactGrid(this, 7, 2, 400, 300,10, 6);
+        // Campaign Start Button
+        JPanel containerPanel = new JPanel();
+        JButton button = new JButton("Start Campaign");
+        containerPanel.add(button);
+
+        add(container, BorderLayout.NORTH);
+        add(containerPanel, BorderLayout.CENTER);
     }
 
     public void setMapSelection(GameMap selectedMap) {

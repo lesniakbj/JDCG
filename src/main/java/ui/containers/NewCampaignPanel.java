@@ -116,7 +116,7 @@ public class NewCampaignPanel extends JPanel {
         squadronInfoPanel.add(squadronAircraft);
         squadronInfoPanel.add(squadronEraLabel);
         squadronInfoPanel.add(squadronEra);
-        SpringUtilities.makeCompactGrid(squadronInfoPanel, 4, 2, 400, 10,10, 6);
+        SpringUtilities.makeCompactGrid(squadronInfoPanel, 4, 2, 435, 10,10, 6);
 
         // Add the Squadron Selection Listener
         squadronSelectionListener = new SquadronSelectionListener(squadronBox, squadronImagePanel, squadronName, squadronTasks, squadronAircraft, squadronEra);
@@ -128,6 +128,7 @@ public class NewCampaignPanel extends JPanel {
         buttonPanel.setLayout(new FlowLayout());
         JRadioButton blueforButton = new JRadioButton("BLUEFOR");
         JRadioButton redforButton = new JRadioButton("REDFOR");
+        blueforButton.setSelected(true);
         blueforButton.addItemListener(coalitionSelectionListener);
         redforButton.addItemListener(coalitionSelectionListener);
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -242,8 +243,16 @@ public class NewCampaignPanel extends JPanel {
     }
 
     private JPanel generateFactionTable(FactionSide side) {
+        // Load the list of factions for display
+        List<Faction> defaultFactionList;
+        if(side == FactionSide.BLUEFOR) {
+            defaultFactionList = Arrays.stream(Faction.values()).filter((faction) -> faction == Faction.USA).collect(Collectors.toList());
+        } else {
+            defaultFactionList = Arrays.stream(Faction.values()).filter((faction) -> faction == Faction.RUSSIA).collect(Collectors.toList());
+        }
+
         // Create the panel
-        String[][] data = new String[0][0];
+        String[][] data = generateColumnData(defaultFactionList);
         DefaultTableModel tableModel = new DefaultTableModel(data, FACTION_COLUMNS);
         JTable factionTable = new JTable(tableModel);
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(factionTable.getModel());
@@ -288,7 +297,7 @@ public class NewCampaignPanel extends JPanel {
 
     private JPanel generateNeutralFactionTable() {
         // Load the list of factions for display
-        List<Faction> defaultFactionList = Arrays.asList(Faction.values());
+        List<Faction> defaultFactionList = Arrays.stream(Faction.values()).filter((faction) -> faction != Faction.USA && faction != Faction.RUSSIA).collect(Collectors.toList());
 
         // Create the panel
         String[][] data = generateColumnData(defaultFactionList);
