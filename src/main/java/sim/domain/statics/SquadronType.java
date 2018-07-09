@@ -36,7 +36,7 @@ public enum SquadronType {
     VMA232("VMA-232 - Marine Attack Squadron 232 - Red Devils", COMPLETE_ERAS, STRIKE_FIGHTER, MARINE_FIGHTER_COMPLETE_ERAS, Faction.USA),
     VMA211("VMA-211 - Marine Attack Squadron 211 - Wake Island Avengers", COMPLETE_ERAS, STRIKE_FIGHTER, MARINE_STRIKE_FIGHTER_COMPLETE_ERAS, Faction.USA),
     VMA251("VMA-251 - Marine Attack Squadron 251 - Thunderbolts", COMPLETE_ERAS, FLEET_DEFENSE, MARINE_FIGHTER_COMPLETE_ERAS, Faction.USA),
-    VMA115("VMA-115 - Marine Attack Squadron 115 - Silver Eagles", COMPLETE_ERAS, FLEET_DEFENSE, MARINE_FIGHTER_COMPLETE_ERAS, Faction.USA),
+    VMFA115("VMFA-115 - Marine Attack Squadron 115 - Silver Eagles", COMPLETE_ERAS, FLEET_DEFENSE, MARINE_FIGHTER_COMPLETE_ERAS, Faction.USA),
     NONE("None", MODERN_ERAS, ALL_TASKS, USER_AVAILABLE_AIRCRAFT, Faction.USA);
 
     private String squadronName;
