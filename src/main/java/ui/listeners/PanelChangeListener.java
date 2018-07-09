@@ -3,7 +3,7 @@ package ui.listeners;
 import sim.domain.Coalition;
 import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
-import sim.domain.statics.Squadron;
+import sim.domain.statics.SquadronType;
 import sim.main.CampaignState;
 import ui.containers.NewCampaignOverviewPanel;
 
@@ -50,7 +50,7 @@ public class PanelChangeListener implements ChangeListener {
         //}
 
         //if(squadronSelectionListener.getSelectedSquadron() != null) {
-            CampaignState.setSelectedSquadron(Squadron.NONE);
+            CampaignState.setSelectedSquadron(SquadronType.NONE);
         //}
 
         // Update the overview panel

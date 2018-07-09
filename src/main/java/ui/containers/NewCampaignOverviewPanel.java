@@ -46,7 +46,7 @@ public class NewCampaignOverviewPanel extends JPanel {
         labelMapping.get(labels[3]).setText(playerSelectedSide.name());
     }
 
-    public void setSelectedSquadron(Squadron selectedSquadron) {
+    public void setSelectedSquadron(SquadronType selectedSquadron) {
         labelMapping.get(labels[4]).setText(selectedSquadron.name());
         setSelectedSquadronTask(selectedSquadron.getTaskList());
         setSelectedAircraft(selectedSquadron.getAircraftTypes());
@@ -57,7 +57,7 @@ public class NewCampaignOverviewPanel extends JPanel {
         labelMapping.get(labels[5]).setText(tasks);
     }
 
-    public void setSelectedAircraft(List<Aircraft> aircraft) {
+    public void setSelectedAircraft(List<AircraftType> aircraft) {
         String tasks = aircraft.stream().map(Enum::name).collect(Collectors.joining(", "));
         labelMapping.get(labels[6]).setText(tasks);
     }

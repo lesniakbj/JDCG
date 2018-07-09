@@ -1,0 +1,31 @@
+package sim.domain.statics;
+
+public enum AircraftType {
+    A_4,
+    A_7,
+    A_10_A,
+    A_10_C,
+    AV_8_NA,
+    B_52,
+    F_4,
+    F_14A,
+    F_14D,
+    F_15C,
+    F_86,
+    FA_18A,
+    FA_18C,
+    FA_18E,
+    MIG_15,
+    MIG_17,
+    MIG_21,
+    MIG_29,
+    MIG_31,
+    P_51,
+    SU_24,
+    SU_25,
+    SU_27,
+    SU_30,
+    SU_33,
+    SU_34,
+    TU_22M;
+}

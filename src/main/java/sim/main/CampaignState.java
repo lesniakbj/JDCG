@@ -14,7 +14,7 @@ public class CampaignState {
     private static ConflictEra selectedEra;
     private static CampaignType selectedCampaignType;
     private static FactionSide playerSelectedSide;
-    private static Squadron selectedSquadron;
+    private static SquadronType selectedSquadron;
 
     static {
         selectedMap = new GameMap(MapConstants.CAUCASUS);
@@ -24,7 +24,7 @@ public class CampaignState {
         selectedEra = ConflictEra.MODERN;
         selectedCampaignType = CampaignType.OFFENSIVE;
         playerSelectedSide = FactionSide.BLUFOR;
-        selectedSquadron = Squadron.NONE;
+        selectedSquadron = SquadronType.NONE;
     }
 
     public static void setBlueforCoalition(Coalition coalition) {
@@ -58,7 +58,7 @@ public class CampaignState {
         playerSelectedSide = selectedSide;
     }
 
-    public static void setSelectedSquadron(Squadron selectedSqd) {
+    public static void setSelectedSquadron(SquadronType selectedSqd) {
         selectedSquadron = selectedSqd;
     }
 
@@ -90,7 +90,7 @@ public class CampaignState {
         return playerSelectedSide;
     }
 
-    public static Squadron getSelectedSquadron() {
+    public static SquadronType getSelectedSquadron() {
         return selectedSquadron;
     }
 
