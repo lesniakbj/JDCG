@@ -1,6 +1,7 @@
 package sim.domain.statics.util;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import sim.domain.statics.AircraftType;
 import sim.domain.statics.ConflictEra;
@@ -20,11 +21,15 @@ import sim.domain.statics.Task;
  */
 public class StaticLists {
     // Commonly used era lists
-    public static final List<ConflictEra> COMPELTE_ERAS = Arrays.asList(ConflictEra.WWII, ConflictEra.KOREA, ConflictEra.VIETNAM, ConflictEra.GULF_WAR, ConflictEra.MODERN);
+    public static final List<ConflictEra> COMPLETE_ERAS = Arrays.asList(ConflictEra.WWII, ConflictEra.KOREA, ConflictEra.VIETNAM, ConflictEra.GULF_WAR, ConflictEra.MODERN);
     public static final List<ConflictEra> EXTENDED_ERAS = Arrays.asList(ConflictEra.KOREA, ConflictEra.VIETNAM, ConflictEra.GULF_WAR, ConflictEra.MODERN);
     public static final List<ConflictEra> MODERN_ERAS = Arrays.asList(ConflictEra.GULF_WAR, ConflictEra.MODERN);
     public static final List<ConflictEra> CLASSIC_ERAS = Arrays.asList(ConflictEra.WWII, ConflictEra.KOREA);
     public static final List<ConflictEra> COLD_WAR_ERAS = Arrays.asList(ConflictEra.KOREA, ConflictEra.VIETNAM);
+    public static final List<ConflictEra> LATE_COLD_WAR_ERAS = Arrays.asList(ConflictEra.VIETNAM, ConflictEra.GULF_WAR);
+    public static final List<ConflictEra> LATE_COLD_EXTENDED_WAR_ERAS = Arrays.asList(ConflictEra.VIETNAM, ConflictEra.GULF_WAR, ConflictEra.MODERN);
+    public static final List<ConflictEra> EARLY_COLD_WAR_ERAS = Collections.singletonList(ConflictEra.KOREA);
+    public static final List<ConflictEra> EXTENDED_COLD_WAR = Arrays.asList(ConflictEra.KOREA, ConflictEra.VIETNAM, ConflictEra.GULF_WAR);
 
     // Commonly used task lists
     public static final List<Task> ALL_TASKS = Arrays.asList(Task.values());

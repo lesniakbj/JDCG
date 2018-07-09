@@ -17,4 +17,8 @@ public class Coalition {
                 "factionList=" + factionList +
                 '}';
     }
+
+    public List<Faction> getFactionList() {
+        return factionList;
+    }
 }

@@ -20,12 +20,18 @@ public class PanelChangeListener implements ChangeListener {
     private MapSelectionListener mapSelector;
     private MoveFactionActionListener factionSelector;
     private EraSelectionListener eraSelectionListener;
+    private CoalitionItemListener coalitionSelectionListener;
+    private SquadronSelectionListener squadronSelectionListener;
     private NewCampaignOverviewPanel overviewPanel;
 
-    public PanelChangeListener(MapSelectionListener mapSelector, MoveFactionActionListener factionSelector, EraSelectionListener eraSelectionListener, NewCampaignOverviewPanel overviewPanel) {
+    public PanelChangeListener(MapSelectionListener mapSelector, MoveFactionActionListener factionSelector,
+            EraSelectionListener eraSelectionListener, CoalitionItemListener coalitionSelectionListener,
+            SquadronSelectionListener squadronSelectionListener, NewCampaignOverviewPanel overviewPanel) {
         this.mapSelector = mapSelector;
         this.factionSelector = factionSelector;
         this.eraSelectionListener = eraSelectionListener;
+        this.coalitionSelectionListener = coalitionSelectionListener;
+        this.squadronSelectionListener = squadronSelectionListener;
         this.overviewPanel = overviewPanel;
     }
 
@@ -33,25 +39,13 @@ public class PanelChangeListener implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         // Save campaign state
         CampaignState.setMapSelection(mapSelector.getSelectedMap());
-        CampaignState.setBlueforCoalition(new Coalition(getCoalitionFactions(factionSelector, BLUFOR)));
+        CampaignState.setBlueforCoalition(new Coalition(getCoalitionFactions(factionSelector, BLUEFOR)));
         CampaignState.setRedforCoalition(new Coalition(getCoalitionFactions(factionSelector, REDFOR)));
         CampaignState.setNeutralCoalition(new Coalition(getCoalitionFactions(factionSelector, NEUTRAL)));
-
-        if(eraSelectionListener.getSelectedEra() != null) {
-            CampaignState.setSelectedEra(eraSelectionListener.getSelectedEra());
-        }
-
-        if(eraSelectionListener.getSelectedType() != null) {
-            CampaignState.setSelectedCampaignType(eraSelectionListener.getSelectedType());
-        }
-
-        //if(squadronSelectionListener.getSelectedCoalition() != null) {
-            CampaignState.setPlayerSelectedSide(FactionSide.BLUFOR);
-        //}
-
-        //if(squadronSelectionListener.getSelectedSquadron() != null) {
-            CampaignState.setSelectedSquadron(SquadronType.NONE);
-        //}
+        CampaignState.setSelectedEra(eraSelectionListener.getSelectedEra());
+        CampaignState.setSelectedCampaignType(eraSelectionListener.getSelectedType());
+        CampaignState.setPlayerSelectedSide(coalitionSelectionListener.getSelectedSide());
+        CampaignState.setSelectedSquadron(squadronSelectionListener.getSelectedSquadron());
 
         // Update the overview panel
         overviewPanel.setMapSelection(CampaignState.getSelectedMap());

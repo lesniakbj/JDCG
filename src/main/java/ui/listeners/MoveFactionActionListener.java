@@ -33,7 +33,7 @@ public class MoveFactionActionListener implements ActionListener {
             String[] data = {parsedFaction.getDcsFactionName(), parsedFaction.getOverallStrength().getFactionStrength()};
             switch (move) {
                 case LEFT:
-                    ((DefaultTableModel) factionTables.get(FactionSide.BLUFOR).getModel()).addRow(data);
+                    ((DefaultTableModel) factionTables.get(FactionSide.BLUEFOR).getModel()).addRow(data);
                     break;
                 case RIGHT:
                     ((DefaultTableModel) factionTables.get(FactionSide.REDFOR).getModel()).addRow(data);
@@ -45,7 +45,7 @@ public class MoveFactionActionListener implements ActionListener {
         }
 
         // Otherwise check to see if it is one of the periphery tables
-        JTable blueforSide = factionTables.get(FactionSide.BLUFOR);
+        JTable blueforSide = factionTables.get(FactionSide.BLUEFOR);
         selectedRow =  blueforSide.getSelectedRow();
         if(selectedRow != -1) {
             // Parse the row before we move it
@@ -83,7 +83,7 @@ public class MoveFactionActionListener implements ActionListener {
             String[] data = {parsedFaction.getDcsFactionName(), parsedFaction.getOverallStrength().getFactionStrength()};
             switch (move) {
                 case LEFT:
-                    ((DefaultTableModel) factionTables.get(FactionSide.BLUFOR).getModel()).addRow(data);
+                    ((DefaultTableModel) factionTables.get(FactionSide.BLUEFOR).getModel()).addRow(data);
                     break;
                 case RETURN:
                     ((DefaultTableModel) neutralFactionTable.getModel()).addRow(data);

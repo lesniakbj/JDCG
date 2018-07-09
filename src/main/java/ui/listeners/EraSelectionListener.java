@@ -47,10 +47,16 @@ public class EraSelectionListener implements ActionListener {
     }
 
     public ConflictEra getSelectedEra() {
-        return selectedEra;
+        if(selectedEra != null) {
+            return selectedEra;
+        }
+        return ConflictEra.MODERN;
     }
 
     public CampaignType getSelectedType() {
-        return selectedType;
+        if(selectedType != null) {
+            return selectedType;
+        }
+        return CampaignType.OFFENSIVE;
     }
 }

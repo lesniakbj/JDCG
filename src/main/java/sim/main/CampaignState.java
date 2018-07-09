@@ -23,7 +23,7 @@ public class CampaignState {
         neutralCoalition = new Coalition(new ArrayList<>());
         selectedEra = ConflictEra.MODERN;
         selectedCampaignType = CampaignType.OFFENSIVE;
-        playerSelectedSide = FactionSide.BLUFOR;
+        playerSelectedSide = FactionSide.BLUEFOR;
         selectedSquadron = SquadronType.NONE;
     }
 
@@ -76,6 +76,18 @@ public class CampaignState {
 
     public static Coalition getNeutralCoalition() {
         return neutralCoalition;
+    }
+
+    public static Coalition getCoalitionBySide(FactionSide side) {
+        switch (side) {
+            case BLUEFOR:
+                return getBlueforCoalition();
+            case REDFOR:
+                return getRedforCoalition();
+            case NEUTRAL:
+                return getNeutralCoalition();
+        }
+        return getBlueforCoalition();
     }
 
     public static ConflictEra getSelectedEra() {

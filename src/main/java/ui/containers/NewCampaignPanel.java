@@ -1,6 +1,13 @@
 package ui.containers;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import sim.domain.Coalition;
+import sim.domain.GameMap;
 import sim.domain.statics.*;
+import ui.listeners.CoalitionItemListener;
 import ui.listeners.EraSelectionListener;
 import ui.listeners.MapSelectionListener;
 import ui.listeners.MoveFactionActionListener;
@@ -17,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import ui.listeners.SquadronSelectionListener;
 
 import static ui.util.ImageScaleUtil.*;
 
@@ -24,12 +32,17 @@ public class NewCampaignPanel extends JPanel {
     private static MapSelectionListener mapSelectionListener;
     private static MoveFactionActionListener buttonListener;
     private static EraSelectionListener eraSelectionListener;
+    private static CoalitionItemListener coalitionSelectionListener;
+    private static SquadronSelectionListener squadronSelectionListener;
     private static NewCampaignOverviewPanel overviewPanel;
+
+    // Static data that is updated by the panels
 
     private static final int MAP_WIDTH = 550;
     private static final String[] FACTION_COLUMNS = {"Faction Name", "Faction Strength"};
 
     public NewCampaignPanel() {
+        // Create the layout
         this.setLayout(new BorderLayout());
 
         JTabbedPane pane = new JTabbedPane();
@@ -40,7 +53,7 @@ public class NewCampaignPanel extends JPanel {
         pane.addTab("Campaign Overview", createCampaignOverviewPanel());
 
         // Create the pane action listener to save state on changes
-        pane.addChangeListener(new PanelChangeListener(mapSelectionListener, buttonListener, eraSelectionListener, overviewPanel));
+        pane.addChangeListener(new PanelChangeListener(mapSelectionListener, buttonListener, eraSelectionListener, coalitionSelectionListener, squadronSelectionListener, overviewPanel));
 
         this.add(pane, BorderLayout.NORTH);
     }
@@ -51,7 +64,46 @@ public class NewCampaignPanel extends JPanel {
     }
 
     private Component createSquadronPanel() {
-        return new JPanel();
+        JPanel squadronPanel = new JPanel();
+        squadronPanel.setLayout(new BorderLayout());
+
+        // Create the image that is associated with the selected JComboBox item
+        JPanel squadronImagePanel = new JPanel();
+        BufferedImage mapImage = tryLoadImage("/squadron/" + SquadronType.NONE.getSquadronName().replace(" ", "_") + ".png");
+        Image scaled = mapImage.getScaledInstance(MAP_WIDTH * 2, (int)((MAP_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
+        squadronImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
+
+        // Create the JComboBox of Squadrons
+        JPanel squadronBoxPanel = new JPanel();
+        JComboBox<String> squadronBox = new JComboBox<>(Stream.of(SquadronType.values()).map(SquadronType::getSquadronName).toArray(String[]::new));
+        squadronBoxPanel.add(squadronBox);
+
+        // Add the Squadron Selection Listener
+        squadronSelectionListener = new SquadronSelectionListener(squadronBox, squadronImagePanel);
+        squadronBox.addActionListener(squadronSelectionListener);
+
+        // Create the RadioButtons of Team (Bluefor/Redfor)
+        coalitionSelectionListener = new CoalitionItemListener(squadronBox);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        JRadioButton blueforButton = new JRadioButton("BLUEFOR");
+        JRadioButton redforButton = new JRadioButton("REDFOR");
+        blueforButton.addItemListener(coalitionSelectionListener);
+        redforButton.addItemListener(coalitionSelectionListener);
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(blueforButton);
+        buttonGroup.add(redforButton);
+        buttonPanel.add(blueforButton);
+        buttonPanel.add(redforButton);
+
+        JPanel containerPanel = new JPanel();
+        containerPanel.setLayout(new BorderLayout());
+        containerPanel.add(buttonPanel, BorderLayout.NORTH);
+        containerPanel.add(squadronBoxPanel, BorderLayout.CENTER);
+
+        squadronPanel.add(squadronImagePanel, BorderLayout.NORTH);
+        squadronPanel.add(containerPanel, BorderLayout.CENTER);
+        return squadronPanel;
     }
 
     private JPanel createEraPanel() {
@@ -60,7 +112,7 @@ public class NewCampaignPanel extends JPanel {
 
         // Create the image that is associated with the selected JComboBox item
         JPanel eraImagePanel = new JPanel();
-        BufferedImage mapImage = tryLoadImage("/" + ConflictEra.MODERN.getEraName().replace(" ", "_") + ".jpg");
+        BufferedImage mapImage = tryLoadImage("/era/" + ConflictEra.MODERN.getEraName().replace(" ", "_") + ".jpg");
         Image scaled = mapImage.getScaledInstance(MAP_WIDTH * 2, (int)((MAP_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
         eraImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
 
@@ -103,7 +155,7 @@ public class NewCampaignPanel extends JPanel {
             mapImagePanel.add(new JLabel(map.getMapName(), SwingConstants.CENTER), BorderLayout.NORTH);
 
             // Load the image for the map
-            BufferedImage mapImage = tryLoadImage("/" + map.getMapName().replace(" ", "_") + "_map.png");
+            BufferedImage mapImage = tryLoadImage("/map/" + map.getMapName().replace(" ", "_") + "_map.png");
             Image scaled = mapImage.getScaledInstance(MAP_WIDTH, (int)(MAP_WIDTH * MAP_IMAGE_HEIGHT_RATIO), Image.SCALE_SMOOTH);
             mapImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
 
@@ -129,7 +181,7 @@ public class NewCampaignPanel extends JPanel {
         JPanel factionPanel = generateNeutralFactionTable();
 
         // Create the Left and Right (Blufor/Opfor) panel
-        JPanel bluforPanel = generateFactionTable(FactionSide.BLUFOR);
+        JPanel bluforPanel = generateFactionTable(FactionSide.BLUEFOR);
         JPanel redforPanel = generateFactionTable(FactionSide.REDFOR);
 
         // Add the panel to the containers

@@ -57,6 +57,6 @@ public class MapSelectionListener implements MouseListener {
         if(selectedPanel != null) {
             return selectedPanel.getMap();
         }
-        return null;
+        return MapConstants.CAUCASUS;
     }
 }
