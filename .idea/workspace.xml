@@ -2,37 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a3a02b9e-cc5d-4d1a-868b-ef329b54872f" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/sim/domain/statics/AircraftType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/sim/domain/statics/AircraftType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/sim/domain/statics/SquadronType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/sim/domain/statics/SquadronType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/sim/domain/statics/util/StaticLists.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/sim/domain/statics/util/StaticLists.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/ui/JDCGRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/ui/JDCGRunner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/ui/containers/NewCampaignPanel$FactionMove.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/ui/containers/NewCampaignPanel$FactionMove.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/ui/containers/NewCampaignPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/ui/containers/NewCampaignPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/ui/listeners/PanelChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/ui/listeners/PanelChangeListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/Coalition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/Coalition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/main/none.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/main/squadron/none.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/statics/FactionSide.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/statics/FactionSide.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sim/main/CampaignState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/main/CampaignState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/listeners/MapSelectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/MapSelectionListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/listeners/MoveFactionActionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/MoveFactionActionListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/listeners/PanelChangeListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/PanelChangeListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/caucasus_map.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/map/caucasus_map.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/gulf_war_era.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/era/gulf_war_era.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/korean_era.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/era/korean_era.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/modern_era.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/era/modern_era.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/nevada_map.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/map/nevada_map.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/normandy_map.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/map/normandy_map.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/persian_gulf_map.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/map/persian_gulf_map.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/vietnam_era.JPG" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/era/vietnam_era.JPG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/world_war_ii_era.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/era/world_war_ii_era.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/squadron/none.png" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,68 +23,111 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="NewCampaignOverviewPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
-              <folding>
-                <element signature="e#1072#1073#0" expanded="true" />
-                <element signature="e#1149#1150#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="PanelChangeListener.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/PanelChangeListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="47" column="72" selection-start-line="47" selection-start-column="72" selection-end-line="47" selection-end-column="72" />
+            <state relative-caret-position="399">
+              <caret line="27" column="22" lean-forward="true" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#PanelChangeListener#0;class#PanelChangeListener#0" expanded="true" />
+                <element signature="method#stateChanged#0;class#PanelChangeListener#0" expanded="true" />
                 <element signature="method#getCoalitionFactions#0;class#PanelChangeListener#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SquadronSelectionListener.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NewCampaignPanel.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="34" column="58" selection-start-line="34" selection-start-column="58" selection-end-line="34" selection-end-column="58" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SquadronSelectionListener.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="535">
-              <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
+            <state relative-caret-position="368">
+              <caret line="69" column="78" selection-start-line="69" selection-start-column="78" selection-end-line="69" selection-end-column="101" />
               <folding>
                 <element signature="docComment;class#SquadronSelectionListener#0" expanded="true" />
                 <element signature="method#SquadronSelectionListener#0;class#SquadronSelectionListener#0" expanded="true" />
+                <element signature="method#getSelectedSquadron#0;class#SquadronSelectionListener#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CoalitionItemListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java">
+      <file leaf-file-name="SquadronType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+            <state relative-caret-position="501">
+              <caret line="76" column="21" selection-start-line="76" selection-start-column="21" selection-end-line="76" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1029#1030#0" expanded="true" />
-                <element signature="e#1075#1076#0" expanded="true" />
-                <element signature="method#getSelectedSide#0;class#CoalitionItemListener#0" expanded="true" />
+                <element signature="method#SquadronType#0;class#SquadronType#0" expanded="true" />
+                <element signature="method#fromName#0;class#SquadronType#0" expanded="true" />
+                <element signature="e#3997#3998#0" expanded="true" />
+                <element signature="e#4025#4026#0" expanded="true" />
+                <element signature="e#4077#4078#0" expanded="true" />
+                <element signature="e#4108#4109#0" expanded="true" />
+                <element signature="e#4223#4224#0" expanded="true" />
+                <element signature="e#4249#4250#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EraSelectionListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java">
+      <file leaf-file-name="ConflictEra.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/ConflictEra.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="59" column="37" selection-start-line="59" selection-start-column="37" selection-end-line="59" selection-end-column="37" />
+            <state relative-caret-position="34">
+              <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AircraftType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="663">
+              <caret line="39" column="27" lean-forward="true" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
               <folding>
-                <element signature="method#getSelectedEra#0;class#EraSelectionListener#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="method#AircraftType#0;class#AircraftType#0" expanded="true" />
+                <element signature="e#1664#1665#0" expanded="true" />
+                <element signature="e#1699#1700#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Task.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="16" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="16" />
+              <folding>
+                <element signature="e#267#268#0" expanded="true" />
+                <element signature="e#307#308#0" expanded="true" />
+                <element signature="e#334#335#0" expanded="true" />
+                <element signature="e#365#366#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NewCampaignOverviewPanel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="29" selection-end-column="68" />
+              <folding>
+                <element signature="e#1072#1073#0" expanded="true" />
+                <element signature="e#1149#1150#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -126,6 +148,7 @@
       <find>a</find>
       <find>s</find>
       <find>BLUFOR</find>
+      <find>/squad</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -136,22 +159,22 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Squadron.java" />
         <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Aircraft.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/JDCGRunner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" />
         <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java" />
         <option value="$PROJECT_DIR$/src/main/java/sim/domain/Coalition.java" />
         <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/FactionSide.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/listeners/MoveFactionActionListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/sim/main/CampaignState.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/listeners/PanelChangeListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/listeners/MapSelectionListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" />
       </list>
     </option>
   </component>
@@ -175,42 +198,6 @@
               <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="sim" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="sim" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="listeners" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -220,7 +207,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="Sq&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/sim/domain/statics/SquadronType.java&#10;Faction&#9;PSI&#9;JAVA://sim.domain.statics.Faction" />
+    <property name="SearchEverywhereHistoryKey" value="NewCam&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/ui/containers/NewCampaignOverviewPanel.java&#10;era&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/ui/listeners/EraSelectionListener.java&#10;Era&#9;PSI&#9;JAVA://sim.domain.statics.ConflictEra&#10;NewCamp&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/ui/containers/NewCampaignPanel.java&#10;squadron&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/sim/domain/statics/SquadronType.java&#10;squad&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/ui/listeners/SquadronSelectionListener.java&#10;Sq&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/sim/domain/statics/SquadronType.java&#10;Faction&#9;PSI&#9;JAVA://sim.domain.statics.Faction" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../WFOServer" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -348,12 +335,12 @@
       <window_info anchor="right" id="Capture Analysis" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32900432" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32900432" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" weight="0.32900432" />
       <window_info id="Capture Tool" />
       <window_info id="Designer" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -384,43 +371,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#484#485#0" expanded="true" />
-            <element signature="e#532#533#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_111/src.zip!/java/awt/Image.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
           <caret line="168" column="17" selection-start-line="168" selection-start-column="17" selection-end-line="168" selection-end-column="17" />
           <folding>
             <element signature="method#getScaledInstance#0;class#Image#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="64" lean-forward="true" selection-start-line="5" selection-start-column="64" selection-end-line="5" selection-end-column="64" />
-          <folding>
-            <element signature="method#SquadronType#0;class#SquadronType#0" expanded="true" />
-            <element signature="e#3991#3992#0" expanded="true" />
-            <element signature="e#4025#4026#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -452,24 +408,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/util/ImageScaleUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_111/src.zip!/javax/swing/JComboBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="872" column="16" selection-start-line="872" selection-start-column="16" selection-end-line="872" selection-end-column="16" />
-          <folding>
-            <element signature="e#29417#29418#0" expanded="true" />
-            <element signature="e#29473#29474#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/sim/main/CampaignState.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-15">
@@ -486,18 +424,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="85" column="78" selection-start-line="85" selection-start-column="78" selection-end-line="85" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="183" column="15" selection-start-line="183" selection-start-column="15" selection-end-line="183" selection-end-column="15" />
-          <folding>
-            <element signature="method#NewCampaignPanel#0;class#NewCampaignPanel#0" expanded="true" />
-            <element signature="method#createSquadronPanel#0;class#NewCampaignPanel#0" expanded="true" />
-            <element signature="method#createEraPanel#0;class#NewCampaignPanel#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -519,17 +445,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
-          <folding>
-            <element signature="e#1072#1073#0" expanded="true" />
-            <element signature="e#1149#1150#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/MapSelectionListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -537,49 +452,151 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_111/src.zip!/java/lang/Enum.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="59" column="37" selection-start-line="59" selection-start-column="37" selection-end-line="59" selection-end-column="37" />
+        <state relative-caret-position="189">
+          <caret line="75" column="24" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
           <folding>
-            <element signature="method#getSelectedEra#0;class#EraSelectionListener#0" expanded="true" />
+            <element signature="e#2036#2037#0" expanded="true" />
+            <element signature="e#2063#2064#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_111/src.zip!/javax/swing/JComboBox.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+        <state relative-caret-position="197">
+          <caret line="872" column="16" selection-start-line="872" selection-start-column="16" selection-end-line="872" selection-end-column="16" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1029#1030#0" expanded="true" />
-            <element signature="e#1075#1076#0" expanded="true" />
-            <element signature="method#getSelectedSide#0;class#CoalitionItemListener#0" expanded="true" />
+            <element signature="e#29417#29418#0" expanded="true" />
+            <element signature="e#29473#29474#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="45" column="61" selection-start-line="45" selection-start-column="61" selection-end-line="45" selection-end-column="61" />
+          <folding>
+            <element signature="method#EraSelectionListener#0;class#EraSelectionListener#0" expanded="true" />
+            <element signature="method#getSelectedEra#0;class#EraSelectionListener#0" expanded="true" />
+            <element signature="method#getSelectedType#0;class#EraSelectionListener#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/util/ImageScaleUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/PanelChangeListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="47" column="72" selection-start-line="47" selection-start-column="72" selection-end-line="47" selection-end-column="72" />
+        <state relative-caret-position="399">
+          <caret line="27" column="22" lean-forward="true" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#PanelChangeListener#0;class#PanelChangeListener#0" expanded="true" />
+            <element signature="method#stateChanged#0;class#PanelChangeListener#0" expanded="true" />
             <element signature="method#getCoalitionFactions#0;class#PanelChangeListener#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="29" selection-end-column="68" />
+          <folding>
+            <element signature="e#1072#1073#0" expanded="true" />
+            <element signature="e#1149#1150#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="16" />
+          <folding>
+            <element signature="e#267#268#0" expanded="true" />
+            <element signature="e#307#308#0" expanded="true" />
+            <element signature="e#334#335#0" expanded="true" />
+            <element signature="e#365#366#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="39" column="27" lean-forward="true" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#AircraftType#0;class#AircraftType#0" expanded="true" />
+            <element signature="e#1664#1665#0" expanded="true" />
+            <element signature="e#1699#1700#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/ConflictEra.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="76" column="21" selection-start-line="76" selection-start-column="21" selection-end-line="76" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#SquadronType#0;class#SquadronType#0" expanded="true" />
+            <element signature="method#fromName#0;class#SquadronType#0" expanded="true" />
+            <element signature="e#3997#3998#0" expanded="true" />
+            <element signature="e#4025#4026#0" expanded="true" />
+            <element signature="e#4077#4078#0" expanded="true" />
+            <element signature="e#4108#4109#0" expanded="true" />
+            <element signature="e#4223#4224#0" expanded="true" />
+            <element signature="e#4249#4250#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
+        <state relative-caret-position="368">
+          <caret line="69" column="78" selection-start-line="69" selection-start-column="78" selection-end-line="69" selection-end-column="101" />
           <folding>
             <element signature="docComment;class#SquadronSelectionListener#0" expanded="true" />
             <element signature="method#SquadronSelectionListener#0;class#SquadronSelectionListener#0" expanded="true" />
+            <element signature="method#getSelectedSquadron#0;class#SquadronSelectionListener#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="54" column="9" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1068#1069#0" expanded="true" />
+            <element signature="e#1114#1115#0" expanded="true" />
+            <element signature="method#getSelectedSide#0;class#CoalitionItemListener#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="34" column="58" selection-start-line="34" selection-start-column="58" selection-end-line="34" selection-end-column="58" />
         </state>
       </provider>
     </entry>

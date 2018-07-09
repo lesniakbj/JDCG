@@ -1,8 +1,7 @@
 package sim.domain;
 
-import sim.domain.statics.Faction;
-
 import java.util.List;
+import sim.domain.statics.Faction;
 
 public class Coalition {
     private List<Faction> factionList;

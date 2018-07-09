@@ -53,6 +53,15 @@ public enum SquadronType {
         this.factionUser = factionUser;
     }
 
+    public static SquadronType fromName(String squadronName) {
+        for(SquadronType squadronType : SquadronType.values()) {
+            if(squadronType.getSquadronName().equalsIgnoreCase(squadronName)) {
+                return squadronType;
+            }
+        }
+        return null;
+    }
+
     public List<Task> getTaskList() {
         return tasks;
     }

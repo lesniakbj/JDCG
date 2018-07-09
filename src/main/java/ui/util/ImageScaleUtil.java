@@ -1,8 +1,8 @@
 package ui.util;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class ImageScaleUtil {
     public static final double NORMAL_IMAGE_RATIO = (9.0 / 16.0);

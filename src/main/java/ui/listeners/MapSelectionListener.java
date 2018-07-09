@@ -1,15 +1,15 @@
 package ui.listeners;
 
-import sim.domain.statics.MapConstants;
-import ui.containers.MapSelectionPanel;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import sim.domain.statics.MapConstants;
+import ui.containers.MapSelectionPanel;
 
 public class MapSelectionListener implements MouseListener {
     private List<MapSelectionPanel> watchedPanels;

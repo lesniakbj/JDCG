@@ -1,15 +1,14 @@
 package ui.listeners;
 
-import sim.domain.statics.Faction;
-import sim.domain.statics.FactionSide;
-import ui.containers.NewCampaignPanel;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import sim.domain.statics.Faction;
+import sim.domain.statics.FactionSide;
+import ui.containers.NewCampaignPanel;
 
 public class MoveFactionActionListener implements ActionListener {
     private JTable neutralFactionTable;

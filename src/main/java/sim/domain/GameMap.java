@@ -1,9 +1,8 @@
 package sim.domain;
 
+import java.util.List;
 import sim.domain.statics.Airfield;
 import sim.domain.statics.MapConstants;
-
-import java.util.List;
 
 public class GameMap {
     private MapConstants mapSelection;

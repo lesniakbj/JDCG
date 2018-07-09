@@ -1,11 +1,14 @@
 package sim.domain.statics;
 
-import javafx.util.Pair;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import javafx.util.Pair;
 
 public enum Airfield {
     AL_DHAFRA_AIRBASE(0, MapConstants.PERSIAN_GULF, "P:[01..07, 24..35, 48..59, 87..99, 100, 190] | H:[01..07, 87..99, 190, 191] | B:[91, 93, 94, 96, 98]", new Pair<>(-123.0, -123.0), null, Arrays.asList("130R", "130L"));

@@ -1,19 +1,19 @@
 package ui.listeners;
 
+import static sim.domain.statics.FactionSide.BLUEFOR;
+import static sim.domain.statics.FactionSide.NEUTRAL;
+import static sim.domain.statics.FactionSide.REDFOR;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import sim.domain.Coalition;
 import sim.domain.statics.Faction;
 import sim.domain.statics.FactionSide;
-import sim.domain.statics.SquadronType;
 import sim.main.CampaignState;
 import ui.containers.NewCampaignOverviewPanel;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import static sim.domain.statics.FactionSide.*;
 
 public class PanelChangeListener implements ChangeListener {
     // Listeners used in panels, to make selections

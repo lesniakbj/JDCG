@@ -1,14 +1,20 @@
 package ui.containers;
 
-import sim.domain.GameMap;
-import sim.domain.statics.*;
-import ui.util.SpringUtilities;
-
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import sim.domain.GameMap;
+import sim.domain.statics.AircraftType;
+import sim.domain.statics.CampaignType;
+import sim.domain.statics.ConflictEra;
+import sim.domain.statics.FactionSide;
+import sim.domain.statics.SquadronType;
+import sim.domain.statics.Task;
+import ui.util.SpringUtilities;
 
 public class NewCampaignOverviewPanel extends JPanel {
     private static final String[] labels = {"Map Selected: ", "Campaign Era Selected: ", "Campaign Type Selected: ", "Selected Coalition: ", "Selected Squadron: ", "Squadron Tasks: ", "Aircraft: "};

@@ -1,42 +1,61 @@
 package ui.containers;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import sim.domain.Coalition;
-import sim.domain.GameMap;
-import sim.domain.statics.*;
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import static ui.util.ImageScaleUtil.NORMAL_IMAGE_RATIO;
+import static ui.util.ImageScaleUtil.tryLoadImage;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import sim.domain.statics.AircraftType;
+import sim.domain.statics.CampaignType;
+import sim.domain.statics.ConflictEra;
+import sim.domain.statics.Faction;
+import sim.domain.statics.FactionSide;
+import sim.domain.statics.MapConstants;
+import sim.domain.statics.SquadronType;
+import sim.domain.statics.Task;
 import ui.listeners.CoalitionItemListener;
 import ui.listeners.EraSelectionListener;
 import ui.listeners.MapSelectionListener;
 import ui.listeners.MoveFactionActionListener;
 import ui.listeners.PanelChangeListener;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 import ui.listeners.SquadronSelectionListener;
-
-import static ui.util.ImageScaleUtil.*;
+import ui.util.SpringUtilities;
 
 public class NewCampaignPanel extends JPanel {
+    // Listeners, used to update Campaign and Panel states
     private static MapSelectionListener mapSelectionListener;
     private static MoveFactionActionListener buttonListener;
     private static EraSelectionListener eraSelectionListener;
     private static CoalitionItemListener coalitionSelectionListener;
     private static SquadronSelectionListener squadronSelectionListener;
     private static NewCampaignOverviewPanel overviewPanel;
-
-    // Static data that is updated by the panels
 
     private static final int MAP_WIDTH = 550;
     private static final String[] FACTION_COLUMNS = {"Faction Name", "Faction Strength"};
@@ -63,13 +82,13 @@ public class NewCampaignPanel extends JPanel {
         return overviewPanel;
     }
 
-    private Component createSquadronPanel() {
+    private JPanel createSquadronPanel() {
         JPanel squadronPanel = new JPanel();
         squadronPanel.setLayout(new BorderLayout());
 
         // Create the image that is associated with the selected JComboBox item
         JPanel squadronImagePanel = new JPanel();
-        BufferedImage mapImage = tryLoadImage("/squadron/" + SquadronType.NONE.getSquadronName().replace(" ", "_") + ".png");
+        BufferedImage mapImage = tryLoadImage("/squadron/" + SquadronType.NONE.name().replace(" ", "_") + ".jpg");
         Image scaled = mapImage.getScaledInstance(MAP_WIDTH * 2, (int)((MAP_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
         squadronImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
 
@@ -78,8 +97,29 @@ public class NewCampaignPanel extends JPanel {
         JComboBox<String> squadronBox = new JComboBox<>(Stream.of(SquadronType.values()).map(SquadronType::getSquadronName).toArray(String[]::new));
         squadronBoxPanel.add(squadronBox);
 
+        // Information about the selected Squadron
+        JPanel squadronInfoPanel = new JPanel();
+        squadronInfoPanel.setLayout(new SpringLayout());
+        JLabel squadronNameLabel = new JLabel("Squadron Name: ");
+        JLabel squadronName = new JLabel(SquadronType.NONE.getSquadronName());
+        JLabel squadronTasksLabel = new JLabel("Squadron Tasks: ");
+        JLabel squadronTasks = new JLabel(SquadronType.NONE.getTaskList().stream().map(Task::getTaskName).collect(Collectors.joining(", ")));
+        JLabel squadronAircraftLabel = new JLabel("Squadron Aircraft: ");
+        JLabel squadronAircraft = new JLabel(SquadronType.NONE.getAircraftTypes().stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
+        JLabel squadronEraLabel = new JLabel("Squadron Active Eras: ");
+        JLabel squadronEra = new JLabel(SquadronType.NONE.getEra().stream().map(ConflictEra::getEraName).collect(Collectors.joining(", ")));
+        squadronInfoPanel.add(squadronNameLabel);
+        squadronInfoPanel.add(squadronName);
+        squadronInfoPanel.add(squadronTasksLabel);
+        squadronInfoPanel.add(squadronTasks);
+        squadronInfoPanel.add(squadronAircraftLabel);
+        squadronInfoPanel.add(squadronAircraft);
+        squadronInfoPanel.add(squadronEraLabel);
+        squadronInfoPanel.add(squadronEra);
+        SpringUtilities.makeCompactGrid(squadronInfoPanel, 4, 2, 400, 10,10, 6);
+
         // Add the Squadron Selection Listener
-        squadronSelectionListener = new SquadronSelectionListener(squadronBox, squadronImagePanel);
+        squadronSelectionListener = new SquadronSelectionListener(squadronBox, squadronImagePanel, squadronName, squadronTasks, squadronAircraft, squadronEra);
         squadronBox.addActionListener(squadronSelectionListener);
 
         // Create the RadioButtons of Team (Bluefor/Redfor)
@@ -96,13 +136,18 @@ public class NewCampaignPanel extends JPanel {
         buttonPanel.add(blueforButton);
         buttonPanel.add(redforButton);
 
+        // Add the container
+        JPanel outerContainerPanel = new JPanel();
+        outerContainerPanel.setLayout(new BorderLayout());
         JPanel containerPanel = new JPanel();
         containerPanel.setLayout(new BorderLayout());
         containerPanel.add(buttonPanel, BorderLayout.NORTH);
         containerPanel.add(squadronBoxPanel, BorderLayout.CENTER);
+        outerContainerPanel.add(containerPanel, BorderLayout.NORTH);
+        outerContainerPanel.add(squadronInfoPanel, BorderLayout.CENTER);
 
         squadronPanel.add(squadronImagePanel, BorderLayout.NORTH);
-        squadronPanel.add(containerPanel, BorderLayout.CENTER);
+        squadronPanel.add(outerContainerPanel, BorderLayout.CENTER);
         return squadronPanel;
     }
 

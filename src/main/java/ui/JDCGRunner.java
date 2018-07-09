@@ -1,8 +1,8 @@
 package ui;
 
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 import ui.containers.JDCGUIFrame;
-
-import javax.swing.*;
 
 public class JDCGRunner {
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {

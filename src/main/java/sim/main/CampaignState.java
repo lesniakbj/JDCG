@@ -1,10 +1,13 @@
 package sim.main;
 
+import java.util.ArrayList;
 import sim.domain.Coalition;
 import sim.domain.GameMap;
-import sim.domain.statics.*;
-
-import java.util.ArrayList;
+import sim.domain.statics.CampaignType;
+import sim.domain.statics.ConflictEra;
+import sim.domain.statics.FactionSide;
+import sim.domain.statics.MapConstants;
+import sim.domain.statics.SquadronType;
 
 public class CampaignState {
     private static GameMap selectedMap;

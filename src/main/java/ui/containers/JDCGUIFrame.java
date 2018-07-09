@@ -1,15 +1,20 @@
 package ui.containers;
 
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
 import ui.constants.FileActions;
 import ui.constants.UIAction;
 import ui.constants.ViewActions;
 import ui.listeners.MenuItemListener;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 
 public class JDCGUIFrame extends JFrame {
     // Singleton for the Main GUI Frame

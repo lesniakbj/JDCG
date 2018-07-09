@@ -46,7 +46,7 @@ public class CoalitionItemListener implements ItemListener {
         List<SquadronType> validSquadrons = new ArrayList<>();
         for(SquadronType sqd : SquadronType.values()) {
             for(Faction faction : coalitionFactions) {
-                if(sqd.getFactionUser().equals(faction)) {
+                if(sqd.getFactionUser().equals(faction) && sqd.getEra().contains(CampaignState.getSelectedEra())) {
                     validSquadrons.add(sqd);
                 }
             }
