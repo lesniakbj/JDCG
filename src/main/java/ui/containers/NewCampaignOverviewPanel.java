@@ -59,12 +59,12 @@ public class NewCampaignOverviewPanel extends JPanel {
     }
 
     public void setSelectedSquadronTask(List<Task> squadronTasks) {
-        String tasks = squadronTasks.stream().map(Enum::name).collect(Collectors.joining(", "));
+        String tasks = squadronTasks.stream().map(Task::getTaskName).collect(Collectors.joining(", "));
         labelMapping.get(labels[5]).setText(tasks);
     }
 
     public void setSelectedAircraft(List<AircraftType> aircraft) {
-        String tasks = aircraft.stream().map(Enum::name).collect(Collectors.joining(", "));
+        String tasks = aircraft.stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", "));
         labelMapping.get(labels[6]).setText(tasks);
     }
 }
