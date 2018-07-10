@@ -22,6 +22,10 @@ public class GameMap {
         return mapSelection.getMapName();
     }
 
+    public List<Airfield> getAirfields() {
+        return airfields;
+    }
+
     @Override
     public String toString() {
         return "Map{" +

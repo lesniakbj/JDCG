@@ -11,13 +11,14 @@ import java.util.stream.Stream;
 import javafx.util.Pair;
 
 public enum Airfield {
-    AL_DHAFRA_AIRBASE(0, MapConstants.PERSIAN_GULF, "P:[01..07, 24..35, 48..59, 87..99, 100, 190] | H:[01..07, 87..99, 190, 191] | B:[91, 93, 94, 96, 98]", new Pair<>(-123.0, -123.0), null, Arrays.asList("130R", "130L"));
+    AL_DHAFRA_AIRBASE(0, MapConstants.PERSIAN_GULF, "P:[01..07, 24..35, 48..59, 87..99, 100, 190] | H:[01..07, 87..99, 190, 191] | B:[91, 93, 94, 96, 98]", new Pair<>(-123.0, -123.0), new Pair<>(544.0, 587.0), null, Arrays.asList("130R", "130L"));
 
     // Passed Data Members
     private int id;
     private MapConstants map;
     private String parkingRange;
     private Pair<Double, Double> airfieldPosition;
+    private Pair<Double, Double> airfieldMapPosition;
     private String tacanChannel;
     private List<String> availableRunways;
 
@@ -28,11 +29,12 @@ public enum Airfield {
     private Set<Integer> uniqueParkingSpots;
     private int totalUniqueParkingSpots;
 
-    Airfield(int id, MapConstants map, String parkingRange, Pair<Double, Double> airfieldPosition, String tacanChannel, List<String> availableRunways) {
+    Airfield(int id, MapConstants map, String parkingRange, Pair<Double, Double> airfieldPosition, Pair<Double, Double> airfieldMapPosition, String tacanChannel, List<String> availableRunways) {
         this.id = id;
         this.map = map;
         this.parkingRange = parkingRange;
         this.airfieldPosition = airfieldPosition;
+        this.airfieldMapPosition = airfieldMapPosition;
         this.tacanChannel = tacanChannel;
         this.availableRunways = availableRunways;
         parseParkingString();
@@ -104,12 +106,49 @@ public enum Airfield {
         return Stream.of(Airfield.values()).filter((airfield) -> airfield.getMap() == mapSelection).collect(Collectors.toList());
     }
 
+    public Pair<Double, Double> getAirfieldPosition() {
+        return airfieldPosition;
+    }
+
+    public Pair<Double, Double> getAirfieldMapPosition() {
+        return airfieldMapPosition;
+    }
+
+    public String getTacanChannel() {
+        return tacanChannel;
+    }
+
+    public List<String> getAvailableRunways() {
+        return availableRunways;
+    }
+
+    public List<Integer> getNormalParkingSpots() {
+        return normalParkingSpots;
+    }
+
+    public List<Integer> getHelicopterParkingSpots() {
+        return helicopterParkingSpots;
+    }
+
+    public List<Integer> getHeavyParkingSpots() {
+        return heavyParkingSpots;
+    }
+
+    public Set<Integer> getUniqueParkingSpots() {
+        return uniqueParkingSpots;
+    }
+
+    public int getTotalUniqueParkingSpots() {
+        return totalUniqueParkingSpots;
+    }
+
     @Override
     public String toString() {
         return "Airfield{" +
                 "id=" + id +
                 ", map=" + map +
                 ", airfieldPosition=" + airfieldPosition +
+                ", airfieldMapPosition=" + airfieldMapPosition +
                 ", tacanChannel='" + tacanChannel + '\'' +
                 ", availableRunways=" + availableRunways +
                 ", normalParkingSpots=" + normalParkingSpots +
