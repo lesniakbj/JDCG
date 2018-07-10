@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/src/main/main.iml" filepath="$PROJECT_DIR$/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JDCG.iml" filepath="$PROJECT_DIR$/.idea/modules/JDCG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JDCG_main.iml" filepath="$PROJECT_DIR$/.idea/modules/JDCG_main.iml" group="JDCG" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JDCG_test.iml" filepath="$PROJECT_DIR$/.idea/modules/JDCG_test.iml" group="JDCG" />
     </modules>
   </component>
 </project>

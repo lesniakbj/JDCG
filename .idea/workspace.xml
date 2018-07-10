@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a3a02b9e-cc5d-4d1a-868b-ef329b54872f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/gen/domain/Airfield.java" afterPath="$PROJECT_DIR$/src/main/java/gen/domain/Airfield.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gen/domain/GameMap.java" afterPath="$PROJECT_DIR$/src/main/java/gen/domain/GameMap.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" afterPath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" />
-    </list>
+    <list default="true" id="91096769-dfb0-4849-9a22-b66002714f7f" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/.gradle/" />
+    <ignored path="$PROJECT_DIR$/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,163 +12,18 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="JDCGRunner.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ui/JDCGRunner.java">
+    <leaf>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="11" column="10" lean-forward="false" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CampaignSettings.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/sim/main/CampaignSettings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="68" column="15" lean-forward="false" selection-start-line="68" selection-start-column="15" selection-end-line="68" selection-end-column="15" />
-              <folding>
-                <element signature="method#CampaignSettings#0;class#CampaignSettings#0" expanded="false" />
-                <element signature="method#setMapSelection#0;class#CampaignSettings#0" expanded="false" />
-                <element signature="e#2094#2095#0" expanded="true" />
-                <element signature="e#2128#2129#0" expanded="true" />
-                <element signature="method#getCoalitionBySide#0;class#CampaignSettings#0" expanded="false" />
-                <element signature="e#3124#3125#0" expanded="true" />
-                <element signature="e#3157#3158#0" expanded="true" />
-                <element signature="e#3206#3207#0" expanded="true" />
-                <element signature="e#3243#3244#0" expanded="true" />
-                <element signature="method#toString#0;class#CampaignSettings#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameMap.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/GameMap.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="24" column="42" lean-forward="false" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-              <folding>
-                <element signature="e#698#699#0" expanded="true" />
-                <element signature="method#toString#0;class#GameMap#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NewCampaignPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="112" column="41" lean-forward="true" selection-start-line="112" selection-start-column="41" selection-end-line="115" selection-end-column="109" />
-              <folding>
-                <element signature="method#NewCampaignPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#createFactionsPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#createEraPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#createSquadronPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#createCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#generateFactionTable#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#generateButtonPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#generateNeutralFactionTable#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#generateColumnData#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#FactionMove#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#PanelChangeListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#MapSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#addWatchedPanel#0;class#MapSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#getSelectedMap#0;class#MapSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#MoveFactionActionListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#EraSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#CoalitionItemListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#itemStateChanged#0;class#CoalitionItemListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#SquadronSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setSelectedEra#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setCampaignType#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setSelectedSide#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setSelectedSquadron#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setSelectedSquadronTask#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setSquardronAircraft#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setEraAircraft#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-                <element signature="method#setSelectedAircraft#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JDCGUIFrame.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1243">
-              <caret line="228" column="137" lean-forward="true" selection-start-line="228" selection-start-column="137" selection-end-line="228" selection-end-column="137" />
-              <folding>
-                <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="method#tryParseAction#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MouseEvent.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/awt/event/MouseEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="805" column="15" lean-forward="false" selection-start-line="805" selection-start-column="15" selection-end-line="805" selection-end-column="15" />
-              <folding>
-                <element signature="e#35093#35094#0" expanded="true" />
-                <element signature="e#35117#35118#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Airfield.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/Airfield.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="112" column="32" lean-forward="false" selection-start-line="112" selection-start-column="32" selection-end-line="112" selection-end-column="32" />
-              <folding>
-                <element signature="method#Airfield#0;class#Airfield#0" expanded="false" />
-                <element signature="method#parseParkingString#0;class#Airfield#0" expanded="false" />
-                <element signature="method#parseParkingPatternString#0;class#Airfield#0" expanded="false" />
-                <element signature="method#getAirfieldsForMap#0;class#Airfield#0" expanded="false" />
-                <element signature="e#4387#4388#0" expanded="true" />
-                <element signature="e#4426#4427#0" expanded="true" />
-                <element signature="e#4486#4487#0" expanded="true" />
-                <element signature="e#4528#4529#0" expanded="true" />
-                <element signature="e#4567#4568#0" expanded="true" />
-                <element signature="e#4602#4603#0" expanded="true" />
-                <element signature="e#4651#4652#0" expanded="true" />
-                <element signature="e#4690#4691#0" expanded="true" />
-                <element signature="e#4742#4743#0" expanded="true" />
-                <element signature="e#4783#4784#0" expanded="true" />
-                <element signature="e#4839#4840#0" expanded="true" />
-                <element signature="e#4884#4885#0" expanded="true" />
-                <element signature="e#4935#4936#0" expanded="true" />
-                <element signature="e#4975#4976#0" expanded="true" />
-                <element signature="e#5026#5027#0" expanded="true" />
-                <element signature="e#5067#5068#0" expanded="true" />
-                <element signature="e#5114#5115#0" expanded="true" />
-                <element signature="e#5160#5161#0" expanded="true" />
-                <element signature="method#toString#0;class#Airfield#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Container.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/awt/Container.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="1619" column="16" lean-forward="false" selection-start-line="1619" selection-start-column="16" selection-end-line="1619" selection-end-column="16" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -178,68 +31,295 @@
       </file>
     </leaf>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>Squadron</find>
-      <find>a</find>
-      <find>s</find>
-      <find>BLUFOR</find>
-      <find>400</find>
-      <find>425</find>
-      <find>/squad</find>
-      <find>thi</find>
-      <find>this</find>
-    </findStrings>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
   <component name="GradleLocalSettings">
+    <option name="myGradleHomes">
+      <map>
+        <entry key="$PROJECT_DIR$" value="C:\Users\brend\.gradle\wrapper\dists\gradle-4.0-bin\3p92xsbhik5vmig8i90n16yxc\gradle-4.0" />
+      </map>
+    </option>
+    <option name="myGradleVersions">
+      <map>
+        <entry key="$PROJECT_DIR$" value="4.0" />
+      </map>
+    </option>
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="JDCG" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="JDCG" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="availableTasks">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <list>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by root project 'JDCG'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles and tests this project and all projects that depend on it." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="buildDependents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the sub-projects of root project 'JDCG'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="projects" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles main classes." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="classes" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the dependent components of components in root project 'JDCG'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependentComponents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all buildscript dependencies declared in root project 'JDCG'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="buildEnvironment" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Gradle wrapper files." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="wrapper" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles test classes." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="testClasses" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Javadoc API documentation for the main source code." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="javadoc" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles a jar archive containing the main classes." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="jar" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the configuration model of root project 'JDCG'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Processes main resources." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="processResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the tasks runnable from root project 'JDCG'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="tasks" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Initializes a new Gradle build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="init" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs the unit tests." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="test" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Compiles main Java source." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="compileJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the insight into a specific dependency in root project 'JDCG'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs all checks." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="check" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the outputs of this project." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="assemble" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Deletes the build directory." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="clean" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Compiles test Java source." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="compileTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in root project 'JDCG'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Processes test resources." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="processTestResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays a help message." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="help" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles and tests this project." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="build" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles and tests this project and all projects it depends on." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="buildNeeded" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the properties of root project 'JDCG'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="properties" />
+              </ExternalTaskPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="modificationStamps">
+      <map>
+        <entry key="$PROJECT_DIR$" value="4593788358607" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="1304826329" />
+        <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="975608090" />
+        <entry key="$PROJECT_DIR$/settings.gradle" value="4252931438" />
+      </map>
+    </option>
+    <option name="projectBuildClasspath">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <ExternalProjectBuildClasspathPojo>
+              <option name="modulesBuildClasspath">
+                <map>
+                  <entry key="$PROJECT_DIR$">
+                    <value>
+                      <ExternalModuleBuildClasspathPojo>
+                        <option name="path" value="$PROJECT_DIR$" />
+                      </ExternalModuleBuildClasspathPojo>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="name" value="JDCG" />
+              <option name="projectBuildClasspath">
+                <list>
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/ant-1.9.6.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/ant-launcher-1.9.6.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-base-services-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-base-services-groovy-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-cli-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-core-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-docs-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-installation-beacon-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-jvm-services-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-launcher-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-logging-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-messaging-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-model-core-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-model-groovy-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-native-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-process-services-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-resources-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-runtime-api-info-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-script-kotlin-0.9.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-script-kotlin-compiler-plugin-0.9.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-script-kotlin-tooling-builders-0.9.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-script-kotlin-tooling-models-0.9.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-tooling-api-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/gradle-wrapper-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/groovy-all-2.4.11.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-announce-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-antlr-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-build-cache-http-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-build-comparison-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-build-init-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-code-quality-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-composite-builds-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-dependency-management-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-diagnostics-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-ear-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-ide-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-ide-native-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-ide-play-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-ivy-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-jacoco-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-javascript-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-language-groovy-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-language-java-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-language-jvm-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-language-native-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-language-scala-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-maven-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-osgi-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-platform-base-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-platform-jvm-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-platform-native-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-platform-play-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-plugin-development-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-plugin-use-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-plugins-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-publish-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-reporting-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-resources-http-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-resources-s3-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-resources-sftp-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-scala-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-signing-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-test-kit-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-testing-base-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-testing-jvm-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-testing-native-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-tooling-api-builders-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/gradle-workers-4.0.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.0-bin/3p92xsbhik5vmig8i90n16yxc/gradle-4.0/lib/plugins/ivy-2.2.0.jar" />
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/java" />
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/groovy" />
+                </list>
+              </option>
+            </ExternalProjectBuildClasspathPojo>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="externalProjectsViewState">
       <projects_view />
     </option>
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Squadron.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Aircraft.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/JDCGRunner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/Coalition.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/FactionSide.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/main/CampaignState.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/listeners/MapSelectionListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Task.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/listeners/PanelChangeListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/util/StaticLists.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/SquadronType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/util/ImageScaleUtil.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/AircraftType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/listeners/MenuItemListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/listeners/MoveFactionActionListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/Faction.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/ConflictEra.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/domain/statics/CampaignType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/gen/domain/SquadronType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/gen/domain/Coalition.java" />
-        <option value="$PROJECT_DIR$/src/main/java/gen/domain/StaticLists.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sim/main/CampaignSettings.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/gen/domain/GameMap.java" />
-        <option value="$PROJECT_DIR$/src/main/java/gen/domain/Airfield.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" />
-      </list>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$/../JDCG - Java DCS Campaign Generator" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -248,7 +328,6 @@
     <option name="width" value="1918" />
     <option name="height" value="988" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -264,56 +343,38 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="JDCG - Java DCS Campaign Generator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JDCG - JavaDCSCampaignGenerator" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="JDCG - Java DCS Campaign Generator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JDCG - JavaDCSCampaignGenerator" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="JDCG - Java DCS Campaign Generator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="domain" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JDCG - Java DCS Campaign Generator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
+              <item name="JDCG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JDCG - JavaDCSCampaignGenerator" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="Scratches" />
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="NewCamp&#9;FILE&#9;file://C:/projects/JDCG - Java DCS Campaign Generator/src/main/java/ui/containers/NewCampaignOverviewPanel.java&#10;Squadr&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/sim/domain/statics/SquadronType.java&#10;NewCam&#9;PSI&#9;JAVA://ui.containers.NewCampaignOverviewPanel&#10;Air&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/sim/domain/statics/AircraftType.java&#10;PanelC&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/ui/listeners/PanelChangeListener.java&#10;era&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/ui/listeners/EraSelectionListener.java&#10;Era&#9;PSI&#9;JAVA://sim.domain.statics.ConflictEra&#10;squadron&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/sim/domain/statics/SquadronType.java&#10;squad&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/ui/listeners/SquadronSelectionListener.java&#10;Sq&#9;FILE&#9;file://C:/Projects/Personal/JDCG/src/main/java/sim/domain/statics/SquadronType.java&#10;Faction&#9;PSI&#9;JAVA://sim.domain.statics.Faction" />
-    <property name="last_opened_file_path" value="C:/WFOServer" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="ui.listeners" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Projects\Personal\JDCG\src\main\resources\map" />
-      <recent name="C:\Projects\Personal\JDCG\src\main\resources\era" />
-    </key>
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -330,28 +391,9 @@
   <component name="RunManager">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="WIDTH" value="0" />
-      <option name="HEIGHT" value="0" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
       <module />
-    </configuration>
-    <configuration name="JDCGRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="ui.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="ui.JDCGRunner" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="main" />
-      <envs />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -367,6 +409,14 @@
       <module name="" />
       <envs />
     </configuration>
+    <configuration name="build" type="GroovyScriptRunConfiguration" factoryName="Groovy" temporary="true">
+      <module name="JDCG" />
+      <setting name="path" value="file://$PROJECT_DIR$/build.gradle" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -378,7 +428,7 @@
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
@@ -407,7 +457,7 @@
       <option name="TEST_OBJECT" value="CLASS" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <option name="OUTPUT_DIRECTORY" />
       <option name="ANNOTATION_TYPE" />
       <option name="ENV_VARIABLES" />
@@ -429,7 +479,7 @@
     </configuration>
     <recent_temporary>
       <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Application.JDCGRunner" />
+        <item index="0" class="java.lang.String" itemvalue="Groovy.build" />
       </list>
     </recent_temporary>
   </component>
@@ -437,47 +487,57 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
-    <configuration>C:\Users\brendan.lesniak\AppData\Roaming\Subversion</configuration>
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a3a02b9e-cc5d-4d1a-868b-ef329b54872f" name="Default" comment="" />
-      <created>1531147061594</created>
+      <changelist id="91096769-dfb0-4849-9a22-b66002714f7f" name="Default" comment="" />
+      <created>1531262782039</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1531147061594</updated>
+      <updated>1531262782039</updated>
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="3456" height="1426" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16124031" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32868218" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13488372" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13162544" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11425206" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -485,424 +545,15 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <option name="time" value="5" />
-    </breakpoint-manager>
+    <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/ConflictEra.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="33" column="30" lean-forward="false" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/AircraftType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="55" column="44" lean-forward="false" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1880#1881#0" expanded="false" />
-            <element signature="e#1915#1916#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/StaticLists.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="16" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_111/src.zip!/java/awt/Image.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/sim/main/CampaignState.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_111/src.zip!/java/lang/Enum.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_111/src.zip!/javax/swing/JComboBox.java" />
-    <entry file="jar://C:/Program Files/Java/jdk-10/lib/src.zip!/javafx.base/javafx/util/Pair.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="63" column="11" lean-forward="false" selection-start-line="63" selection-start-column="11" selection-end-line="63" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Class.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="2259" column="23" lean-forward="false" selection-start-line="2259" selection-start-column="20" selection-end-line="2259" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/awt/image/BufferedImage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="98" column="43" lean-forward="true" selection-start-line="98" selection-start-column="43" selection-end-line="98" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/util/ImageScaleUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="16" column="13" lean-forward="true" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/MapSelectionListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="60" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/PanelChangeListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/MoveFactionActionListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/EraSelectionListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-117">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="66" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="110" column="19" lean-forward="false" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/CoalitionItemListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="71" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/SquadronSelectionListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="79" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/listeners/MenuItemListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="23" lean-forward="true" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/MapSelectionPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/AircraftType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="13" column="12" lean-forward="false" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/CampaignType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/ConflictEra.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/Faction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
-          <folding>
-            <element signature="e#4273#4274#0" expanded="false" />
-            <element signature="e#4310#4311#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/FactionSide.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/FactionStrength.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/MapConstants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="6" column="12" lean-forward="false" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/Season.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/SquadronType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="22" column="12" lean-forward="false" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
-          <folding>
-            <element signature="method#SquadronType#0;class#SquadronType#0" expanded="false" />
-            <element signature="method#fromName#0;class#SquadronType#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/Coalition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/javax/swing/SwingUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="135" column="25" lean-forward="false" selection-start-line="135" selection-start-column="25" selection-end-line="135" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignOverviewPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="99" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/JDCGRunner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="11" column="10" lean-forward="false" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/StaticLists.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="14" column="14" lean-forward="false" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/NewCampaignPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="112" column="41" lean-forward="true" selection-start-line="112" selection-start-column="41" selection-end-line="115" selection-end-column="109" />
-          <folding>
-            <element signature="method#NewCampaignPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#createFactionsPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#createEraPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#createSquadronPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#createCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#generateFactionTable#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#generateButtonPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#generateNeutralFactionTable#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#generateColumnData#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#FactionMove#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#PanelChangeListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#MapSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#addWatchedPanel#0;class#MapSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#getSelectedMap#0;class#MapSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#MoveFactionActionListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#EraSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#CoalitionItemListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#itemStateChanged#0;class#CoalitionItemListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#SquadronSelectionListener#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setSelectedEra#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setCampaignType#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setSelectedSide#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setSelectedSquadron#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setSelectedSquadronTask#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setSquardronAircraft#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setEraAircraft#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-            <element signature="method#setSelectedAircraft#0;class#NewCampaignOverviewPanel#0;class#NewCampaignPanel#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/awt/Container.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="1619" column="16" lean-forward="false" selection-start-line="1619" selection-start-column="16" selection-end-line="1619" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sim/main/CampaignSettings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="68" column="15" lean-forward="false" selection-start-line="68" selection-start-column="15" selection-end-line="68" selection-end-column="15" />
-          <folding>
-            <element signature="method#CampaignSettings#0;class#CampaignSettings#0" expanded="false" />
-            <element signature="method#setMapSelection#0;class#CampaignSettings#0" expanded="false" />
-            <element signature="e#2094#2095#0" expanded="true" />
-            <element signature="e#2128#2129#0" expanded="true" />
-            <element signature="method#getCoalitionBySide#0;class#CampaignSettings#0" expanded="false" />
-            <element signature="e#3124#3125#0" expanded="true" />
-            <element signature="e#3157#3158#0" expanded="true" />
-            <element signature="e#3206#3207#0" expanded="true" />
-            <element signature="e#3243#3244#0" expanded="true" />
-            <element signature="method#toString#0;class#CampaignSettings#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/GameMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="24" column="42" lean-forward="false" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <folding>
-            <element signature="e#698#699#0" expanded="true" />
-            <element signature="method#toString#0;class#GameMap#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gen/domain/Airfield.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="112" column="32" lean-forward="false" selection-start-line="112" selection-start-column="32" selection-end-line="112" selection-end-column="32" />
-          <folding>
-            <element signature="method#Airfield#0;class#Airfield#0" expanded="false" />
-            <element signature="method#parseParkingString#0;class#Airfield#0" expanded="false" />
-            <element signature="method#parseParkingPatternString#0;class#Airfield#0" expanded="false" />
-            <element signature="method#getAirfieldsForMap#0;class#Airfield#0" expanded="false" />
-            <element signature="e#4387#4388#0" expanded="true" />
-            <element signature="e#4426#4427#0" expanded="true" />
-            <element signature="e#4486#4487#0" expanded="true" />
-            <element signature="e#4528#4529#0" expanded="true" />
-            <element signature="e#4567#4568#0" expanded="true" />
-            <element signature="e#4602#4603#0" expanded="true" />
-            <element signature="e#4651#4652#0" expanded="true" />
-            <element signature="e#4690#4691#0" expanded="true" />
-            <element signature="e#4742#4743#0" expanded="true" />
-            <element signature="e#4783#4784#0" expanded="true" />
-            <element signature="e#4839#4840#0" expanded="true" />
-            <element signature="e#4884#4885#0" expanded="true" />
-            <element signature="e#4935#4936#0" expanded="true" />
-            <element signature="e#4975#4976#0" expanded="true" />
-            <element signature="e#5026#5027#0" expanded="true" />
-            <element signature="e#5067#5068#0" expanded="true" />
-            <element signature="e#5114#5115#0" expanded="true" />
-            <element signature="e#5160#5161#0" expanded="true" />
-            <element signature="method#toString#0;class#Airfield#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/awt/event/MouseEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="805" column="15" lean-forward="false" selection-start-line="805" selection-start-column="15" selection-end-line="805" selection-end-column="15" />
-          <folding>
-            <element signature="e#35093#35094#0" expanded="true" />
-            <element signature="e#35117#35118#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1243">
-          <caret line="228" column="137" lean-forward="true" selection-start-line="228" selection-start-column="137" selection-end-line="228" selection-end-column="137" />
-          <folding>
-            <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="method#tryParseAction#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -935,7 +586,6 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
-          <last-edited>ext</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -947,7 +597,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>10</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -959,7 +609,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>main</last-edited>
+          <last-edited>JDCG</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -984,6 +634,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>Gradle: junit:junit:4.12</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
