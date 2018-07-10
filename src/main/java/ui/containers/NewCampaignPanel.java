@@ -1,25 +1,25 @@
 package ui.containers;
 
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
-import static ui.util.ImageScaleUtil.NORMAL_IMAGE_RATIO;
-import static ui.util.ImageScaleUtil.tryLoadImage;
+import gen.domain.Coalition;
+import gen.domain.AircraftType;
+import gen.domain.CampaignType;
+import gen.domain.ConflictEra;
+import gen.domain.Faction;
+import gen.domain.FactionSide;
+import gen.domain.GameMap;
+import gen.domain.MapConstants;
+import gen.domain.SquadronType;
+import gen.domain.Task;
+import sim.main.CampaignSettings;
+import ui.util.SpringUtilities;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -28,39 +28,58 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import sim.domain.statics.AircraftType;
-import sim.domain.statics.CampaignType;
-import sim.domain.statics.ConflictEra;
-import sim.domain.statics.Faction;
-import sim.domain.statics.FactionSide;
-import sim.domain.statics.MapConstants;
-import sim.domain.statics.SquadronType;
-import sim.domain.statics.Task;
-import ui.listeners.CoalitionItemListener;
-import ui.listeners.EraSelectionListener;
-import ui.listeners.MapSelectionListener;
-import ui.listeners.MoveFactionActionListener;
-import ui.listeners.PanelChangeListener;
-import ui.listeners.SquadronSelectionListener;
-import ui.util.SpringUtilities;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static gen.domain.FactionSide.BLUEFOR;
+import static gen.domain.FactionSide.NEUTRAL;
+import static gen.domain.FactionSide.REDFOR;
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import static ui.util.ImageScaleUtil.NORMAL_IMAGE_RATIO;
+import static ui.util.ImageScaleUtil.tryLoadImage;
 
 public class NewCampaignPanel extends JPanel {
-    // Listeners, used to update Campaign and Panel states
-    private static MapSelectionListener mapSelectionListener;
-    private static MoveFactionActionListener buttonListener;
-    private static EraSelectionListener eraSelectionListener;
-    private static CoalitionItemListener coalitionSelectionListener;
-    private static SquadronSelectionListener squadronSelectionListener;
-    private static NewCampaignOverviewPanel overviewPanel;
+    // Private data used when creating the campaign
+    private NewCampaignPanel self;
+    private NewCampaignOverviewPanel overviewPanel;
+    private CampaignSettings campaignSettings;
+    private Map<FactionSide, JTable> factionTables;
+    private JComboBox<String> squadronBox;
 
     private static final int MAP_WIDTH = 550;
     private static final String[] FACTION_COLUMNS = {"Faction Name", "Faction Strength"};
 
-    public NewCampaignPanel() {
+    NewCampaignPanel() {
+        self = this;
+
+        // Create the campaign settings
+        campaignSettings = new CampaignSettings();
+
         // Create the layout
         this.setLayout(new BorderLayout());
 
@@ -72,14 +91,102 @@ public class NewCampaignPanel extends JPanel {
         pane.addTab("Campaign Overview", createCampaignOverviewPanel());
 
         // Create the pane action listener to save state on changes
-        pane.addChangeListener(new PanelChangeListener(mapSelectionListener, buttonListener, eraSelectionListener, coalitionSelectionListener, squadronSelectionListener, overviewPanel));
+        pane.addChangeListener(new PanelChangeListener());
 
         this.add(pane, BorderLayout.NORTH);
     }
 
-    private JPanel createCampaignOverviewPanel() {
-        overviewPanel = new NewCampaignOverviewPanel();
-        return overviewPanel;
+    private JPanel createMapPanel() {
+        JPanel mapPanel = new JPanel();
+        mapPanel.setPreferredSize(new Dimension(400, 400));
+        mapPanel.setLayout(new GridLayout(2, 2));
+
+        // For each map, create a panel and add it to the map panel
+        MapSelectionListener mapSelectionListener = new MapSelectionListener();
+        for(MapConstants map : MapConstants.values()) {
+            // Create the panel and add basic labels
+            MapSelectionPanel mapImagePanel = new MapSelectionPanel();
+            mapImagePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+            mapImagePanel.setLayout(new BorderLayout());
+            mapImagePanel.add(new JLabel(map.getMapName(), SwingConstants.CENTER), BorderLayout.NORTH);
+
+            // Load the image for the map
+            BufferedImage mapImage = tryLoadImage("/map/" + map.getMapName().replace(" ", "_") + "_map.png");
+            Image scaled = mapImage.getScaledInstance(MAP_WIDTH, (int)(MAP_WIDTH * MAP_IMAGE_HEIGHT_RATIO), Image.SCALE_SMOOTH);
+            mapImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
+
+            // Add listeners and add it to the panel
+            mapSelectionListener.addWatchedPanel(mapImagePanel);
+            mapImagePanel.addMouseListener(mapSelectionListener);
+            mapImagePanel.setMap(map);
+            mapPanel.add(mapImagePanel);
+        }
+
+        return mapPanel;
+    }
+
+    private JPanel createFactionsPanel() {
+        // Create the faction tables map
+        factionTables = new HashMap<>();
+
+        // Create the container panel and layout
+        JPanel factionContainer = new JPanel();
+        factionContainer.setLayout(new BorderLayout());
+
+        // Create the button panel
+        JPanel buttonPanel = generateButtonPanel();
+
+        // Create the default faction panel
+        JPanel factionPanel = generateNeutralFactionTable();
+
+        // Create the Left and Right (Blufor/Opfor) panel
+        JPanel bluforPanel = generateFactionTable(BLUEFOR);
+        JPanel redforPanel = generateFactionTable(REDFOR);
+
+        // Add the panel to the containers
+        JPanel upperHalf = new JPanel();
+        upperHalf.setLayout(new BorderLayout());
+        upperHalf.add(bluforPanel, BorderLayout.WEST);
+        upperHalf.add(buttonPanel, BorderLayout.CENTER);
+        upperHalf.add(redforPanel, BorderLayout.EAST);
+
+        factionContainer.add(upperHalf, BorderLayout.NORTH);
+        factionContainer.add(factionPanel, BorderLayout.SOUTH);
+        return factionContainer;
+    }
+
+    private JPanel createEraPanel() {
+        JPanel eraPanel = new JPanel();
+        eraPanel.setLayout(new BorderLayout());
+
+        // Create the image that is associated with the selected JComboBox item
+        JPanel eraImagePanel = new JPanel();
+        BufferedImage mapImage = tryLoadImage("/era/" + ConflictEra.MODERN.getEraName().replace(" ", "_") + ".jpg");
+        Image scaled = mapImage.getScaledInstance(MAP_WIDTH * 2, (int)((MAP_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
+        eraImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
+
+        // Create the JComboBox of Eras
+        JPanel boxPanel = new JPanel();
+        JComboBox<String> eraBox = new JComboBox<>(Stream.of(ConflictEra.values()).map(ConflictEra::getEraName).toArray(String[]::new));
+        JComboBox<String> campaignType = new JComboBox<>(Stream.of(CampaignType.values()).map(CampaignType::getCampaignTypeName).toArray(String[]::new));
+        boxPanel.add(eraBox);
+        boxPanel.add(campaignType);
+
+        // Create the associated label
+        JPanel labelPanel = new JPanel();
+        JLabel label = new JLabel("<html><body style='width:600px'>" + ConflictEra.MODERN.getEraDescription() + CampaignType.OFFENSIVE.getCharacteristics() + "</html>", SwingConstants.CENTER);
+        labelPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 200, 0));
+        labelPanel.add(label);
+
+        // Add action listener
+        EraSelectionListener eraSelectionListener = new EraSelectionListener(eraBox, label, eraImagePanel, campaignType);
+        eraBox.addActionListener(eraSelectionListener);
+        campaignType.addActionListener(eraSelectionListener);
+
+        eraPanel.add(eraImagePanel, BorderLayout.NORTH);
+        eraPanel.add(boxPanel, BorderLayout.CENTER);
+        eraPanel.add(labelPanel, BorderLayout.SOUTH);
+        return eraPanel;
     }
 
     private JPanel createSquadronPanel() {
@@ -94,7 +201,7 @@ public class NewCampaignPanel extends JPanel {
 
         // Create the JComboBox of Squadrons
         JPanel squadronBoxPanel = new JPanel();
-        JComboBox<String> squadronBox = new JComboBox<>(Stream.of(SquadronType.values()).map(SquadronType::getSquadronName).toArray(String[]::new));
+        squadronBox = new JComboBox<>(Stream.of(SquadronType.values()).map(SquadronType::getSquadronName).toArray(String[]::new));
         squadronBoxPanel.add(squadronBox);
 
         // Information about the selected Squadron
@@ -119,11 +226,11 @@ public class NewCampaignPanel extends JPanel {
         SpringUtilities.makeCompactGrid(squadronInfoPanel, 4, 2, 435, 10,10, 6);
 
         // Add the Squadron Selection Listener
-        squadronSelectionListener = new SquadronSelectionListener(squadronBox, squadronImagePanel, squadronName, squadronTasks, squadronAircraft, squadronEra);
+        SquadronSelectionListener squadronSelectionListener = new SquadronSelectionListener(squadronImagePanel, squadronName, squadronTasks, squadronAircraft, squadronEra);
         squadronBox.addActionListener(squadronSelectionListener);
 
         // Create the RadioButtons of Team (Bluefor/Redfor)
-        coalitionSelectionListener = new CoalitionItemListener(squadronBox);
+        CoalitionItemListener coalitionSelectionListener = new CoalitionItemListener();
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         JRadioButton blueforButton = new JRadioButton("BLUEFOR");
@@ -152,100 +259,15 @@ public class NewCampaignPanel extends JPanel {
         return squadronPanel;
     }
 
-    private JPanel createEraPanel() {
-        JPanel eraPanel = new JPanel();
-        eraPanel.setLayout(new BorderLayout());
-
-        // Create the image that is associated with the selected JComboBox item
-        JPanel eraImagePanel = new JPanel();
-        BufferedImage mapImage = tryLoadImage("/era/" + ConflictEra.MODERN.getEraName().replace(" ", "_") + ".jpg");
-        Image scaled = mapImage.getScaledInstance(MAP_WIDTH * 2, (int)((MAP_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
-        eraImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
-
-        // Create the JComboBox of Eras
-        JPanel boxPanel = new JPanel();
-        JComboBox<String> eraBox = new JComboBox<>(Stream.of(ConflictEra.values()).map(ConflictEra::getEraName).toArray(String[]::new));
-        JComboBox<String> campaignType = new JComboBox<>(Stream.of(CampaignType.values()).map(CampaignType::getCampaignTypeName).toArray(String[]::new));
-        boxPanel.add(eraBox);
-        boxPanel.add(campaignType);
-
-        // Create the associated label
-        JPanel labelPanel = new JPanel();
-        JLabel label = new JLabel("<html><body style='width:600px'>" + ConflictEra.MODERN.getEraDescription() + CampaignType.OFFENSIVE.getCharacteristics() + "</html>", SwingConstants.CENTER);
-        labelPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 200, 0));
-        labelPanel.add(label);
-
-        // Add action listener
-        eraSelectionListener = new EraSelectionListener(eraBox, label, eraImagePanel, campaignType);
-        eraBox.addActionListener(eraSelectionListener);
-        campaignType.addActionListener(eraSelectionListener);
-
-        eraPanel.add(eraImagePanel, BorderLayout.NORTH);
-        eraPanel.add(boxPanel, BorderLayout.CENTER);
-        eraPanel.add(labelPanel, BorderLayout.SOUTH);
-        return eraPanel;
-    }
-
-    private JPanel createMapPanel() {
-        JPanel mapPanel = new JPanel();
-        mapPanel.setPreferredSize(new Dimension(400, 400));
-        mapPanel.setLayout(new GridLayout(2, 2));
-
-        // For each map, create a panel and add it to the map panel
-        mapSelectionListener = new MapSelectionListener();
-        for(MapConstants map : MapConstants.values()) {
-            // Create the panel and add basic labels
-            MapSelectionPanel mapImagePanel = new MapSelectionPanel();
-            mapImagePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-            mapImagePanel.setLayout(new BorderLayout());
-            mapImagePanel.add(new JLabel(map.getMapName(), SwingConstants.CENTER), BorderLayout.NORTH);
-
-            // Load the image for the map
-            BufferedImage mapImage = tryLoadImage("/map/" + map.getMapName().replace(" ", "_") + "_map.png");
-            Image scaled = mapImage.getScaledInstance(MAP_WIDTH, (int)(MAP_WIDTH * MAP_IMAGE_HEIGHT_RATIO), Image.SCALE_SMOOTH);
-            mapImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
-
-            // Add listeners and add it to the panel
-            mapSelectionListener.addWatchedPanel(mapImagePanel);
-            mapImagePanel.addMouseListener(mapSelectionListener);
-            mapImagePanel.setMap(map);
-            mapPanel.add(mapImagePanel);
-        }
-
-        return mapPanel;
-    }
-
-    private JPanel createFactionsPanel() {
-        // Create the container panel and layout
-        JPanel factionContainer = new JPanel();
-        factionContainer.setLayout(new BorderLayout());
-
-        // Create the button panel
-        JPanel buttonPanel = generateButtonPanel();
-
-        // Create the default faction panel
-        JPanel factionPanel = generateNeutralFactionTable();
-
-        // Create the Left and Right (Blufor/Opfor) panel
-        JPanel bluforPanel = generateFactionTable(FactionSide.BLUEFOR);
-        JPanel redforPanel = generateFactionTable(FactionSide.REDFOR);
-
-        // Add the panel to the containers
-        JPanel upperHalf = new JPanel();
-        upperHalf.setLayout(new BorderLayout());
-        upperHalf.add(bluforPanel, BorderLayout.WEST);
-        upperHalf.add(buttonPanel, BorderLayout.CENTER);
-        upperHalf.add(redforPanel, BorderLayout.EAST);
-
-        factionContainer.add(upperHalf, BorderLayout.NORTH);
-        factionContainer.add(factionPanel, BorderLayout.SOUTH);
-        return factionContainer;
+    private JPanel createCampaignOverviewPanel() {
+        overviewPanel = new NewCampaignOverviewPanel();
+        return overviewPanel;
     }
 
     private JPanel generateFactionTable(FactionSide side) {
         // Load the list of factions for display
         List<Faction> defaultFactionList;
-        if(side == FactionSide.BLUEFOR) {
+        if(side == BLUEFOR) {
             defaultFactionList = Arrays.stream(Faction.values()).filter((faction) -> faction == Faction.USA).collect(Collectors.toList());
         } else {
             defaultFactionList = Arrays.stream(Faction.values()).filter((faction) -> faction == Faction.RUSSIA).collect(Collectors.toList());
@@ -258,7 +280,7 @@ public class NewCampaignPanel extends JPanel {
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(factionTable.getModel());
         sorter.setSortsOnUpdates(true);
         factionTable.setRowSorter(sorter);
-        buttonListener.setFactionTable(factionTable, side);
+        factionTables.put(side, factionTable);
 
         // Create a scroll pane for the data and add it
         JScrollPane scrollPane = new JScrollPane(factionTable);
@@ -278,7 +300,7 @@ public class NewCampaignPanel extends JPanel {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        buttonListener = new MoveFactionActionListener();
+        MoveFactionActionListener buttonListener = new MoveFactionActionListener();
         List<JButton> buttons = new ArrayList<>();
         for(FactionMove move : FactionMove.values()) {
             JButton button = new JButton(move.getLabel());
@@ -306,7 +328,7 @@ public class NewCampaignPanel extends JPanel {
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(neutralFactionTable.getModel());
         sorter.setSortsOnUpdates(true);
         neutralFactionTable.setRowSorter(sorter);
-        buttonListener.setNeutralFactionTable(neutralFactionTable);
+        factionTables.put(NEUTRAL, neutralFactionTable);
 
         // Create a scroll pane for the data and add it
         JScrollPane scrollPane = new JScrollPane(neutralFactionTable);
@@ -327,6 +349,10 @@ public class NewCampaignPanel extends JPanel {
             data[i][1] = faction.getOverallStrength().getFactionStrength();
         }
         return data;
+    }
+
+    public CampaignSettings getCampaignSettings() {
+        return campaignSettings;
     }
 
     public enum FactionMove {
@@ -350,7 +376,361 @@ public class NewCampaignPanel extends JPanel {
                     return faction;
                 }
             }
-            return null;
+            return RETURN;
+        }
+    }
+
+    private class PanelChangeListener implements ChangeListener {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            // Update the overview panel
+            overviewPanel.setMapSelection(campaignSettings.getSelectedMap());
+            overviewPanel.setSelectedEra(campaignSettings.getSelectedEra());
+            overviewPanel.setCampaignType(campaignSettings.getSelectedCampaignType());
+            overviewPanel.setSelectedSide(campaignSettings.getPlayerSelectedSide());
+            overviewPanel.setSelectedSquadron(campaignSettings.getSelectedSquadron());
+            overviewPanel.repaint();
+        }
+    }
+
+    private class MapSelectionListener implements MouseListener {
+        private List<MapSelectionPanel> watchedPanels;
+        private MapSelectionPanel selectedPanel;
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            MapSelectionPanel clickedPanel = (MapSelectionPanel) e.getSource();
+            if(clickedPanel == selectedPanel) {
+                return;
+            }
+
+            selectedPanel = clickedPanel;
+
+            // Show the selected panel by applying an outline
+            Border padding = BorderFactory.createEmptyBorder(9, 9, 9, 9);
+            Border outline = BorderFactory.createLoweredBevelBorder();
+            selectedPanel.setBorder(BorderFactory.createCompoundBorder(padding, outline));
+
+            // Remove the outlines from any other panels
+            Border normalPadding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+            watchedPanels.stream().filter((panel) -> panel != selectedPanel).forEach((panel) -> panel.setBorder(normalPadding));
+
+            // Set our campaign setting for the map
+            campaignSettings.setMapSelection(getSelectedMap());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {}
+
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+
+        @Override
+        public void mouseExited(MouseEvent e) {}
+
+        void addWatchedPanel(JPanel panel) {
+            if(watchedPanels == null) {
+                watchedPanels = new ArrayList<>();
+            }
+            watchedPanels.add((MapSelectionPanel)panel);
+        }
+
+        MapConstants getSelectedMap() {
+            if(selectedPanel != null) {
+                return selectedPanel.getMap();
+            }
+            return MapConstants.CAUCASUS;
+        }
+    }
+
+    private class MoveFactionActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Parse the direction of the movement
+            NewCampaignPanel.FactionMove move = NewCampaignPanel.FactionMove.fromName(e.getActionCommand());
+
+            // Check to see if the selection is coming from the Neutral Table
+            int selectedRow =  factionTables.get(NEUTRAL).getSelectedRow();
+            if(selectedRow != -1) {
+                // Parse the row before we move it
+                String selectedNeutralFaction = (String) factionTables.get(NEUTRAL).getValueAt(selectedRow, 0);
+                Faction parsedFaction = Faction.fromName(selectedNeutralFaction);
+
+                // Move the row
+                DefaultTableModel model = (DefaultTableModel) factionTables.get(NEUTRAL).getModel();
+                model.removeRow(selectedRow);
+                String[] data = {parsedFaction.getDcsFactionName(), parsedFaction.getOverallStrength().getFactionStrength()};
+                switch (move) {
+                    case LEFT:
+                        ((DefaultTableModel) factionTables.get(FactionSide.BLUEFOR).getModel()).addRow(data);
+                        break;
+                    case RIGHT:
+                        ((DefaultTableModel) factionTables.get(FactionSide.REDFOR).getModel()).addRow(data);
+                        break;
+                    case RETURN:
+                    default:
+                        break;
+                }
+            }
+
+            // Otherwise check to see if it is one of the periphery tables
+            JTable blueforSide = factionTables.get(FactionSide.BLUEFOR);
+            selectedRow =  blueforSide.getSelectedRow();
+            if(selectedRow != -1) {
+                // Parse the row before we move it
+                String selectedFaction = (String) blueforSide.getValueAt(selectedRow, 0);
+                Faction parsedFaction = Faction.fromName(selectedFaction);
+
+                // Move the row
+                DefaultTableModel model = (DefaultTableModel) blueforSide.getModel();
+                model.removeRow(selectedRow);
+                String[] data = {parsedFaction.getDcsFactionName(), parsedFaction.getOverallStrength().getFactionStrength()};
+                switch (move) {
+                    case RIGHT:
+                        ((DefaultTableModel) factionTables.get(FactionSide.REDFOR).getModel()).addRow(data);
+                        break;
+                    case RETURN:
+                        ((DefaultTableModel) factionTables.get(NEUTRAL).getModel()).addRow(data);
+                        break;
+                    case LEFT:
+                    default:
+                        break;
+                }
+            }
+
+            // Otherwise check to see if it is one of the periphery tables
+            JTable redforSide = factionTables.get(FactionSide.REDFOR);
+            selectedRow =  redforSide.getSelectedRow();
+            if(selectedRow != -1) {
+                // Parse the row before we move it
+                String selectedFaction = (String) redforSide.getValueAt(selectedRow, 0);
+                Faction parsedFaction = Faction.fromName(selectedFaction);
+
+                // Move the row
+                DefaultTableModel model = (DefaultTableModel) redforSide.getModel();
+                model.removeRow(selectedRow);
+                String[] data = {parsedFaction.getDcsFactionName(), parsedFaction.getOverallStrength().getFactionStrength()};
+                switch (move) {
+                    case LEFT:
+                        ((DefaultTableModel) factionTables.get(FactionSide.BLUEFOR).getModel()).addRow(data);
+                        break;
+                    case RETURN:
+                        ((DefaultTableModel) factionTables.get(NEUTRAL).getModel()).addRow(data);
+                        break;
+                    case RIGHT:
+                    default:
+                        break;
+                }
+            }
+
+            // Set the settings for everything
+            campaignSettings.setBlueforCoalition(new Coalition(getCoalitionFactions(BLUEFOR)));
+            campaignSettings.setRedforCoalition(new Coalition(getCoalitionFactions(REDFOR)));
+            campaignSettings.setNeutralCoalition(new Coalition(getCoalitionFactions(NEUTRAL)));
+        }
+
+        private List<Faction> getCoalitionFactions(FactionSide side) {
+            JTable table = getFactionTable(side);
+            List<Faction> factions = new ArrayList<>();
+            for(int i = 0; i < table.getModel().getRowCount(); i++) {
+                factions.add(Faction.fromName(table.getModel().getValueAt(i, 0).toString()));
+            }
+            return factions;
+        }
+
+        JTable getFactionTable(FactionSide side) {
+            return factionTables.get(side);
+        }
+    }
+
+    private class EraSelectionListener implements ActionListener {
+        private JComboBox<String> comboBox;
+        private JLabel descriptionLabel;
+        private JPanel imagePanel;
+        private JComboBox<String> campaignTypeBox;
+
+        private static final int MAP_WIDTH = 550;
+
+        EraSelectionListener(JComboBox<String> comboBox, JLabel descriptionLabel, JPanel imagePanel, JComboBox<String> campaignTypeBox) {
+            this.comboBox = comboBox;
+            this.descriptionLabel = descriptionLabel;
+            this.imagePanel = imagePanel;
+            this.campaignTypeBox = campaignTypeBox;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ConflictEra selectedEra = ConflictEra.fromName((String)comboBox.getSelectedItem());
+            CampaignType selectedType = CampaignType.fromName((String)campaignTypeBox.getSelectedItem());
+            campaignSettings.setSelectedEra(ConflictEra.fromName((String)comboBox.getSelectedItem()));
+            campaignSettings.setSelectedCampaignType(CampaignType.fromName((String)campaignTypeBox.getSelectedItem()));
+
+            // Set the description
+            descriptionLabel.setText("<html><body style='width:600px'>" + selectedEra.getEraDescription() + selectedType.getCharacteristics() + "</html>");
+
+            // Set the image
+            BufferedImage mapImage = tryLoadImage("/era/" + selectedEra.getEraName().replace(" ", "_") + ".jpg");
+            Image scaled = mapImage.getScaledInstance(MAP_WIDTH * 2, (int)((MAP_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
+            imagePanel.removeAll();
+            imagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
+            imagePanel.repaint();
+        }
+    }
+
+    private class CoalitionItemListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            // Get the faction side that was selected, as well as the factions associated with that side
+            FactionSide side = FactionSide.valueOf(((JRadioButton)e.getSource()).getText());
+            Coalition coalition = campaignSettings.getCoalitionBySide(side);
+            List<Faction> coalitionFactions = coalition.getFactionList();
+
+            // Go through the Factions and get the selectable squadrons
+            List<SquadronType> validSquadrons = new ArrayList<>();
+            for(SquadronType sqd : SquadronType.values()) {
+                for(Faction faction : coalitionFactions) {
+                    if(sqd.getFactionUser().equals(faction) && sqd.getEra().contains(campaignSettings.getSelectedEra())) {
+                        validSquadrons.add(sqd);
+                    }
+                }
+            }
+
+            // Assign the squadrons to the drop down box
+            DefaultComboBoxModel model = (DefaultComboBoxModel)squadronBox.getModel();
+            model.removeAllElements();
+            for(SquadronType squadronType : validSquadrons) {
+                model.addElement(squadronType.getSquadronName());
+            }
+            squadronBox.setModel(model);
+
+            // Set the side
+            campaignSettings.setPlayerSelectedSide(side);
+        }
+    }
+
+    private class SquadronSelectionListener implements ActionListener {
+        private JPanel squadronImagePanel;
+        private JLabel squadronName;
+        private JLabel squadronTasks;
+        private JLabel squadronAircraft;
+        private JLabel squadronActiveEras;
+
+        private static final int IMG_WIDTH = 550;
+
+        SquadronSelectionListener(JPanel squadronImagePanel, JLabel squadronName, JLabel squadronTasks, JLabel squadronAircraft, JLabel squadronActiveEras) {
+            this.squadronImagePanel = squadronImagePanel;
+            this.squadronName = squadronName;
+            this.squadronTasks = squadronTasks;
+            this.squadronAircraft = squadronAircraft;
+            this.squadronActiveEras = squadronActiveEras;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            SquadronType selectedSquadron = SquadronType.fromName((String)squadronBox.getSelectedItem());
+            campaignSettings.setSelectedSquadron(selectedSquadron);
+
+            if(selectedSquadron != null) {
+                BufferedImage mapImage = tryLoadImage("/squadron/" + selectedSquadron.name().replace(" ", "_") + ".jpg");
+                Image scaled = mapImage.getScaledInstance(IMG_WIDTH * 2, (int) ((IMG_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
+                squadronImagePanel.removeAll();
+                squadronImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
+                squadronImagePanel.repaint();
+
+                // Update the squadron status
+                squadronName.setText(selectedSquadron.getSquadronName());
+                squadronTasks.setText(selectedSquadron.getTaskList().stream().map(Task::getTaskName).collect(Collectors.joining(", ")));
+                squadronAircraft.setText(selectedSquadron.getAircraftTypes().stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
+                squadronActiveEras.setText(selectedSquadron.getEra().stream().map(ConflictEra::getEraName).collect(Collectors.joining(", ")));
+            }
+        }
+    }
+
+    private class NewCampaignOverviewPanel extends JPanel {
+        private final String[] labels = {"Map Selected: ", "Campaign Era Selected: ", "Campaign Type Selected: ", "Selected Coalition: ", "Selected Squadron: ", "Squadron Tasks: ", "Squadron Aircraft: ", "Era Aircraft: ", "Selected Aircraft: "};
+        private Map<String, JLabel> labelMapping;
+
+        NewCampaignOverviewPanel() {
+            setLayout(new BorderLayout());
+
+            // Main Campaign Data
+            JPanel container = new JPanel();
+            container.setLayout(new SpringLayout());
+            labelMapping = new HashMap<>();
+            for(String labelString : labels) {
+                JLabel label = new JLabel(labelString);
+                JLabel data = new JLabel();
+                label.setLabelFor(data);
+                container.add(label);
+                container.add(data);
+                labelMapping.put(labelString, data);
+            }
+            SpringUtilities.makeCompactGrid(container, 9, 2, 435, 300,10, 6);
+
+            // Campaign Start Button
+            JPanel containerPanel = new JPanel();
+            JButton startCampaignButton = new JButton("Start Campaign");
+            containerPanel.add(startCampaignButton);
+            startCampaignButton.addActionListener((e) -> {
+                campaignSettings.setComplete(true);
+                (SwingUtilities.getWindowAncestor(self)).dispose();
+            });
+
+            add(container, BorderLayout.NORTH);
+            add(containerPanel, BorderLayout.CENTER);
+        }
+
+        public void setMapSelection(GameMap selectedMap) {
+            labelMapping.get(labels[0]).setText(selectedMap.getMapName());
+        }
+
+        public void setSelectedEra(ConflictEra selectedEra) {
+            labelMapping.get(labels[1]).setText(selectedEra.getEraName());
+        }
+
+        public void setCampaignType(CampaignType selectedCampaignType) {
+            labelMapping.get(labels[2]).setText(selectedCampaignType.getCampaignTypeName());
+        }
+
+        public void setSelectedSide(FactionSide playerSelectedSide) {
+            labelMapping.get(labels[3]).setText(playerSelectedSide.name());
+        }
+
+        public void setSelectedSquadron(SquadronType selectedSquadron) {
+            labelMapping.get(labels[4]).setText(selectedSquadron.name());
+            setSelectedSquadronTask(selectedSquadron.getTaskList());
+            setSquardronAircraft(selectedSquadron.getAircraftTypes());
+            List<AircraftType> eraCraft = setEraAircraft(selectedSquadron.getAircraftTypes());
+            setSelectedAircraft(eraCraft);
+        }
+
+        private void setSelectedSquadronTask(List<Task> squadronTasks) {
+            String tasks = squadronTasks.stream().map(Task::getTaskName).collect(Collectors.joining(", "));
+            labelMapping.get(labels[5]).setText(tasks);
+        }
+
+        private void setSquardronAircraft(List<AircraftType> aircraft) {
+            String tasks = aircraft.stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", "));
+            labelMapping.get(labels[6]).setText(tasks);
+        }
+
+        private List<AircraftType> setEraAircraft(List<AircraftType> aircraft) {
+            ConflictEra era = ConflictEra.fromName(labelMapping.get(labels[1]).getText());
+            List<AircraftType> eraCraft = new ArrayList<>();
+            if(era != null) {
+                eraCraft = aircraft.stream().filter((craft) -> craft.getAircraftEras().contains(era)).collect(Collectors.toList());
+            }
+
+            labelMapping.get(labels[7]).setText(eraCraft.stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
+            return eraCraft;
+        }
+
+        private void setSelectedAircraft(List<AircraftType> selectedAircraft) {
+            labelMapping.get(labels[8]).setText(selectedAircraft.stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
         }
     }
 }

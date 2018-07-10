@@ -1,25 +1,26 @@
 package sim.main;
 
 import java.util.ArrayList;
-import sim.domain.Coalition;
-import sim.domain.GameMap;
-import sim.domain.statics.CampaignType;
-import sim.domain.statics.ConflictEra;
-import sim.domain.statics.FactionSide;
-import sim.domain.statics.MapConstants;
-import sim.domain.statics.SquadronType;
+import gen.domain.Coalition;
+import gen.domain.GameMap;
+import gen.domain.CampaignType;
+import gen.domain.ConflictEra;
+import gen.domain.FactionSide;
+import gen.domain.MapConstants;
+import gen.domain.SquadronType;
 
 public class CampaignSettings {
-    private static GameMap selectedMap;
-    private static Coalition redforCoalition;
-    private static Coalition blueforCoalition;
-    private static Coalition neutralCoalition;
-    private static ConflictEra selectedEra;
-    private static CampaignType selectedCampaignType;
-    private static FactionSide playerSelectedSide;
-    private static SquadronType selectedSquadron;
+    private GameMap selectedMap;
+    private Coalition redforCoalition;
+    private Coalition blueforCoalition;
+    private Coalition neutralCoalition;
+    private ConflictEra selectedEra;
+    private CampaignType selectedCampaignType;
+    private FactionSide playerSelectedSide;
+    private SquadronType selectedSquadron;
+    private boolean isComplete;
 
-    static {
+    public CampaignSettings() {
         selectedMap = new GameMap(MapConstants.CAUCASUS);
         redforCoalition = new Coalition(new ArrayList<>());
         blueforCoalition = new Coalition(new ArrayList<>());
@@ -30,58 +31,46 @@ public class CampaignSettings {
         selectedSquadron = SquadronType.NONE;
     }
 
-    public static void setBlueforCoalition(Coalition coalition) {
+    public void setBlueforCoalition(Coalition coalition) {
         blueforCoalition = coalition;
     }
 
-    public static void setRedforCoalition(Coalition coalition) {
+    public void setRedforCoalition(Coalition coalition) {
         redforCoalition = coalition;
     }
 
-    public static void setNeutralCoalition(Coalition coalition) {
+    public void setNeutralCoalition(Coalition coalition) {
         neutralCoalition = coalition;
     }
 
-    public static void setMapSelection(MapConstants mapSelection) {
+    public void setMapSelection(MapConstants mapSelection) {
         if(selectedMap == null) {
             selectedMap = new GameMap(mapSelection);
         }
         selectedMap.changeMap(mapSelection);
     }
 
-    public static void setSelectedEra(ConflictEra era) {
+    public void setSelectedEra(ConflictEra era) {
         selectedEra = era;
     }
 
-    public static void setSelectedCampaignType(CampaignType type) {
+    public void setSelectedCampaignType(CampaignType type) {
         selectedCampaignType = type;
     }
 
-    public static void setPlayerSelectedSide(FactionSide selectedSide) {
+    public void setPlayerSelectedSide(FactionSide selectedSide) {
         playerSelectedSide = selectedSide;
     }
 
-    public static void setSelectedSquadron(SquadronType selectedSqd) {
+    public void setSelectedSquadron(SquadronType selectedSqd) {
         selectedSquadron = selectedSqd;
     }
 
-    public static GameMap getSelectedMap() {
+    public GameMap getSelectedMap() {
         return selectedMap;
     }
 
-    public static Coalition getRedforCoalition() {
-        return redforCoalition;
-    }
-
-    public static Coalition getBlueforCoalition() {
-        return blueforCoalition;
-    }
-
-    public static Coalition getNeutralCoalition() {
-        return neutralCoalition;
-    }
-
-    public static Coalition getCoalitionBySide(FactionSide side) {
+    public Coalition getCoalitionBySide(FactionSide side) {
         switch (side) {
             case BLUEFOR:
                 return getBlueforCoalition();
@@ -93,34 +82,43 @@ public class CampaignSettings {
         return getBlueforCoalition();
     }
 
-    public static ConflictEra getSelectedEra() {
+    private Coalition getRedforCoalition() {
+        return redforCoalition;
+    }
+
+    private Coalition getBlueforCoalition() {
+        return blueforCoalition;
+    }
+
+    private Coalition getNeutralCoalition() {
+        return neutralCoalition;
+    }
+
+    public ConflictEra getSelectedEra() {
         return selectedEra;
     }
 
-    public static CampaignType getSelectedCampaignType() {
+    public CampaignType getSelectedCampaignType() {
         return selectedCampaignType;
     }
 
-    public static FactionSide getPlayerSelectedSide() {
+    public FactionSide getPlayerSelectedSide() {
         return playerSelectedSide;
     }
 
-    public static SquadronType getSelectedSquadron() {
+    public SquadronType getSelectedSquadron() {
         return selectedSquadron;
     }
 
-    public static void clearState() {
-        selectedMap = null;
-        redforCoalition = null;
-        blueforCoalition = null;
-        neutralCoalition = null;
-        selectedEra = null;
-        selectedCampaignType = null;
-        playerSelectedSide = null;
-        selectedSquadron = null;
+    public boolean isComplete() {
+        return isComplete;
     }
 
-    public static String getStateString() {
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
+
+    public String toString() {
         return "CampaignSettings{" +
                 "\t" + selectedMap + ",\n" +
                 "\t" + redforCoalition + ",\n" +

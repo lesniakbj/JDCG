@@ -4,25 +4,29 @@ import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
+import sim.main.CampaignSettings;
 import ui.constants.FileActions;
 import ui.constants.UIAction;
 import ui.constants.ViewActions;
-import ui.listeners.MenuItemListener;
 
 public class JDCGUIFrame extends JFrame {
     // Singleton for the Main GUI Frame
     private static JDCGUIFrame instance;
-
-    // Main GUI Elements
-    private static JMenuBar mainMenuBar;
-    private static ActionListener menuItemListener;
 
     // Main GUI Constants
     private static final int WIDTH = 1600;
@@ -51,8 +55,8 @@ public class JDCGUIFrame extends JFrame {
     }
 
     private void addMainMenu() {
-        mainMenuBar = new JMenuBar();
-        menuItemListener = new MenuItemListener();
+        JMenuBar mainMenuBar = new JMenuBar();
+        ActionListener menuItemListener = new MenuItemListener();
 
         // Menus
         mainMenuBar.add(constructMenu("File", FileActions.values(), menuItemListener));
@@ -78,5 +82,73 @@ public class JDCGUIFrame extends JFrame {
             instance = new JDCGUIFrame();
         }
         return instance;
+    }
+
+    private class MenuItemListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String actionCmd = e.getActionCommand();
+
+            // Handle File Menu Items
+            FileActions fileAction = (FileActions) tryParseAction(actionCmd, FileActions.values(), FileActions.NONE);
+            switch (fileAction) {
+                case NEW:
+                    JDialog newDialog = createNewCampaignDialogPanel();
+                    newDialog.setTitle("New Campaign Setup");
+                    newDialog.setResizable(false);
+                    newDialog.setLocationRelativeTo(null);
+                    newDialog.setModal(true);
+                    newDialog.setVisible(true);
+                    CampaignSettings settings = ((NewCampaignPanel)newDialog.getContentPane().getComponent(0)).getCampaignSettings();
+
+                    // If the settings are complete, we can proceed with populating the main portions of the frame
+                    if(settings.isComplete()) {
+
+                    }
+                case OPEN:
+                case OPEN_RECENT:
+                case EXIT:
+                    break;
+            }
+
+
+            // Handle View Action Items
+            ViewActions viewAction = (ViewActions) tryParseAction(actionCmd, ViewActions.values(), ViewActions.NONE);
+            switch (viewAction) {
+                case AIRFIELD_LIST:
+                case PILOT_LIST:
+                case SQUADRON_LIST:
+                    break;
+            }
+        }
+
+        private JDialog createNewCampaignDialogPanel() {
+            JDialog newCampaignDialog = new JDialog();
+
+            JPanel panel = new NewCampaignPanel();
+            newCampaignDialog.add(panel);
+            newCampaignDialog.pack();
+            newCampaignDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+            newCampaignDialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    int option = JOptionPane.showConfirmDialog(null,"Are you sure you want to leave Campaign Creation without saving?");
+                    switch(option) {
+                        case JOptionPane.OK_OPTION:
+                            newCampaignDialog.dispose();
+                            break;
+                        case JOptionPane.NO_OPTION:
+                        case JOptionPane.CANCEL_OPTION:
+                            break;
+                    }
+                }
+            });
+
+            return newCampaignDialog;
+        }
+
+        private UIAction tryParseAction(String actionCommand, UIAction[] values, UIAction defaultValue) {
+            return UIAction.fromUIName(actionCommand, values, defaultValue);
+        }
     }
 }

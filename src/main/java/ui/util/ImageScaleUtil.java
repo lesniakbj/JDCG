@@ -2,6 +2,7 @@ package ui.util;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 
 public class ImageScaleUtil {
@@ -10,9 +11,12 @@ public class ImageScaleUtil {
 
     public static BufferedImage tryLoadImage(String imagePath) {
         try {
-            return ImageIO.read(ImageScaleUtil.class.getResource(imagePath));
+            URL path = ImageScaleUtil.class.getResource(imagePath);
+            if(path != null) {
+                return ImageIO.read(path);
+            }
         } catch (IOException ignored) {}
 
-        return null;
+        return new BufferedImage(1, 1, 1);
     }
 }
