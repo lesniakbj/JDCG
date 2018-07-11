@@ -1,0 +1,5 @@
+# Ignore output
+*.class
+
+# Ignore intellij
+*/.idea
