@@ -13,7 +13,8 @@ import java.util.stream.Stream;
 
 public enum AirfieldType {
     AL_DHAFRA_AIRBASE(0, MapType.PERSIAN_GULF, "P:[01..07, 24..35, 48..59, 87..99, 100, 190] | H:[01..07, 87..99, 190, 191] | B:[91, 93, 94, 96, 98]", new Pair<>(-123.0, -123.0), new Pair<>(544.0, 633.0), null, Arrays.asList("130R", "130L")),
-    SIR_ABU_NUAYR(1, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(505.0, 475.0), null, Arrays.asList("101R"));
+    SIR_ABU_NUAYR(1, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(505.0, 475.0), null, Arrays.asList("101R")),
+    AL_MAKTOUM_INTL(2, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(631.0, 527.0), null, Arrays.asList("101R"));
 
     // Passed Data Members
     private int id;

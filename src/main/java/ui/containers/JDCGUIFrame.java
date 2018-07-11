@@ -557,17 +557,24 @@ public class JDCGUIFrame extends JFrame {
 
                 // For debug, get the distance between where we clicked (if on an object), and where the AbuNair airfield is
                 for(AirfieldType airfieldType : clickedAirfieldTypes) {
-                    Pair<Double, Double> destPair = AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition();
-                    Pair<Double, Double> sourcePair = airfieldType.getAirfieldMapPosition();
-                    double xDiff = destPair.getKey() - sourcePair.getKey();
-                    double yDiff = destPair.getValue() - sourcePair.getValue();
-                    double dist = Math.sqrt((Math.pow(xDiff, 2)) +  (Math.pow(yDiff, 2)));
-                    double angle = Math.toDegrees(Math.atan2(yDiff, xDiff));
-                    if(angle < 0) {
-                        angle += 360;
-                    }
-                    log.debug(String.format("Distance from click to Sir Abu Nuayr: %f mi, %f deg", airfieldType.getMap().scaleDistance(dist), angle));
+                    debugDistancesAndAngle(airfieldType);
                 }
+            }
+
+            private void debugDistancesAndAngle(AirfieldType airfieldType) {
+                Pair<Double, Double> destPair = AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition();
+                Pair<Double, Double> sourcePair = airfieldType.getAirfieldMapPosition();
+                double xDiff = destPair.getKey() - sourcePair.getKey();
+                double yDiff = destPair.getValue() - sourcePair.getValue();
+                double dist = Math.sqrt((Math.pow(xDiff, 2)) +  (Math.pow(yDiff, 2)));
+                double angle = Math.atan2(yDiff, xDiff);
+                // Make angle point North
+                angle += Math.PI / 2.0;
+                angle = Math.toDegrees(angle);
+                if(angle < 0) {
+                    angle += 360;
+                }
+                log.debug(String.format("Distance from click to Sir Abu Nuayr: %f mi, %f deg", airfieldType.getMap().scaleDistance(dist), angle));
             }
 
             @Override
