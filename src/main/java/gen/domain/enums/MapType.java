@@ -6,16 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum MapType {
-    CAUCASUS("Caucasus", null, null, null, null, null),
-    PERSIAN_GULF("Persian Gulf", new Rectangle(-123123.1, -12312313.919, 191930.202, 39193.123), new Pair<>(10, 22), new Pair<>(18, 36),  new Pair<>(22, 39), new Pair<>(12, 30)),
-    NEVADA("Nevada", null, null, null, null, null),
-    NORMANDY("Normandy", null, null, null, null, null);
+    CAUCASUS("Caucasus", null, null, null, null, null, 0.0),
+    PERSIAN_GULF("Persian Gulf", new Rectangle(-123123.1, -12312313.919, 191930.202, 39193.123), new Pair<>(10, 22), new Pair<>(18, 36),  new Pair<>(22, 39), new Pair<>(12, 30), 2.3162838),
+    NEVADA("Nevada", null, null, null, null, null, 0.0),
+    NORMANDY("Normandy", null, null, null, null, null, 0.0);
 
     private String mapName;
     private Rectangle mapBounds;
     private Map<Season, Pair<Integer, Integer>> tempMap;
+    private double mapScalePixelsPerMile;
 
-    MapType(String mapName, Rectangle mapBounds, Pair<Integer, Integer> tempBlockWinter, Pair<Integer, Integer> tempBlockSpring, Pair<Integer, Integer> tempBlockSummer, Pair<Integer, Integer> tempBlockFall) {
+    MapType(String mapName, Rectangle mapBounds, Pair<Integer, Integer> tempBlockWinter, Pair<Integer, Integer> tempBlockSpring, Pair<Integer, Integer> tempBlockSummer, Pair<Integer, Integer> tempBlockFall, double mapScalePixelsPerMile) {
         this.mapName = mapName;
         this.mapBounds = mapBounds;
         this.tempMap = new HashMap<>();
@@ -23,10 +24,43 @@ public enum MapType {
         tempMap.put(Season.SPRING, tempBlockSpring);
         tempMap.put(Season.SUMMER, tempBlockSummer);
         tempMap.put(Season.FALL, tempBlockFall);
+        this.mapScalePixelsPerMile = mapScalePixelsPerMile;
     }
 
     public String getMapName() {
         return mapName;
+    }
+
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }
+
+    public Rectangle getMapBounds() {
+        return mapBounds;
+    }
+
+    public void setMapBounds(Rectangle mapBounds) {
+        this.mapBounds = mapBounds;
+    }
+
+    public Map<Season, Pair<Integer, Integer>> getTempMap() {
+        return tempMap;
+    }
+
+    public void setTempMap(Map<Season, Pair<Integer, Integer>> tempMap) {
+        this.tempMap = tempMap;
+    }
+
+    public double getMapScalePixelsPerMile() {
+        return mapScalePixelsPerMile;
+    }
+
+    public void setMapScalePixelsPerMile(double mapScalePixelsPerMile) {
+        this.mapScalePixelsPerMile = mapScalePixelsPerMile;
+    }
+
+    public double scaleDistance(double dist) {
+        return dist / mapScalePixelsPerMile;
     }
 
     private static class Rectangle {

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.util.Pair;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -548,12 +549,19 @@ public class JDCGUIFrame extends JFrame {
                 for(AirfieldType airfieldType : airfieldTypes) {
                     double x = airfieldType.getAirfieldMapPosition().getKey();
                     double y = airfieldType.getAirfieldMapPosition().getValue();
+                    log.debug(String.format("[%d/%d][%f/%f]", mouseX, mouseY, x, y));
                     if(isWithinThreshold(mouseX, mouseY, x, y, 15)) {
                         clickedAirfieldTypes.add(airfieldType);
                     }
                 }
 
-                log.debug("Total clicked objects: " + clickedAirfieldTypes.size());
+                // For debug, get the distance between where we clicked (if on an object), and where the AbuNair airfield is
+                for(AirfieldType airfieldType : clickedAirfieldTypes) {
+                    Pair<Double, Double> destPair = AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition();
+                    Pair<Double, Double> sourcePair = airfieldType.getAirfieldMapPosition();
+                    double dist = Math.sqrt((Math.pow(sourcePair.getKey() - destPair.getKey(), 2)) +  (Math.pow(sourcePair.getValue() - destPair.getValue(), 2)));
+                    log.debug(String.format("Distance from click to Sir Abu Nuayr: %f mi", airfieldType.getMap().scaleDistance(dist)));
+                }
             }
 
             @Override
