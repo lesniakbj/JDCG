@@ -136,6 +136,7 @@ public class JDCGUIFrame extends JFrame {
 
     private JMenu constructMenu(String menuLabel, UIAction[] values, ActionListener listener) {
         JMenu menu = new JMenu(menuLabel);
+        RecentSaveMouseListener mouseListener = new RecentSaveMouseListener();
         for(UIAction action : values) {
             if(!(action.toString().equalsIgnoreCase("NONE") || action.toString().equalsIgnoreCase("OPEN_RECENT"))) {
                 JMenuItem item = new JMenuItem(action.getUIName());
@@ -149,6 +150,7 @@ public class JDCGUIFrame extends JFrame {
                 // Load the recent saves into the menu here, and parse it for the menu
                 for(String recentSave : recentSaves) {
                     JMenuItem menuItem = new JMenuItem(recentSave);
+                    menuItem.addActionListener(mouseListener);
                     recentSavesMenu.add(menuItem);
                 }
 
@@ -296,9 +298,9 @@ public class JDCGUIFrame extends JFrame {
         private void handleOpenCampaignMenu() {
             int openValue = fileChooser.showOpenDialog(instance);
             if(openValue == JFileChooser.APPROVE_OPTION) {
-                File chosenFile = fileChooser.getSelectedFile();
+                saveFile = fileChooser.getSelectedFile();
                 try {
-                    DynamicCampaign loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(chosenFile.toPath())), DynamicCampaign.class);
+                    DynamicCampaign loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(saveFile.toPath())), DynamicCampaign.class);
                     if(loadedCampaign == null) {
                         JOptionPane.showMessageDialog(fileChooser, "Error attempting to load file! Please try again.", "File Error", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -366,6 +368,31 @@ public class JDCGUIFrame extends JFrame {
 
         private UIAction tryParseAction(String actionCommand, UIAction[] values, UIAction defaultValue) {
             return UIAction.fromUIName(actionCommand, values, defaultValue);
+        }
+    }
+
+    private class RecentSaveMouseListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DynamicCampaign loadedCampaign = null;
+            try {
+                saveFile = new File(e.getActionCommand());
+                loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(saveFile.toPath())), DynamicCampaign.class);
+            } catch (IOException ignored) {}
+
+            if(loadedCampaign == null) {
+                JOptionPane.showMessageDialog(instance, "Error attempting to load file! Please try again.", "File Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Reload all UI elements
+            campaign = loadedCampaign;
+            instance.remove(campaignWindow);
+            campaignWindow = new CampaignPanel(campaign.getCampaignSettings());
+            instance.add(campaignWindow, BorderLayout.CENTER);
+            instance.pack();
+            instance.repaint();
+            JOptionPane.showMessageDialog(instance, "Campaign has been successfully loaded!");
         }
     }
 
