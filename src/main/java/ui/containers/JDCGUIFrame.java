@@ -28,11 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.FlowLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -87,7 +83,7 @@ public class JDCGUIFrame extends JFrame {
         // Set the general characteristics of the frame
         setBackground(Color.GRAY);
         setTitle("JDCG - Java DCS Campaign Generator");
-        setSize(calculatedWidth, calculatedHeight);
+        setPreferredSize(new Dimension(calculatedWidth, calculatedHeight));
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
@@ -422,39 +418,45 @@ public class JDCGUIFrame extends JFrame {
 
         CampaignPanel() {
             setLayout(new BorderLayout());
-            setSize(calculatedWidth, calculatedHeight);
+            setPreferredSize(new Dimension(calculatedWidth, calculatedHeight));
             add(new JLabel("Please open or start a new campaign...", SwingConstants.CENTER), BorderLayout.CENTER);
         }
 
         CampaignPanel(CampaignSettings campaignSettings) {
             setLayout(new BorderLayout());
-            setSize(calculatedWidth, calculatedHeight);
+            setPreferredSize(new Dimension(calculatedWidth, calculatedHeight));
             this.campaignSettings = campaignSettings;
 
             // Create the panel that will hold the image used as the campaign map
             Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
             Border bevel = BorderFactory.createLoweredBevelBorder();
-            campaignImage = new JPanel();
+            campaignImage = new JPanel(new BorderLayout());
             BufferedImage mapImage = tryLoadImage("/map/" + campaignSettings.getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
             int imageWidth = calculatedWidth - 350;
             int imageHeight = (int) (imageWidth * MAP_IMAGE_HEIGHT_RATIO);
             Image scaled = mapImage.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
             JLabel campaignImageLabel = new JLabel(new ImageIcon(scaled), SwingConstants.CENTER);
+            campaignImageLabel.setVerticalAlignment(JLabel.CENTER);
             campaignImageLabel.addMouseListener(new MapClickListener());
             campaignImage.add(campaignImageLabel, BorderLayout.CENTER);
             campaignImage.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
 
 
             // Create the panel that will hold the actions that can be done the campaign
-            campaignActions = new JPanel();
+            campaignActions = new JPanel(new BorderLayout());
             campaignActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-            campaignActions.add(new JLabel("Player Actions (New Mission, View Missions, Etc..)", SwingConstants.LEFT));
+            JPanel buttonPanel = new JPanel();
+            JButton planMissionButton = new JButton("Mission Planner");
+            JButton someOtherAction = new JButton("Some Other Action");
+            buttonPanel.add(planMissionButton);
+            buttonPanel.add(someOtherAction);
+            campaignActions.add(buttonPanel, BorderLayout.WEST);
 
             // Create the panel that will show everything that is currently in progress
             campaignPlannedActions = new JPanel();
-            campaignPlannedActions.setSize(calculatedWidth - imageWidth, imageHeight);
+            campaignPlannedActions.setPreferredSize(new Dimension(calculatedWidth - imageWidth, imageHeight));
             campaignPlannedActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-            campaignPlannedActions.add(new JLabel("This will be the generated missions each plane is attempting...)", SwingConstants.LEFT));
+            campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER));
 
             // Create the panel that will show the campaign status
             campaignStatus = new JPanel(new BorderLayout());
@@ -480,6 +482,7 @@ public class JDCGUIFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
+                System.out.println(mouseX + " " + mouseY);
 
                 // Determine what was clicked
                 //      1) Check Airfields First
