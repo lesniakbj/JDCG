@@ -4,3 +4,7 @@
 # Ignore intellij
 .idea/
 out/
+*.iml
+
+# Ignore gradle
+.gradle/

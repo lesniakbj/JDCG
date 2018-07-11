@@ -6,7 +6,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 public class JDCGRunner {
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) {
         // Parse any arguments...
 
         // Start the GUI portion of the program in it's own thread
