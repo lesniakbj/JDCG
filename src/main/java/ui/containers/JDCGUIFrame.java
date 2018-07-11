@@ -46,6 +46,7 @@ import sim.main.CampaignSettings;
 import sim.main.DynamicCampaign;
 import sim.save.JSONUtil;
 import ui.constants.FileActions;
+import ui.constants.InfoActions;
 import ui.constants.MissionActions;
 import ui.constants.UIAction;
 import ui.constants.CoalitionActions;
@@ -128,6 +129,7 @@ public class JDCGUIFrame extends JFrame {
         mainMenuBar.add(constructMenu("File", FileActions.values(), menuItemListener));
         mainMenuBar.add(constructMenu("Coalition", CoalitionActions.values(), menuItemListener));
         mainMenuBar.add(constructMenu("Mission", MissionActions.values(), menuItemListener));
+        mainMenuBar.add(constructMenu("Info", InfoActions.values(), menuItemListener));
 
         setJMenuBar(mainMenuBar);
     }
@@ -198,7 +200,7 @@ public class JDCGUIFrame extends JFrame {
                     break;
             }
 
-            // Handle View Action Items
+            // Handle Coalition Action Items
             CoalitionActions coalitionAction = (CoalitionActions) tryParseAction(actionCmd, CoalitionActions.values(), CoalitionActions.NONE);
             switch (coalitionAction) {
                 case AIRFIELDS:
@@ -209,12 +211,17 @@ public class JDCGUIFrame extends JFrame {
                     break;
             }
 
-
-            // Handle View Action Items
+            // Handle Mission Action Items
             MissionActions missionAction = (MissionActions) tryParseAction(actionCmd, MissionActions.values(), MissionActions.NONE);
             switch (missionAction) {
-                case GOALS:
                 case MISSION_PLANNER:
+                    break;
+            }
+
+            // Handle Info Action Items
+            InfoActions infoAction = (InfoActions) tryParseAction(actionCmd, InfoActions.values(), InfoActions.NONE);
+            switch (infoAction) {
+                case GOALS:
                     break;
             }
         }

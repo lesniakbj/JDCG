@@ -1,12 +1,12 @@
 package ui.constants;
 
-public enum MissionActions implements UIAction {
-    MISSION_PLANNER("Mission Planner"),
+public enum InfoActions implements UIAction {
+    GOALS("Campaign Goals"),
     NONE("None");
 
     private String name;
 
-    MissionActions(String name) {
+    InfoActions(String name) {
         this.name = name;
     }
 
