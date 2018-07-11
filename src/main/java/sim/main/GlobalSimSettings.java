@@ -6,4 +6,12 @@ public class GlobalSimSettings {
     public GlobalSimSettings() {
         this.minutesPerSimulationStep = 10;
     }
+
+    public int getMinutesPerSimulationStep() {
+        return minutesPerSimulationStep;
+    }
+
+    public void setMinutesPerSimulationStep(int minutesPerSimulationStep) {
+        this.minutesPerSimulationStep = minutesPerSimulationStep;
+    }
 }

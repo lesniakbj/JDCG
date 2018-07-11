@@ -1,37 +1,14 @@
 package ui.containers;
 
-import gen.domain.enums.AirfieldType;
-import gen.domain.GameMap;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JSeparator;
-import sim.domain.Mission;
-import sim.main.CampaignSettings;
-import sim.main.DynamicCampaignSim;
-import sim.save.JSONUtil;
-import ui.constants.CoalitionActions;
-import ui.constants.FileActions;
-import ui.constants.InfoActions;
-import ui.constants.MissionActions;
-import ui.constants.UIAction;
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import static ui.util.ImageScaleUtil.tryLoadImage;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.border.Border;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+import gen.domain.GameMap;
+import gen.domain.enums.AirfieldType;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -45,15 +22,41 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
-import static ui.util.ImageScaleUtil.tryLoadImage;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.Mission;
+import sim.main.CampaignSettings;
+import sim.main.DynamicCampaignSim;
+import sim.save.JSONUtil;
+import ui.constants.CoalitionActions;
+import ui.constants.FileActions;
+import ui.constants.InfoActions;
+import ui.constants.MissionActions;
+import ui.constants.UIAction;
 
 public class JDCGUIFrame extends JFrame {
     // Singleton for the Main GUI Frame
@@ -176,6 +179,12 @@ public class JDCGUIFrame extends JFrame {
         return instance;
     }
 
+    private void refreshUiElements() {
+        instance.pack();
+        instance.validate();
+        instance.repaint();
+    }
+
     private class MenuItemListener implements ActionListener {
         private JFileChooser fileChooser = new JFileChooser(SAVE_PATH);
 
@@ -270,8 +279,7 @@ public class JDCGUIFrame extends JFrame {
                 instance.remove(campaignWindow);
                 campaignWindow = new CampaignPanel(campaign);
                 instance.add(campaignWindow, BorderLayout.CENTER);
-                instance.pack();
-                instance.repaint();
+                refreshUiElements();
             }
         }
 
@@ -318,8 +326,7 @@ public class JDCGUIFrame extends JFrame {
                     instance.remove(campaignWindow);
                     campaignWindow = new CampaignPanel(campaign);
                     instance.add(campaignWindow, BorderLayout.CENTER);
-                    instance.pack();
-                    instance.repaint();
+                    refreshUiElements();
                     JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully loaded!");
                 }catch (IOException ignored) {}
             }
@@ -404,8 +411,7 @@ public class JDCGUIFrame extends JFrame {
             instance.remove(campaignWindow);
             campaignWindow = new CampaignPanel(campaign);
             instance.add(campaignWindow, BorderLayout.CENTER);
-            instance.pack();
-            instance.repaint();
+            refreshUiElements();
             JOptionPane.showMessageDialog(instance, "Campaign has been successfully loaded!");
         }
     }
@@ -416,6 +422,12 @@ public class JDCGUIFrame extends JFrame {
         private JPanel campaignImage;
         private JPanel campaignStatus;
         private JPanel campaignPlannedActions;
+
+        // Data
+        private JLabel campaignDateLabel;
+        private JLabel campaignSortiesLabel;
+        private JLabel campaignTargetsLabel;
+        private JLabel campaignObjectivesLabel;
 
         // Settings
         private DynamicCampaignSim campaign;
@@ -474,28 +486,36 @@ public class JDCGUIFrame extends JFrame {
             campaignStatus = new JPanel();
             campaignStatus.setLayout(new BoxLayout(campaignStatus, BoxLayout.X_AXIS));
             campaignStatus.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-            //String message = String.format("    Date: %s      Active Sorties: %d      Priority Targets: %d      Critical Objectives Remaining: %d", new Date(), 0, 0, 0);
-            JLabel dateLabel = new JLabel(String.format("Date: %s", new Date()));
-            JLabel sortiesLabel = new JLabel(String.format("Active Sorties: %d", 0));
-            JLabel targetsLabel = new JLabel(String.format("Priority Targets: %d", 0));
-            JLabel objLabel = new JLabel(String.format("Critical Objectives Remaining: %d", 0));
+            campaignDateLabel = new JLabel(String.format("Date: %s", campaign.getCurrentCampaignDate()));
+            campaignSortiesLabel = new JLabel(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
+            campaignTargetsLabel = new JLabel(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+            campaignObjectivesLabel = new JLabel(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
             campaignStatus.add(Box.createHorizontalGlue());
-            campaignStatus.add(dateLabel);
-            campaignStatus.add(Box.createHorizontalGlue());
-            campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-            campaignStatus.add(sortiesLabel);
+            campaignStatus.add(campaignDateLabel);
             campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-            campaignStatus.add(targetsLabel);
+            campaignStatus.add(campaignSortiesLabel);
             campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-            campaignStatus.add(objLabel);
+            campaignStatus.add(campaignTargetsLabel);
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
+            campaignStatus.add(campaignObjectivesLabel);
             campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
             JPanel buttonContainer = new JPanel();
             JButton stepSimButton = new JButton("Step Simulation");
             stepSimButton.addActionListener(l -> {
                 campaign.stepSimulation();
+
+                // Update all the UI elements
+                campaignDateLabel.setText(String.format("Date: %s", campaign.getCurrentCampaignDate()));
+                campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
+                campaignTargetsLabel.setText(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+                campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+
+                // Refresh the UI
+                refreshUiElements();
             });
             buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
             buttonContainer.add(stepSimButton);
@@ -509,11 +529,13 @@ public class JDCGUIFrame extends JFrame {
         }
 
         private class MapClickListener implements MouseListener {
+            private final Logger log = LogManager.getLogger(MapClickListener.class);
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
-                System.out.println(mouseX + " " + mouseY);
+                log.debug("Mouse Click: " + mouseX + " " + mouseY);
 
                 // Determine what was clicked
                 //      1) Check Airfields First
@@ -531,7 +553,7 @@ public class JDCGUIFrame extends JFrame {
                     }
                 }
 
-                System.out.println("Total clicked objects: " + clickedAirfieldTypes.size());
+                log.debug("Total clicked objects: " + clickedAirfieldTypes.size());
             }
 
             @Override
@@ -554,10 +576,11 @@ public class JDCGUIFrame extends JFrame {
         }
 
         private class ActiveMissionClickListener implements MouseListener {
+            private final Logger log = LogManager.getLogger(MapClickListener.class);
+
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println((ActiveMissionPanel)e.getSource());
-                System.out.println(((ActiveMissionPanel) e.getSource()).getPlannedMission());
+                log.debug(((ActiveMissionPanel) e.getSource()).getPlannedMission());
             }
 
             @Override

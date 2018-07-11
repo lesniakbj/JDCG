@@ -1,18 +1,25 @@
 package sim.main;
 
 import gen.main.CampaignGenerator;
+import java.util.Calendar;
 import java.util.Date;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DynamicCampaignSim {
+    private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
+
     private GlobalSimSettings simSettings;
     private CampaignSettings campaignSettings;
 
+    private ObjectiveManager campaignObjectiveManager;
     private MissionManager campaignMissionManager;
     private Date currentCampaignDate;
 
     public DynamicCampaignSim() {
         this.simSettings = new GlobalSimSettings();
         this.campaignSettings = new CampaignSettings();
+        this.campaignObjectiveManager = new ObjectiveManager();
         this.campaignMissionManager = new MissionManager();
         this.currentCampaignDate = new Date();
     }
@@ -49,12 +56,31 @@ public class DynamicCampaignSim {
         this.campaignMissionManager = campaignMissionManager;
     }
 
+    public ObjectiveManager getCampaignObjectiveManager() {
+        return campaignObjectiveManager;
+    }
+
+    public void setCampaignObjectiveManager(ObjectiveManager campaignObjectiveManager) {
+        this.campaignObjectiveManager = campaignObjectiveManager;
+    }
+
     public void stepSimulation() {
-        System.out.println("Stepping sim...");
+        log.debug("Stepping sim...");
+        int minutesToStep = simSettings.getMinutesPerSimulationStep();
+
+        // Step the current simulation time
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(currentCampaignDate);
+        cal.add(Calendar.MINUTE, minutesToStep);
+        this.currentCampaignDate = cal.getTime();
+
+        // Step all of the sim objects
+        //  1) Sim all existing missions
+        //  2) Generate new missions
     }
 
     public void generateNewCampaign() {
-        System.out.println("Generating a new campaign...");
+        log.debug("Generating a new campaign...");
         CampaignGenerator gen = new CampaignGenerator(campaignSettings);
     }
 }
