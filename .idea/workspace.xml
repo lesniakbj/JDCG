@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91096769-dfb0-4849-9a22-b66002714f7f" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" afterPath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -29,22 +30,26 @@
       <file leaf-file-name="JDCGUIFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="488">
-              <caret line="233" column="30" lean-forward="false" selection-start-line="233" selection-start-column="30" selection-end-line="233" selection-end-column="30" />
+            <state relative-caret-position="570">
+              <caret line="309" column="35" lean-forward="false" selection-start-line="309" selection-start-column="35" selection-end-line="309" selection-end-column="35" />
               <folding>
                 <element signature="method#JDCGUIFrame#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#initLocalElements#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#loadRecentSaves#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#actionPerformed#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#handleNewCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#handleOpenCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#tryParseAction#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#CampaignPanel#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#CampaignPanel#1;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="e#13577#13606#0" expanded="false" />
+                <element signature="e#16109#16138#0" expanded="false" />
                 <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
               </folding>
             </state>
@@ -706,7 +711,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -836,22 +843,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="233" column="30" lean-forward="false" selection-start-line="233" selection-start-column="30" selection-end-line="233" selection-end-column="30" />
+        <state relative-caret-position="570">
+          <caret line="309" column="35" lean-forward="false" selection-start-line="309" selection-start-column="35" selection-end-line="309" selection-end-column="35" />
           <folding>
             <element signature="method#JDCGUIFrame#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#initLocalElements#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#loadRecentSaves#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#actionPerformed#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#handleNewCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#handleOpenCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#tryParseAction#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#CampaignPanel#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#CampaignPanel#1;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="e#13577#13606#0" expanded="false" />
+            <element signature="e#16109#16138#0" expanded="false" />
             <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
           </folding>
         </state>

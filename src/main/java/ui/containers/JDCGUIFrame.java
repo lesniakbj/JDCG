@@ -16,8 +16,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -49,6 +55,8 @@ public class JDCGUIFrame extends JFrame {
     private static JDCGUIFrame instance;
 
     // Main GUI Constants
+    private static final String SAVE_PATH = System.getProperty("user.home") + "\\Saved Games\\Java DCS Campaign Generator";
+    private static final String RECENT_SAVE_FILE = "\\recentsaves.txt";
     private static final int WIDTH = 1600;
     private static final int PADDING = 200;
 
@@ -57,7 +65,8 @@ public class JDCGUIFrame extends JFrame {
     private int calculatedHeight = ((int) (WIDTH * MAP_IMAGE_HEIGHT_RATIO)) + PADDING;
 
     // Other GUI Components
-    private List<String> recentSaves;
+    private Set<String> recentSaves;
+    private JMenu recentSavesMenu;
     private JPanel campaignWindow;
 
     // Main Campaign State
@@ -78,12 +87,36 @@ public class JDCGUIFrame extends JFrame {
     }
 
     private void initLocalElements() {
+        // Load the settings file to see what our last recent saves were
+        recentSaves = new HashSet<>();
+        loadRecentSaves();
+        
         // Set the main layout of this frame
         setLayout(new BorderLayout());
         addMainMenu();
 
         campaignWindow = new CampaignPanel();
         add(campaignWindow, BorderLayout.CENTER);
+    }
+
+    private void loadRecentSaves() {
+        // Verify the path exists
+        Path path = Paths.get(SAVE_PATH);
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException ignored) {}
+        }
+
+        // Check for the recent saves file
+        if(!Files.exists(Paths.get(SAVE_PATH + RECENT_SAVE_FILE))) {
+            return;
+        }
+
+        // Read the file, and save it in the list
+        try (Stream<String> stream = Files.lines(Paths.get(SAVE_PATH + RECENT_SAVE_FILE))) {
+            recentSaves = stream.collect(Collectors.toSet());
+        } catch (IOException ignored) {}
     }
 
     private void addMainMenu() {
@@ -108,10 +141,15 @@ public class JDCGUIFrame extends JFrame {
             }
 
             if (action.toString().equalsIgnoreCase("OPEN_RECENT")) {
-                JMenu recentSaves = new JMenu(action.getUIName());
-                JMenuItem testItem = new JMenuItem("Test Item");
-                recentSaves.add(testItem);
-                menu.add(recentSaves);
+                recentSavesMenu = new JMenu(action.getUIName());
+
+                // Load the recent saves into the menu here, and parse it for the menu
+                for(String recentSave : recentSaves) {
+                    JMenuItem menuItem = new JMenuItem(recentSave);
+                    recentSavesMenu.add(menuItem);
+                }
+
+                menu.add(recentSavesMenu);
             }
 
             // Add a separator if we are supposed to
@@ -130,7 +168,8 @@ public class JDCGUIFrame extends JFrame {
     }
 
     private class MenuItemListener implements ActionListener {
-        private JFileChooser fileChooser = new JFileChooser();
+        private JFileChooser fileChooser = new JFileChooser(SAVE_PATH);
+
         @Override
         public void actionPerformed(ActionEvent e) {
             String actionCmd = e.getActionCommand();
@@ -234,6 +273,16 @@ public class JDCGUIFrame extends JFrame {
                         return;
                     }
 
+                    // Add this recent open to the list, and re-save the list
+                    recentSaves.add(chosenFile.getAbsolutePath());
+                    Files.write(Paths.get(SAVE_PATH + RECENT_SAVE_FILE), recentSaves.stream().collect(Collectors.joining("\n")).getBytes());
+                    recentSavesMenu.removeAll();
+                    for(String recentSave : recentSaves) {
+                        JMenuItem menuItem = new JMenuItem(recentSave);
+                        recentSavesMenu.add(menuItem);
+                    }
+
+                    // Reload all UI elements
                     campaign = loadedCampaign;
                     instance.remove(campaignWindow);
                     campaignWindow = new CampaignPanel(campaign.getCampaignSettings());
@@ -256,6 +305,16 @@ public class JDCGUIFrame extends JFrame {
                         savedFile = new File(savedFile.getAbsolutePath() + ".jdcg");
                     }
                     Files.write(savedFile.toPath(), json.getBytes());
+
+                    // Add this recent save to the list, and re-save the list
+                    recentSaves.add(savedFile.getAbsolutePath());
+                    Files.write(Paths.get(SAVE_PATH + RECENT_SAVE_FILE), recentSaves.stream().collect(Collectors.joining("\n")).getBytes());
+                    recentSavesMenu.removeAll();
+                    for(String recentSave : recentSaves) {
+                        JMenuItem menuItem = new JMenuItem(recentSave);
+                        recentSavesMenu.add(menuItem);
+                    }
+
                     JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully saved!");
                 } catch (IOException ignored) {}
             }
