@@ -265,9 +265,10 @@ public class JDCGUIFrame extends JFrame {
                 // Create a campaign with the parsed settings
                 campaign = new DynamicCampaignSim();
                 campaign.setCampaignSettings(settings);
+                campaign.generateNewCampaign();
 
                 instance.remove(campaignWindow);
-                campaignWindow = new CampaignPanel(settings);
+                campaignWindow = new CampaignPanel(campaign);
                 instance.add(campaignWindow, BorderLayout.CENTER);
                 instance.pack();
                 instance.repaint();
@@ -315,7 +316,7 @@ public class JDCGUIFrame extends JFrame {
                     // Reload all UI elements
                     campaign = loadedCampaign;
                     instance.remove(campaignWindow);
-                    campaignWindow = new CampaignPanel(campaign.getCampaignSettings());
+                    campaignWindow = new CampaignPanel(campaign);
                     instance.add(campaignWindow, BorderLayout.CENTER);
                     instance.pack();
                     instance.repaint();
@@ -401,7 +402,7 @@ public class JDCGUIFrame extends JFrame {
             // Reload all UI elements
             campaign = loadedCampaign;
             instance.remove(campaignWindow);
-            campaignWindow = new CampaignPanel(campaign.getCampaignSettings());
+            campaignWindow = new CampaignPanel(campaign);
             instance.add(campaignWindow, BorderLayout.CENTER);
             instance.pack();
             instance.repaint();
@@ -417,7 +418,7 @@ public class JDCGUIFrame extends JFrame {
         private JPanel campaignPlannedActions;
 
         // Settings
-        private CampaignSettings campaignSettings;
+        private DynamicCampaignSim campaign;
 
         CampaignPanel() {
             setLayout(new BorderLayout());
@@ -425,16 +426,16 @@ public class JDCGUIFrame extends JFrame {
             add(new JLabel("Please open or start a new campaign...", SwingConstants.CENTER), BorderLayout.CENTER);
         }
 
-        CampaignPanel(CampaignSettings campaignSettings) {
+        CampaignPanel(DynamicCampaignSim campaign) {
             setLayout(new BorderLayout());
             setPreferredSize(new Dimension(calculatedWidth, calculatedHeight));
-            this.campaignSettings = campaignSettings;
+            this.campaign = campaign;
 
             // Create the panel that will hold the image used as the campaign map
             Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
             Border bevel = BorderFactory.createLoweredBevelBorder();
             campaignImage = new JPanel(new BorderLayout());
-            BufferedImage mapImage = tryLoadImage("/map/" + campaignSettings.getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
+            BufferedImage mapImage = tryLoadImage("/map/" + campaign.getCampaignSettings().getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
             int imageWidth = calculatedWidth - 350;
             int imageHeight = (int) (imageWidth * MAP_IMAGE_HEIGHT_RATIO);
             Image scaled = mapImage.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
@@ -471,7 +472,7 @@ public class JDCGUIFrame extends JFrame {
 
             // Create the panel that will show the campaign status
             campaignStatus = new JPanel();
-            campaignStatus.setLayout(new BoxLayout(campaignStatus, BoxLayout.LINE_AXIS));
+            campaignStatus.setLayout(new BoxLayout(campaignStatus, BoxLayout.X_AXIS));
             campaignStatus.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
             //String message = String.format("    Date: %s      Active Sorties: %d      Priority Targets: %d      Critical Objectives Remaining: %d", new Date(), 0, 0, 0);
             JLabel dateLabel = new JLabel(String.format("Date: %s", new Date()));
@@ -512,7 +513,6 @@ public class JDCGUIFrame extends JFrame {
         }
 
         private class MapClickListener implements MouseListener {
-
             @Override
             public void mouseClicked(MouseEvent e) {
                 int mouseX = e.getX();
@@ -524,7 +524,7 @@ public class JDCGUIFrame extends JFrame {
                 //      2) Check Aircraft Second
                 //      3) Check Ground Units Third
                 //      4) Return a list of ALL found
-                GameMap map = campaignSettings.getSelectedMap();
+                GameMap map = campaign.getCampaignSettings().getSelectedMap();
                 List<AirfieldType> airfieldTypes = map.getAirfieldTypes();
                 List<AirfieldType> clickedAirfieldTypes = new ArrayList<>();
                 for(AirfieldType airfieldType : airfieldTypes) {

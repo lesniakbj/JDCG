@@ -1,5 +1,6 @@
 package sim.main;
 
+import gen.main.CampaignGenerator;
 import java.util.Date;
 
 public class DynamicCampaignSim {
@@ -50,5 +51,10 @@ public class DynamicCampaignSim {
 
     public void stepSimulation() {
         System.out.println("Stepping sim...");
+    }
+
+    public void generateNewCampaign() {
+        System.out.println("Generating a new campaign...");
+        CampaignGenerator gen = new CampaignGenerator(campaignSettings);
     }
 }
