@@ -13,11 +13,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -28,14 +32,17 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import gen.domain.Airfield;
 import gen.domain.GameMap;
-import gen.domain.MapConstants;
 import sim.main.CampaignSettings;
+import sim.main.DynamicCampaign;
+import sim.save.JSONUtil;
 import ui.constants.FileActions;
+import ui.constants.MissionActions;
 import ui.constants.UIAction;
-import ui.constants.ViewActions;
+import ui.constants.CoalitionActions;
 
 public class JDCGUIFrame extends JFrame {
     // Singleton for the Main GUI Frame
@@ -50,7 +57,11 @@ public class JDCGUIFrame extends JFrame {
     private int calculatedHeight = ((int) (WIDTH * MAP_IMAGE_HEIGHT_RATIO)) + PADDING;
 
     // Other GUI Components
+    private List<String> recentSaves;
     private JPanel campaignWindow;
+
+    // Main Campaign State
+    private DynamicCampaign campaign;
 
     private JDCGUIFrame() {
         // Init local elements
@@ -81,7 +92,8 @@ public class JDCGUIFrame extends JFrame {
 
         // Menus
         mainMenuBar.add(constructMenu("File", FileActions.values(), menuItemListener));
-        mainMenuBar.add(constructMenu("View", ViewActions.values(), menuItemListener));
+        mainMenuBar.add(constructMenu("Coalition", CoalitionActions.values(), menuItemListener));
+        mainMenuBar.add(constructMenu("Mission", MissionActions.values(), menuItemListener));
 
         setJMenuBar(mainMenuBar);
     }
@@ -89,10 +101,22 @@ public class JDCGUIFrame extends JFrame {
     private JMenu constructMenu(String menuLabel, UIAction[] values, ActionListener listener) {
         JMenu menu = new JMenu(menuLabel);
         for(UIAction action : values) {
-            if(!action.toString().equalsIgnoreCase("NONE")) {
+            if(!(action.toString().equalsIgnoreCase("NONE") || action.toString().equalsIgnoreCase("OPEN_RECENT"))) {
                 JMenuItem item = new JMenuItem(action.getUIName());
                 item.addActionListener(listener);
                 menu.add(item);
+            }
+
+            if (action.toString().equalsIgnoreCase("OPEN_RECENT")) {
+                JMenu recentSaves = new JMenu(action.getUIName());
+                JMenuItem testItem = new JMenuItem("Test Item");
+                recentSaves.add(testItem);
+                menu.add(recentSaves);
+            }
+
+            // Add a separator if we are supposed to
+            if(action.hasSeparator(action)) {
+                menu.addSeparator();
             }
         }
         return menu;
@@ -106,44 +130,71 @@ public class JDCGUIFrame extends JFrame {
     }
 
     private class MenuItemListener implements ActionListener {
+        private JFileChooser fileChooser = new JFileChooser();
         @Override
         public void actionPerformed(ActionEvent e) {
             String actionCmd = e.getActionCommand();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Java DCS Campaign Files (*.jdcg)", "jdcg"));
 
             // Handle File Menu Items
             FileActions fileAction = (FileActions) tryParseAction(actionCmd, FileActions.values(), FileActions.NONE);
             switch (fileAction) {
                 case NEW:
-                    JDialog newDialog = createNewCampaignDialogPanel();
-                    newDialog.setTitle("New Campaign Setup");
-                    newDialog.setResizable(false);
-                    newDialog.setLocationRelativeTo(null);
-                    newDialog.setModal(true);
-                    newDialog.setVisible(true);
-                    CampaignSettings settings = ((NewCampaignPanel)newDialog.getContentPane().getComponent(0)).getCampaignSettings();
-
-                    // If the settings are complete, we can proceed with populating the main portions of the frame
-                    if(settings.isComplete()) {
-                        instance.remove(campaignWindow);
-                        campaignWindow = new CampaignPanel(settings);
-                        instance.add(campaignWindow, BorderLayout.CENTER);
-                        instance.pack();
-                        instance.repaint();
-                    }
+                    handleNewCampaignMenu();
+                    break;
                 case OPEN:
+                    handleOpenCampaignMenu();
+                    break;
                 case OPEN_RECENT:
+                    break;
+                case SAVE:
+                    handleSaveCampaignMenu();
+                    break;
                 case EXIT:
+                    break;
+            }
+
+            // Handle View Action Items
+            CoalitionActions coalitionAction = (CoalitionActions) tryParseAction(actionCmd, CoalitionActions.values(), CoalitionActions.NONE);
+            switch (coalitionAction) {
+                case AIRFIELDS:
+                case MUNITIONS:
+                case SQUADRONS:
+                case PILOTS:
+                case AIRCRAFT:
                     break;
             }
 
 
             // Handle View Action Items
-            ViewActions viewAction = (ViewActions) tryParseAction(actionCmd, ViewActions.values(), ViewActions.NONE);
-            switch (viewAction) {
-                case AIRFIELD_LIST:
-                case PILOT_LIST:
-                case SQUADRON_LIST:
+            MissionActions missionAction = (MissionActions) tryParseAction(actionCmd, MissionActions.values(), MissionActions.NONE);
+            switch (missionAction) {
+                case GOALS:
+                case MISSION_PLANNER:
                     break;
+            }
+        }
+
+        private void handleNewCampaignMenu() {
+            JDialog newDialog = createNewCampaignDialogPanel();
+            newDialog.setTitle("New Campaign Setup");
+            newDialog.setResizable(false);
+            newDialog.setLocationRelativeTo(null);
+            newDialog.setModal(true);
+            newDialog.setVisible(true);
+            CampaignSettings settings = ((NewCampaignPanel)newDialog.getContentPane().getComponent(0)).getCampaignSettings();
+
+            // If the settings are complete, we can proceed with populating the main portions of the frame
+            if(settings.isComplete()) {
+                // Create a campaign with the parsed settings
+                campaign = new DynamicCampaign();
+                campaign.setCampaignSettings(settings);
+
+                instance.remove(campaignWindow);
+                campaignWindow = new CampaignPanel(settings);
+                instance.add(campaignWindow, BorderLayout.CENTER);
+                instance.pack();
+                instance.repaint();
             }
         }
 
@@ -170,6 +221,44 @@ public class JDCGUIFrame extends JFrame {
             });
 
             return newCampaignDialog;
+        }
+
+        private void handleOpenCampaignMenu() {
+            int openValue = fileChooser.showOpenDialog(instance);
+            if(openValue == JFileChooser.APPROVE_OPTION) {
+                File chosenFile = fileChooser.getSelectedFile();
+                try {
+                    DynamicCampaign loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(chosenFile.toPath())), DynamicCampaign.class);
+                    if(loadedCampaign == null) {
+                        JOptionPane.showMessageDialog(fileChooser, "Error attempting to load file! Please try again.", "File Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+
+                    campaign = loadedCampaign;
+                    instance.remove(campaignWindow);
+                    campaignWindow = new CampaignPanel(campaign.getCampaignSettings());
+                    instance.add(campaignWindow, BorderLayout.CENTER);
+                    instance.pack();
+                    instance.repaint();
+                    JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully loaded!");
+                }catch (IOException ignored) {}
+            }
+        }
+
+        private void handleSaveCampaignMenu() {
+            String json = JSONUtil.fromDomain(campaign);
+            int saveValue = fileChooser.showSaveDialog(instance);
+            if(saveValue == JFileChooser.APPROVE_OPTION) {
+                File savedFile = fileChooser.getSelectedFile();
+                try {
+                    String filePath = savedFile.getAbsolutePath();
+                    if(!filePath.contains(".jdcg")) {
+                        savedFile = new File(savedFile.getAbsolutePath() + ".jdcg");
+                    }
+                    Files.write(savedFile.toPath(), json.getBytes());
+                    JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully saved!");
+                } catch (IOException ignored) {}
+            }
         }
 
         private UIAction tryParseAction(String actionCommand, UIAction[] values, UIAction defaultValue) {

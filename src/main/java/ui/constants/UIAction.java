@@ -12,4 +12,6 @@ public interface UIAction {
 
         return defaultValue;
     }
+
+    boolean hasSeparator(UIAction action);
 }
