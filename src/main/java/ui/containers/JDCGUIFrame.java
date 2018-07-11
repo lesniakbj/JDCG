@@ -483,19 +483,15 @@ public class JDCGUIFrame extends JFrame {
             campaignStatus.add(dateLabel);
             campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-            campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(sortiesLabel);
             campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-            campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(targetsLabel);
             campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-            campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(objLabel);
             campaignStatus.add(Box.createHorizontalGlue());
             campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-            campaignStatus.add(Box.createHorizontalGlue());
             JPanel buttonContainer = new JPanel();
             JButton stepSimButton = new JButton("Step Simulation");
             stepSimButton.addActionListener(l -> {
