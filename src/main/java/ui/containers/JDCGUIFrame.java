@@ -2,7 +2,9 @@ package ui.containers;
 
 import gen.domain.enums.AirfieldType;
 import gen.domain.GameMap;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JSeparator;
 import sim.domain.Mission;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
@@ -460,25 +462,48 @@ public class JDCGUIFrame extends JFrame {
             campaignPlannedActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
             campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER), BorderLayout.NORTH);
             JPanel missionPanel = new JPanel();
-            ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(new Mission());
-            sampleMissionPanel.addMouseListener(new ActiveMissionClickListener());
-            missionPanel.add(sampleMissionPanel);
+            for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
+                ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(mission);
+                sampleMissionPanel.addMouseListener(new ActiveMissionClickListener());
+                missionPanel.add(sampleMissionPanel);
+            }
             campaignPlannedActions.add(missionPanel, BorderLayout.CENTER);
 
             // Create the panel that will show the campaign status
-            campaignStatus = new JPanel(new BorderLayout());
+            campaignStatus = new JPanel();
+            campaignStatus.setLayout(new BoxLayout(campaignStatus, BoxLayout.LINE_AXIS));
             campaignStatus.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-            String message = String.format("    Date: %s      Active Sorties: %d      Priority Targets: %d      Critical Objectives Remaining: %d", new Date(), 0, 0, 0);
-            JLabel statusLabel = new JLabel(message, SwingConstants.CENTER);
-            campaignStatus.add(statusLabel, BorderLayout.WEST);
+            //String message = String.format("    Date: %s      Active Sorties: %d      Priority Targets: %d      Critical Objectives Remaining: %d", new Date(), 0, 0, 0);
+            JLabel dateLabel = new JLabel(String.format("Date: %s", new Date()));
+            JLabel sortiesLabel = new JLabel(String.format("Active Sorties: %d", 0));
+            JLabel targetsLabel = new JLabel(String.format("Priority Targets: %d", 0));
+            JLabel objLabel = new JLabel(String.format("Critical Objectives Remaining: %d", 0));
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(dateLabel);
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(sortiesLabel);
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(targetsLabel);
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(objLabel);
+            campaignStatus.add(Box.createHorizontalGlue());
+            campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
+            campaignStatus.add(Box.createHorizontalGlue());
             JPanel buttonContainer = new JPanel();
             JButton stepSimButton = new JButton("Step Simulation");
             stepSimButton.addActionListener(l -> {
                 campaign.stepSimulation();
             });
-            buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
             buttonContainer.add(stepSimButton);
-            campaignStatus.add(buttonContainer, BorderLayout.EAST);
+            campaignStatus.add(buttonContainer);
+            campaignStatus.add(Box.createHorizontalGlue());
 
             add(campaignActions, BorderLayout.NORTH);
             add(campaignImage, BorderLayout.WEST);

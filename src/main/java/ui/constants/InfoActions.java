@@ -2,6 +2,7 @@ package ui.constants;
 
 public enum InfoActions implements UIAction {
     GOALS("Campaign Goals"),
+    PREFERENCES("Campaign Preferences"),
     NONE("None");
 
     private String name;
@@ -11,7 +12,7 @@ public enum InfoActions implements UIAction {
     }
 
     public boolean hasSeparator(UIAction action) {
-        return false;
+        return action.equals(GOALS);
     }
 
     @Override

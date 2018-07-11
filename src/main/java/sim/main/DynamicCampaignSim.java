@@ -9,6 +9,13 @@ public class DynamicCampaignSim {
     private MissionManager campaignMissionManager;
     private Date currentCampaignDate;
 
+    public DynamicCampaignSim() {
+        this.simSettings = new GlobalSimSettings();
+        this.campaignSettings = new CampaignSettings();
+        this.campaignMissionManager = new MissionManager();
+        this.currentCampaignDate = new Date();
+    }
+
     public GlobalSimSettings getSimSettings() {
         return simSettings;
     }
@@ -31,6 +38,14 @@ public class DynamicCampaignSim {
 
     public void setCurrentCampaignDate(Date currentCampaignDate) {
         this.currentCampaignDate = currentCampaignDate;
+    }
+
+    public MissionManager getCampaignMissionManager() {
+        return campaignMissionManager;
+    }
+
+    public void setCampaignMissionManager(MissionManager campaignMissionManager) {
+        this.campaignMissionManager = campaignMissionManager;
     }
 
     public void stepSimulation() {

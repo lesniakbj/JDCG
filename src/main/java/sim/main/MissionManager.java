@@ -1,5 +1,6 @@
 package sim.main;
 
+import java.util.ArrayList;
 import java.util.List;
 import sim.domain.Mission;
 
@@ -17,4 +18,23 @@ import sim.domain.Mission;
  */
 public class MissionManager {
     private List<Mission> activeMissions;
+
+    public MissionManager() {
+        this.activeMissions = new ArrayList<>();
+    }
+
+    public void addMission(Mission mission) {
+        if(activeMissions == null) {
+            activeMissions = new ArrayList<>();
+        }
+        activeMissions.add(mission);
+    }
+
+    public List<Mission> getActiveMissions() {
+        return activeMissions;
+    }
+
+    public void setActiveMissions(List<Mission> activeMissions) {
+        this.activeMissions = activeMissions;
+    }
 }
