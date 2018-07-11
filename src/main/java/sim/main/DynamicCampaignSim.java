@@ -1,10 +1,14 @@
 package sim.main;
 
 import gen.main.CampaignGenerator;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.domain.Mission;
+import sim.domain.UnitGroup;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
@@ -12,6 +16,7 @@ public class DynamicCampaignSim {
     private GlobalSimSettings simSettings;
     private CampaignSettings campaignSettings;
 
+    private List<UnitGroup> campaignGroups;
     private ObjectiveManager campaignObjectiveManager;
     private MissionManager campaignMissionManager;
     private Date currentCampaignDate;
@@ -19,6 +24,7 @@ public class DynamicCampaignSim {
     public DynamicCampaignSim() {
         this.simSettings = new GlobalSimSettings();
         this.campaignSettings = new CampaignSettings();
+        this.campaignGroups = new ArrayList<>();
         this.campaignObjectiveManager = new ObjectiveManager();
         this.campaignMissionManager = new MissionManager();
         this.currentCampaignDate = new Date();
@@ -64,6 +70,14 @@ public class DynamicCampaignSim {
         this.campaignObjectiveManager = campaignObjectiveManager;
     }
 
+    public List<UnitGroup> getCampaignGroups() {
+        return campaignGroups;
+    }
+
+    public void setCampaignGroups(List<UnitGroup> campaignGroups) {
+        this.campaignGroups = campaignGroups;
+    }
+
     public void stepSimulation() {
         log.debug("Stepping sim...");
         int minutesToStep = simSettings.getMinutesPerSimulationStep();
@@ -82,5 +96,6 @@ public class DynamicCampaignSim {
     public void generateNewCampaign() {
         log.debug("Generating a new campaign...");
         CampaignGenerator gen = new CampaignGenerator(campaignSettings);
+        campaignMissionManager.addMission(new Mission());
     }
 }

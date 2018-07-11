@@ -25,7 +25,7 @@ public enum AirfieldType {
     private String tacanChannel;
     private List<String> availableRunways;
 
-    // Calculated Data Members
+    // Calculated Data Members //1290x1360
     private List<Integer> normalParkingSpots;
     private List<Integer> helicopterParkingSpots;
     private List<Integer> heavyParkingSpots;

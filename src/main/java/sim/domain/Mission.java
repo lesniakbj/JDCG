@@ -1,6 +1,8 @@
 package sim.domain;
 
 import gen.domain.enums.AircraftType;
+import gen.domain.enums.AirfieldType;
+import gen.domain.enums.MapType;
 import gen.domain.enums.TaskType;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +31,17 @@ public class Mission {
 
     public Mission() {
         this.missionType = TaskType.CAS;
+
+        // Sample for testing
         List<Aircraft> test = Arrays.asList(new Aircraft(AircraftType.A_10_C));
         this.missionAircraft = new UnitGroup<>(test);
-        this.missionWaypoints = new ArrayList<>();
+        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey());
+        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue());
+
+        // Sample for testing
+        List<Waypoint> waypoints = new ArrayList<>();
+        waypoints.add(new Waypoint(AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getKey(), AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getValue(), 350, 10000));
+        this.missionWaypoints = waypoints;
         this.plannedMissionDate = new Date();
         this.isInProgress = false;
         this.isClientMission = false;

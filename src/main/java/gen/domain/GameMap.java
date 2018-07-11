@@ -33,4 +33,8 @@ public class GameMap {
                 ", airfieldTypes=" + airfieldTypes +
                 '}';
     }
+
+    public MapType getMapType() {
+        return mapSelection;
+    }
 }

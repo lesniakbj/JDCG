@@ -5,10 +5,15 @@ import static ui.util.ImageScaleUtil.tryLoadImage;
 
 import gen.domain.GameMap;
 import gen.domain.enums.AirfieldType;
+import gen.domain.enums.FactionSide;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -50,6 +55,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Mission;
+import sim.domain.UnitGroup;
+import sim.domain.Waypoint;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 import sim.save.JSONUtil;
@@ -60,6 +67,8 @@ import ui.constants.MissionActions;
 import ui.constants.UIAction;
 
 public class JDCGUIFrame extends JFrame {
+    private static final Logger log = LogManager.getLogger(JDCGUIFrame.class);
+
     // Singleton for the Main GUI Frame
     private static JDCGUIFrame instance;
 
@@ -81,6 +90,7 @@ public class JDCGUIFrame extends JFrame {
     // Main Campaign State
     private DynamicCampaignSim campaign;
     private File saveFile;
+    private Mission selectedMission;
 
     private JDCGUIFrame() {
         // Init local elements
@@ -184,6 +194,23 @@ public class JDCGUIFrame extends JFrame {
         instance.pack();
         instance.validate();
         instance.repaint();
+    }
+
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
     }
 
     private class MenuItemListener implements ActionListener {
@@ -448,16 +475,9 @@ public class JDCGUIFrame extends JFrame {
             Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
             Border bevel = BorderFactory.createLoweredBevelBorder();
             campaignImage = new JPanel(new BorderLayout());
-            BufferedImage mapImage = tryLoadImage("/map/" + campaign.getCampaignSettings().getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
             int imageWidth = calculatedWidth - 350;
             int imageHeight = (int) (imageWidth * MAP_IMAGE_HEIGHT_RATIO);
-            Image scaled = mapImage.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
-            JLabel campaignImageLabel = new JLabel(new ImageIcon(scaled), SwingConstants.CENTER);
-            campaignImageLabel.setVerticalAlignment(JLabel.CENTER);
-            campaignImageLabel.addMouseListener(new MapClickListener());
-            campaignImage.add(campaignImageLabel, BorderLayout.CENTER);
-            campaignImage.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-
+            loadCampaignImage(imageWidth, imageHeight, padding, bevel);
 
             // Create the panel that will hold the actions that can be done the campaign
             campaignActions = new JPanel(new BorderLayout());
@@ -482,6 +502,10 @@ public class JDCGUIFrame extends JFrame {
                 missionPanel.add(sampleMissionPanel);
             }
             campaignPlannedActions.add(missionPanel, BorderLayout.CENTER);
+            JPanel missionActionButtonPanel = new JPanel();
+            missionActionButtonPanel.add(new JButton("Clear Selection"));
+            missionActionButtonPanel.add(new JButton("Recall Flight"));
+            campaignPlannedActions.add(missionActionButtonPanel, BorderLayout.SOUTH);
 
             // Create the panel that will show the campaign status
             campaignStatus = new JPanel();
@@ -529,6 +553,68 @@ public class JDCGUIFrame extends JFrame {
             add(campaignStatus, BorderLayout.SOUTH);
         }
 
+        private void loadCampaignImage(int imageWidth, int imageHeight, Border padding, Border bevel) {
+            // Load the image, and alter it with any of the campaign entities
+            campaignImage.removeAll();
+            BufferedImage mapImage = tryLoadImage("/map/" + campaign.getCampaignSettings().getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
+            mapImage = addCampaignObjects(mapImage);
+            Image scaled = mapImage.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
+            JLabel campaignImageLabel = new JLabel(new ImageIcon(scaled), SwingConstants.CENTER);
+            campaignImageLabel.setVerticalAlignment(JLabel.CENTER);
+            campaignImageLabel.addMouseListener(new MapClickListener());
+            campaignImage.add(campaignImageLabel, BorderLayout.CENTER);
+            campaignImage.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
+        }
+
+        private BufferedImage addCampaignObjects(BufferedImage image) {
+            Graphics2D g = (Graphics2D)image.getGraphics();
+
+            // First draw any of the missions
+            for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
+                UnitGroup missionGroup = mission.getMissionAircraft();
+
+                // Set our colors and other visual elements up based on the faction
+                Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+                Color enemyColor = new Color(255, 0, 0, 200);
+                Color friendlyColor = new Color(38, 144, 150, 200);
+                Color selectedColor = new Color(229, 225, 24, 217);
+                Color mainColor = missionGroup.getSide() == FactionSide.BLUEFOR ? friendlyColor : enemyColor;
+
+                int pointX = (int)missionGroup.getMapXLocation();
+                int pointY = (int)missionGroup.getMapYLocation();
+                double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+                double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+                log.debug(String.format("Drawing mission package!: %d/%d", (int)(pointX * scaleX), (int)(pointY * scaleY)));
+
+                // Draw the package
+                g.setColor(mainColor);
+                g.fillRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
+                g.setColor(Color.black);
+                g.drawRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
+
+                // Draw the packages waypoints' if it is selected
+                if(selectedMission == mission) {
+                    for (Waypoint waypoint : mission.getMissionWaypoints()) {
+                        double waypointX = waypoint.getLocationX();
+                        double waypointY = waypoint.getLocationY();
+                        log.debug(
+                                String.format("Drawing mission waypoint!: %d/%d", (int) (waypointX * scaleX), (int) (waypointY * scaleY)));
+                        g.setColor(mainColor);
+                        g.fillOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);
+                        g.setColor(Color.black);
+                        g.drawOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);
+
+                        g.setColor(selectedColor);
+                        g.setStroke(dashed);
+                        g.drawLine((int) (pointX * scaleX) - 10, (int) (pointY * scaleY) - 10, (int) (waypointX * scaleX) - 10,
+                                (int) (waypointY * scaleY) - 10);
+                    }
+                }
+            }
+            g.dispose();
+            return image;
+        }
+
         private class MapClickListener implements MouseListener {
             private final Logger log = LogManager.getLogger(MapClickListener.class);
 
@@ -549,7 +635,6 @@ public class JDCGUIFrame extends JFrame {
                 for(AirfieldType airfieldType : airfieldTypes) {
                     double x = airfieldType.getAirfieldMapPosition().getKey();
                     double y = airfieldType.getAirfieldMapPosition().getValue();
-                    log.debug(String.format("[%d/%d][%f/%f]", mouseX, mouseY, x, y));
                     if(isWithinThreshold(mouseX, mouseY, x, y, 15)) {
                         clickedAirfieldTypes.add(airfieldType);
                     }
@@ -601,7 +686,19 @@ public class JDCGUIFrame extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                log.debug(((ActiveMissionPanel) e.getSource()).getPlannedMission());
+                ActiveMissionPanel panel = (ActiveMissionPanel) e.getSource();
+                selectedMission = panel.getPlannedMission();
+
+                // Indicate that we selected a mission with an outline
+                panel.setBorder(BorderFactory.createCompoundBorder(panel.getBorder(), BorderFactory.createLineBorder(Color.GREEN)));
+
+                // Since we selected a mission, reload the image panel
+                Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+                Border bevel = BorderFactory.createLoweredBevelBorder();
+                int imageWidth = calculatedWidth - 350;
+                int imageHeight = (int) (imageWidth * MAP_IMAGE_HEIGHT_RATIO);
+                loadCampaignImage(imageWidth, imageHeight, padding, bevel);
+                refreshUiElements();
             }
 
             @Override
