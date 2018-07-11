@@ -559,8 +559,14 @@ public class JDCGUIFrame extends JFrame {
                 for(AirfieldType airfieldType : clickedAirfieldTypes) {
                     Pair<Double, Double> destPair = AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition();
                     Pair<Double, Double> sourcePair = airfieldType.getAirfieldMapPosition();
-                    double dist = Math.sqrt((Math.pow(sourcePair.getKey() - destPair.getKey(), 2)) +  (Math.pow(sourcePair.getValue() - destPair.getValue(), 2)));
-                    log.debug(String.format("Distance from click to Sir Abu Nuayr: %f mi", airfieldType.getMap().scaleDistance(dist)));
+                    double xDiff = destPair.getKey() - sourcePair.getKey();
+                    double yDiff = destPair.getValue() - sourcePair.getValue();
+                    double dist = Math.sqrt((Math.pow(xDiff, 2)) +  (Math.pow(yDiff, 2)));
+                    double angle = Math.toDegrees(Math.atan2(yDiff, xDiff));
+                    if(angle < 0) {
+                        angle += 360;
+                    }
+                    log.debug(String.format("Distance from click to Sir Abu Nuayr: %f mi, %f deg", airfieldType.getMap().scaleDistance(dist), angle));
                 }
             }
 
