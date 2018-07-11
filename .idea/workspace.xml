@@ -2,18 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91096769-dfb0-4849-9a22-b66002714f7f" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sim/save/JSONUtil.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ui/constants/CoalitionActions.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ui/constants/MissionActions.java" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.0/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.0/fileHashes/fileHashes.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.0/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.0/fileHashes/fileHashes.lock" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/JDCG_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/JDCG_main.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/JDCG_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/JDCG_test.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java" afterPath="$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/constants/UIAction.java" afterPath="$PROJECT_DIR$/src/main/java/ui/constants/UIAction.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui/constants/ViewActions.java" afterPath="" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" afterPath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -41,22 +29,22 @@
       <file leaf-file-name="JDCGUIFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="519">
-              <caret line="171" column="27" lean-forward="true" selection-start-line="171" selection-start-column="27" selection-end-line="171" selection-end-column="27" />
+            <state relative-caret-position="488">
+              <caret line="233" column="30" lean-forward="false" selection-start-line="233" selection-start-column="30" selection-end-line="233" selection-end-column="30" />
               <folding>
                 <element signature="method#JDCGUIFrame#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#initLocalElements#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#handleNewCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="method#handleOpenCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#CampaignPanel#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#CampaignPanel#1;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="e#13576#13605#0" expanded="false" />
+                <element signature="e#13577#13606#0" expanded="false" />
                 <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
               </folding>
             </state>
@@ -685,16 +673,16 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32943013" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33177206" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33177206" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979977" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945737" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32943013" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23297492" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -848,22 +836,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="171" column="27" lean-forward="true" selection-start-line="171" selection-start-column="27" selection-end-line="171" selection-end-column="27" />
+        <state relative-caret-position="488">
+          <caret line="233" column="30" lean-forward="false" selection-start-line="233" selection-start-column="30" selection-end-line="233" selection-end-column="30" />
           <folding>
             <element signature="method#JDCGUIFrame#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#initLocalElements#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#handleNewCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="method#handleOpenCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#CampaignPanel#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#CampaignPanel#1;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="e#13576#13605#0" expanded="false" />
+            <element signature="e#13577#13606#0" expanded="false" />
             <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
           </folding>
         </state>

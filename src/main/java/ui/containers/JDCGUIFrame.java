@@ -231,7 +231,7 @@ public class JDCGUIFrame extends JFrame {
                     DynamicCampaign loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(chosenFile.toPath())), DynamicCampaign.class);
                     if(loadedCampaign == null) {
                         JOptionPane.showMessageDialog(fileChooser, "Error attempting to load file! Please try again.", "File Error", JOptionPane.ERROR_MESSAGE);
-                        break;
+                        return;
                     }
 
                     campaign = loadedCampaign;
