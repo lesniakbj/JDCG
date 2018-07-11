@@ -5,6 +5,7 @@ public enum FileActions implements UIAction {
     OPEN("Open Campaign"),
     OPEN_RECENT("Open Recent"),
     SAVE("Save Campaign"),
+    SAVE_AS("Save As..."),
     EXIT("Exit"),
     NONE("None");
 
@@ -15,7 +16,7 @@ public enum FileActions implements UIAction {
     }
 
     public boolean hasSeparator(UIAction action) {
-        return action.equals(NEW) || action.equals(OPEN_RECENT) || action.equals(SAVE);
+        return action.equals(NEW) || action.equals(OPEN_RECENT) || action.equals(SAVE_AS);
     }
 
     @Override

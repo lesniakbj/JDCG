@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91096769-dfb0-4849-9a22-b66002714f7f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java" afterPath="$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" afterPath="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -30,8 +30,8 @@
       <file leaf-file-name="JDCGUIFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="309" column="35" lean-forward="false" selection-start-line="309" selection-start-column="35" selection-end-line="309" selection-end-column="35" />
+            <state relative-caret-position="638">
+              <caret line="170" column="61" lean-forward="false" selection-start-line="170" selection-start-column="61" selection-end-line="170" selection-end-column="61" />
               <folding>
                 <element signature="method#JDCGUIFrame#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#initLocalElements#0;class#JDCGUIFrame#0" expanded="false" />
@@ -39,17 +39,23 @@
                 <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#actionPerformed#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#handleExitCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#handleNewCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#handleOpenCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#handleSaveAsCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#handleSaveCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#saveCampaign#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+                <element signature="method#saveRecentSavesFile#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#tryParseAction#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#CampaignPanel#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#CampaignPanel#1;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
                 <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-                <element signature="e#16109#16138#0" expanded="false" />
+                <element signature="e#17052#17081#0" expanded="false" />
                 <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
               </folding>
             </state>
@@ -92,14 +98,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Gson.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/c5b4c491aecb72e7c32a78da0b5c6b9cda8dee0f/gson-2.8.5-sources.jar!/com/google/gson/Gson.java">
+      <file leaf-file-name="FileActions.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="613" column="16" lean-forward="false" selection-start-line="613" selection-start-column="16" selection-end-line="613" selection-end-column="16" />
+            <state relative-caret-position="221">
+              <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
               <folding>
-                <element signature="e#14565#14566#0" expanded="true" />
-                <element signature="e#14596#14597#0" expanded="true" />
+                <element signature="e#527#528#0" expanded="true" />
+                <element signature="e#554#555#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -413,11 +419,11 @@
       <list>
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/ui/constants/UIAction.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/constants/ViewActions.java" />
         <option value="$PROJECT_DIR$/src/main/java/sim/save/JSONUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/constants/CoalitionActions.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/constants/MissionActions.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java" />
         <option value="$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java" />
       </list>
     </option>
@@ -685,7 +691,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33177206" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33177206" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979977" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32943013" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -760,25 +766,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="17" lean-forward="true" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding>
-            <element signature="e#497#498#0" expanded="true" />
-            <element signature="e#524#525#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/javax/swing/JOptionPane.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="633" column="23" lean-forward="false" selection-start-line="633" selection-start-column="23" selection-end-line="633" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/nio/file/Files.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="881">
@@ -819,17 +806,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/constants/MissionActions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="9" lean-forward="false" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
-          <folding>
-            <element signature="e#302#303#0" expanded="true" />
-            <element signature="e#330#331#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ui/constants/CoalitionActions.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -841,10 +817,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/javax/swing/JOptionPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1355">
+          <caret line="686" column="22" lean-forward="false" selection-start-line="686" selection-start-column="22" selection-end-line="686" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/constants/MissionActions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="9" lean-forward="false" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+          <folding>
+            <element signature="e#302#303#0" expanded="true" />
+            <element signature="e#330#331#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/constants/FileActions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding>
+            <element signature="e#527#528#0" expanded="true" />
+            <element signature="e#554#555#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ui/containers/JDCGUIFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="309" column="35" lean-forward="false" selection-start-line="309" selection-start-column="35" selection-end-line="309" selection-end-column="35" />
+        <state relative-caret-position="638">
+          <caret line="170" column="61" lean-forward="false" selection-start-line="170" selection-start-column="61" selection-end-line="170" selection-end-column="61" />
           <folding>
             <element signature="method#JDCGUIFrame#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#initLocalElements#0;class#JDCGUIFrame#0" expanded="false" />
@@ -852,17 +858,23 @@
             <element signature="method#addMainMenu#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#constructMenu#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#getInstance#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#actionPerformed#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#handleExitCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#handleNewCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#createNewCampaignDialogPanel#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#handleOpenCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#handleSaveAsCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#handleSaveCampaignMenu#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#saveCampaign#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
+            <element signature="method#saveRecentSavesFile#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#tryParseAction#0;class#MenuItemListener#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#CampaignPanel#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#CampaignPanel#1;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
             <element signature="method#mouseClicked#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
-            <element signature="e#16109#16138#0" expanded="false" />
+            <element signature="e#17052#17081#0" expanded="false" />
             <element signature="method#isWithinThreshold#0;class#MapClickListener#0;class#CampaignPanel#0;class#JDCGUIFrame#0" expanded="false" />
           </folding>
         </state>

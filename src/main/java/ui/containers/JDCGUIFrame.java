@@ -71,6 +71,7 @@ public class JDCGUIFrame extends JFrame {
 
     // Main Campaign State
     private DynamicCampaign campaign;
+    private File saveFile;
 
     private JDCGUIFrame() {
         // Init local elements
@@ -189,7 +190,11 @@ public class JDCGUIFrame extends JFrame {
                 case SAVE:
                     handleSaveCampaignMenu();
                     break;
+                case SAVE_AS:
+                    handleSaveAsCampaignMenu();
+                    break;
                 case EXIT:
+                    handleExitCampaignMenu();
                     break;
             }
 
@@ -210,6 +215,25 @@ public class JDCGUIFrame extends JFrame {
             switch (missionAction) {
                 case GOALS:
                 case MISSION_PLANNER:
+                    break;
+            }
+        }
+
+        private void handleExitCampaignMenu() {
+            int selected = JOptionPane.showConfirmDialog(fileChooser, "Are you sure you would like to exit without saving?");
+            switch (selected) {
+                case JOptionPane.OK_OPTION:
+                    instance.dispose();
+                    break;
+                case JOptionPane.NO_OPTION:
+                    if(saveFile != null) {
+                        handleSaveCampaignMenu();
+                    } else {
+                        handleSaveAsCampaignMenu();
+                    }
+                    instance.dispose();
+                    break;
+                case JOptionPane.CANCEL_OPTION:
                     break;
             }
         }
@@ -273,14 +297,7 @@ public class JDCGUIFrame extends JFrame {
                         return;
                     }
 
-                    // Add this recent open to the list, and re-save the list
-                    recentSaves.add(chosenFile.getAbsolutePath());
-                    Files.write(Paths.get(SAVE_PATH + RECENT_SAVE_FILE), recentSaves.stream().collect(Collectors.joining("\n")).getBytes());
-                    recentSavesMenu.removeAll();
-                    for(String recentSave : recentSaves) {
-                        JMenuItem menuItem = new JMenuItem(recentSave);
-                        recentSavesMenu.add(menuItem);
-                    }
+                    saveRecentSavesFile();
 
                     // Reload all UI elements
                     campaign = loadedCampaign;
@@ -294,29 +311,49 @@ public class JDCGUIFrame extends JFrame {
             }
         }
 
-        private void handleSaveCampaignMenu() {
-            String json = JSONUtil.fromDomain(campaign);
+        private void handleSaveAsCampaignMenu() {
             int saveValue = fileChooser.showSaveDialog(instance);
             if(saveValue == JFileChooser.APPROVE_OPTION) {
-                File savedFile = fileChooser.getSelectedFile();
+                saveFile = fileChooser.getSelectedFile();
+                saveCampaign();
+                saveRecentSavesFile();
+                JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully saved!");
+            }
+        }
+
+        private void handleSaveCampaignMenu() {
+            saveCampaign();
+            saveRecentSavesFile();
+            JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully saved!");
+        }
+
+        private void saveCampaign() {
+            if(saveFile != null) {
+                String json = JSONUtil.fromDomain(campaign);
+                String filePath = saveFile.getAbsolutePath();
+                if (!filePath.contains(".jdcg")) {
+                    saveFile = new File(saveFile.getAbsolutePath() + ".jdcg");
+                }
                 try {
-                    String filePath = savedFile.getAbsolutePath();
-                    if(!filePath.contains(".jdcg")) {
-                        savedFile = new File(savedFile.getAbsolutePath() + ".jdcg");
-                    }
-                    Files.write(savedFile.toPath(), json.getBytes());
+                    Files.write(saveFile.toPath(), json.getBytes());
+                } catch (IOException ignored) {
+                }
+            }
+        }
 
-                    // Add this recent save to the list, and re-save the list
-                    recentSaves.add(savedFile.getAbsolutePath());
+        private void saveRecentSavesFile() {
+            // Add this recent save to the list, and re-save the list
+            if(saveFile != null) {
+                recentSaves.add(saveFile.getAbsolutePath());
+                try {
                     Files.write(Paths.get(SAVE_PATH + RECENT_SAVE_FILE), recentSaves.stream().collect(Collectors.joining("\n")).getBytes());
-                    recentSavesMenu.removeAll();
-                    for(String recentSave : recentSaves) {
-                        JMenuItem menuItem = new JMenuItem(recentSave);
-                        recentSavesMenu.add(menuItem);
-                    }
-
-                    JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully saved!");
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
+                recentSavesMenu.removeAll();
+                for (String recentSave : recentSaves) {
+                    JMenuItem menuItem = new JMenuItem(recentSave);
+                    recentSavesMenu.add(menuItem);
+                }
             }
         }
 
