@@ -1,9 +1,11 @@
 package ui.containers;
 
-import gen.domain.Airfield;
+import gen.domain.enums.AirfieldType;
 import gen.domain.GameMap;
+import javax.swing.BoxLayout;
+import sim.domain.Mission;
 import sim.main.CampaignSettings;
-import sim.main.DynamicCampaign;
+import sim.main.DynamicCampaignSim;
 import sim.save.JSONUtil;
 import ui.constants.CoalitionActions;
 import ui.constants.FileActions;
@@ -12,7 +14,6 @@ import ui.constants.MissionActions;
 import ui.constants.UIAction;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -72,7 +73,7 @@ public class JDCGUIFrame extends JFrame {
     private JPanel campaignWindow;
 
     // Main Campaign State
-    private DynamicCampaign campaign;
+    private DynamicCampaignSim campaign;
     private File saveFile;
 
     private JDCGUIFrame() {
@@ -260,7 +261,7 @@ public class JDCGUIFrame extends JFrame {
             // If the settings are complete, we can proceed with populating the main portions of the frame
             if(settings.isComplete()) {
                 // Create a campaign with the parsed settings
-                campaign = new DynamicCampaign();
+                campaign = new DynamicCampaignSim();
                 campaign.setCampaignSettings(settings);
 
                 instance.remove(campaignWindow);
@@ -301,7 +302,7 @@ public class JDCGUIFrame extends JFrame {
             if(openValue == JFileChooser.APPROVE_OPTION) {
                 saveFile = fileChooser.getSelectedFile();
                 try {
-                    DynamicCampaign loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(saveFile.toPath())), DynamicCampaign.class);
+                    DynamicCampaignSim loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(saveFile.toPath())), DynamicCampaignSim.class);
                     if(loadedCampaign == null) {
                         JOptionPane.showMessageDialog(fileChooser, "Error attempting to load file! Please try again.", "File Error", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -384,10 +385,10 @@ public class JDCGUIFrame extends JFrame {
     private class RecentSaveMouseListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            DynamicCampaign loadedCampaign = null;
+            DynamicCampaignSim loadedCampaign = null;
             try {
                 saveFile = new File(e.getActionCommand());
-                loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(saveFile.toPath())), DynamicCampaign.class);
+                loadedCampaign = JSONUtil.fromJson(new String(Files.readAllBytes(saveFile.toPath())), DynamicCampaignSim.class);
             } catch (IOException ignored) {}
 
             if(loadedCampaign == null) {
@@ -450,13 +451,19 @@ public class JDCGUIFrame extends JFrame {
             JButton someOtherAction = new JButton("Some Other Action");
             buttonPanel.add(planMissionButton);
             buttonPanel.add(someOtherAction);
+            buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
             campaignActions.add(buttonPanel, BorderLayout.WEST);
 
             // Create the panel that will show everything that is currently in progress
-            campaignPlannedActions = new JPanel();
+            campaignPlannedActions = new JPanel(new BorderLayout());
             campaignPlannedActions.setPreferredSize(new Dimension(calculatedWidth - imageWidth, imageHeight));
             campaignPlannedActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-            campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER));
+            campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER), BorderLayout.NORTH);
+            JPanel missionPanel = new JPanel();
+            ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(new Mission());
+            sampleMissionPanel.addMouseListener(new ActiveMissionClickListener());
+            missionPanel.add(sampleMissionPanel);
+            campaignPlannedActions.add(missionPanel, BorderLayout.CENTER);
 
             // Create the panel that will show the campaign status
             campaignStatus = new JPanel(new BorderLayout());
@@ -466,6 +473,9 @@ public class JDCGUIFrame extends JFrame {
             campaignStatus.add(statusLabel, BorderLayout.WEST);
             JPanel buttonContainer = new JPanel();
             JButton stepSimButton = new JButton("Step Simulation");
+            stepSimButton.addActionListener(l -> {
+                campaign.stepSimulation();
+            });
             buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
             buttonContainer.add(stepSimButton);
             campaignStatus.add(buttonContainer, BorderLayout.EAST);
@@ -490,17 +500,17 @@ public class JDCGUIFrame extends JFrame {
                 //      3) Check Ground Units Third
                 //      4) Return a list of ALL found
                 GameMap map = campaignSettings.getSelectedMap();
-                List<Airfield> airfields = map.getAirfields();
-                List<Airfield> clickedAirfields = new ArrayList<>();
-                for(Airfield airfield : airfields) {
-                    double x = airfield.getAirfieldMapPosition().getKey();
-                    double y = airfield.getAirfieldMapPosition().getValue();
-                    if(isWithinThreshold(mouseX, mouseY, x, y, 10)) {
-                        clickedAirfields.add(airfield);
+                List<AirfieldType> airfieldTypes = map.getAirfieldTypes();
+                List<AirfieldType> clickedAirfieldTypes = new ArrayList<>();
+                for(AirfieldType airfieldType : airfieldTypes) {
+                    double x = airfieldType.getAirfieldMapPosition().getKey();
+                    double y = airfieldType.getAirfieldMapPosition().getValue();
+                    if(isWithinThreshold(mouseX, mouseY, x, y, 15)) {
+                        clickedAirfieldTypes.add(airfieldType);
                     }
                 }
 
-                System.out.println("Total clicked objects: " + clickedAirfields.size());
+                System.out.println("Total clicked objects: " + clickedAirfieldTypes.size());
             }
 
             @Override
@@ -520,6 +530,26 @@ public class JDCGUIFrame extends JFrame {
                 boolean yIsValid = (mouseY >= destY - threshold && mouseY <= destY + threshold);
                 return xIsValid && yIsValid;
             }
+        }
+
+        private class ActiveMissionClickListener implements MouseListener {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println((ActiveMissionPanel)e.getSource());
+                System.out.println(((ActiveMissionPanel) e.getSource()).getPlannedMission());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
         }
     }
 }

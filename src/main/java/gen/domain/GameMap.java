@@ -1,34 +1,36 @@
 package gen.domain;
 
+import gen.domain.enums.AirfieldType;
+import gen.domain.enums.MapType;
 import java.util.List;
 
 public class GameMap {
-    private MapConstants mapSelection;
-    private List<Airfield> airfields;
+    private MapType mapSelection;
+    private List<AirfieldType> airfieldTypes;
 
-    public GameMap(MapConstants mapSelection) {
+    public GameMap(MapType mapSelection) {
         this.mapSelection = mapSelection;
-        this.airfields = Airfield.getAirfieldsForMap(mapSelection);
+        this.airfieldTypes = AirfieldType.getAirfieldsForMap(mapSelection);
     }
 
-    public void changeMap(MapConstants mapSelection) {
+    public void changeMap(MapType mapSelection) {
         this.mapSelection = mapSelection;
-        this.airfields = Airfield.getAirfieldsForMap(mapSelection);
+        this.airfieldTypes = AirfieldType.getAirfieldsForMap(mapSelection);
     }
 
     public String getMapName() {
         return mapSelection.getMapName();
     }
 
-    public List<Airfield> getAirfields() {
-        return airfields;
+    public List<AirfieldType> getAirfieldTypes() {
+        return airfieldTypes;
     }
 
     @Override
     public String toString() {
         return "Map{" +
                 "mapSelection=" + mapSelection +
-                ", airfields=" + airfields +
+                ", airfieldTypes=" + airfieldTypes +
                 '}';
     }
 }

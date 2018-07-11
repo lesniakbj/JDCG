@@ -1,17 +1,17 @@
 package ui.containers;
 
-import gen.domain.MapConstants;
+import gen.domain.enums.MapType;
 
 import javax.swing.JPanel;
 
 public class MapSelectionPanel extends JPanel {
-    private MapConstants map;
+    private MapType map;
 
-    public MapConstants getMap() {
+    public MapType getMap() {
         return map;
     }
 
-    public void setMap(MapConstants map) {
+    public void setMap(MapType map) {
         this.map = map;
     }
 }

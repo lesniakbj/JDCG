@@ -1,22 +1,23 @@
 package gen.domain;
 
+import gen.domain.enums.FactionType;
 import java.util.List;
 
 public class Coalition {
-    private List<Faction> factionList;
+    private List<FactionType> factionTypeList;
 
-    public Coalition(List<Faction> factionList) {
-        this.factionList = factionList;
+    public Coalition(List<FactionType> factionTypeList) {
+        this.factionTypeList = factionTypeList;
     }
 
     @Override
     public String toString() {
         return "Coalition{" +
-                "factionList=" + factionList +
+                "factionTypeList=" + factionTypeList +
                 '}';
     }
 
-    public List<Faction> getFactionList() {
-        return factionList;
+    public List<FactionType> getFactionTypeList() {
+        return factionTypeList;
     }
 }

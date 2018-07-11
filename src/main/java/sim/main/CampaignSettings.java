@@ -1,12 +1,12 @@
 package sim.main;
 
-import gen.domain.CampaignType;
+import gen.domain.enums.CampaignType;
 import gen.domain.Coalition;
-import gen.domain.ConflictEra;
-import gen.domain.FactionSide;
+import gen.domain.enums.ConflictEraType;
+import gen.domain.enums.FactionSide;
 import gen.domain.GameMap;
-import gen.domain.MapConstants;
-import gen.domain.SquadronType;
+import gen.domain.enums.MapType;
+import gen.domain.enums.SquadronType;
 
 import java.util.ArrayList;
 
@@ -15,18 +15,18 @@ public class CampaignSettings {
     private Coalition redforCoalition;
     private Coalition blueforCoalition;
     private Coalition neutralCoalition;
-    private ConflictEra selectedEra;
+    private ConflictEraType selectedEra;
     private CampaignType selectedCampaignType;
     private FactionSide playerSelectedSide;
     private SquadronType selectedSquadron;
     private boolean isComplete;
 
     public CampaignSettings() {
-        selectedMap = new GameMap(MapConstants.CAUCASUS);
+        selectedMap = new GameMap(MapType.CAUCASUS);
         redforCoalition = new Coalition(new ArrayList<>());
         blueforCoalition = new Coalition(new ArrayList<>());
         neutralCoalition = new Coalition(new ArrayList<>());
-        selectedEra = ConflictEra.MODERN;
+        selectedEra = ConflictEraType.MODERN;
         selectedCampaignType = CampaignType.OFFENSIVE;
         playerSelectedSide = FactionSide.BLUEFOR;
         selectedSquadron = SquadronType.NONE;
@@ -44,14 +44,14 @@ public class CampaignSettings {
         neutralCoalition = coalition;
     }
 
-    public void setMapSelection(MapConstants mapSelection) {
+    public void setMapSelection(MapType mapSelection) {
         if(selectedMap == null) {
             selectedMap = new GameMap(mapSelection);
         }
         selectedMap.changeMap(mapSelection);
     }
 
-    public void setSelectedEra(ConflictEra era) {
+    public void setSelectedEra(ConflictEraType era) {
         selectedEra = era;
     }
 
@@ -95,7 +95,7 @@ public class CampaignSettings {
         return neutralCoalition;
     }
 
-    public ConflictEra getSelectedEra() {
+    public ConflictEraType getSelectedEra() {
         return selectedEra;
     }
 
