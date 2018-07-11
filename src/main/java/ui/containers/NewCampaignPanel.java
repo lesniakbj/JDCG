@@ -1,8 +1,8 @@
 package ui.containers;
 
-import gen.domain.Coalition;
 import gen.domain.AircraftType;
 import gen.domain.CampaignType;
+import gen.domain.Coalition;
 import gen.domain.ConflictEra;
 import gen.domain.Faction;
 import gen.domain.FactionSide;
@@ -19,7 +19,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;

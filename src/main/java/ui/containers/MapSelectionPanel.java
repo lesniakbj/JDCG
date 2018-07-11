@@ -1,7 +1,8 @@
 package ui.containers;
 
-import javax.swing.JPanel;
 import gen.domain.MapConstants;
+
+import javax.swing.JPanel;
 
 public class MapSelectionPanel extends JPanel {
     private MapConstants map;

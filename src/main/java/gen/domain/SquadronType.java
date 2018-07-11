@@ -1,5 +1,7 @@
 package gen.domain;
 
+import java.util.List;
+
 import static gen.domain.StaticLists.AIR_FORCE_AIR_SUPERIORITY_AVAILABLE_AIRCRAFT;
 import static gen.domain.StaticLists.AIR_SUPERIORITY;
 import static gen.domain.StaticLists.ALL_TASKS;
@@ -17,8 +19,6 @@ import static gen.domain.StaticLists.NAVY_COMPLETE_ERA_AIRCRAFT;
 import static gen.domain.StaticLists.NAVY_MODERN_ERA_AIRCRAFT;
 import static gen.domain.StaticLists.STRIKE_FIGHTER;
 import static gen.domain.StaticLists.USER_AVAILABLE_AIRCRAFT;
-
-import java.util.List;
 
 public enum SquadronType {
     // USA Air Force Squadrons

@@ -1,7 +1,6 @@
 package gen.domain;
 
 import java.util.List;
-import gen.domain.Faction;
 
 public class Coalition {
     private List<Faction> factionList;

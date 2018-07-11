@@ -1,13 +1,14 @@
 package sim.main;
 
-import java.util.ArrayList;
-import gen.domain.Coalition;
-import gen.domain.GameMap;
 import gen.domain.CampaignType;
+import gen.domain.Coalition;
 import gen.domain.ConflictEra;
 import gen.domain.FactionSide;
+import gen.domain.GameMap;
 import gen.domain.MapConstants;
 import gen.domain.SquadronType;
+
+import java.util.ArrayList;
 
 public class CampaignSettings {
     private GameMap selectedMap;

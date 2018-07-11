@@ -3,9 +3,6 @@ package gen.domain;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import gen.domain.AircraftType;
-import gen.domain.ConflictEra;
-import gen.domain.Task;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

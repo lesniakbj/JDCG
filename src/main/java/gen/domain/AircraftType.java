@@ -1,5 +1,7 @@
 package gen.domain;
 
+import java.util.List;
+
 import static gen.domain.StaticLists.CLASSIC_ERAS;
 import static gen.domain.StaticLists.COLD_WAR_ERAS;
 import static gen.domain.StaticLists.EARLY_COLD_WAR_ERAS;
@@ -8,8 +10,6 @@ import static gen.domain.StaticLists.EXTENDED_ERAS;
 import static gen.domain.StaticLists.LATE_COLD_EXTENDED_WAR_ERAS;
 import static gen.domain.StaticLists.LATE_COLD_WAR_ERAS;
 import static gen.domain.StaticLists.MODERN_ERAS;
-
-import java.util.List;
 
 public enum AircraftType {
     A_4("A-4", EXTENDED_ERAS),

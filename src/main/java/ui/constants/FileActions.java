@@ -2,9 +2,9 @@ package ui.constants;
 
 public enum FileActions implements UIAction {
     NEW("New Campaign"),
-    OPEN("Open Campaign"),
+    OPEN("Open"),
     OPEN_RECENT("Open Recent"),
-    SAVE("Save Campaign"),
+    SAVE("Save"),
     SAVE_AS("Save As..."),
     EXIT("Exit"),
     NONE("None");

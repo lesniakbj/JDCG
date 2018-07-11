@@ -1,8 +1,6 @@
 package gen.domain;
 
 import java.util.List;
-import gen.domain.Airfield;
-import gen.domain.MapConstants;
 
 public class GameMap {
     private MapConstants mapSelection;

@@ -29,10 +29,10 @@ package ui.util;/*
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.Component;
-import java.awt.Container;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
+import java.awt.Component;
+import java.awt.Container;
 
 /**
  * A 1.4 file that provides utility methods for

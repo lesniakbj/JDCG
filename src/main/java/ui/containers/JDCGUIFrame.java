@@ -1,10 +1,37 @@
 package ui.containers;
 
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
-import static ui.util.ImageScaleUtil.tryLoadImage;
+import gen.domain.Airfield;
+import gen.domain.GameMap;
+import sim.main.CampaignSettings;
+import sim.main.DynamicCampaign;
+import sim.save.JSONUtil;
+import ui.constants.CoalitionActions;
+import ui.constants.FileActions;
+import ui.constants.InfoActions;
+import ui.constants.MissionActions;
+import ui.constants.UIAction;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,37 +46,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.border.Border;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-import gen.domain.Airfield;
-import gen.domain.GameMap;
-import sim.main.CampaignSettings;
-import sim.main.DynamicCampaign;
-import sim.save.JSONUtil;
-import ui.constants.FileActions;
-import ui.constants.InfoActions;
-import ui.constants.MissionActions;
-import ui.constants.UIAction;
-import ui.constants.CoalitionActions;
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import static ui.util.ImageScaleUtil.tryLoadImage;
 
 public class JDCGUIFrame extends JFrame {
     // Singleton for the Main GUI Frame
@@ -331,6 +336,11 @@ public class JDCGUIFrame extends JFrame {
         }
 
         private void handleSaveCampaignMenu() {
+            if(saveFile == null) {
+                handleSaveAsCampaignMenu();
+                return;
+            }
+
             saveCampaign();
             saveRecentSavesFile();
             JOptionPane.showMessageDialog(fileChooser, "Campaign has been successfully saved!");
@@ -340,27 +350,31 @@ public class JDCGUIFrame extends JFrame {
             if(saveFile != null) {
                 String json = JSONUtil.fromDomain(campaign);
                 String filePath = saveFile.getAbsolutePath();
+
                 if (!filePath.contains(".jdcg")) {
                     saveFile = new File(saveFile.getAbsolutePath() + ".jdcg");
                 }
+
                 try {
                     Files.write(saveFile.toPath(), json.getBytes());
-                } catch (IOException ignored) {
-                }
+                } catch (IOException ignored) {}
             }
         }
 
         private void saveRecentSavesFile() {
             // Add this recent save to the list, and re-save the list
+            RecentSaveMouseListener mouseListener = new RecentSaveMouseListener();
             if(saveFile != null) {
                 recentSaves.add(saveFile.getAbsolutePath());
+
                 try {
                     Files.write(Paths.get(SAVE_PATH + RECENT_SAVE_FILE), recentSaves.stream().collect(Collectors.joining("\n")).getBytes());
-                } catch (IOException ignored) {
-                }
+                } catch (IOException ignored) {}
+
                 recentSavesMenu.removeAll();
                 for (String recentSave : recentSaves) {
                     JMenuItem menuItem = new JMenuItem(recentSave);
+                    menuItem.addActionListener(mouseListener);
                     recentSavesMenu.add(menuItem);
                 }
             }
@@ -443,9 +457,16 @@ public class JDCGUIFrame extends JFrame {
             campaignPlannedActions.add(new JLabel("This will be the generated missions each plane is attempting...)", SwingConstants.LEFT));
 
             // Create the panel that will show the campaign status
-            campaignStatus = new JPanel();
+            campaignStatus = new JPanel(new BorderLayout());
             campaignStatus.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-            campaignStatus.add(new JLabel("This will show status of the campaign, such as date, strength, etc...", SwingConstants.LEFT));
+            String message = String.format("    Date: %s      Active Sorties: %d      Priority Targets: %d      Critical Objectives Remaining: %d", new Date(), 0, 0, 0);
+            JLabel statusLabel = new JLabel(message, SwingConstants.CENTER);
+            campaignStatus.add(statusLabel, BorderLayout.WEST);
+            JPanel buttonContainer = new JPanel();
+            JButton stepSimButton = new JButton("Step Simulation");
+            buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            buttonContainer.add(stepSimButton);
+            campaignStatus.add(buttonContainer, BorderLayout.EAST);
 
             add(campaignActions, BorderLayout.NORTH);
             add(campaignImage, BorderLayout.WEST);

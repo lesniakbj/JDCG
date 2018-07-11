@@ -1,8 +1,9 @@
 package gen.domain;
 
+import javafx.util.Pair;
+
 import java.util.HashMap;
 import java.util.Map;
-import javafx.util.Pair;
 
 public enum MapConstants {
     CAUCASUS("Caucasus", null, null, null, null, null),
