@@ -42,7 +42,7 @@ public class Mission {
 
         // Sample for testing
         List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue(),
-                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getKey(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getValue(), missionType);
+                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getKey(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getValue(), missionType, MapType.PERSIAN_GULF);
         this.missionWaypoints = waypoints;
         this.plannedMissionDate = new Date();
         this.isInProgress = false;

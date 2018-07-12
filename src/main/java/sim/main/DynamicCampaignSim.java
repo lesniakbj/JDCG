@@ -1,14 +1,17 @@
 package sim.main;
 
+import gen.domain.enums.FactionSide;
 import gen.main.CampaignGenerator;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.domain.Airfield;
 import sim.domain.Mission;
 import sim.domain.UnitGroup;
 
@@ -19,9 +22,8 @@ public class DynamicCampaignSim {
     private GlobalSimSettings simSettings;
     private CampaignSettings campaignSettings;
 
-    private List<UnitGroup> campaignGroups;
-    private ObjectiveManager campaignObjectiveManager;
-    private MissionManager campaignMissionManager;
+    private CoalitionManager blueforCoalitionManager;
+    private CoalitionManager redforCoalitionManager;
 
     private Mission currentlySelectedMission;
     private Date currentCampaignDate;
@@ -29,9 +31,7 @@ public class DynamicCampaignSim {
     public DynamicCampaignSim() {
         this.simSettings = new GlobalSimSettings();
         this.campaignSettings = new CampaignSettings();
-        this.campaignGroups = new ArrayList<>();
-        this.campaignObjectiveManager = new ObjectiveManager();
-        this.campaignMissionManager = new MissionManager();
+        this.blueforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.currentlySelectedMission = null;
         this.currentCampaignDate = new Date();
     }
@@ -61,27 +61,15 @@ public class DynamicCampaignSim {
     }
 
     public MissionManager getCampaignMissionManager() {
-        return campaignMissionManager;
-    }
-
-    public void setCampaignMissionManager(MissionManager campaignMissionManager) {
-        this.campaignMissionManager = campaignMissionManager;
+        return campaignSettings.getPlayerSelectedSide().equals(FactionSide.BLUEFOR) ? blueforCoalitionManager.getMissionManager() : redforCoalitionManager.getMissionManager();
     }
 
     public ObjectiveManager getCampaignObjectiveManager() {
-        return campaignObjectiveManager;
-    }
-
-    public void setCampaignObjectiveManager(ObjectiveManager campaignObjectiveManager) {
-        this.campaignObjectiveManager = campaignObjectiveManager;
+        return campaignSettings.getPlayerSelectedSide().equals(FactionSide.BLUEFOR) ? blueforCoalitionManager.getCoalitionObjectiveManager() : redforCoalitionManager.getCoalitionObjectiveManager();
     }
 
     public List<UnitGroup> getCampaignGroups() {
-        return campaignGroups;
-    }
-
-    public void setCampaignGroups(List<UnitGroup> campaignGroups) {
-        this.campaignGroups = campaignGroups;
+        return campaignSettings.getPlayerSelectedSide().equals(FactionSide.BLUEFOR) ? blueforCoalitionManager.getCoalitionGroups() : redforCoalitionManager.getCoalitionGroups();
     }
 
     public Mission getCurrentlySelectedMission() {
@@ -114,6 +102,19 @@ public class DynamicCampaignSim {
     public void generateNewCampaign() {
         log.debug("Generating a new campaign...");
         CampaignGenerator gen = new CampaignGenerator(campaignSettings);
-        campaignMissionManager.addMission(new Mission());
+
+        // First, generate the airbases that are going to be assigned to each team based on the settings
+        Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
+
+        // Then, generate all of the static ground units that exist within this campaign
+
+        // Then, generate all of the ground groups that exist with this campaign
+
+        // Then, generate all of the AAA/SAM groups that exist within this campaign
+
+        // Then, generate all of the AirForce groups that exist within this campaign
+
+        // This is a test....
+        blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission());
     }
 }
