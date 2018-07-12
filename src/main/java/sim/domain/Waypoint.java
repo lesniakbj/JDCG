@@ -1,5 +1,7 @@
 package sim.domain;
 
+import gen.domain.enums.WaypointType;
+
 /**
  * (c) Copyright 2018 Calabrio, Inc.
  * All Rights Reserved. www.calabrio.com LICENSED MATERIALS
@@ -17,12 +19,16 @@ public class Waypoint {
     private double locationY;
     private int speedMilesPerHour;
     private int height;
+    private boolean isMissionWaypoint;
+    private WaypointType waypointType;
 
-    public Waypoint(double locationX, double locationY, int speedMilesPerHour, int height) {
+    public Waypoint(double locationX, double locationY, int speedMilesPerHour, int height, boolean isMissionWaypoint, WaypointType waypointType) {
         this.locationX = locationX;
         this.locationY = locationY;
         this.speedMilesPerHour = speedMilesPerHour;
         this.height = height;
+        this.isMissionWaypoint = isMissionWaypoint;
+        this.waypointType = waypointType;
     }
 
     public void setLocationY(double locationY) {
@@ -57,6 +63,33 @@ public class Waypoint {
         return height;
     }
 
+    public boolean isMissionWaypoint() {
+        return isMissionWaypoint;
+    }
+
+    public void setMissionWaypoint(boolean missionWaypoint) {
+        isMissionWaypoint = missionWaypoint;
+    }
+
+    public void setWaypointType(WaypointType waypointType) {
+        this.waypointType = waypointType;
+    }
+
+    public WaypointType getWaypointType() {
+        return waypointType;
+    }
+
+    @Override
+    public String toString() {
+        return "Waypoint{" +
+                "locationX=" + locationX +
+                ", locationY=" + locationY +
+                ", speedMilesPerHour=" + speedMilesPerHour +
+                ", height=" + height +
+                ", isMissionWaypoint=" + isMissionWaypoint +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,7 +100,8 @@ public class Waypoint {
         if (Double.compare(waypoint.locationX, locationX) != 0) return false;
         if (Double.compare(waypoint.locationY, locationY) != 0) return false;
         if (speedMilesPerHour != waypoint.speedMilesPerHour) return false;
-        return height == waypoint.height;
+        if (height != waypoint.height) return false;
+        return isMissionWaypoint == waypoint.isMissionWaypoint;
     }
 
     @Override
@@ -80,16 +114,8 @@ public class Waypoint {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + speedMilesPerHour;
         result = 31 * result + height;
+        result = 31 * result + (isMissionWaypoint ? 1 : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Waypoint{" +
-                "locationX=" + locationX +
-                ", locationY=" + locationY +
-                ", speedMilesPerHour=" + speedMilesPerHour +
-                ", height=" + height +
-                '}';
-    }
 }

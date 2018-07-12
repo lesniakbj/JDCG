@@ -60,6 +60,7 @@ import sim.domain.Waypoint;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 import sim.save.JSONUtil;
+import sim.util.MathUtil;
 import ui.constants.CoalitionActions;
 import ui.constants.FileActions;
 import ui.constants.InfoActions;
@@ -588,6 +589,7 @@ public class JDCGUIFrame extends JFrame {
 
                 // Set our colors and other visual elements up based on the faction
                 Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+                Stroke normal = g.getStroke();
                 Color enemyColor = new Color(255, 0, 0, 200);
                 Color friendlyColor = new Color(38, 144, 150, 200);
                 Color selectedColor = new Color(229, 225, 24, 217);
@@ -607,6 +609,8 @@ public class JDCGUIFrame extends JFrame {
 
                 // Draw the packages waypoints' if it is selected
                 if(campaign.getCurrentlySelectedMission() != null && campaign.getCurrentlySelectedMission().equals(mission)) {
+                    double lastWaypointLocationX = pointX;
+                    double lastWaypointLocationY = pointY;
                     for (Waypoint waypoint : mission.getMissionWaypoints()) {
                         double waypointX = waypoint.getLocationX();
                         double waypointY = waypoint.getLocationY();
@@ -614,14 +618,25 @@ public class JDCGUIFrame extends JFrame {
                                 String.format("Drawing mission waypoint!: %d/%d", (int) (waypointX * scaleX), (int) (waypointY * scaleY)));
                         g.setColor(mainColor);
                         g.fillOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);
-                        g.setColor(Color.black);
+                        g.setColor(selectedColor);
                         g.drawOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);
+                        g.setColor(Color.BLACK);
+                        g.drawString(waypoint.getWaypointType().name(), (int) (waypointX * scaleX) - 20, (int) (waypointY * scaleY) - 20);
 
                         g.setColor(selectedColor);
                         g.setStroke(dashed);
-                        g.drawLine((int) (pointX * scaleX), (int) (pointY * scaleY), (int) (waypointX * scaleX),
+                        g.drawLine((int) (lastWaypointLocationX * scaleX), (int) (lastWaypointLocationY * scaleY), (int) (waypointX * scaleX),
                                 (int) (waypointY * scaleY));
+                        g.setStroke(normal);
+
+                        lastWaypointLocationX = waypointX;
+                        lastWaypointLocationY = waypointY;
                     }
+
+                    g.setColor(selectedColor);
+                    g.setStroke(dashed);
+                    g.drawLine((int) (lastWaypointLocationX * scaleX), (int) (lastWaypointLocationY * scaleY), (int) (pointX * scaleX),
+                            (int) (pointY * scaleY));
                 }
             }
             g.dispose();
@@ -662,16 +677,8 @@ public class JDCGUIFrame extends JFrame {
             private void debugDistancesAndAngle(AirfieldType airfieldType) {
                 Pair<Double, Double> destPair = AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition();
                 Pair<Double, Double> sourcePair = airfieldType.getAirfieldMapPosition();
-                double xDiff = destPair.getKey() - sourcePair.getKey();
-                double yDiff = destPair.getValue() - sourcePair.getValue();
-                double dist = Math.sqrt((Math.pow(xDiff, 2)) +  (Math.pow(yDiff, 2)));
-                double angle = Math.atan2(yDiff, xDiff);
-                // Make angle point North
-                angle += Math.PI / 2.0;
-                angle = Math.toDegrees(angle);
-                if(angle < 0) {
-                    angle += 360;
-                }
+                double dist = MathUtil.getDistance(destPair, sourcePair);
+                double angle = MathUtil.getAngleNorthFace(destPair, sourcePair);
                 log.debug(String.format("Distance from click to Sir Abu Nuayr: %f mi, %f deg", airfieldType.getMap().scaleDistance(dist), angle));
             }
 

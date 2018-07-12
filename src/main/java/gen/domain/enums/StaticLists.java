@@ -1,8 +1,12 @@
 package gen.domain.enums;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -46,4 +50,10 @@ public class StaticLists {
     public static final List<AircraftType> MARINE_GROUND_STRIKE_COMPLETE_ERAS = Arrays.asList(AircraftType.A_4, AircraftType.AV_8_NA);
     public static final List<AircraftType> MARINE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.F_4, AircraftType.FA_18C);
     public static final List<AircraftType> MARINE_STRIKE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.F_4, AircraftType.AV_8_NA, AircraftType.FA_18C);
+
+    // Aircraft Loadouts
+    public static final Map<Integer, List<MunitionType>> FA_18_MUNITIONS = ImmutableMap.<Integer, List<MunitionType>>builder()
+                                                                                            .put(1, Arrays.asList(MunitionType.AIM9M, MunitionType.AIM9X))
+                                                                                            .put(2, Arrays.asList(MunitionType.AIM9M, MunitionType.AIM9MX2, MunitionType.AIM9X, MunitionType.AIM9XX2, MunitionType.AIM7M))
+                                                                                            .build();
 }

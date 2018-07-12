@@ -7,7 +7,8 @@ public enum TaskType {
     DEAD("DEAD"),
     ESCORT("Escort"),
     GROUND_STRIKE("Ground Strike"),
-    INTERCEPT("Intercept");
+    INTERCEPT("Intercept"),
+    LOW_LEVEL_STRIKE("Low Level Strike");
 
     private String taskName;
 

@@ -4,6 +4,8 @@ import gen.domain.enums.AircraftType;
 import gen.domain.enums.AirfieldType;
 import gen.domain.enums.MapType;
 import gen.domain.enums.TaskType;
+import gen.main.WaypointGenerator;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,14 +35,14 @@ public class Mission {
         this.missionType = TaskType.CAS;
 
         // Sample for testing
-        List<Aircraft> test = Arrays.asList(new Aircraft(AircraftType.A_10_C));
+        List<Aircraft> test = Arrays.asList(new Aircraft(AircraftType.FA_18C));
         this.missionAircraft = new UnitGroup<>(test);
         missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey());
         missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue());
 
         // Sample for testing
-        List<Waypoint> waypoints = new ArrayList<>();
-        waypoints.add(new Waypoint(AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getKey(), AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getValue(), 350, 10000));
+        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue(),
+                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getKey(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getValue(), missionType);
         this.missionWaypoints = waypoints;
         this.plannedMissionDate = new Date();
         this.isInProgress = false;

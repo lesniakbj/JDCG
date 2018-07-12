@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Mission;
@@ -12,6 +14,7 @@ import sim.domain.UnitGroup;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
+    private static final Random randomGen = new Random();
 
     private GlobalSimSettings simSettings;
     private CampaignSettings campaignSettings;
@@ -87,6 +90,10 @@ public class DynamicCampaignSim {
 
     public void setCurrentlySelectedMission(Mission currentlySelectedMission) {
         this.currentlySelectedMission = currentlySelectedMission;
+    }
+
+    public static Random getRandomGen() {
+        return randomGen;
     }
 
     public void stepSimulation() {
