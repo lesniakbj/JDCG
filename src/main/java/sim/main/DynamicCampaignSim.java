@@ -19,6 +19,8 @@ public class DynamicCampaignSim {
     private List<UnitGroup> campaignGroups;
     private ObjectiveManager campaignObjectiveManager;
     private MissionManager campaignMissionManager;
+
+    private Mission currentlySelectedMission;
     private Date currentCampaignDate;
 
     public DynamicCampaignSim() {
@@ -27,6 +29,7 @@ public class DynamicCampaignSim {
         this.campaignGroups = new ArrayList<>();
         this.campaignObjectiveManager = new ObjectiveManager();
         this.campaignMissionManager = new MissionManager();
+        this.currentlySelectedMission = null;
         this.currentCampaignDate = new Date();
     }
 
@@ -76,6 +79,14 @@ public class DynamicCampaignSim {
 
     public void setCampaignGroups(List<UnitGroup> campaignGroups) {
         this.campaignGroups = campaignGroups;
+    }
+
+    public Mission getCurrentlySelectedMission() {
+        return currentlySelectedMission;
+    }
+
+    public void setCurrentlySelectedMission(Mission currentlySelectedMission) {
+        this.currentlySelectedMission = currentlySelectedMission;
     }
 
     public void stepSimulation() {

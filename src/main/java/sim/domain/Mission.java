@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class Mission {
     private TaskType missionType;
-    private UnitGroup missionAircraft;
+    private UnitGroup<Aircraft> missionAircraft;
     private List<Waypoint> missionWaypoints;
     private Date plannedMissionDate;
     private boolean isInProgress;
@@ -55,7 +55,7 @@ public class Mission {
         this.missionType = missionType;
     }
 
-    public UnitGroup getMissionAircraft() {
+    public UnitGroup<Aircraft> getMissionAircraft() {
         return missionAircraft;
     }
 
@@ -93,6 +93,34 @@ public class Mission {
 
     public void setInProgress(boolean inProgress) {
         isInProgress = inProgress;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Mission mission = (Mission) o;
+
+        if (isInProgress != mission.isInProgress) return false;
+        if (isClientMission != mission.isClientMission) return false;
+        if (missionType != mission.missionType) return false;
+        if (missionAircraft != null ? !missionAircraft.equals(mission.missionAircraft) : mission.missionAircraft != null)
+            return false;
+        if (missionWaypoints != null ? !missionWaypoints.equals(mission.missionWaypoints) : mission.missionWaypoints != null)
+            return false;
+        return plannedMissionDate != null ? plannedMissionDate.equals(mission.plannedMissionDate) : mission.plannedMissionDate == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = missionType != null ? missionType.hashCode() : 0;
+        result = 31 * result + (missionAircraft != null ? missionAircraft.hashCode() : 0);
+        result = 31 * result + (missionWaypoints != null ? missionWaypoints.hashCode() : 0);
+        result = 31 * result + (plannedMissionDate != null ? plannedMissionDate.hashCode() : 0);
+        result = 31 * result + (isInProgress ? 1 : 0);
+        result = 31 * result + (isClientMission ? 1 : 0);
+        return result;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ui.containers;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import sim.domain.Aircraft;
 import sim.domain.Mission;
+import sim.domain.UnitGroup;
+import sim.main.DynamicCampaignSim;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -26,11 +29,18 @@ import sim.domain.Mission;
  */
 class ActiveMissionPanel extends JPanel {
     private Mission plannedMission;
+    private boolean isSelected = false;
 
-    ActiveMissionPanel(Mission plannedMission) {
+    ActiveMissionPanel(DynamicCampaignSim campaign, Mission plannedMission) {
+        // Set the layout and the border, if the mission was selected, indicate that
         this.plannedMission = plannedMission;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createRaisedBevelBorder()));
+
+        if(plannedMission.equals(campaign.getCurrentlySelectedMission())) {
+            setSelected();
+            isSelected = true;
+        }
 
         JPanel topHalf = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topHalf.add(new JLabel("Type: " + plannedMission.getMissionType().getTaskName()));
@@ -46,6 +56,16 @@ class ActiveMissionPanel extends JPanel {
         setPreferredSize(new Dimension(300, 70));
         add(topHalf, BorderLayout.NORTH);
         add(bottomHalf, BorderLayout.CENTER);
+    }
+
+    public void setSelected() {
+        if(!isSelected) {
+            setBorder(BorderFactory.createCompoundBorder(getBorder(), BorderFactory.createLineBorder(Color.GREEN)));
+        } else {
+            setBorder(null);
+            setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createRaisedBevelBorder()));
+            setBorder(BorderFactory.createCompoundBorder(getBorder(), BorderFactory.createLineBorder(Color.GREEN)));
+        }
     }
 
     public Mission getPlannedMission() {

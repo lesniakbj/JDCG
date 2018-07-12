@@ -266,10 +266,10 @@ public class NewCampaignPanel extends JPanel {
     private JPanel generateFactionTable(FactionSide side) {
         // Load the list of factions for display
         List<FactionType> defaultFactionTypeList;
-        if(side == BLUEFOR) {
-            defaultFactionTypeList = Arrays.stream(FactionType.values()).filter((factionType) -> factionType == FactionType.USA).collect(Collectors.toList());
+        if(side.equals(BLUEFOR)) {
+            defaultFactionTypeList = Arrays.stream(FactionType.values()).filter((factionType) -> factionType.equals(FactionType.USA)).collect(Collectors.toList());
         } else {
-            defaultFactionTypeList = Arrays.stream(FactionType.values()).filter((factionType) -> factionType == FactionType.RUSSIA).collect(Collectors.toList());
+            defaultFactionTypeList = Arrays.stream(FactionType.values()).filter((factionType) -> factionType.equals(FactionType.RUSSIA)).collect(Collectors.toList());
         }
 
         // Create the panel

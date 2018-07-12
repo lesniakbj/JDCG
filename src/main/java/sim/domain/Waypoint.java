@@ -56,4 +56,40 @@ public class Waypoint {
     public int getHeight() {
         return height;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Waypoint waypoint = (Waypoint) o;
+
+        if (Double.compare(waypoint.locationX, locationX) != 0) return false;
+        if (Double.compare(waypoint.locationY, locationY) != 0) return false;
+        if (speedMilesPerHour != waypoint.speedMilesPerHour) return false;
+        return height == waypoint.height;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(locationX);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(locationY);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + speedMilesPerHour;
+        result = 31 * result + height;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Waypoint{" +
+                "locationX=" + locationX +
+                ", locationY=" + locationY +
+                ", speedMilesPerHour=" + speedMilesPerHour +
+                ", height=" + height +
+                '}';
+    }
 }

@@ -90,12 +90,27 @@ public class JDCGUIFrame extends JFrame {
     // Main Campaign State
     private DynamicCampaignSim campaign;
     private File saveFile;
-    private Mission selectedMission;
 
     private JDCGUIFrame() {
         // Init local elements
         initLocalElements();
         pack();
+
+        // Setup the window closing listener
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int option = JOptionPane.showConfirmDialog(null,"Are you sure you want to leave Campaign Creation without saving?");
+                switch(option) {
+                    case JOptionPane.OK_OPTION:
+                        instance.dispose();
+                        break;
+                    case JOptionPane.NO_OPTION:
+                    case JOptionPane.CANCEL_OPTION:
+                        break;
+                }
+            }
+        });
 
         // Set the general characteristics of the frame
         setBackground(Color.GRAY);
@@ -229,8 +244,6 @@ public class JDCGUIFrame extends JFrame {
                     break;
                 case OPEN:
                     handleOpenCampaignMenu();
-                    break;
-                case OPEN_RECENT:
                     break;
                 case SAVE:
                     handleSaveCampaignMenu();
@@ -477,7 +490,6 @@ public class JDCGUIFrame extends JFrame {
             campaignImage = new JPanel(new BorderLayout());
             int imageWidth = calculatedWidth - 350;
             int imageHeight = (int) (imageWidth * MAP_IMAGE_HEIGHT_RATIO);
-            loadCampaignImage(imageWidth, imageHeight, padding, bevel);
 
             // Create the panel that will hold the actions that can be done the campaign
             campaignActions = new JPanel(new BorderLayout());
@@ -497,7 +509,7 @@ public class JDCGUIFrame extends JFrame {
             campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER), BorderLayout.NORTH);
             JPanel missionPanel = new JPanel();
             for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
-                ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(mission);
+                ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(campaign, mission);
                 sampleMissionPanel.addMouseListener(new ActiveMissionClickListener());
                 missionPanel.add(sampleMissionPanel);
             }
@@ -547,6 +559,7 @@ public class JDCGUIFrame extends JFrame {
             campaignStatus.add(buttonContainer);
             campaignStatus.add(Box.createHorizontalGlue());
 
+            loadCampaignImage(imageWidth, imageHeight, padding, bevel);
             add(campaignActions, BorderLayout.NORTH);
             add(campaignImage, BorderLayout.WEST);
             add(campaignPlannedActions, BorderLayout.EAST);
@@ -578,7 +591,7 @@ public class JDCGUIFrame extends JFrame {
                 Color enemyColor = new Color(255, 0, 0, 200);
                 Color friendlyColor = new Color(38, 144, 150, 200);
                 Color selectedColor = new Color(229, 225, 24, 217);
-                Color mainColor = missionGroup.getSide() == FactionSide.BLUEFOR ? friendlyColor : enemyColor;
+                Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? friendlyColor : enemyColor;
 
                 int pointX = (int)missionGroup.getMapXLocation();
                 int pointY = (int)missionGroup.getMapYLocation();
@@ -593,7 +606,7 @@ public class JDCGUIFrame extends JFrame {
                 g.drawRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
 
                 // Draw the packages waypoints' if it is selected
-                if(selectedMission == mission) {
+                if(campaign.getCurrentlySelectedMission().equals(mission)) {
                     for (Waypoint waypoint : mission.getMissionWaypoints()) {
                         double waypointX = waypoint.getLocationX();
                         double waypointY = waypoint.getLocationY();
@@ -606,8 +619,8 @@ public class JDCGUIFrame extends JFrame {
 
                         g.setColor(selectedColor);
                         g.setStroke(dashed);
-                        g.drawLine((int) (pointX * scaleX) - 10, (int) (pointY * scaleY) - 10, (int) (waypointX * scaleX) - 10,
-                                (int) (waypointY * scaleY) - 10);
+                        g.drawLine((int) (pointX * scaleX), (int) (pointY * scaleY), (int) (waypointX * scaleX),
+                                (int) (waypointY * scaleY));
                     }
                 }
             }
@@ -687,10 +700,10 @@ public class JDCGUIFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 ActiveMissionPanel panel = (ActiveMissionPanel) e.getSource();
-                selectedMission = panel.getPlannedMission();
+                campaign.setCurrentlySelectedMission(panel.getPlannedMission());
 
                 // Indicate that we selected a mission with an outline
-                panel.setBorder(BorderFactory.createCompoundBorder(panel.getBorder(), BorderFactory.createLineBorder(Color.GREEN)));
+                panel.setSelected();
 
                 // Since we selected a mission, reload the image panel
                 Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
