@@ -606,7 +606,7 @@ public class JDCGUIFrame extends JFrame {
                 g.drawRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
 
                 // Draw the packages waypoints' if it is selected
-                if(campaign.getCurrentlySelectedMission().equals(mission)) {
+                if(campaign.getCurrentlySelectedMission() != null && campaign.getCurrentlySelectedMission().equals(mission)) {
                     for (Waypoint waypoint : mission.getMissionWaypoints()) {
                         double waypointX = waypoint.getLocationX();
                         double waypointY = waypoint.getLocationY();

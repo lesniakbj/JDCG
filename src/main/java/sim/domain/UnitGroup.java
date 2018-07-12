@@ -1,6 +1,7 @@
 package sim.domain;
 
 import gen.domain.enums.FactionSide;
+import gen.domain.enums.MapType;
 import sim.util.IDGenerator;
 
 import java.util.List;
@@ -20,12 +21,14 @@ import java.util.List;
 public class UnitGroup<T extends SimUnit> extends SimUnit {
     private int id;
     private FactionSide side;
+    private MapType mapType;
     private List<T> groupUnits;
 
     public UnitGroup(List<T> groupUnits) {
         this.id = IDGenerator.generateNextId(UnitGroup.class);
         this.groupUnits = groupUnits;
         this.side = FactionSide.BLUEFOR;
+        this.mapType = MapType.PERSIAN_GULF;
         this.setDirection(0.0);
         this.setMapXLocation(0.0);
         this.setMapYLocation(0.0);
@@ -55,6 +58,12 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
     @Override
     void updateStep() {
         // Update the entire group here
+        // double xLoc = getMapXLocation();
+        // double yLoc = getMapYLocation();
+        // double speed = getSpeedMilesPerHour();
+        // double direction = getDirection();
+
+        // double pixels = mapType.scaleDistance();
     }
 
     @Override

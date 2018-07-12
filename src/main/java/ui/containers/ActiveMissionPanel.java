@@ -66,6 +66,7 @@ class ActiveMissionPanel extends JPanel {
             setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createRaisedBevelBorder()));
             setBorder(BorderFactory.createCompoundBorder(getBorder(), BorderFactory.createLineBorder(Color.GREEN)));
         }
+        isSelected = true;
     }
 
     public Mission getPlannedMission() {
