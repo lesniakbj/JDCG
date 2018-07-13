@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+
 import sim.domain.Aircraft;
 import sim.domain.Mission;
 import sim.domain.UnitGroup;
@@ -31,15 +33,16 @@ class ActiveMissionPanel extends JPanel {
     private Mission plannedMission;
     private boolean isSelected = false;
 
+    private static final Border DEFAULT_BORDER = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createRaisedBevelBorder());
+
     ActiveMissionPanel(DynamicCampaignSim campaign, Mission plannedMission) {
         // Set the layout and the border, if the mission was selected, indicate that
         this.plannedMission = plannedMission;
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createRaisedBevelBorder()));
+        setBorder(DEFAULT_BORDER);
 
         if(plannedMission.equals(campaign.getCurrentlySelectedMission())) {
             setSelected();
-            isSelected = true;
         }
 
         JPanel topHalf = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -59,17 +62,20 @@ class ActiveMissionPanel extends JPanel {
     }
 
     public void setSelected() {
-        if(!isSelected) {
-            setBorder(BorderFactory.createCompoundBorder(getBorder(), BorderFactory.createLineBorder(Color.GREEN)));
-        } else {
-            setBorder(null);
-            setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createRaisedBevelBorder()));
-            setBorder(BorderFactory.createCompoundBorder(getBorder(), BorderFactory.createLineBorder(Color.GREEN)));
-        }
+        setBorder(BorderFactory.createCompoundBorder(DEFAULT_BORDER, BorderFactory.createLineBorder(Color.GREEN)));
         isSelected = true;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 
     public Mission getPlannedMission() {
         return plannedMission;
+    }
+
+    public void unselect() {
+        setBorder(DEFAULT_BORDER);
+        isSelected = false;
     }
 }

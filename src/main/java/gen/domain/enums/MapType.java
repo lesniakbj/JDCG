@@ -7,7 +7,7 @@ import java.util.Map;
 
 public enum MapType {
     CAUCASUS("Caucasus", null, null, null, null, null, 0.0, 0.0, 0.0),
-    PERSIAN_GULF("Persian Gulf", new Rectangle(-123123.1, -12312313.919, 191930.202, 39193.123), new Pair<>(10, 22), new Pair<>(18, 36),  new Pair<>(22, 39), new Pair<>(12, 30), 2.3162838, 2.37132, 2.148499),
+    PERSIAN_GULF("Persian Gulf", new Rectangle(-123123.1, -12312313.919, 191930.202, 39193.123), new Pair<>(10, 22), new Pair<>(18, 36),  new Pair<>(22, 39), new Pair<>(12, 30), 2.218859292829, (1 / .42), (1 / .43)),
     NEVADA("Nevada", null, null, null, null, null, 0.0, 0.0, 0.0),
     NORMANDY("Normandy", null, null, null, null, null, 0.0, 0.0, 0.0);
 

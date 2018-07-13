@@ -5,15 +5,12 @@ import static ui.util.ImageScaleUtil.tryLoadImage;
 
 import gen.domain.GameMap;
 import gen.domain.enums.AirfieldType;
-import gen.domain.enums.FactionSide;
-import java.awt.BasicStroke;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -55,11 +52,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Mission;
-import sim.domain.UnitGroup;
-import sim.domain.Waypoint;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 import sim.save.JSONUtil;
+import ui.util.DrawUtil;
 import sim.util.MathUtil;
 import ui.constants.CoalitionActions;
 import ui.constants.FileActions;
@@ -470,6 +466,7 @@ public class JDCGUIFrame extends JFrame {
         private JLabel campaignSortiesLabel;
         private JLabel campaignTargetsLabel;
         private JLabel campaignObjectivesLabel;
+        private List<ActiveMissionPanel> campaignActiveMissions;
 
         // Settings
         private DynamicCampaignSim campaign;
@@ -481,6 +478,7 @@ public class JDCGUIFrame extends JFrame {
         }
 
         CampaignPanel(DynamicCampaignSim campaign) {
+            campaignActiveMissions = new ArrayList<>();
             setLayout(new BorderLayout());
             setPreferredSize(new Dimension(calculatedWidth, calculatedHeight));
             this.campaign = campaign;
@@ -513,10 +511,22 @@ public class JDCGUIFrame extends JFrame {
                 ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(campaign, mission);
                 sampleMissionPanel.addMouseListener(new ActiveMissionClickListener());
                 missionPanel.add(sampleMissionPanel);
+                campaignActiveMissions.add(sampleMissionPanel);
             }
             campaignPlannedActions.add(missionPanel, BorderLayout.CENTER);
             JPanel missionActionButtonPanel = new JPanel();
-            missionActionButtonPanel.add(new JButton("Clear Selection"));
+            JButton clearMissionButton = new JButton("Clear Selection");
+            clearMissionButton.addActionListener(l -> {
+                for(ActiveMissionPanel mission : campaignActiveMissions) {
+                    if(mission.isSelected()) {
+                        mission.unselect();
+                    }
+                }
+                campaign.setCurrentlySelectedMission(null);
+                loadCampaignImage(imageWidth, imageHeight, padding, bevel);
+                refreshUiElements();
+            });
+            missionActionButtonPanel.add(clearMissionButton);
             missionActionButtonPanel.add(new JButton("Recall Flight"));
             campaignPlannedActions.add(missionActionButtonPanel, BorderLayout.SOUTH);
 
@@ -584,61 +594,9 @@ public class JDCGUIFrame extends JFrame {
             Graphics2D g = (Graphics2D)image.getGraphics();
 
             // First draw any of the missions
-            for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
-                UnitGroup missionGroup = mission.getMissionAircraft();
+            DrawUtil.drawCampaignAirbases(campaign, g);
+            DrawUtil.drawCampaignSelectedMission(campaign, g);
 
-                // Set our colors and other visual elements up based on the faction
-                Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
-                Stroke normal = g.getStroke();
-                Color enemyColor = new Color(255, 0, 0, 200);
-                Color friendlyColor = new Color(38, 144, 150, 200);
-                Color selectedColor = new Color(229, 225, 24, 217);
-                Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? friendlyColor : enemyColor;
-
-                int pointX = (int)missionGroup.getMapXLocation();
-                int pointY = (int)missionGroup.getMapYLocation();
-                double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
-                double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
-                log.debug(String.format("Drawing mission package!: %d/%d", (int)(pointX * scaleX), (int)(pointY * scaleY)));
-
-                // Draw the package
-                g.setColor(mainColor);
-                g.fillRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
-                g.setColor(Color.black);
-                g.drawRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
-
-                // Draw the packages waypoints' if it is selected
-                if(campaign.getCurrentlySelectedMission() != null && campaign.getCurrentlySelectedMission().equals(mission)) {
-                    double lastWaypointLocationX = pointX;
-                    double lastWaypointLocationY = pointY;
-                    for (Waypoint waypoint : mission.getMissionWaypoints()) {
-                        double waypointX = waypoint.getLocationX();
-                        double waypointY = waypoint.getLocationY();
-                        log.debug(
-                                String.format("Drawing mission waypoint!: %d/%d", (int) (waypointX * scaleX), (int) (waypointY * scaleY)));
-                        g.setColor(mainColor);
-                        g.fillOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);
-                        g.setColor(selectedColor);
-                        g.drawOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);
-                        g.setColor(Color.BLACK);
-                        g.drawString(waypoint.getWaypointType().name(), (int) (waypointX * scaleX) - 20, (int) (waypointY * scaleY) - 20);
-
-                        g.setColor(selectedColor);
-                        g.setStroke(dashed);
-                        g.drawLine((int) (lastWaypointLocationX * scaleX), (int) (lastWaypointLocationY * scaleY), (int) (waypointX * scaleX),
-                                (int) (waypointY * scaleY));
-                        g.setStroke(normal);
-
-                        lastWaypointLocationX = waypointX;
-                        lastWaypointLocationY = waypointY;
-                    }
-
-                    g.setColor(selectedColor);
-                    g.setStroke(dashed);
-                    g.drawLine((int) (lastWaypointLocationX * scaleX), (int) (lastWaypointLocationY * scaleY), (int) (pointX * scaleX),
-                            (int) (pointY * scaleY));
-                }
-            }
             g.dispose();
             return image;
         }
@@ -675,11 +633,11 @@ public class JDCGUIFrame extends JFrame {
             }
 
             private void debugDistancesAndAngle(AirfieldType airfieldType) {
-                Pair<Double, Double> destPair = AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition();
+                Pair<Double, Double> destPair = AirfieldType.LAR_AIRBASE.getAirfieldMapPosition();
                 Pair<Double, Double> sourcePair = airfieldType.getAirfieldMapPosition();
                 double dist = MathUtil.getDistance(destPair, sourcePair);
                 double angle = MathUtil.getAngleNorthFace(destPair, sourcePair);
-                log.debug(String.format("Distance from click to Sir Abu Nuayr: %f mi, %f deg", airfieldType.getMap().scaleDistance(dist), angle));
+                log.debug(String.format("Distance from %s to AL_DHAFRA_AIRBASE: %f px, %f mi, %f deg", airfieldType.name(), dist, airfieldType.getMap().scaleDistance(dist), angle));
             }
 
             @Override
@@ -710,7 +668,9 @@ public class JDCGUIFrame extends JFrame {
                 campaign.setCurrentlySelectedMission(panel.getPlannedMission());
 
                 // Indicate that we selected a mission with an outline
-                panel.setSelected();
+                if(!panel.isSelected()) {
+                    panel.setSelected();
+                }
 
                 // Since we selected a mission, reload the image panel
                 Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);

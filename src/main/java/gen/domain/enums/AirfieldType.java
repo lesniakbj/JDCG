@@ -1,6 +1,7 @@
 package gen.domain.enums;
 
 import javafx.util.Pair;
+import sim.util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +14,22 @@ import java.util.stream.Stream;
 
 public enum AirfieldType {
     AL_DHAFRA_AIRBASE(0, MapType.PERSIAN_GULF, "P:[01..07, 24..35, 48..59, 87..99, 100, 190] | H:[01..07, 87..99, 190, 191] | B:[91, 93, 94, 96, 98]", new Pair<>(-123.0, -123.0), new Pair<>(544.0, 633.0), null, Arrays.asList("130R", "130L")),
-    SIR_ABU_NUAYR(1, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(505.0, 475.0), null, Arrays.asList("101R")),
-    AL_MAKTOUM_INTL(2, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(631.0, 527.0), null, Arrays.asList("101R"));
+    SIR_ABU_NUAYR(1, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(504.0, 486.0), null, Arrays.asList("101R")),
+    AL_MAKTOUM_INTL(2, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(630.0, 539.0), null, Arrays.asList("101R")),
+    AL_MINHAD_AB(3, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(658.0, 518.0), null, Arrays.asList("101R")),
+    FURJAIRAH_INTL(4, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(790.0, 507.0), null, Arrays.asList("101R")),
+    DUBAI_INTL(5, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(659.0, 484.0), null, Arrays.asList("101R")),
+    SHARJAH_INTL(6, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(680.0, 472.0), null, Arrays.asList("101R")),
+    ABU_MUSA_ISLAND_AIRPORT(7, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(614.0, 386.0), null, Arrays.asList("101R")),
+    SIRRI_ISLAND(8, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(547.0, 380.0), null, Arrays.asList("101R")),
+    KHASAB(9, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(779.0, 343.0), null, Arrays.asList("101R")),
+    TUNB_ISLAND_AFB(10, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(654.0, 329.0), null, Arrays.asList("101R")),
+    TUNB_KOCHAK(11, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(631.0, 330.0), null, Arrays.asList("101R")),
+    BANDAR_LENGEH(12, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(588.0, 286.0), null, Arrays.asList("101R")),
+    QESHM_ISLAND(13, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(734.0, 253.0), null, Arrays.asList("101R")),
+    HAVADARVA(14, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(771.0, 191.0), null, Arrays.asList("101R")),
+    BANDAR_ABBAS_INTL(15, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(799.0, 181.0), null, Arrays.asList("101R")),
+    LAR_AIRBASE(16, MapType.PERSIAN_GULF, "P:[01..07] | H:[] | B:[]", new Pair<>(-123.0, -123.0), new Pair<>(532.0, 109.0), null, Arrays.asList("101R"));
 
     // Passed Data Members
     private int id;
@@ -101,6 +116,10 @@ public enum AirfieldType {
         }
 
         return parsedInts;
+    }
+
+    public Double getDistanceTo(AirfieldType airfieldType) {
+        return MathUtil.getDistance(this.getAirfieldMapPosition(), airfieldType.getAirfieldMapPosition());
     }
 
     public MapType getMap() {

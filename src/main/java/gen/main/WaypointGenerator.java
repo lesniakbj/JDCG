@@ -36,15 +36,15 @@ public class WaypointGenerator {
         boolean startLower = (startX > missionObjX);
         log.debug(startLower);
         if(startLower) {
-            ip = new Waypoint(missionObjX - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, true, WaypointType.IP);
-            ob = new Waypoint(missionObjX + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, true, WaypointType.OB);
+            ip = new Waypoint(missionObjX - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, false, WaypointType.IP);
+            ob = new Waypoint(missionObjX + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, false, WaypointType.OB);
         } else {
-            ip = new Waypoint(missionObjX + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, true, WaypointType.IP);
-            ob = new Waypoint(missionObjX - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, true, WaypointType.OB);
+            ip = new Waypoint(missionObjX + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, false, WaypointType.IP);
+            ob = new Waypoint(missionObjX - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, false, WaypointType.OB);
         }
 
         // If the distance to the target is greater than 70 miles, we will add nav points
-        boolean generateNavPoints = map.scaleDistance(MathUtil.getDistance(new Pair<>(startX, startY), new Pair<>(missionObjX, missionObjY))) > 70;
+        boolean generateNavPoints = false; // map.scaleDistance(MathUtil.getDistance(new Pair<>(startX, startY), new Pair<>(missionObjX, missionObjY))) > 70;
         Waypoint navIb, navOb;
         if(generateNavPoints) {
             int xDeviation = (10 + DynamicCampaignSim.getRandomGen().nextInt(10));
@@ -53,8 +53,8 @@ public class WaypointGenerator {
                 navIb = new Waypoint(ip.getLocationX() + (xDeviation * -1), ip.getLocationY() + yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
                 navOb = new Waypoint(ob.getLocationX() + xDeviation, ob.getLocationY() + yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
             } else {
-                navIb = new Waypoint(ip.getLocationX() + (xDeviation * -1), ip.getLocationY() + yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
-                navOb = new Waypoint(ob.getLocationX() + xDeviation, ob.getLocationY() + yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
+                navIb = new Waypoint(ip.getLocationX() + xDeviation, ip.getLocationY() - yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
+                navOb = new Waypoint(ob.getLocationX() + (xDeviation * -1), ob.getLocationY() - yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
             }
             return Arrays.asList(start, navIb, ip, mission, ob, navOb);
         }

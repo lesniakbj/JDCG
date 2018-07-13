@@ -32,6 +32,7 @@ public class DynamicCampaignSim {
         this.simSettings = new GlobalSimSettings();
         this.campaignSettings = new CampaignSettings();
         this.blueforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
+        this.redforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.currentlySelectedMission = null;
         this.currentCampaignDate = new Date();
     }
@@ -84,6 +85,14 @@ public class DynamicCampaignSim {
         return randomGen;
     }
 
+    public CoalitionManager getBlueforCoalitionManager() {
+        return blueforCoalitionManager;
+    }
+
+    public CoalitionManager getRedforCoalitionManager() {
+        return redforCoalitionManager;
+    }
+
     public void stepSimulation() {
         log.debug("Stepping sim...");
         int minutesToStep = simSettings.getMinutesPerSimulationStep();
@@ -105,6 +114,8 @@ public class DynamicCampaignSim {
 
         // First, generate the airbases that are going to be assigned to each team based on the settings
         Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
+        blueforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.BLUEFOR));
+        redforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.REDFOR));
 
         // Then, generate all of the static ground units that exist within this campaign
 
