@@ -177,6 +177,7 @@ class CampaignPanel extends JPanel {
 
         // First draw any of the missions
         DrawUtil.drawCampaignAirbases(campaign, g);
+        DrawUtil.drawActiveMissions(campaign, g);
         DrawUtil.drawCampaignSelectedMission(campaign, g);
 
         g.dispose();

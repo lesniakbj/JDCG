@@ -1,5 +1,6 @@
 package ui.util;
 
+import sim.domain.Aircraft;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.WaypointType;
 import org.apache.logging.log4j.LogManager;
@@ -28,23 +29,18 @@ public class DrawUtil {
     public static void drawCampaignSelectedMission(DynamicCampaignSim campaign, Graphics2D g) {
         if(campaign.getCurrentlySelectedMission() != null) {
             Mission mission = campaign.getCurrentlySelectedMission();
-            UnitGroup missionGroup = mission.getMissionAircraft();
+            UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();
 
             // Set our colors and other visual elements up based on the faction
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
             Stroke normal = g.getStroke();
             Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
 
+            // Get the locations of relevant objects
             int pointX = (int)missionGroup.getMapXLocation();
             int pointY = (int)missionGroup.getMapYLocation();
             double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
             double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
-
-            // Draw the package
-            //g.setColor(mainColor);
-            //g.drawPolygon((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
-            //g.setColor(Color.black);
-            //g.drawPolygon((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
 
             // Draw the packages waypoints' if it is selected
             if(campaign.getCurrentlySelectedMission() != null && campaign.getCurrentlySelectedMission().equals(mission)) {
@@ -105,6 +101,24 @@ public class DrawUtil {
             g.fillRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
             g.setColor(Color.black);
             g.drawRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
+        }
+    }
+
+    public static void drawActiveMissions(DynamicCampaignSim campaign, Graphics2D g) {
+        for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
+            UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();
+            Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
+
+            int pointX = (int)missionGroup.getMapXLocation();
+            int pointY = (int)missionGroup.getMapYLocation() - GUTTER_HEIGHT;
+            double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+            double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
+            // Draw the package
+            g.setColor(mainColor);
+            g.drawLine((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10, 20, 20);
+            g.setColor(Color.black);
+            g.drawLine((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
         }
     }
 }
