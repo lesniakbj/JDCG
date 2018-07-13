@@ -1,10 +1,8 @@
 package gen.domain.enums;
 
 import com.google.common.collect.ImmutableMap;
-
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

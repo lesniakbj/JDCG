@@ -29,13 +29,13 @@ import sim.main.DynamicCampaignSim;
  *
  * Created by Brendan.Lesniak on 7/11/2018.
  */
-class ActiveMissionPanel extends JPanel {
+public class ActiveMissionPanel extends JPanel {
     private Mission plannedMission;
     private boolean isSelected = false;
 
     private static final Border DEFAULT_BORDER = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createRaisedBevelBorder());
 
-    ActiveMissionPanel(DynamicCampaignSim campaign, Mission plannedMission) {
+    public ActiveMissionPanel(DynamicCampaignSim campaign, Mission plannedMission) {
         // Set the layout and the border, if the mission was selected, indicate that
         this.plannedMission = plannedMission;
         setLayout(new BorderLayout());
