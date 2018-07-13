@@ -61,6 +61,7 @@ public class DrawUtil {
                     } else {
                         g.setColor(mainColor);
                     }
+
                     g.fillOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);
                     g.setColor(ACCENT_COLOR);
                     g.drawOval((int) (waypointX * scaleX) - 10, (int) (waypointY * scaleY) - 10, 20, 20);

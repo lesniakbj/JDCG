@@ -10,6 +10,7 @@ public class Airfield {
     private AirfieldType airfieldType;
     private List<Munition> munitionStockpile;
     private List<SimUnit> criticalStructures;
+    private List<UnitGroup<Aircraft>> stationedAircraft;
 
     public FactionSide getOwnerSide() {
         return ownerSide;
@@ -41,5 +42,13 @@ public class Airfield {
 
     public void setCriticalStructures(List<SimUnit> criticalStructures) {
         this.criticalStructures = criticalStructures;
+    }
+
+    public List<UnitGroup<Aircraft>> getStationedAircraft() {
+        return stationedAircraft;
+    }
+
+    public void setStationedAircraft(List<UnitGroup<Aircraft>> stationedAircraft) {
+        this.stationedAircraft = stationedAircraft;
     }
 }
