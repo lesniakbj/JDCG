@@ -1,7 +1,7 @@
 package sim.domain;
 
-import gen.domain.enums.AirfieldType;
-import gen.domain.enums.FactionSide;
+import sim.domain.enums.AirfieldType;
+import sim.domain.enums.FactionSide;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package sim.main;
 
-import gen.domain.enums.FactionSide;
-import gen.main.CampaignGenerator;
+import sim.domain.enums.FactionSide;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;
 import sim.domain.Mission;
 import sim.domain.UnitGroup;
+import sim.gen.CampaignGenerator;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);

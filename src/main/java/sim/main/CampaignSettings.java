@@ -1,12 +1,12 @@
 package sim.main;
 
-import gen.domain.enums.CampaignType;
-import gen.domain.Coalition;
-import gen.domain.enums.ConflictEraType;
-import gen.domain.enums.FactionSide;
-import gen.domain.GameMap;
-import gen.domain.enums.MapType;
-import gen.domain.enums.SquadronType;
+import sim.domain.enums.CampaignType;
+import sim.domain.Coalition;
+import sim.domain.enums.ConflictEraType;
+import sim.domain.enums.FactionSide;
+import sim.domain.GameMap;
+import sim.domain.enums.MapType;
+import sim.domain.enums.SquadronType;
 
 import java.util.ArrayList;
 

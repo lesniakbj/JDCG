@@ -1,4 +1,4 @@
-package gen.domain.enums;
+package sim.domain.enums;
 
 public enum CampaignType {
     OFFENSIVE("Offensive Campaign", "<li>Very few starting Airbases</li><li>Large number of Enemy Air Defences</li></ul>"),

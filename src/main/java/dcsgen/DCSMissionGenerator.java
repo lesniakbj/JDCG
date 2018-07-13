@@ -1,4 +1,4 @@
-package gen.domain.enums;
+package dcsgen;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -10,11 +10,8 @@ package gen.domain.enums;
  * recording or otherwise) without prior written permission from Calabrio Software.
  * <p>
  *
- * Created by Brendan.Lesniak on 7/11/2018.
+ * Created by Brendan.Lesniak on 7/13/2018.
  */
-public enum  MissionStartType {
-    IN_AIR,
-    RAMP,
-    PARKING_HOT,
-    PARKING_COLD;
+public class DCSMissionGenerator {
+
 }

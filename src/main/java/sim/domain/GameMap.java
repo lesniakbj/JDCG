@@ -1,8 +1,8 @@
-package gen.domain;
+package sim.domain;
 
-import gen.domain.enums.AirfieldType;
-import gen.domain.enums.MapType;
 import java.util.List;
+import sim.domain.enums.AirfieldType;
+import sim.domain.enums.MapType;
 
 public class GameMap {
     private MapType mapSelection;

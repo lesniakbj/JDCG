@@ -1,7 +1,7 @@
 package ui.util;
 
-import gen.domain.enums.FactionSide;
-import gen.domain.enums.WaypointType;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.WaypointType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;

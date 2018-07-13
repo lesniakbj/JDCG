@@ -1,6 +1,6 @@
 package sim.domain;
 
-import gen.domain.enums.MunitionType;
+import sim.domain.enums.MunitionType;
 
 public class Munition {
     private MunitionType munitionType;

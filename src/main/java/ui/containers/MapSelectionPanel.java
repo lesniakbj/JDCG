@@ -1,6 +1,6 @@
 package ui.containers;
 
-import gen.domain.enums.MapType;
+import sim.domain.enums.MapType;
 
 import javax.swing.JPanel;
 

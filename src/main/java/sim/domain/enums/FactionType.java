@@ -1,4 +1,4 @@
-package gen.domain.enums;
+package sim.domain.enums;
 
 import com.sun.istack.internal.NotNull;
 

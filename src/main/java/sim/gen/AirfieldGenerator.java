@@ -1,10 +1,10 @@
-package gen.main;
+package sim.gen;
 
-import gen.domain.GameMap;
-import gen.domain.enums.AirfieldType;
-import gen.domain.enums.CampaignType;
-import gen.domain.enums.FactionSide;
-import gen.domain.enums.MapType;
+import sim.domain.GameMap;
+import sim.domain.enums.AirfieldType;
+import sim.domain.enums.CampaignType;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.MapType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;

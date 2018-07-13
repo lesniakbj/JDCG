@@ -74,10 +74,11 @@ public class JDCGUIFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int option = JOptionPane.showConfirmDialog(null,"Are you sure you want to leave Campaign Creation without saving?");
+                int option = JOptionPane.showConfirmDialog(null,"Are you sure you want to leave the Campaign without saving?");
+                log.debug(option);
                 switch(option) {
                     case JOptionPane.OK_OPTION:
-                        instance.dispose();
+                        dispose();
                         break;
                     case JOptionPane.NO_OPTION:
                     case JOptionPane.CANCEL_OPTION:

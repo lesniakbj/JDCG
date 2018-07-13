@@ -1,15 +1,14 @@
 package sim.domain;
 
-import gen.domain.enums.AircraftType;
-import gen.domain.enums.AirfieldType;
-import gen.domain.enums.MapType;
-import gen.domain.enums.TaskType;
-import gen.main.WaypointGenerator;
+import sim.domain.enums.AircraftType;
+import sim.domain.enums.AirfieldType;
+import sim.domain.enums.MapType;
+import sim.domain.enums.TaskType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import sim.gen.WaypointGenerator;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

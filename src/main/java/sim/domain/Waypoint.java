@@ -1,6 +1,6 @@
 package sim.domain;
 
-import gen.domain.enums.WaypointType;
+import sim.domain.enums.WaypointType;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

@@ -1,32 +1,25 @@
-package gen.main;
+package sim.gen;
 
-import gen.domain.Coalition;
-import gen.domain.GameMap;
-import gen.domain.enums.AircraftType;
-import gen.domain.enums.AirfieldType;
-import gen.domain.enums.CampaignType;
-import gen.domain.enums.FactionSide;
-import gen.domain.enums.FactionStrength;
-import gen.domain.enums.FactionType;
-import gen.domain.enums.MapType;
-import gen.domain.enums.MunitionType;
-import javafx.util.Pair;
+import sim.domain.Coalition;
+import sim.domain.enums.AircraftType;
+import sim.domain.enums.AirfieldType;
+import sim.domain.enums.CampaignType;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionStrength;
+import sim.domain.enums.FactionType;
+import sim.domain.enums.MapType;
+import sim.domain.enums.MunitionType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;
-import sim.domain.Munition;
 import sim.main.CampaignSettings;
-import sim.util.MathUtil;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static gen.domain.enums.CampaignType.DEFENSIVE;
-import static gen.domain.enums.CampaignType.OFFENSIVE;
+import static sim.domain.enums.CampaignType.DEFENSIVE;
+import static sim.domain.enums.CampaignType.OFFENSIVE;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

@@ -1,6 +1,6 @@
 package sim.domain;
 
-import gen.domain.enums.AircraftType;
+import sim.domain.enums.AircraftType;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

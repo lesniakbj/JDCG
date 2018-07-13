@@ -3,8 +3,8 @@ package ui.containers;
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 import static ui.util.ImageScaleUtil.tryLoadImage;
 
-import gen.domain.GameMap;
-import gen.domain.enums.AirfieldType;
+import sim.domain.GameMap;
+import sim.domain.enums.AirfieldType;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;

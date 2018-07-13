@@ -1,6 +1,6 @@
-package gen.domain;
+package sim.domain;
 
-import gen.domain.enums.FactionType;
+import sim.domain.enums.FactionType;
 import java.util.List;
 
 public class Coalition {

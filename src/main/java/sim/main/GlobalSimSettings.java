@@ -1,6 +1,6 @@
 package sim.main;
 
-import gen.domain.enums.MissionStartType;
+import sim.domain.enums.MissionStartType;
 
 public class GlobalSimSettings {
     private MissionStartType missionStartType;

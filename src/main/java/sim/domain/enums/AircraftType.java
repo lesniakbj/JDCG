@@ -1,17 +1,17 @@
-package gen.domain.enums;
+package sim.domain.enums;
 
 import java.util.List;
 import java.util.Map;
 
-import static gen.domain.enums.StaticLists.CLASSIC_ERAS;
-import static gen.domain.enums.StaticLists.COLD_WAR_ERAS;
-import static gen.domain.enums.StaticLists.EARLY_COLD_WAR_ERAS;
-import static gen.domain.enums.StaticLists.EXTENDED_COLD_WAR;
-import static gen.domain.enums.StaticLists.EXTENDED_ERAS;
-import static gen.domain.enums.StaticLists.FA_18_MUNITIONS;
-import static gen.domain.enums.StaticLists.LATE_COLD_EXTENDED_WAR_ERAS;
-import static gen.domain.enums.StaticLists.LATE_COLD_WAR_ERAS;
-import static gen.domain.enums.StaticLists.MODERN_ERAS;
+import static sim.domain.enums.StaticLists.CLASSIC_ERAS;
+import static sim.domain.enums.StaticLists.COLD_WAR_ERAS;
+import static sim.domain.enums.StaticLists.EARLY_COLD_WAR_ERAS;
+import static sim.domain.enums.StaticLists.EXTENDED_COLD_WAR;
+import static sim.domain.enums.StaticLists.EXTENDED_ERAS;
+import static sim.domain.enums.StaticLists.FA_18_MUNITIONS;
+import static sim.domain.enums.StaticLists.LATE_COLD_EXTENDED_WAR_ERAS;
+import static sim.domain.enums.StaticLists.LATE_COLD_WAR_ERAS;
+import static sim.domain.enums.StaticLists.MODERN_ERAS;
 
 public enum AircraftType {
     A_4("A-4", EXTENDED_ERAS, null),

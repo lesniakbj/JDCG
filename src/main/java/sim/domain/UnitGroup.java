@@ -1,7 +1,7 @@
 package sim.domain;
 
-import gen.domain.enums.FactionSide;
-import gen.domain.enums.MapType;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.MapType;
 import sim.util.IDGenerator;
 
 import java.util.List;

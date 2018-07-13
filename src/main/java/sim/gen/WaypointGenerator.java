@@ -1,14 +1,12 @@
-package gen.main;
+package sim.gen;
 
-import gen.domain.enums.MapType;
-import gen.domain.enums.TaskType;
-import gen.domain.enums.WaypointType;
-import javafx.util.Pair;
+import sim.domain.enums.MapType;
+import sim.domain.enums.TaskType;
+import sim.domain.enums.WaypointType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Waypoint;
 import sim.main.DynamicCampaignSim;
-import sim.util.MathUtil;
 
 import java.util.Arrays;
 import java.util.List;

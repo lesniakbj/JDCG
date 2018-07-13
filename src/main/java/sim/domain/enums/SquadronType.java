@@ -1,24 +1,24 @@
-package gen.domain.enums;
+package sim.domain.enums;
 
 import java.util.List;
 
-import static gen.domain.enums.StaticLists.AIR_FORCE_AIR_SUPERIORITY_AVAILABLE_AIRCRAFT;
-import static gen.domain.enums.StaticLists.AIR_SUPERIORITY;
-import static gen.domain.enums.StaticLists.ALL_TASK_TYPES;
-import static gen.domain.enums.StaticLists.COMPLETE_ERAS;
-import static gen.domain.enums.StaticLists.EXTENDED_ERAS;
-import static gen.domain.enums.StaticLists.FLEET_DEFENSE;
-import static gen.domain.enums.StaticLists.GROUND_STRIKE;
-import static gen.domain.enums.StaticLists.GROUND_STRIKE_COMPLETE_ERAS;
-import static gen.domain.enums.StaticLists.HIGH_RISK_GROUND_STRIKE;
-import static gen.domain.enums.StaticLists.MARINE_FIGHTER_COMPLETE_ERAS;
-import static gen.domain.enums.StaticLists.MARINE_GROUND_STRIKE_COMPLETE_ERAS;
-import static gen.domain.enums.StaticLists.MARINE_STRIKE_FIGHTER_COMPLETE_ERAS;
-import static gen.domain.enums.StaticLists.MODERN_ERAS;
-import static gen.domain.enums.StaticLists.NAVY_COMPLETE_ERA_AIRCRAFT;
-import static gen.domain.enums.StaticLists.NAVY_MODERN_ERA_AIRCRAFT;
-import static gen.domain.enums.StaticLists.STRIKE_FIGHTER;
-import static gen.domain.enums.StaticLists.USER_AVAILABLE_AIRCRAFT;
+import static sim.domain.enums.StaticLists.AIR_FORCE_AIR_SUPERIORITY_AVAILABLE_AIRCRAFT;
+import static sim.domain.enums.StaticLists.AIR_SUPERIORITY;
+import static sim.domain.enums.StaticLists.ALL_TASK_TYPES;
+import static sim.domain.enums.StaticLists.COMPLETE_ERAS;
+import static sim.domain.enums.StaticLists.EXTENDED_ERAS;
+import static sim.domain.enums.StaticLists.FLEET_DEFENSE;
+import static sim.domain.enums.StaticLists.GROUND_STRIKE;
+import static sim.domain.enums.StaticLists.GROUND_STRIKE_COMPLETE_ERAS;
+import static sim.domain.enums.StaticLists.HIGH_RISK_GROUND_STRIKE;
+import static sim.domain.enums.StaticLists.MARINE_FIGHTER_COMPLETE_ERAS;
+import static sim.domain.enums.StaticLists.MARINE_GROUND_STRIKE_COMPLETE_ERAS;
+import static sim.domain.enums.StaticLists.MARINE_STRIKE_FIGHTER_COMPLETE_ERAS;
+import static sim.domain.enums.StaticLists.MODERN_ERAS;
+import static sim.domain.enums.StaticLists.NAVY_COMPLETE_ERA_AIRCRAFT;
+import static sim.domain.enums.StaticLists.NAVY_MODERN_ERA_AIRCRAFT;
+import static sim.domain.enums.StaticLists.STRIKE_FIGHTER;
+import static sim.domain.enums.StaticLists.USER_AVAILABLE_AIRCRAFT;
 
 public enum SquadronType {
     // USA Air Force Squadrons

@@ -1,15 +1,15 @@
 package ui.containers;
 
-import gen.domain.enums.AircraftType;
-import gen.domain.enums.CampaignType;
-import gen.domain.Coalition;
-import gen.domain.enums.ConflictEraType;
-import gen.domain.enums.FactionType;
-import gen.domain.enums.FactionSide;
-import gen.domain.GameMap;
-import gen.domain.enums.MapType;
-import gen.domain.enums.SquadronType;
-import gen.domain.enums.TaskType;
+import sim.domain.enums.AircraftType;
+import sim.domain.enums.CampaignType;
+import sim.domain.Coalition;
+import sim.domain.enums.ConflictEraType;
+import sim.domain.enums.FactionType;
+import sim.domain.enums.FactionSide;
+import sim.domain.GameMap;
+import sim.domain.enums.MapType;
+import sim.domain.enums.SquadronType;
+import sim.domain.enums.TaskType;
 import sim.main.CampaignSettings;
 import ui.util.SpringUtilities;
 
@@ -55,9 +55,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static gen.domain.enums.FactionSide.BLUEFOR;
-import static gen.domain.enums.FactionSide.NEUTRAL;
-import static gen.domain.enums.FactionSide.REDFOR;
+import static sim.domain.enums.FactionSide.BLUEFOR;
+import static sim.domain.enums.FactionSide.NEUTRAL;
+import static sim.domain.enums.FactionSide.REDFOR;
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 import static ui.util.ImageScaleUtil.NORMAL_IMAGE_RATIO;
 import static ui.util.ImageScaleUtil.tryLoadImage;

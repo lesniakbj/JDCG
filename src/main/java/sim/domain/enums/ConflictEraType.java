@@ -1,4 +1,4 @@
-package gen.domain.enums;
+package sim.domain.enums;
 
 public enum ConflictEraType {
     MODERN("Modern Era", "In the Modern Era, the Coalition sees itself against a number of high tech opponents, many of which posses 4th and 4+ Generation Aircraft. Further, advances in AAA and SAM technology have created distinct threats for pilots flying deep into opponents' territories. While the threat level is high, there are many advantages that the Coalition has, from advanced Airframes and Weaponry, to sheer numbers of maintainable aircraft. This Campaign Era is characterized by the following: <ul><li>Modern selection of Aircraft</li><li>Advanced AAA and SAM threats</li><li>A high threat environment from the Air, Sea, and Ground</li>"),
