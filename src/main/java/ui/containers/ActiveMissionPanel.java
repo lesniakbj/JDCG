@@ -1,5 +1,13 @@
 package ui.containers;
 
+import sim.domain.Aircraft;
+import sim.domain.Mission;
+import sim.main.DynamicCampaignSim;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,15 +15,6 @@ import java.awt.FlowLayout;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-
-import sim.domain.Aircraft;
-import sim.domain.Mission;
-import sim.domain.UnitGroup;
-import sim.main.DynamicCampaignSim;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

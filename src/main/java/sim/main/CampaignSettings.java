@@ -1,10 +1,10 @@
 package sim.main;
 
-import sim.domain.enums.CampaignType;
 import sim.domain.Coalition;
+import sim.domain.GameMap;
+import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
 import sim.domain.enums.FactionSide;
-import sim.domain.GameMap;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
 

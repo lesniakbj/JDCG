@@ -1,8 +1,9 @@
 package sim.main;
 
+import sim.domain.Mission;
+
 import java.util.ArrayList;
 import java.util.List;
-import sim.domain.Mission;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

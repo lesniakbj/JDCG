@@ -1,13 +1,14 @@
 package sim.gen;
 
-import sim.domain.enums.MapType;
-import sim.domain.enums.TaskType;
-import sim.domain.enums.WaypointType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Waypoint;
+import sim.domain.enums.MapType;
+import sim.domain.enums.TaskType;
+import sim.domain.enums.WaypointType;
 import sim.main.DynamicCampaignSim;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class WaypointGenerator {
         int waypointAltitude = (taskType.equals(TaskType.LOW_LEVEL_STRIKE)) ? LOW_LEVEL_ALT : MIN_ALT + DynamicCampaignSim.getRandomGen().nextInt(10000);
 
         // Create the first and last Waypoint
-        Waypoint start = new Waypoint(startX, startY, 0, 0, false, WaypointType.START);
+        Waypoint end = new Waypoint(startX, startY, waypointSpeed, waypointAltitude, false, WaypointType.LANDING);
         Waypoint mission = new Waypoint(missionObjX, missionObjY, waypointSpeed, waypointAltitude, true, WaypointType.MISSION);
 
         // Setup the inbound / outbound points
@@ -54,8 +55,8 @@ public class WaypointGenerator {
                 navIb = new Waypoint(ip.getLocationX() + xDeviation, ip.getLocationY() - yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
                 navOb = new Waypoint(ob.getLocationX() + (xDeviation * -1), ob.getLocationY() - yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
             }
-            return Arrays.asList(start, navIb, ip, mission, ob, navOb);
+            return new ArrayList<>(Arrays.asList(navIb, ip, mission, ob, navOb, end));
         }
-        return Arrays.asList(start, ip, mission, ob);
+        return new ArrayList<>(Arrays.asList(ip, mission, ob, end));
     }
 }

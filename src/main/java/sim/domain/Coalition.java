@@ -1,6 +1,7 @@
 package sim.domain;
 
 import sim.domain.enums.FactionType;
+
 import java.util.List;
 
 public class Coalition {

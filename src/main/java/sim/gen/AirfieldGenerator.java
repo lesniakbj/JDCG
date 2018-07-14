@@ -1,14 +1,14 @@
 package sim.gen;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.Airfield;
 import sim.domain.GameMap;
+import sim.domain.Munition;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.MapType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.domain.Airfield;
-import sim.domain.Munition;
 import sim.main.CampaignSettings;
 
 import java.util.ArrayList;

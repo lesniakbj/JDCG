@@ -12,7 +12,7 @@ package sim.domain;
  *
  * Created by Brendan.Lesniak on 7/11/2018.
  */
-public abstract class SimUnit {
+public abstract class SimUnit implements Simable {
     private boolean isClientUnit;
 
     private double speedMilesPerHour;
@@ -20,7 +20,7 @@ public abstract class SimUnit {
     private double mapXLocation;
     private double mapYLocation;
 
-    abstract void updateStep();
+    private int minutesPerStep;
 
     public double convertSpeedToPixelDistance(int deltaTimeMinutes, double conversionFactor) {
         return (speedMilesPerHour / deltaTimeMinutes) * conversionFactor;
@@ -59,5 +59,9 @@ public abstract class SimUnit {
     }
     public void setMapYLocation(double mapYLocation) {
         this.mapYLocation = mapYLocation;
+    }
+
+    public void setMinutesPerUpdate(int minutesPerUpdate) {
+        this.minutesPerStep = minutesPerUpdate;
     }
 }

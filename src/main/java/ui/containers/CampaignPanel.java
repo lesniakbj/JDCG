@@ -1,20 +1,15 @@
 package ui.containers;
 
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
-import static ui.util.ImageScaleUtil.tryLoadImage;
-
-import sim.domain.GameMap;
-import sim.domain.enums.AirfieldType;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.util.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.GameMap;
+import sim.domain.Mission;
+import sim.domain.enums.AirfieldType;
+import sim.main.DynamicCampaignSim;
+import sim.util.MathUtil;
+import ui.util.DrawUtil;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,12 +20,18 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.domain.Mission;
-import sim.main.DynamicCampaignSim;
-import sim.util.MathUtil;
-import ui.util.DrawUtil;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import static ui.util.ImageScaleUtil.tryLoadImage;
 
 class CampaignPanel extends JPanel {
     // Displays
@@ -176,9 +177,11 @@ class CampaignPanel extends JPanel {
         Graphics2D g = (Graphics2D)image.getGraphics();
 
         // First draw any of the missions
+        DrawUtil.setNormalStroke(g.getStroke());
         DrawUtil.drawCampaignAirbases(campaign, g);
-        DrawUtil.drawActiveMissions(campaign, g);
+        DrawUtil.drawCampaignUnitGroups(campaign, g);
         DrawUtil.drawCampaignSelectedMission(campaign, g);
+        DrawUtil.drawActiveMissions(campaign, g);
 
         g.dispose();
         return image;

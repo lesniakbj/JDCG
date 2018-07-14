@@ -1,19 +1,19 @@
 package sim.main;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.Airfield;
+import sim.domain.Mission;
+import sim.domain.UnitGroup;
 import sim.domain.enums.FactionSide;
+import sim.gen.CampaignGenerator;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.domain.Airfield;
-import sim.domain.Mission;
-import sim.domain.UnitGroup;
-import sim.gen.CampaignGenerator;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
@@ -95,7 +95,7 @@ public class DynamicCampaignSim {
 
     public void stepSimulation() {
         log.debug("Stepping sim...");
-        int minutesToStep = simSettings.getMinutesPerSimulationStep();
+        int minutesToStep = 5; //simSettings.getMinutesPerSimulationStep();
 
         // Step the current simulation time
         Calendar cal = Calendar.getInstance();
@@ -106,6 +106,10 @@ public class DynamicCampaignSim {
         // Step all of the sim objects
         //  1) Sim all existing missions
         //  2) Generate new missions
+        for(Mission m : blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions()) {
+            m.setMinutesPerUpdate(minutesToStep);
+            m.updateStep();
+        }
     }
 
     public void generateNewCampaign() {
@@ -127,5 +131,6 @@ public class DynamicCampaignSim {
 
         // This is a test....
         blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission());
+        blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission(2));
     }
 }

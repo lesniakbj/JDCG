@@ -21,4 +21,8 @@ public class MathUtil {
         }
         return angle;
     }
+
+    public static double getDistance(double currentX, double currentY, double locationX, double locationY) {
+        return getDistance(new Pair<>(currentX, currentY), new Pair<>(locationX, locationY));
+    }
 }

@@ -22,7 +22,7 @@ public class Aircraft extends SimUnit {
     }
 
     @Override
-    void updateStep() {
+    public void updateStep() {
         // Update here
     }
 

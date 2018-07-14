@@ -1,12 +1,12 @@
 package ui.containers;
 
+import sim.domain.Coalition;
+import sim.domain.GameMap;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
-import sim.domain.Coalition;
 import sim.domain.enums.ConflictEraType;
-import sim.domain.enums.FactionType;
 import sim.domain.enums.FactionSide;
-import sim.domain.GameMap;
+import sim.domain.enums.FactionType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
 import sim.domain.enums.TaskType;

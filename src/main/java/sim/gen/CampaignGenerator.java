@@ -1,25 +1,16 @@
 package sim.gen;
 
-import sim.domain.Coalition;
-import sim.domain.enums.AircraftType;
-import sim.domain.enums.AirfieldType;
-import sim.domain.enums.CampaignType;
-import sim.domain.enums.FactionSide;
-import sim.domain.enums.FactionStrength;
-import sim.domain.enums.FactionType;
-import sim.domain.enums.MapType;
-import sim.domain.enums.MunitionType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;
+import sim.domain.Coalition;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionType;
 import sim.main.CampaignSettings;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static sim.domain.enums.CampaignType.DEFENSIVE;
-import static sim.domain.enums.CampaignType.OFFENSIVE;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

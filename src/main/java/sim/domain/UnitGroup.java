@@ -56,14 +56,8 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
     }
 
     @Override
-    void updateStep() {
+    public void updateStep() {
         // Update the entire group here
-        // double xLoc = getMapXLocation();
-        // double yLoc = getMapYLocation();
-        // double speed = getSpeedMilesPerHour();
-        // double direction = getDirection();
-
-        // double pixels = mapType.scaleDistance();
     }
 
     @Override

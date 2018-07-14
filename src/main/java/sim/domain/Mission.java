@@ -1,14 +1,20 @@
 package sim.domain;
 
+import javafx.util.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.TaskType;
+import sim.domain.enums.WaypointType;
+import sim.gen.WaypointGenerator;
+import sim.util.MathUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import sim.gen.WaypointGenerator;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -22,19 +28,27 @@ import sim.gen.WaypointGenerator;
  *
  * Created by Brendan.Lesniak on 7/11/2018.
  */
-public class Mission {
+public class Mission implements Simable {
+    private static final Logger log = LogManager.getLogger(Mission.class);
+
+    private MapType mapType;
     private TaskType missionType;
     private UnitGroup<Aircraft> missionAircraft;
     private List<Waypoint> missionWaypoints;
+    private Waypoint nextWaypoint;
     private Date plannedMissionDate;
     private boolean isInProgress;
     private boolean isClientMission;
 
+    private static int minutesPerUpdate;
+
     public Mission() {
+        minutesPerUpdate = 0;
+        this.mapType = MapType.PERSIAN_GULF;
         this.missionType = TaskType.CAS;
 
         // Sample for testing
-        List<Aircraft> test = Arrays.asList(new Aircraft(AircraftType.FA_18C));
+        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
         this.missionAircraft = new UnitGroup<>(test);
         missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey());
         missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue());
@@ -44,6 +58,29 @@ public class Mission {
                 AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getKey(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getValue(), missionType, MapType.PERSIAN_GULF);
 
         this.missionWaypoints = waypoints;
+        this.nextWaypoint = waypoints.get(0);
+        this.plannedMissionDate = new Date();
+        this.isInProgress = false;
+        this.isClientMission = false;
+    }
+
+    public Mission(int n) {
+        minutesPerUpdate = 0;
+        this.mapType = MapType.PERSIAN_GULF;
+        this.missionType = TaskType.CAS;
+
+        // Sample for testing
+        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
+        this.missionAircraft = new UnitGroup<>(test);
+        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey());
+        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue());
+
+        // Sample for testing
+        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue(),
+                AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getKey(),  AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getValue(), missionType, MapType.PERSIAN_GULF);
+
+        this.missionWaypoints = waypoints;
+        this.nextWaypoint = waypoints.get(0);
         this.plannedMissionDate = new Date();
         this.isInProgress = false;
         this.isClientMission = false;
@@ -96,6 +133,61 @@ public class Mission {
     public void setInProgress(boolean inProgress) {
         isInProgress = inProgress;
     }
+
+    public Waypoint getNextWaypoint() {
+        return nextWaypoint;
+    }
+
+    public double getDirectionNextWaypoint() {
+        Waypoint nextWaypoint = getNextWaypoint();
+        return MathUtil.getAngleNorthFace(new Pair<>(nextWaypoint.getLocationX(), nextWaypoint.getLocationY()), new Pair<>(missionAircraft.getMapXLocation(), missionAircraft.getMapYLocation()));
+    }
+
+    public void setMinutesPerUpdate(int minutesPerUpdate) {
+        Mission.minutesPerUpdate = minutesPerUpdate;
+    }
+
+
+    public void nextWaypoint() {
+        if(missionWaypoints != null && !missionWaypoints.isEmpty()) {
+            missionWaypoints.remove(0);
+            nextWaypoint = missionWaypoints.get(0);
+        }
+    }
+
+    public Waypoint getMissionWaypoint() {
+        return missionWaypoints.stream().filter(wp -> wp.getWaypointType().equals(WaypointType.MISSION)).findFirst().orElse(null);
+    }
+
+    @Override
+    public void updateStep() {
+        double currentX = missionAircraft.getMapXLocation();
+        double currentY = missionAircraft.getMapYLocation();
+        double currentDirection = Math.toRadians(getDirectionNextWaypoint() - 90);
+        double currentSpeed = getNextWaypoint().getSpeedMilesPerHour();
+
+        double minutesPerStep = (60.0 / minutesPerUpdate);
+        double pxDistance = currentSpeed / (minutesPerStep  * mapType.getMapScalePixelsPerMile());
+
+        double newX = (currentX + (pxDistance * Math.cos(currentDirection)));
+        double newY = (currentY + (pxDistance * Math.sin(currentDirection)));
+
+        // If we are going to collide with the next waypoint on this movement,
+        // then remove the waypoint, move the group to that location, and set rotation
+        // to the next waypoint
+        Waypoint nextWaypoint = getNextWaypoint();
+        double waypointDistance = MathUtil.getDistance(currentX, currentY, nextWaypoint.getLocationX(), nextWaypoint.getLocationY());
+        if (pxDistance > waypointDistance) {
+            nextWaypoint();
+            missionAircraft.setMapXLocation(nextWaypoint.getLocationX());
+            missionAircraft.setMapYLocation(nextWaypoint.getLocationY());
+
+        } else {
+            missionAircraft.setMapXLocation(newX);
+            missionAircraft.setMapYLocation(newY);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {

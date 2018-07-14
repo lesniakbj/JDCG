@@ -1,6 +1,7 @@
 package sim.domain.enums;
 
 import com.google.common.collect.ImmutableMap;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
