@@ -71,6 +71,18 @@ public enum AirfieldType {
     HENDERSON_EXECUTIVE_AIRPORT(50, MapType.NEVADA, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(769, 510), null, Arrays.asList("101R")),
     MCCARRAN_INTERNATIONAL_AIRPORT(51, MapType.NEVADA, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(766, 491), null, Arrays.asList("101R")),
     ECHO_BAY_AIRFIELD(52, MapType.NEVADA, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(854, 453), null, Arrays.asList("101R")),
+
+    // Normandy airfields
+    EVERUX(53, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(1056, 625), null, Arrays.asList("101R")),
+    CARPIQUET(54, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(743, 597), null, Arrays.asList("101R")),
+    LINGEROLLES(55, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(681, 598), null, Arrays.asList("101R")),
+    LESSAY(56, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(549, 594), null, Arrays.asList("101R")),
+    MAUPERTUS(57, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(552, 464), null, Arrays.asList("101R")),
+    NEEDS_OAR_POINT(58, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(554, 137), null, Arrays.asList("101R")),
+    FUNTINGTON(58, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(652, 109), null, Arrays.asList("101R")),
+    TANGMERE(58, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(683, 114), null, Arrays.asList("101R")),
+    FORD(58, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(704, 122), null, Arrays.asList("101R")),
+    CHALLEY(58, MapType.NORMANDY, "P:[01..07] | H:[] | B:[]", new Point2D.Double(-123, -123), new Point2D.Double(799, 79), null, Arrays.asList("101R")),
     ;
 
     // Passed Data Members

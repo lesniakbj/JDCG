@@ -71,8 +71,9 @@ public class AirfieldGenerator {
 
         // Create the rectangle to sample for airports
         assert pts.size() == 4;
-        double width = pts.get(1).getY() - pts.get(0).getY();
-        double height = pts.get(2).getX() - pts.get(0).getX();
+        log.debug(pts);
+        double width = pts.get(2).getX() - pts.get(0).getX();
+        double height = pts.get(1).getY() - pts.get(0).getY();
         Rectangle2D.Double rect = new Rectangle2D.Double(pts.get(0).getX(), pts.get(0).getY(), width, height);
 
         // Sample airfields to see if they fall within the rect
@@ -80,6 +81,11 @@ public class AirfieldGenerator {
         List<Airfield> enemyAirfields = generatedAirfields.get(other);
         List<Airfield> changedAirfields = new ArrayList<>();
         for(Airfield airfield : enemyAirfields) {
+            if(airfield.getAirfieldType().equals(AirfieldType.KHASAB)) {
+                log.debug(rect);
+                log.debug(airfield.getAirfieldType().getAirfieldMapPosition());
+            }
+
             if(rect.contains(airfield.getAirfieldType().getAirfieldMapPosition())) {
                 airfield.setOwnerSide(side);
                 ourAirfields.add(airfield);

@@ -131,12 +131,12 @@ public class DynamicCampaignSim {
 
         // First, generate the airbases that are going to be assigned to each team based on the settings
         Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
+        warfareFront = gen.generateWarfareFront();
+        generatedAirfields = gen.adjustAirfieldsIfNeeded(warfareFront, generatedAirfields);
         blueforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.BLUEFOR));
         redforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.REDFOR));
 
         // Then, generate all of the static ground units that exist within this campaign
-        warfareFront = gen.generateWarfareFront();
-        generatedAirfields = gen.adjustAirfieldsIfNeeded(warfareFront, generatedAirfields);
 
         // Then, generate all of the ground groups that exist with this campaign
 
