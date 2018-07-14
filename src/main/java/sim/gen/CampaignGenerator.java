@@ -8,7 +8,11 @@ import sim.domain.enums.FactionSide;
 import sim.domain.enums.FactionType;
 import sim.main.CampaignSettings;
 
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,7 @@ public class CampaignGenerator {
 
     private CampaignSettings campaignSettings;
     private Map<FactionSide, Integer> overallForceStrength;
+    private Map<FactionSide, List<Airfield>> generatedAirfields;
 
     // Static Generator Data
     private static final double AIRCRAFT_COST = 2;
@@ -65,7 +70,51 @@ public class CampaignGenerator {
     }
 
     public Map<FactionSide,List<Airfield>> generateAirfieldMap() {
-        AirfieldGenerator gen = new AirfieldGenerator();
-        return gen.generateAirfields(campaignSettings, overallForceStrength, STARTING_NUMBER_OF_AIRBASES);
+        if(generatedAirfields == null) {
+            AirfieldGenerator gen = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
+            generatedAirfields = gen.generateAirfields(campaignSettings, overallForceStrength, STARTING_NUMBER_OF_AIRBASES);
+        }
+        return  generatedAirfields;
+    }
+
+    public Map<FactionSide,List<Airfield>> adjustAirfieldsIfNeeded(Map<FactionSide, List<Point2D.Double>> warfareFront, Map<FactionSide, List<Airfield>> generatedAirfields) {
+        AirfieldGenerator gen = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
+        return gen.adjustAirfieldsToGeneratedFront(warfareFront, generatedAirfields);
+    }
+
+    public Map<FactionSide,List<Point2D.Double>> generateWarfareFront() {
+        Map<FactionSide, List<Point2D.Double>> retMap = new LinkedHashMap<>();
+        Map<FactionSide, List<Airfield>> airfields = generateAirfieldMap();
+        List<Airfield> blueforAirfields = airfields.get(FactionSide.BLUEFOR);
+        List<Airfield> redforAirfields = airfields.get(FactionSide.REDFOR);
+        List<Airfield> frontFields = (blueforAirfields.size() < redforAirfields.size()) ? blueforAirfields : redforAirfields;
+        FactionSide frontSide = (blueforAirfields.size() < redforAirfields.size()) ? FactionSide.BLUEFOR : FactionSide.REDFOR;
+
+        double lowestX = Double.MAX_VALUE, lowestY = Double.MAX_VALUE;
+        double highestX = 0, highestY = 0;
+        for(Airfield a : frontFields) {
+            double x = a.getAirfieldType().getAirfieldMapPosition().getX();
+            double y = a.getAirfieldType().getAirfieldMapPosition().getY();
+
+            if(x < lowestX) {
+                lowestX = x;
+            } else if(x > highestX) {
+                highestX = x;
+            }
+
+            if(y < lowestY) {
+                lowestY = y;
+            } else if(y > highestY) {
+                highestY = y;
+            }
+        }
+
+        lowestX -= 20;
+        lowestY -= 20;
+        highestX += 20;
+        highestY += 20;
+
+        retMap.put(frontSide, Arrays.asList(new Point2D.Double(lowestX, lowestY), new Point2D.Double(lowestX, highestY), new Point2D.Double(highestX, highestY), new Point2D.Double(highestX, lowestY)));
+        return retMap;
     }
 }

@@ -14,6 +14,7 @@ import sim.main.DynamicCampaignSim;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -23,6 +24,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+import java.util.Map;
 
 ;
 
@@ -33,6 +35,7 @@ public class DrawUtil {
     private static final Color REDFOR_COLOR = new Color(255, 0, 0, 200);;
     private static final Color ACCENT_COLOR = new Color(229, 225, 24, 217);
     private static final Stroke DASHED = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+    private static final Stroke WIDE = new BasicStroke(5);
 
     private static Stroke normalStroke;
 
@@ -71,6 +74,7 @@ public class DrawUtil {
 
                     // Draw the waypoint
                     Ellipse2D waypointMarker = new Ellipse2D.Double(x, y, 20, 20);
+                    g.setStroke(normalStroke);
                     g.fill(waypointMarker);
                     g.setColor(ACCENT_COLOR);
                     g.draw(waypointMarker);
@@ -100,8 +104,8 @@ public class DrawUtil {
         for(Airfield airfield : airfields) {
             Color color = (airfield.getOwnerSide().equals(FactionSide.BLUEFOR)) ? BLUEFOR_COLOR : REDFOR_COLOR;
 
-            int pointX = airfield.getAirfieldType().getAirfieldMapPosition().getKey().intValue();
-            int pointY = airfield.getAirfieldType().getAirfieldMapPosition().getValue().intValue() - GUTTER_HEIGHT;
+            double pointX = airfield.getAirfieldType().getAirfieldMapPosition().getX();
+            double pointY = airfield.getAirfieldType().getAirfieldMapPosition().getY() - GUTTER_HEIGHT;
             double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
             double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
 
@@ -144,6 +148,27 @@ public class DrawUtil {
             g.setColor(Color.black);
             g.draw(rotatedTriangle);
             g.draw(rotatedLine);
+        }
+    }
+
+    public static void drawWarfareFront(DynamicCampaignSim campaign, Graphics2D g){
+        Map<FactionSide, List<Point2D.Double>> warfareFront = campaign.getWarfareFront();
+
+        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
+        Polygon p = new Polygon();
+        for(Map.Entry<FactionSide, List<Point2D.Double>> entry : warfareFront.entrySet()) {
+            Color mainColor = entry.getKey().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
+            for(Point2D.Double pt : entry.getValue()) {
+                double pointX = pt.getX();
+                double pointY = pt.getY() - GUTTER_HEIGHT;
+
+                p.addPoint((int) (pointX * scaleX), (int) (pointY * scaleY));
+            }
+            g.setStroke(WIDE);
+            g.setColor(mainColor);
+            g.draw(p);
         }
     }
 

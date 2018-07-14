@@ -11,6 +11,7 @@ import sim.domain.enums.WaypointType;
 import sim.gen.WaypointGenerator;
 import sim.util.MathUtil;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -51,12 +52,12 @@ public class Mission implements Simable {
         // Sample for testing
         List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
         this.missionAircraft = new UnitGroup<>(test);
-        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey());
-        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue());
+        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
+        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
 
         // Sample for testing
-        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue(),
-                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getKey(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getValue(), missionType, MapType.PERSIAN_GULF);
+        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
+                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getX(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
 
         this.missionWaypoints = waypoints;
         this.nextWaypoint = waypoints.get(0);
@@ -74,12 +75,12 @@ public class Mission implements Simable {
         // Sample for testing
         List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
         this.missionAircraft = new UnitGroup<>(test);
-        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey());
-        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue());
+        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
+        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
 
         // Sample for testing
-        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getKey(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getValue(),
-                AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getKey(),  AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getValue(), missionType, MapType.PERSIAN_GULF);
+        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
+                AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getX(),  AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
 
         this.missionWaypoints = waypoints;
         this.nextWaypoint = waypoints.get(0);
@@ -146,7 +147,7 @@ public class Mission implements Simable {
         if(nextWaypoint == null) {
             return 0.0;
         }
-        return MathUtil.getAngleNorthFace(new Pair<>(nextWaypoint.getLocationX(), nextWaypoint.getLocationY()), new Pair<>(missionAircraft.getMapXLocation(), missionAircraft.getMapYLocation()));
+        return MathUtil.getAngleNorthFace(new Point2D.Double(nextWaypoint.getLocationX(), nextWaypoint.getLocationY()), new Point2D.Double(missionAircraft.getMapXLocation(), missionAircraft.getMapYLocation()));
     }
 
     public void setMinutesPerUpdate(int minutesPerUpdate) {
@@ -189,6 +190,8 @@ public class Mission implements Simable {
             // to the next waypoint
             Waypoint nextWaypoint = getNextWaypoint();
             double waypointDistance = MathUtil.getDistance(currentX, currentY, nextWaypoint.getLocationX(), nextWaypoint.getLocationY());
+            log.debug(waypointDistance);
+            log.debug(pxDistance);
             if (pxDistance > waypointDistance) {
                 nextWaypoint();
                 missionAircraft.setMapXLocation(nextWaypoint.getLocationX());

@@ -1,17 +1,17 @@
 package sim.util;
 
-import javafx.util.Pair;
+import java.awt.geom.Point2D;
 
 public class MathUtil {
-    public static double getDistance(Pair<Double, Double> destPair, Pair<Double, Double> sourcePair) {
-        double xDiff = destPair.getKey() - sourcePair.getKey();
-        double yDiff = destPair.getValue() - sourcePair.getValue();
+    public static double getDistance(Point2D.Double destPair, Point2D.Double sourcePair) {
+        double xDiff = destPair.getX() - sourcePair.getX();
+        double yDiff = destPair.getY() - sourcePair.getY();
         return Math.sqrt((Math.pow(xDiff, 2)) +  (Math.pow(yDiff, 2)));
     }
 
-    public static double getAngleNorthFace(Pair<Double, Double> destPair, Pair<Double, Double> sourcePair) {
-        double xDiff = destPair.getKey() - sourcePair.getKey();
-        double yDiff = destPair.getValue() - sourcePair.getValue();
+    public static double getAngleNorthFace(Point2D.Double destPair, Point2D.Double sourcePair) {
+        double xDiff = destPair.getX() - sourcePair.getX();
+        double yDiff = destPair.getY() - sourcePair.getY();
         double angle = Math.atan2(yDiff, xDiff);
         // Make angle point North
         angle += Math.PI / 2.0;
@@ -23,6 +23,6 @@ public class MathUtil {
     }
 
     public static double getDistance(double currentX, double currentY, double locationX, double locationY) {
-        return getDistance(new Pair<>(currentX, currentY), new Pair<>(locationX, locationY));
+        return getDistance(new Point2D.Double(currentX, currentY), new Point2D.Double(locationX, locationY));
     }
 }

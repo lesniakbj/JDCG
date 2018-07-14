@@ -8,9 +8,11 @@ import sim.domain.UnitGroup;
 import sim.domain.enums.FactionSide;
 import sim.gen.CampaignGenerator;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -22,6 +24,7 @@ public class DynamicCampaignSim {
     private GlobalSimSettings simSettings;
     private CampaignSettings campaignSettings;
 
+    private Map<FactionSide, List<Point2D.Double>> warfareFront;
     private CoalitionManager blueforCoalitionManager;
     private CoalitionManager redforCoalitionManager;
 
@@ -31,6 +34,7 @@ public class DynamicCampaignSim {
     public DynamicCampaignSim() {
         this.simSettings = new GlobalSimSettings();
         this.campaignSettings = new CampaignSettings();
+        this.warfareFront = new LinkedHashMap<>();
         this.blueforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.redforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.currentlySelectedMission = null;
@@ -93,6 +97,10 @@ public class DynamicCampaignSim {
         return redforCoalitionManager;
     }
 
+    public Map<FactionSide, List<Point2D.Double>> getWarfareFront() {
+        return warfareFront;
+    }
+
     public void stepSimulation() {
         log.debug("Stepping sim...");
         int minutesToStep = 5; //simSettings.getMinutesPerSimulationStep();
@@ -127,6 +135,8 @@ public class DynamicCampaignSim {
         redforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.REDFOR));
 
         // Then, generate all of the static ground units that exist within this campaign
+        warfareFront = gen.generateWarfareFront();
+        generatedAirfields = gen.adjustAirfieldsIfNeeded(warfareFront, generatedAirfields);
 
         // Then, generate all of the ground groups that exist with this campaign
 
@@ -135,7 +145,7 @@ public class DynamicCampaignSim {
         // Then, generate all of the AirForce groups that exist within this campaign
 
         // This is a test....
-        blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission());
-        blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission(2));
+        // blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission());
+        // blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission(2));
     }
 }

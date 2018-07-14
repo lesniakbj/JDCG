@@ -80,6 +80,7 @@ public class JDCGUIFrame extends JFrame {
                 switch(option) {
                     case JOptionPane.OK_OPTION:
                         dispose();
+                        System.exit(0);
                         break;
                     case JOptionPane.NO_OPTION:
                     case JOptionPane.CANCEL_OPTION:

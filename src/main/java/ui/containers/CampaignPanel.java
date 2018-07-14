@@ -26,17 +26,21 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 import static ui.util.ImageScaleUtil.tryLoadImage;
 
 class CampaignPanel extends JPanel {
+    private static final Logger log = LogManager.getLogger(CampaignPanel.class);
+
     // Displays
     private JPanel campaignActions;
     private JPanel campaignImage;
@@ -54,6 +58,7 @@ class CampaignPanel extends JPanel {
 
     // Background Sim
     private ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledFuture<?> scheduledFuture;
     private boolean simRunning;
 
     // Settings
@@ -147,6 +152,7 @@ class CampaignPanel extends JPanel {
         missionActionButtonPanel.add(clearMissionButton);
         missionActionButtonPanel.add(new JButton("Recall Flight"));
         campaignPlannedActions.add(missionActionButtonPanel, BorderLayout.SOUTH);
+        campaignPlannedActions.repaint();
     }
 
     private void loadCampaignActions(Border padding, Border bevel) {
@@ -191,18 +197,19 @@ class CampaignPanel extends JPanel {
         JButton runSim = new JButton("Run Simulation");
         runSim.addActionListener(l -> {
             simRunning = true;
-            exec.scheduleAtFixedRate((Runnable) () -> {
+            scheduledFuture = exec.scheduleAtFixedRate((Runnable) () -> {
+                log.debug("Running task...");
+                log.debug(simRunning);
                 if(simRunning) {
                     campaign.stepSimulation();
-                    loadCampaignImage(imageWidth, imageHeight, padding, bevel);
-                    hostFrame.refreshUiElements();
+                    updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
                 }
-            }, 0, 1, TimeUnit.SECONDS);
+            }, 0, 500, TimeUnit.MILLISECONDS);
         });
         JButton stopSim = new JButton("Stop Simulation");
         stopSim.addActionListener(l -> {
             simRunning = false;
-            exec.shutdown();
+            scheduledFuture.cancel(false);
         });
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         buttonContainer.add(stepSimButton);
@@ -213,16 +220,22 @@ class CampaignPanel extends JPanel {
     }
 
     private void updateSimulationGUI(int imageWidth, int imageHeight, Border padding, Border bevel) {
-        // Update all the UI elements
+        // Refresh the UI
+        loadCampaignImage(imageWidth, imageHeight, padding, bevel);
+        hostFrame.refreshUiElements();
+        updateCampaignStatusLabels();
+        hostFrame.refreshUiElements();
+        loadActiveMissions(imageWidth, imageHeight, padding, bevel);
+        hostFrame.refreshUiElements();
+        loadCampaignActions(padding, bevel);
+        hostFrame.refreshUiElements();
+    }
+
+    private void updateCampaignStatusLabels() {
         campaignDateLabel.setText(String.format("Date: %s", campaign.getCurrentCampaignDate()));
         campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
         campaignTargetsLabel.setText(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
         campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
-
-        // Refresh the UI
-        loadActiveMissions(imageWidth, imageHeight, padding, bevel);
-        loadCampaignImage(imageWidth, imageHeight, padding, bevel);
-        hostFrame.refreshUiElements();
     }
 
 
@@ -232,6 +245,7 @@ class CampaignPanel extends JPanel {
         // First draw any of the missions
         DrawUtil.setNormalStroke(g.getStroke());
         DrawUtil.drawCampaignAirbases(campaign, g);
+        DrawUtil.drawWarfareFront(campaign, g);
         DrawUtil.drawCampaignUnitGroups(campaign, g);
         DrawUtil.drawCampaignSelectedMission(campaign, g);
         DrawUtil.drawActiveMissions(campaign, g);
@@ -258,8 +272,8 @@ class CampaignPanel extends JPanel {
             List<AirfieldType> airfieldTypes = map.getAirfieldTypes();
             List<AirfieldType> clickedAirfieldTypes = new ArrayList<>();
             for(AirfieldType airfieldType : airfieldTypes) {
-                double x = airfieldType.getAirfieldMapPosition().getKey();
-                double y = airfieldType.getAirfieldMapPosition().getValue();
+                double x = airfieldType.getAirfieldMapPosition().getX();
+                double y = airfieldType.getAirfieldMapPosition().getY();
                 if(isWithinThreshold(mouseX, mouseY, x, y, 15)) {
                     clickedAirfieldTypes.add(airfieldType);
                 }
@@ -272,8 +286,8 @@ class CampaignPanel extends JPanel {
         }
 
         private void debugDistancesAndAngle(AirfieldType airfieldType) {
-            Pair<Double, Double> destPair = AirfieldType.LAR_AIRBASE.getAirfieldMapPosition();
-            Pair<Double, Double> sourcePair = airfieldType.getAirfieldMapPosition();
+            Point2D.Double destPair = AirfieldType.LAUGHLIN_AIRPORT.getAirfieldMapPosition();
+            Point2D.Double sourcePair = airfieldType.getAirfieldMapPosition();
             double dist = MathUtil.getDistance(destPair, sourcePair);
             double angle = MathUtil.getAngleNorthFace(destPair, sourcePair);
             log.debug(String.format("Distance from %s to AL_DHAFRA_AIRBASE: %f px, %f mi, %f deg", airfieldType.name(), dist, airfieldType.getMap().scaleDistance(dist), angle));
