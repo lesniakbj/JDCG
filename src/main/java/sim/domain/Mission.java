@@ -1,6 +1,5 @@
 package sim.domain;
 
-import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AircraftType;

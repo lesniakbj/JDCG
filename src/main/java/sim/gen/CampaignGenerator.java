@@ -9,7 +9,6 @@ import sim.domain.enums.FactionType;
 import sim.main.CampaignSettings;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;

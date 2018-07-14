@@ -1,6 +1,5 @@
 package sim.domain.enums;
 
-import javafx.util.Pair;
 import sim.util.MathUtil;
 
 import java.awt.geom.Point2D;
