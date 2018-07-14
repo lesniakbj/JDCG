@@ -1,6 +1,5 @@
 package ui.util;
 
-import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Aircraft;
@@ -11,7 +10,6 @@ import sim.domain.Waypoint;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.WaypointType;
 import sim.main.DynamicCampaignSim;
-import sim.util.MathUtil;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -21,7 +19,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
