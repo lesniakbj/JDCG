@@ -21,8 +21,10 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 ;
@@ -128,21 +130,23 @@ public class DrawUtil {
 
             // Create the package shape at the correct position
             Triangle triangle = new Triangle(new Point2D.Double(x, y - 10), new Point2D.Double(x + 10, y + 10), new Point2D.Double(x - 10, y + 10));
+            Rectangle2D.Double backLine = new Rectangle2D.Double(x, y + 4, 0, 6);
 
             // Rotate the image to fit the direction of the mission
-            Waypoint nextWaypoint = mission.getNextWaypoint();
-            double angleToWaypoint = MathUtil.getAngleNorthFace(new Pair<>(nextWaypoint.getLocationX(), nextWaypoint.getLocationY()), new Pair<>(x, y));
+            double angle = mission.getDirectionNextWaypoint();
             Rectangle bounds = triangle.getBounds();
             AffineTransform transform = new AffineTransform();
-            transform.rotate(Math.toRadians(angleToWaypoint), bounds.getX() + (bounds.getWidth() / 2), bounds.getY() + (bounds.getHeight() / 2));
-            Shape rotated  = triangle.createTransformedShape(transform);
+            transform.rotate(Math.toRadians(angle), bounds.getX() + (bounds.getWidth() / 2), bounds.getY() + (bounds.getHeight() / 2));
+            Shape rotatedTriangle  = triangle.createTransformedShape(transform);
+            Shape rotatedLine  = transform.createTransformedShape(backLine);
 
             // Draw the package
             g.setStroke(normalStroke);
             g.setColor(mainColor);
-            g.fill(rotated);
+            g.fill(rotatedTriangle);
             g.setColor(Color.black);
-            g.draw(rotated);
+            g.draw(rotatedTriangle);
+            g.draw(rotatedLine);
         }
     }
 
@@ -156,7 +160,6 @@ public class DrawUtil {
             lineTo(points[2].getX(), points[2].getY());
             closePath();
         }
-
     }
 
     public static void setNormalStroke(Stroke stroke) {

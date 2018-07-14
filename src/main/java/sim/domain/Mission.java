@@ -39,6 +39,7 @@ public class Mission implements Simable {
     private Date plannedMissionDate;
     private boolean isInProgress;
     private boolean isClientMission;
+    private boolean missionComplete;
 
     private static int minutesPerUpdate;
 
@@ -62,6 +63,7 @@ public class Mission implements Simable {
         this.plannedMissionDate = new Date();
         this.isInProgress = false;
         this.isClientMission = false;
+        this.missionComplete = false;
     }
 
     public Mission(int n) {
@@ -84,6 +86,7 @@ public class Mission implements Simable {
         this.plannedMissionDate = new Date();
         this.isInProgress = false;
         this.isClientMission = false;
+        this.missionComplete = false;
     }
 
     public TaskType getMissionType() {
@@ -140,6 +143,9 @@ public class Mission implements Simable {
 
     public double getDirectionNextWaypoint() {
         Waypoint nextWaypoint = getNextWaypoint();
+        if(nextWaypoint == null) {
+            return 0.0;
+        }
         return MathUtil.getAngleNorthFace(new Pair<>(nextWaypoint.getLocationX(), nextWaypoint.getLocationY()), new Pair<>(missionAircraft.getMapXLocation(), missionAircraft.getMapYLocation()));
     }
 
@@ -151,7 +157,12 @@ public class Mission implements Simable {
     public void nextWaypoint() {
         if(missionWaypoints != null && !missionWaypoints.isEmpty()) {
             missionWaypoints.remove(0);
-            nextWaypoint = missionWaypoints.get(0);
+
+            if(!missionWaypoints.isEmpty()) {
+                nextWaypoint = missionWaypoints.get(0);
+            } else {
+                nextWaypoint = null;
+            }
         }
     }
 
@@ -161,30 +172,33 @@ public class Mission implements Simable {
 
     @Override
     public void updateStep() {
-        double currentX = missionAircraft.getMapXLocation();
-        double currentY = missionAircraft.getMapYLocation();
-        double currentDirection = Math.toRadians(getDirectionNextWaypoint() - 90);
-        double currentSpeed = getNextWaypoint().getSpeedMilesPerHour();
+        if(nextWaypoint != null) {
+            double currentX = missionAircraft.getMapXLocation();
+            double currentY = missionAircraft.getMapYLocation();
+            double currentDirection = Math.toRadians(getDirectionNextWaypoint() - 90);
+            double currentSpeed = getNextWaypoint().getSpeedMilesPerHour();
 
-        double minutesPerStep = (60.0 / minutesPerUpdate);
-        double pxDistance = currentSpeed / (minutesPerStep  * mapType.getMapScalePixelsPerMile());
+            double minutesPerStep = (60.0 / minutesPerUpdate);
+            double pxDistance = currentSpeed / (minutesPerStep * mapType.getMapScalePixelsPerMile());
 
-        double newX = (currentX + (pxDistance * Math.cos(currentDirection)));
-        double newY = (currentY + (pxDistance * Math.sin(currentDirection)));
+            double newX = (currentX + (pxDistance * Math.cos(currentDirection)));
+            double newY = (currentY + (pxDistance * Math.sin(currentDirection)));
 
-        // If we are going to collide with the next waypoint on this movement,
-        // then remove the waypoint, move the group to that location, and set rotation
-        // to the next waypoint
-        Waypoint nextWaypoint = getNextWaypoint();
-        double waypointDistance = MathUtil.getDistance(currentX, currentY, nextWaypoint.getLocationX(), nextWaypoint.getLocationY());
-        if (pxDistance > waypointDistance) {
-            nextWaypoint();
-            missionAircraft.setMapXLocation(nextWaypoint.getLocationX());
-            missionAircraft.setMapYLocation(nextWaypoint.getLocationY());
-
+            // If we are going to collide with the next waypoint on this movement,
+            // then remove the waypoint, move the group to that location, and set rotation
+            // to the next waypoint
+            Waypoint nextWaypoint = getNextWaypoint();
+            double waypointDistance = MathUtil.getDistance(currentX, currentY, nextWaypoint.getLocationX(), nextWaypoint.getLocationY());
+            if (pxDistance > waypointDistance) {
+                nextWaypoint();
+                missionAircraft.setMapXLocation(nextWaypoint.getLocationX());
+                missionAircraft.setMapYLocation(nextWaypoint.getLocationY());
+            } else {
+                missionAircraft.setMapXLocation(newX);
+                missionAircraft.setMapYLocation(newY);
+            }
         } else {
-            missionAircraft.setMapXLocation(newX);
-            missionAircraft.setMapYLocation(newY);
+            missionComplete = true;
         }
     }
 
@@ -198,34 +212,48 @@ public class Mission implements Simable {
 
         if (isInProgress != mission.isInProgress) return false;
         if (isClientMission != mission.isClientMission) return false;
+        if (missionComplete != mission.missionComplete) return false;
+        if (mapType != mission.mapType) return false;
         if (missionType != mission.missionType) return false;
         if (missionAircraft != null ? !missionAircraft.equals(mission.missionAircraft) : mission.missionAircraft != null)
             return false;
         if (missionWaypoints != null ? !missionWaypoints.equals(mission.missionWaypoints) : mission.missionWaypoints != null)
+            return false;
+        if (nextWaypoint != null ? !nextWaypoint.equals(mission.nextWaypoint) : mission.nextWaypoint != null)
             return false;
         return plannedMissionDate != null ? plannedMissionDate.equals(mission.plannedMissionDate) : mission.plannedMissionDate == null;
     }
 
     @Override
     public int hashCode() {
-        int result = missionType != null ? missionType.hashCode() : 0;
+        int result = mapType != null ? mapType.hashCode() : 0;
+        result = 31 * result + (missionType != null ? missionType.hashCode() : 0);
         result = 31 * result + (missionAircraft != null ? missionAircraft.hashCode() : 0);
         result = 31 * result + (missionWaypoints != null ? missionWaypoints.hashCode() : 0);
+        result = 31 * result + (nextWaypoint != null ? nextWaypoint.hashCode() : 0);
         result = 31 * result + (plannedMissionDate != null ? plannedMissionDate.hashCode() : 0);
         result = 31 * result + (isInProgress ? 1 : 0);
         result = 31 * result + (isClientMission ? 1 : 0);
+        result = 31 * result + (missionComplete ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Mission{" +
-                "missionType=" + missionType +
+                "mapType=" + mapType +
+                ", missionType=" + missionType +
                 ", missionAircraft=" + missionAircraft +
                 ", missionWaypoints=" + missionWaypoints +
+                ", nextWaypoint=" + nextWaypoint +
                 ", plannedMissionDate=" + plannedMissionDate +
                 ", isInProgress=" + isInProgress +
                 ", isClientMission=" + isClientMission +
+                ", missionComplete=" + missionComplete +
                 '}';
+    }
+
+    public boolean isMissionComplete() {
+        return missionComplete;
     }
 }

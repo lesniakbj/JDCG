@@ -29,6 +29,9 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 import static ui.util.ImageScaleUtil.tryLoadImage;
@@ -48,6 +51,11 @@ class CampaignPanel extends JPanel {
     private JLabel campaignObjectivesLabel;
     private List<ActiveMissionPanel> campaignActiveMissions;
 
+
+    // Background Sim
+    private ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+    private boolean simRunning;
+
     // Settings
     private DynamicCampaignSim campaign;
 
@@ -61,23 +69,56 @@ class CampaignPanel extends JPanel {
         // Create the panel that will hold the image used as the campaign map
         Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         Border bevel = BorderFactory.createLoweredBevelBorder();
-        campaignImage = new JPanel(new BorderLayout());
         int imageWidth = hostFrame.getCalculatedWidth() - 350;
         int imageHeight = (int) (imageWidth * MAP_IMAGE_HEIGHT_RATIO);
 
         // Create the panel that will hold the actions that can be done the campaign
         campaignActions = new JPanel(new BorderLayout());
-        campaignActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-        JPanel buttonPanel = new JPanel();
-        JButton planMissionButton = new JButton("Mission Planner");
-        JButton someOtherAction = new JButton("Some Other Action");
-        buttonPanel.add(planMissionButton);
-        buttonPanel.add(someOtherAction);
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        campaignActions.add(buttonPanel, BorderLayout.WEST);
+        loadCampaignActions(padding, bevel);
 
         // Create the panel that will show everything that is currently in progress
         campaignPlannedActions = new JPanel(new BorderLayout());
+        loadActiveMissions(imageWidth, imageHeight, padding, bevel);
+
+        // Create the panel that will show the campaign status
+        campaignStatus = new JPanel();
+        loadCampaignStatusPanel(imageWidth, imageHeight, padding, bevel);
+
+        // Load the image (this includes all campaign objects)
+        campaignImage = new JPanel(new BorderLayout());
+        loadCampaignImage(imageWidth, imageHeight, padding, bevel);
+
+        // Add everything that was loaded to the panel
+        add(campaignActions, BorderLayout.NORTH);
+        add(campaignImage, BorderLayout.WEST);
+        add(campaignPlannedActions, BorderLayout.EAST);
+        add(campaignStatus, BorderLayout.SOUTH);
+    }
+
+
+    CampaignPanel(JDCGUIFrame hostFrame) {
+        this.hostFrame = hostFrame;
+        campaignActiveMissions = new ArrayList<>();
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(hostFrame.getCalculatedWidth(), hostFrame.getCalculatedHeight()));
+    }
+
+    private void loadCampaignImage(int imageWidth, int imageHeight, Border padding, Border bevel) {
+        // Load the image, and alter it with any of the campaign entities
+        campaignImage.removeAll();
+        BufferedImage mapImage = tryLoadImage("/map/" + campaign.getCampaignSettings().getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
+        mapImage = addCampaignObjects(mapImage);
+        Image scaled = mapImage.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
+        JLabel campaignImageLabel = new JLabel(new ImageIcon(scaled), SwingConstants.CENTER);
+        campaignImageLabel.setVerticalAlignment(JLabel.CENTER);
+        campaignImageLabel.addMouseListener(new MapClickListener());
+        campaignImage.add(campaignImageLabel, BorderLayout.CENTER);
+        campaignImage.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
+    }
+
+    private void loadActiveMissions(int imageWidth, int imageHeight, Border padding, Border bevel) {
+        // Load all of the current missions
+        campaignPlannedActions.removeAll();
         campaignPlannedActions.setPreferredSize(new Dimension(hostFrame.getCalculatedWidth() - imageWidth, imageHeight));
         campaignPlannedActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
         campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER), BorderLayout.NORTH);
@@ -89,6 +130,8 @@ class CampaignPanel extends JPanel {
             campaignActiveMissions.add(sampleMissionPanel);
         }
         campaignPlannedActions.add(missionPanel, BorderLayout.CENTER);
+
+        // Load the actions we can do to those missions
         JPanel missionActionButtonPanel = new JPanel();
         JButton clearMissionButton = new JButton("Clear Selection");
         clearMissionButton.addActionListener(l -> {
@@ -104,9 +147,22 @@ class CampaignPanel extends JPanel {
         missionActionButtonPanel.add(clearMissionButton);
         missionActionButtonPanel.add(new JButton("Recall Flight"));
         campaignPlannedActions.add(missionActionButtonPanel, BorderLayout.SOUTH);
+    }
 
-        // Create the panel that will show the campaign status
-        campaignStatus = new JPanel();
+    private void loadCampaignActions(Border padding, Border bevel) {
+        // Load the actions that we can perform during the campaign
+        campaignActions.removeAll();
+        campaignActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
+        JPanel buttonPanel = new JPanel();
+        JButton planMissionButton = new JButton("Mission Planner");
+        JButton someOtherAction = new JButton("Some Other Action");
+        buttonPanel.add(planMissionButton);
+        buttonPanel.add(someOtherAction);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        campaignActions.add(buttonPanel, BorderLayout.WEST);
+    }
+
+    private void loadCampaignStatusPanel(int imageWidth, int imageHeight, Border padding, Border bevel)  {
         campaignStatus.setLayout(new BoxLayout(campaignStatus, BoxLayout.X_AXIS));
         campaignStatus.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
         campaignDateLabel = new JLabel(String.format("Date: %s", campaign.getCurrentCampaignDate()));
@@ -130,48 +186,45 @@ class CampaignPanel extends JPanel {
         JButton stepSimButton = new JButton("Step Simulation");
         stepSimButton.addActionListener(l -> {
             campaign.stepSimulation();
-
-            // Update all the UI elements
-            campaignDateLabel.setText(String.format("Date: %s", campaign.getCurrentCampaignDate()));
-            campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
-            campaignTargetsLabel.setText(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
-            campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
-
-            // Refresh the UI
-            loadCampaignImage(imageWidth, imageHeight, padding, bevel);
-            hostFrame.refreshUiElements();
+            updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
+        });
+        JButton runSim = new JButton("Run Simulation");
+        runSim.addActionListener(l -> {
+            simRunning = true;
+            exec.scheduleAtFixedRate((Runnable) () -> {
+                if(simRunning) {
+                    campaign.stepSimulation();
+                    loadCampaignImage(imageWidth, imageHeight, padding, bevel);
+                    hostFrame.refreshUiElements();
+                }
+            }, 0, 1, TimeUnit.SECONDS);
+        });
+        JButton stopSim = new JButton("Stop Simulation");
+        stopSim.addActionListener(l -> {
+            simRunning = false;
+            exec.shutdown();
         });
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         buttonContainer.add(stepSimButton);
+        buttonContainer.add(runSim);
+        buttonContainer.add(stopSim);
         campaignStatus.add(buttonContainer);
         campaignStatus.add(Box.createHorizontalGlue());
+    }
 
+    private void updateSimulationGUI(int imageWidth, int imageHeight, Border padding, Border bevel) {
+        // Update all the UI elements
+        campaignDateLabel.setText(String.format("Date: %s", campaign.getCurrentCampaignDate()));
+        campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
+        campaignTargetsLabel.setText(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+        campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+
+        // Refresh the UI
+        loadActiveMissions(imageWidth, imageHeight, padding, bevel);
         loadCampaignImage(imageWidth, imageHeight, padding, bevel);
-        add(campaignActions, BorderLayout.NORTH);
-        add(campaignImage, BorderLayout.WEST);
-        add(campaignPlannedActions, BorderLayout.EAST);
-        add(campaignStatus, BorderLayout.SOUTH);
+        hostFrame.refreshUiElements();
     }
 
-    CampaignPanel(JDCGUIFrame hostFrame) {
-        this.hostFrame = hostFrame;
-        campaignActiveMissions = new ArrayList<>();
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(hostFrame.getCalculatedWidth(), hostFrame.getCalculatedHeight()));
-    }
-
-    private void loadCampaignImage(int imageWidth, int imageHeight, Border padding, Border bevel) {
-        // Load the image, and alter it with any of the campaign entities
-        campaignImage.removeAll();
-        BufferedImage mapImage = tryLoadImage("/map/" + campaign.getCampaignSettings().getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
-        mapImage = addCampaignObjects(mapImage);
-        Image scaled = mapImage.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
-        JLabel campaignImageLabel = new JLabel(new ImageIcon(scaled), SwingConstants.CENTER);
-        campaignImageLabel.setVerticalAlignment(JLabel.CENTER);
-        campaignImageLabel.addMouseListener(new MapClickListener());
-        campaignImage.add(campaignImageLabel, BorderLayout.CENTER);
-        campaignImage.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-    }
 
     private BufferedImage addCampaignObjects(BufferedImage image) {
         Graphics2D g = (Graphics2D)image.getGraphics();
@@ -252,6 +305,13 @@ class CampaignPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
             ActiveMissionPanel panel = (ActiveMissionPanel) e.getSource();
             campaign.setCurrentlySelectedMission(panel.getPlannedMission());
+
+            // Deactivate other panels
+            for(ActiveMissionPanel mission : campaignActiveMissions) {
+                if(mission.isSelected()) {
+                    mission.unselect();
+                }
+            }
 
             // Indicate that we selected a mission with an outline
             if(!panel.isSelected()) {

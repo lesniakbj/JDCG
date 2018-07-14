@@ -107,8 +107,13 @@ public class DynamicCampaignSim {
         //  1) Sim all existing missions
         //  2) Generate new missions
         for(Mission m : blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions()) {
+            log.debug(m);
             m.setMinutesPerUpdate(minutesToStep);
             m.updateStep();
+
+            if(m.isMissionComplete()) {
+                blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions().remove(m);
+            }
         }
     }
 
