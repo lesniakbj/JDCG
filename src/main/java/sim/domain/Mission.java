@@ -2,19 +2,27 @@ package sim.domain;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.MunitionType;
 import sim.domain.enums.TaskType;
 import sim.domain.enums.WaypointType;
 import sim.exception.InvalidMissionException;
+import sim.gen.WaypointGenerator;
 import sim.util.MathUtil;
 
+import javax.swing.table.TableRowSorter;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -47,6 +55,33 @@ public class Mission implements Simable {
     private Map<Integer,MunitionType> missionMunitions;
 
     private Mission() {}
+
+    private Mission(Date time) {
+        minutesPerUpdate = 0;
+        this.mapType = MapType.PERSIAN_GULF;
+        this.missionType = TaskType.CAS;
+
+        // Sample for testing
+        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
+        this.missionAircraft = new UnitGroup<>(test);
+        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
+        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
+
+        // Sample for testing
+        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
+                AirfieldType.KHASAB.getAirfieldMapPosition().getX(),  AirfieldType.KHASAB.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
+
+        this.missionWaypoints = waypoints;
+        this.nextWaypoint = waypoints.get(0);
+        this.plannedMissionDate = time;
+        this.isClientMission = false;
+        this.playerAircraft = 0;
+        this.missionComplete = false;
+        this.shouldGenerate = false;
+        this.currentCampaignDate = plannedMissionDate;
+        this.startingAirfield = null;
+        this.missionMunitions = DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.CAS);
+    }
 
     public TaskType getMissionType() {
         return missionType;

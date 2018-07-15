@@ -3,6 +3,7 @@ package sim.gen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Aircraft;
+import sim.domain.Airfield;
 import sim.domain.Mission;
 import sim.domain.UnitGroup;
 import sim.domain.Waypoint;
@@ -26,12 +27,16 @@ public class MissionGenerator {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
                 AirfieldType.KHASAB.getAirfieldMapPosition().getX(),  AirfieldType.KHASAB.getAirfieldMapPosition().getY(), TaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
+        UnitGroup<Aircraft> craft = new UnitGroup<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20), new Aircraft(AircraftType.FA_18C_LOT20)));
+        craft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
+        craft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
+
         Mission.Builder builder = new Mission.Builder();
         builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType());
         builder.setMissionType(TaskType.INTERCEPT);
-        builder.setMissionAircraft(new UnitGroup<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20), new Aircraft(AircraftType.FA_18C_LOT20))));
+        builder.setMissionAircraft(craft);
         builder.setMissionWaypoints(generatedWaypoints);
-        builder.setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 20);
+        builder.setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 60);
         builder.setIsClientMission(false);
         builder.setPlayerAircraftNumber(0);
         builder.setMissionComplete(false);

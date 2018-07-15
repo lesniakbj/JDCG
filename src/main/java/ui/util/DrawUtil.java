@@ -119,6 +119,8 @@ public class DrawUtil {
 
     public static void drawActiveMissions(DynamicCampaignSim campaign, Graphics2D g) {
         for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
+            log.debug(mission);
+
             UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();
             Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
 
