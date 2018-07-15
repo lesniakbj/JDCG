@@ -42,11 +42,10 @@ public class DynamicCampaignSim {
     private Date currentCampaignDate;
     private boolean generateMission;
 
-
     // Background Sim
-    private ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-    private ScheduledFuture<?> scheduledFuture;
-    private boolean simRunning;
+    private transient ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+    private transient ScheduledFuture<?> scheduledFuture;
+    private transient boolean simRunning;
 
     public DynamicCampaignSim() {
         this.simSettings = new GlobalSimSettings();
