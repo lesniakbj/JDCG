@@ -121,7 +121,7 @@ public class CampaignGenerator {
     }
 
     public Date generateCampaignDate() {
-        int year = 0, mo = 0, day = 0;
+        int year = 0, mo = 0, day = 0, hour = 0, minute = 0;
         switch(campaignSettings.getSelectedEra()) {
             case WWII:
                 year = 1940 + DynamicCampaignSim.getRandomGen().nextInt(5);
@@ -141,10 +141,12 @@ public class CampaignGenerator {
         }
         mo = DynamicCampaignSim.getRandomGen().nextInt(12) + 1;
         day = DynamicCampaignSim.getRandomGen().nextInt(25) + 1;
+        hour = DynamicCampaignSim.getRandomGen().nextInt(23) + 1;
+        minute = DynamicCampaignSim.getRandomGen().nextInt(59) + 1;
 
         // Generate the date
         Calendar cal = Calendar.getInstance();
-        cal.set(year, mo, day);
+        cal.set(year, mo, day, hour, minute);
         log.debug(cal.getTime());
         return cal.getTime();
     }

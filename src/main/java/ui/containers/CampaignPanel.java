@@ -197,6 +197,10 @@ public class CampaignPanel extends JPanel {
             dialog.setModal(true);
             dialog.setVisible(true);
             Map<Integer, Munition> loadout = ((FlightLoadoutPanel)dialog.getContentPane().getComponent(0)).getFlightLoadout();
+            if(loadout == null) {
+                log.debug("No loadout!");
+            }
+            campaign.getCurrentlySelectedMission().setMissionMunitions(loadout);
         });
         JButton clearMissionButton = new JButton("Clear Selection");
         clearMissionButton.addActionListener(l -> {
@@ -223,7 +227,7 @@ public class CampaignPanel extends JPanel {
     private JDialog createFlightLoadoutPanel() {
         JDialog flightLoadoutDialog = new JDialog();
 
-        JPanel panel = new FlightLoadoutPanel(campaign.getCurrentlySelectedMission());
+        JPanel panel = new FlightLoadoutPanel(campaign.getCurrentlySelectedMission(), flightLoadoutDialog);
         flightLoadoutDialog.add(panel);
         flightLoadoutDialog.pack();
 

@@ -14,7 +14,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -45,6 +47,7 @@ public class Mission implements Simable {
     private Date currentCampaignDate;
     private boolean shouldGenerate;
     private AirfieldType startingAirfield;
+    private Map<Integer,Munition> missionMunitions;
 
     public Mission() {
         minutesPerUpdate = 0;
@@ -52,7 +55,7 @@ public class Mission implements Simable {
         this.missionType = TaskType.CAS;
 
         // Sample for testing
-        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
+        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
         this.missionAircraft = new UnitGroup<>(test);
         missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
         missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
@@ -71,6 +74,7 @@ public class Mission implements Simable {
         this.shouldGenerate = false;
         this.currentCampaignDate = plannedMissionDate;
         this.startingAirfield = null;
+        this.missionMunitions = new HashMap<>();
     }
 
     public Mission(int n) {
@@ -79,7 +83,7 @@ public class Mission implements Simable {
         this.missionType = TaskType.CAS;
 
         // Sample for testing
-        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
+        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
         this.missionAircraft = new UnitGroup<>(test);
         missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
         missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
@@ -98,6 +102,7 @@ public class Mission implements Simable {
         this.shouldGenerate = false;
         this.currentCampaignDate = plannedMissionDate;
         this.startingAirfield = null;
+        this.missionMunitions = new HashMap<>();
     }
 
     public Mission(Date time) {
@@ -106,7 +111,7 @@ public class Mission implements Simable {
         this.missionType = TaskType.CAS;
 
         // Sample for testing
-        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
+        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
         this.missionAircraft = new UnitGroup<>(test);
         missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
         missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
@@ -125,6 +130,7 @@ public class Mission implements Simable {
         this.shouldGenerate = false;
         this.currentCampaignDate = plannedMissionDate;
         this.startingAirfield = null;
+        this.missionMunitions = new HashMap<>();
     }
 
     public TaskType getMissionType() {
@@ -217,6 +223,14 @@ public class Mission implements Simable {
 
     public void setPlayerAircraft(int aircraft) {
         playerAircraft = aircraft;
+    }
+
+    public void setMissionMunitions(Map<Integer,Munition> missionMunitions) {
+        this.missionMunitions = missionMunitions;
+    }
+
+    public Map<Integer,Munition> getMissionMunitions() {
+        return missionMunitions;
     }
 
     @Override
@@ -327,4 +341,5 @@ public class Mission implements Simable {
                 ", missionComplete=" + missionComplete +
                 '}';
     }
+
 }

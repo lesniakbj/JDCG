@@ -4,5 +4,16 @@ import sim.domain.enums.MunitionType;
 
 public class Munition {
     private MunitionType munitionType;
-    private int totalInStock;
+
+    public Munition(MunitionType munitionType) {
+        this.munitionType = munitionType;
+    }
+
+    public MunitionType getMunitionType() {
+        return munitionType;
+    }
+
+    public void setMunitionType(MunitionType munitionType) {
+        this.munitionType = munitionType;
+    }
 }

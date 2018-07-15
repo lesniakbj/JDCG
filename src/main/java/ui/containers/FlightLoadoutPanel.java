@@ -9,41 +9,114 @@ import sim.domain.enums.MunitionType;
 import ui.util.SpringUtilities;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static ui.util.ImageScaleUtil.NORMAL_IMAGE_RATIO;
+import static ui.util.ImageScaleUtil.tryLoadImage;
+
 public class FlightLoadoutPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(FlightLoadoutPanel.class);
 
+    private JDialog flightLoadoutDialog;
     private Mission flightMission;
     private Map<Integer, Munition> flightLoadout;
+    private Map<JComboBox, Integer> loadoutSelectors;
+    private LoadoutBoxSelectionListener listener;
 
-    public FlightLoadoutPanel(Mission flightMission) {
+    public FlightLoadoutPanel(Mission flightMission, JDialog flightLoadoutDialog) {
+        this.flightLoadoutDialog = flightLoadoutDialog;
         this.flightMission = flightMission;
-        setLayout(new SpringLayout());
+        this.flightLoadout = new HashMap<>();
+        this.loadoutSelectors = new HashMap<>();
+        this.listener = new LoadoutBoxSelectionListener();
+
+        setLayout(new BorderLayout());
 
         assert flightMission != null;
         AircraftType type = flightMission.getMissionAircraft().getGroupUnits().get(0).getAircraftType();
         Map<Integer, List<MunitionType>> validConfigs = type.getStationMunitions();
 
+        // Load the image associated with the loadout
+        log.debug(type.name().replace(" ", "_"));
+        BufferedImage mapImage = tryLoadImage("/aircraftstations/" + type.name().replace(" ", "_") + ".jpg");
+        Image scaled = mapImage.getScaledInstance(400, 150, Image.SCALE_SMOOTH);
+        JPanel image = new JPanel();
+        image.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
+
         int rows = 0;
+        JPanel munitionTable = new JPanel(new SpringLayout());
+        Map<Integer, Munition> alreadySelected = flightMission.getMissionMunitions();
         for(Map.Entry<Integer, List<MunitionType>> entry : validConfigs.entrySet()) {
-            JLabel label = new JLabel("Pylon " + entry.getKey() + ":");
-            String[] values = entry.getValue().stream().map((m) -> m.getMunitionName()).collect(Collectors.toList()).toArray(new String[0]);
-            JComboBox comboBox = new JComboBox(values);
-            add(label);
-            add(comboBox);
+            int station = entry.getKey();
+            JLabel label = new JLabel("Pylon " + station + ":");
+            String[] values = entry.getValue().stream().map(MunitionType::getMunitionName).toArray(String[]::new);
+            JComboBox<String> comboBox = new JComboBox<>(values);
+
+            if(alreadySelected != null && alreadySelected.get(station) != null) {
+                comboBox.setSelectedItem(alreadySelected.get(station).getMunitionType().getMunitionName());
+                flightLoadout.put(station, alreadySelected.get(station));
+            } else {
+                comboBox.setSelectedIndex(-1);
+            }
+
+            munitionTable.add(label);
+            munitionTable.add(comboBox);
+            comboBox.addActionListener(listener);
+            loadoutSelectors.put(comboBox, station);
             rows++;
         }
-        SpringUtilities.makeCompactGrid(this, rows, 2, 10, 10,10, 6);
+        SpringUtilities.makeCompactGrid(munitionTable, rows, 2, 10, 10,10, 6);
+
+        JPanel buttons = new JPanel();
+        JButton accept = new JButton("Accept");
+        JButton cancel = new JButton("Cancel");
+        accept.addActionListener(l -> flightLoadoutDialog.dispose());
+        cancel.addActionListener(l -> {
+            flightLoadout = null;
+            flightLoadoutDialog.dispose();
+        });
+        buttons.add(accept);
+        buttons.add(cancel);
+
+        add(image, BorderLayout.NORTH);
+        add(munitionTable, BorderLayout.CENTER);
+        add(buttons, BorderLayout.SOUTH);
     }
 
     public Map<Integer,Munition> getFlightLoadout() {
         return flightLoadout;
+    }
+
+    private class LoadoutBoxSelectionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JComboBox box = ((JComboBox)e.getSource());
+            String selectedName = (String)box.getSelectedItem();
+
+            if(selectedName != null && !selectedName.isEmpty()) {
+                MunitionType mt = MunitionType.fromName(selectedName);
+                Integer station = loadoutSelectors.get(box);
+
+                log.debug(String.format("Setting station: %d/%s", station, mt));
+                flightLoadout.put(station, new Munition(mt));
+            }
+        }
     }
 }
