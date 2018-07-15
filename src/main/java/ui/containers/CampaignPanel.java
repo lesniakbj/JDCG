@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.GameMap;
 import sim.domain.Mission;
+import sim.domain.Munition;
 import sim.domain.enums.AirfieldType;
 import sim.main.DynamicCampaignSim;
 import sim.util.MathUtil;
@@ -14,10 +15,13 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -25,12 +29,15 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
@@ -179,6 +186,17 @@ public class CampaignPanel extends JPanel {
         JButton flightLoadout = new JButton("Loadout");
         flightLoadout.addActionListener(l -> {
             log.debug("I should tell the campaign manager I want to alter this flight's loadout");
+            if(campaign.getCurrentlySelectedMission() == null) {
+                JOptionPane.showMessageDialog(this, "You must select a flight to adjust loadouts");
+                return;
+            }
+            JDialog dialog = createFlightLoadoutPanel();
+            dialog.setTitle("Flight Loadout Setup");
+            dialog.setResizable(false);
+            dialog.setLocationRelativeTo(null);
+            dialog.setModal(true);
+            dialog.setVisible(true);
+            Map<Integer, Munition> loadout = ((FlightLoadoutPanel)dialog.getContentPane().getComponent(0)).getFlightLoadout();
         });
         JButton clearMissionButton = new JButton("Clear Selection");
         clearMissionButton.addActionListener(l -> {
@@ -200,6 +218,16 @@ public class CampaignPanel extends JPanel {
         missionActionButtonPanel.add(bottomHalf, BorderLayout.SOUTH);
         campaignPlannedActions.add(missionActionButtonPanel, BorderLayout.SOUTH);
         campaignPlannedActions.repaint();
+    }
+
+    private JDialog createFlightLoadoutPanel() {
+        JDialog flightLoadoutDialog = new JDialog();
+
+        JPanel panel = new FlightLoadoutPanel(campaign.getCurrentlySelectedMission());
+        flightLoadoutDialog.add(panel);
+        flightLoadoutDialog.pack();
+
+        return flightLoadoutDialog;
     }
 
     private void loadCampaignActions(Border padding, Border bevel) {

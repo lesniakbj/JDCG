@@ -7,7 +7,9 @@ import sim.domain.enums.MapType;
 import sim.domain.enums.TaskType;
 import sim.domain.enums.WaypointType;
 import sim.main.DynamicCampaignSim;
+import sim.util.MathUtil;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,7 @@ public class WaypointGenerator {
 
         // Setup the inbound / outbound points
         Waypoint ip, ob;
-        boolean startLower = (startX > missionObjX);
+        boolean startLower = (startY > missionObjY);
         log.debug(startLower);
         if(startLower) {
             ip = new Waypoint(missionObjX - (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(30)), missionObjY + (MIN_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(10)), waypointSpeed, waypointAltitude, false, WaypointType.IP);
@@ -43,8 +45,8 @@ public class WaypointGenerator {
         }
 
         // If the distance to the target is greater than 70 miles, we will add nav points
-        boolean generateNavPoints = false; // map.scaleDistance(MathUtil.getDistance(new Pair<>(startX, startY), new Pair<>(missionObjX, missionObjY))) > 70;
-        Waypoint navIb, navOb;
+        boolean generateNavPoints = map.scaleDistance(MathUtil.getDistance(new Point2D.Double(startX, startY), new Point2D.Double(missionObjX, missionObjY))) > 70;
+        Waypoint navIb = null, navOb = null;
         if(generateNavPoints) {
             int xDeviation = (10 + DynamicCampaignSim.getRandomGen().nextInt(10));
             int yDeviation = (MIN_NAV_DEVIATION + DynamicCampaignSim.getRandomGen().nextInt(20));
@@ -55,8 +57,25 @@ public class WaypointGenerator {
                 navIb = new Waypoint(ip.getLocationX() + xDeviation, ip.getLocationY() - yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
                 navOb = new Waypoint(ob.getLocationX() + (xDeviation * -1), ob.getLocationY() - yDeviation, waypointSpeed, waypointAltitude, false, WaypointType.NAV);
             }
-            return new ArrayList<>(Arrays.asList(navIb, ip, mission, ob, navOb, end));
         }
-        return new ArrayList<>(Arrays.asList(ip, mission, ob, end));
+
+        ArrayList<Waypoint> finalPoints;
+        if(generateLeftToRight) {
+            if(navIb != null) {
+                finalPoints = new ArrayList<>(Arrays.asList(navIb, ip, mission, ob, navOb, end));
+            } else {
+                finalPoints = new ArrayList<>(Arrays.asList(ip, mission, ob, end));
+            }
+        } else {
+            ob.setWaypointType(WaypointType.IP);
+            ip.setWaypointType(WaypointType.OB);
+
+            if(navIb != null) {
+                finalPoints = new ArrayList<>(Arrays.asList(navOb, ob, mission, ip, navIb, end));
+            } else {
+                finalPoints = new ArrayList<>(Arrays.asList(ob, mission, ip, end));
+            }
+        }
+        return finalPoints;
     }
 }

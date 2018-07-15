@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,12 @@ public class StaticLists {
     public static final List<TaskType> HIGH_RISK_GROUND_STRIKE = Arrays.asList(TaskType.CAS, TaskType.GROUND_STRIKE, TaskType.SEAD, TaskType.DEAD);
     public static final List<TaskType> SEAD_STRIKE = Arrays.asList(TaskType.CAS, TaskType.GROUND_STRIKE, TaskType.SEAD, TaskType.DEAD);
 
+    // Aircraft Loadouts (has to be initialized before AircraftType)
+    public static final Map<Integer, List<MunitionType>> FA_18_MUNITIONS = new HashMap<Integer, List<MunitionType>>() {{
+        put(1, Arrays.asList(MunitionType.AIM9M, MunitionType.AIM9X));
+        put(2, Arrays.asList(MunitionType.AIM9M, MunitionType.AIM9MX2, MunitionType.AIM9X, MunitionType.AIM9XX2, MunitionType.AIM7M));
+    }};
+
     // Commonly used Aircraft Lists
     public static final List<AircraftType> USER_AVAILABLE_AIRCRAFT = Arrays.asList(AircraftType.A_10_C, AircraftType.FA_18C, AircraftType.F_15C);
     public static final List<AircraftType> AIR_FORCE_AIR_SUPERIORITY_AVAILABLE_AIRCRAFT = Collections.singletonList(AircraftType.F_15C);
@@ -49,10 +56,4 @@ public class StaticLists {
     public static final List<AircraftType> MARINE_GROUND_STRIKE_COMPLETE_ERAS = Arrays.asList(AircraftType.A_4, AircraftType.AV_8_NA);
     public static final List<AircraftType> MARINE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.F_4, AircraftType.FA_18C);
     public static final List<AircraftType> MARINE_STRIKE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.F_4, AircraftType.AV_8_NA, AircraftType.FA_18C);
-
-    // Aircraft Loadouts
-    public static final Map<Integer, List<MunitionType>> FA_18_MUNITIONS = ImmutableMap.<Integer, List<MunitionType>>builder()
-                                                                                            .put(1, Arrays.asList(MunitionType.AIM9M, MunitionType.AIM9X))
-                                                                                            .put(2, Arrays.asList(MunitionType.AIM9M, MunitionType.AIM9MX2, MunitionType.AIM9X, MunitionType.AIM9XX2, MunitionType.AIM7M))
-                                                                                            .build();
 }

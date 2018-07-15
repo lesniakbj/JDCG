@@ -113,7 +113,7 @@ public class Mission implements Simable {
 
         // Sample for testing
         List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
-                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getX(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
+                AirfieldType.KHASAB.getAirfieldMapPosition().getX(),  AirfieldType.KHASAB.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
 
         this.missionWaypoints = waypoints;
         this.nextWaypoint = waypoints.get(0);
@@ -258,7 +258,7 @@ public class Mission implements Simable {
 
                 // If the next Waypoint is going to be the Mission point, tell
                 // the generator that we want to generate this mission
-                shouldGenerate = getNextWaypoint().getWaypointType().equals(WaypointType.MISSION);
+                shouldGenerate = getNextWaypoint() != null && getNextWaypoint().getWaypointType().equals(WaypointType.MISSION);
             } else {
                 missionAircraft.setMapXLocation(newX);
                 missionAircraft.setMapYLocation(newY);

@@ -64,4 +64,13 @@ public enum AircraftType {
     public Map<Integer, List<MunitionType>> getStationMunitions() {
         return stationMunitions;
     }
+
+    @Override
+    public String toString() {
+        return "AircraftType{" +
+                "aircraftName='" + aircraftName + '\'' +
+                ", aircraftEras=" + aircraftEras +
+                ", stationMunitions=" + stationMunitions +
+                '}';
+    }
 }

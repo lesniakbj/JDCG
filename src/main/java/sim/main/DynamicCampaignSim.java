@@ -183,7 +183,6 @@ public class DynamicCampaignSim {
         cal.setTime(currentCampaignDate);
         cal.add(Calendar.HOUR, 2);
         blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission(cal.getTime()));
-        // blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission(2));
     }
 
     public void runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel) {
