@@ -56,33 +56,6 @@ public class Mission implements Simable {
 
     private Mission() {}
 
-    private Mission(Date time) {
-        minutesPerUpdate = 0;
-        this.mapType = MapType.PERSIAN_GULF;
-        this.missionType = TaskType.CAS;
-
-        // Sample for testing
-        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
-        this.missionAircraft = new UnitGroup<>(test);
-        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
-        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
-
-        // Sample for testing
-        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
-                AirfieldType.KHASAB.getAirfieldMapPosition().getX(),  AirfieldType.KHASAB.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
-
-        this.missionWaypoints = waypoints;
-        this.nextWaypoint = waypoints.get(0);
-        this.plannedMissionDate = time;
-        this.isClientMission = false;
-        this.playerAircraft = 0;
-        this.missionComplete = false;
-        this.shouldGenerate = false;
-        this.currentCampaignDate = plannedMissionDate;
-        this.startingAirfield = null;
-        this.missionMunitions = DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.CAS);
-    }
-
     public TaskType getMissionType() {
         return missionType;
     }
