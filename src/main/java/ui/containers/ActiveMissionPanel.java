@@ -7,6 +7,8 @@ import sim.domain.Mission;
 import sim.main.DynamicCampaignSim;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -65,10 +67,16 @@ public class ActiveMissionPanel extends JPanel {
         SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
         bottomHalf.add(new JLabel("Date: " + sdf.format(plannedMission.getPlannedMissionDate())));
 
-        setPreferredSize(new Dimension(300, 70));
+
+        JPanel clientMissionPanel = new JPanel();
+        clientMissionPanel.setLayout(new BoxLayout(clientMissionPanel, BoxLayout.X_AXIS));
+        clientMissionPanel.add(Box.createHorizontalGlue());
+        clientMissionPanel.add(new ClientComponent());
+
+        setPreferredSize(new Dimension(300, 73));
         add(topHalf, BorderLayout.NORTH);
         add(bottomHalf, BorderLayout.CENTER);
-        add(new ClientComponent(this), BorderLayout.SOUTH);
+        add(clientMissionPanel, BorderLayout.SOUTH);
     }
 
     public void setSelected() {
@@ -107,9 +115,8 @@ public class ActiveMissionPanel extends JPanel {
     }
 
     private class ClientComponent extends JComponent {
-        ClientComponent(ActiveMissionPanel host) {
+        ClientComponent() {
             setPreferredSize(new Dimension(10, 10));
-            setAlignmentX(host.getWidth() - 10);
         }
 
         public void paintComponent(Graphics g) {
