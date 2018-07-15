@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -46,6 +47,7 @@ public class CampaignPanel extends JPanel {
 
     // Data
     private JDCGUIFrame hostFrame;
+    private JButton joinFlightButton;
     private JLabel campaignDateLabel;
     private JLabel campaignSortiesLabel;
     private JLabel campaignTargetsLabel;
@@ -130,9 +132,43 @@ public class CampaignPanel extends JPanel {
 
         // Load the actions we can do to those missions
         JPanel missionActionButtonPanel = new JPanel();
-        JButton joinFlightButton = new JButton("Join");
+        if(joinFlightButton == null) {
+            joinFlightButton = new JButton("Join");
+        } else {
+            joinFlightButton = new JButton(joinFlightButton.getText());
+        }
         joinFlightButton.addActionListener(l -> {
-            log.debug("I should tell the campaign manager I want to generate this flight");
+            ActiveMissionPanel clientMission = null;
+            if(joinFlightButton.getText().equalsIgnoreCase("Join")) {
+                for (ActiveMissionPanel mission : campaignActiveMissions) {
+                    if (mission.isSelected()) {
+                        clientMission = mission;
+                    }
+                }
+
+                if(clientMission == null) {
+                    return;
+                }
+
+                clientMission.setClientMission(true);
+                joinFlightButton.setText("Leave");
+            } else {
+                for (ActiveMissionPanel mission : campaignActiveMissions) {
+                    if (mission.isClientMission()) {
+                        clientMission = mission;
+                    }
+                }
+
+                if(clientMission == null) {
+                    return;
+                }
+
+                clientMission.setClientMission(false);
+                joinFlightButton.setText("Join");
+            }
+
+            loadCampaignImage(imageWidth, imageHeight, padding, bevel);
+            hostFrame.refreshUiElements();
         });
         JButton recallFlight = new JButton("Recall");
         recallFlight.addActionListener(l -> {
@@ -172,7 +208,8 @@ public class CampaignPanel extends JPanel {
     private void loadCampaignStatusPanel(int imageWidth, int imageHeight, Border padding, Border bevel)  {
         campaignStatus.setLayout(new BoxLayout(campaignStatus, BoxLayout.X_AXIS));
         campaignStatus.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
-        campaignDateLabel = new JLabel(String.format("Date: %s", campaign.getCurrentCampaignDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
+        campaignDateLabel = new JLabel(String.format("Date: %s", sdf.format(campaign.getCurrentCampaignDate())));
         campaignSortiesLabel = new JLabel(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
         campaignTargetsLabel = new JLabel(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
         campaignObjectivesLabel = new JLabel(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
@@ -197,17 +234,18 @@ public class CampaignPanel extends JPanel {
         });
         JButton runSim = new JButton("Run Simulation");
         runSim.addActionListener(l -> {
-            campaign.setSimRunning(true);
-            campaign.runSimulation(this, imageWidth, imageHeight, padding, bevel);
-        });
-        JButton stopSim = new JButton("Stop Simulation");
-        stopSim.addActionListener(l -> {
-            campaign.setSimRunning(false);
+            if(campaign.isSimRunning()) {
+                campaign.setSimRunning(false);
+                runSim.setText("Run Simulation");
+            } else {
+                campaign.setSimRunning(true);
+                campaign.runSimulation(this, imageWidth, imageHeight, padding, bevel);
+                runSim.setText("Stop Simulation");
+            }
         });
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         buttonContainer.add(stepSimButton);
         buttonContainer.add(runSim);
-        buttonContainer.add(stopSim);
         campaignStatus.add(buttonContainer);
         campaignStatus.add(Box.createHorizontalGlue());
     }
@@ -225,7 +263,8 @@ public class CampaignPanel extends JPanel {
     }
 
     private void updateCampaignStatusLabels() {
-        campaignDateLabel.setText(String.format("Date: %s", campaign.getCurrentCampaignDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
+        campaignDateLabel.setText(String.format("Date: %s", sdf.format(campaign.getCurrentCampaignDate())));
         campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
         campaignTargetsLabel.setText(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
         campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));

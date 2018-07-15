@@ -20,6 +20,7 @@ public class CampaignSettings {
     private FactionSide playerSelectedSide;
     private SquadronType selectedSquadron;
     private boolean isComplete;
+    private String dateFormat;
 
     public CampaignSettings() {
         selectedMap = new GameMap(MapType.CAUCASUS);
@@ -30,6 +31,7 @@ public class CampaignSettings {
         selectedCampaignType = CampaignType.OFFENSIVE;
         playerSelectedSide = FactionSide.BLUEFOR;
         selectedSquadron = SquadronType.NONE;
+        dateFormat = "MM/dd/yyyy HH:mm:ss";
     }
 
     public void setBlueforCoalition(Coalition coalition) {
@@ -117,6 +119,14 @@ public class CampaignSettings {
 
     public void setComplete(boolean complete) {
         isComplete = complete;
+    }
+
+    public String getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     public String toString() {

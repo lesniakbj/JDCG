@@ -12,6 +12,7 @@ import ui.containers.CampaignPanel;
 
 import javax.swing.border.Border;
 import java.awt.geom.Point2D;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -201,5 +202,9 @@ public class DynamicCampaignSim {
         if(!simRunning) {
             scheduledFuture.cancel(false);
         }
+    }
+
+    public boolean isSimRunning() {
+        return simRunning;
     }
 }

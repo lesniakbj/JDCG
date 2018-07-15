@@ -39,10 +39,12 @@ public class Mission implements Simable {
     private Date plannedMissionDate;
     private boolean isInProgress;
     private boolean isClientMission;
+    private int playerAircraft;
     private boolean missionComplete;
     private static int minutesPerUpdate;
     private Date currentCampaignDate;
     private boolean shouldGenerate;
+    private AirfieldType startingAirfield;
 
     public Mission() {
         minutesPerUpdate = 0;
@@ -64,9 +66,11 @@ public class Mission implements Simable {
         this.plannedMissionDate = new Date();
         this.isInProgress = false;
         this.isClientMission = false;
+        this.playerAircraft = 0;
         this.missionComplete = false;
         this.shouldGenerate = false;
         this.currentCampaignDate = plannedMissionDate;
+        this.startingAirfield = null;
     }
 
     public Mission(int n) {
@@ -89,9 +93,11 @@ public class Mission implements Simable {
         this.plannedMissionDate = new Date();
         this.isInProgress = false;
         this.isClientMission = false;
+        this.playerAircraft = 0;
         this.missionComplete = false;
         this.shouldGenerate = false;
         this.currentCampaignDate = plannedMissionDate;
+        this.startingAirfield = null;
     }
 
     public Mission(Date time) {
@@ -114,9 +120,11 @@ public class Mission implements Simable {
         this.plannedMissionDate = time;
         this.isInProgress = false;
         this.isClientMission = false;
+        this.playerAircraft = 0;
         this.missionComplete = false;
         this.shouldGenerate = false;
         this.currentCampaignDate = plannedMissionDate;
+        this.startingAirfield = null;
     }
 
     public TaskType getMissionType() {
@@ -183,7 +191,6 @@ public class Mission implements Simable {
         Mission.minutesPerUpdate = minutesPerUpdate;
     }
 
-
     public void nextWaypoint() {
         if(missionWaypoints != null && !missionWaypoints.isEmpty()) {
             missionWaypoints.remove(0);
@@ -200,6 +207,18 @@ public class Mission implements Simable {
         return missionWaypoints.stream().filter(wp -> wp.getWaypointType().equals(WaypointType.MISSION)).findFirst().orElse(null);
     }
 
+    public boolean isMissionComplete() {
+        return missionComplete;
+    }
+
+    public int getPlayerAircraft() {
+        return playerAircraft;
+    }
+
+    public void setPlayerAircraft(int aircraft) {
+        playerAircraft = aircraft;
+    }
+
     @Override
     public void updateStep() {
         if(currentCampaignDate.before(plannedMissionDate)) {
@@ -208,6 +227,7 @@ public class Mission implements Simable {
         }
 
         if(isClientMission) {
+            log.debug("Client mission, should generate it...");
             shouldGenerate = true;
             return;
         }
@@ -306,9 +326,5 @@ public class Mission implements Simable {
                 ", isClientMission=" + isClientMission +
                 ", missionComplete=" + missionComplete +
                 '}';
-    }
-
-    public boolean isMissionComplete() {
-        return missionComplete;
     }
 }

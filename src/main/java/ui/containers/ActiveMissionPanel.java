@@ -1,17 +1,24 @@
 package ui.containers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sim.domain.Aircraft;
 import sim.domain.Mission;
 import sim.main.DynamicCampaignSim;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +36,8 @@ import java.util.stream.Collectors;
  * Created by Brendan.Lesniak on 7/11/2018.
  */
 public class ActiveMissionPanel extends JPanel {
+    private static final Logger log = LogManager.getLogger(ActiveMissionPanel.class);
+
     private Mission plannedMission;
     private boolean isSelected = false;
 
@@ -53,11 +62,13 @@ public class ActiveMissionPanel extends JPanel {
         }
 
         JPanel bottomHalf = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bottomHalf.add(new JLabel("Date: " + plannedMission.getPlannedMissionDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
+        bottomHalf.add(new JLabel("Date: " + sdf.format(plannedMission.getPlannedMissionDate())));
 
         setPreferredSize(new Dimension(300, 70));
         add(topHalf, BorderLayout.NORTH);
         add(bottomHalf, BorderLayout.CENTER);
+        add(new ClientComponent(this), BorderLayout.SOUTH);
     }
 
     public void setSelected() {
@@ -76,5 +87,43 @@ public class ActiveMissionPanel extends JPanel {
     public void unselect() {
         setBorder(DEFAULT_BORDER);
         isSelected = false;
+    }
+
+    public void setClientMission(boolean clientMission) {
+        plannedMission.setClientMission(clientMission);
+
+        int totalPlanes = plannedMission.getMissionAircraft().getGroupUnits().size();
+        if(totalPlanes > 1) {
+            String total = JOptionPane.showInputDialog(String.format("Which slot would you like to occupy?: 1 - %d Available", totalPlanes));
+            int parsed = Integer.parseInt(total);
+            plannedMission.setPlayerAircraft(parsed);
+        } else {
+            plannedMission.setPlayerAircraft(1);
+        }
+    }
+
+    public boolean isClientMission() {
+        return plannedMission.isClientMission();
+    }
+
+    private class ClientComponent extends JComponent {
+        ClientComponent(ActiveMissionPanel host) {
+            setPreferredSize(new Dimension(10, 10));
+            setAlignmentX(host.getWidth() - 10);
+        }
+
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            if(plannedMission.isClientMission()) {
+                int planeNum = plannedMission.getPlayerAircraft();
+                Graphics2D graphics2D = (Graphics2D) g;
+                graphics2D.setColor(Color.RED);
+                graphics2D.fillRect(0, 0, 10, 10);
+                graphics2D.setColor(Color.BLACK);
+                graphics2D.drawString(String.format("%d", planeNum), 2, 10);
+                graphics2D.dispose();
+            }
+        }
     }
 }
