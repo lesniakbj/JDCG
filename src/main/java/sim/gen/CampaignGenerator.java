@@ -7,9 +7,12 @@ import sim.domain.Coalition;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.FactionType;
 import sim.main.CampaignSettings;
+import sim.main.DynamicCampaignSim;
 
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -115,5 +118,34 @@ public class CampaignGenerator {
 
         retMap.put(frontSide, Arrays.asList(new Point2D.Double(lowestX, lowestY), new Point2D.Double(lowestX, highestY), new Point2D.Double(highestX, highestY), new Point2D.Double(highestX, lowestY)));
         return retMap;
+    }
+
+    public Date generateCampaignDate() {
+        int year = 0, mo = 0, day = 0;
+        switch(campaignSettings.getSelectedEra()) {
+            case WWII:
+                year = 1940 + DynamicCampaignSim.getRandomGen().nextInt(5);
+                break;
+            case KOREA:
+                year = 1950 + DynamicCampaignSim.getRandomGen().nextInt(4);
+                break;
+            case VIETNAM:
+                year = 1960 + DynamicCampaignSim.getRandomGen().nextInt(16);
+                break;
+            case GULF_WAR:
+                year = 1990 + DynamicCampaignSim.getRandomGen().nextInt(3);
+                break;
+            case MODERN:
+                year = 2000 + DynamicCampaignSim.getRandomGen().nextInt(19);
+                break;
+        }
+        mo = DynamicCampaignSim.getRandomGen().nextInt(12) + 1;
+        day = DynamicCampaignSim.getRandomGen().nextInt(25) + 1;
+
+        // Generate the date
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, mo, day);
+        log.debug(cal.getTime());
+        return cal.getTime();
     }
 }

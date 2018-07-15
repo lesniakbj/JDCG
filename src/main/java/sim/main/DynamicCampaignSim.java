@@ -160,6 +160,9 @@ public class DynamicCampaignSim {
         log.debug("Generating a new campaign...");
         CampaignGenerator gen = new CampaignGenerator(campaignSettings);
 
+        // Generate the date of the campaign
+        currentCampaignDate = gen.generateCampaignDate();
+
         // First, generate the airbases that are going to be assigned to each team based on the settings
         Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
         warfareFront = gen.generateWarfareFront();

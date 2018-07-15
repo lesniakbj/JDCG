@@ -131,7 +131,9 @@ public class CampaignPanel extends JPanel {
         campaignPlannedActions.add(missionPanel, BorderLayout.CENTER);
 
         // Load the actions we can do to those missions
-        JPanel missionActionButtonPanel = new JPanel();
+        JPanel missionActionButtonPanel = new JPanel(new BorderLayout());
+        JPanel topHalf = new JPanel();
+        JPanel bottomHalf = new JPanel();
         if(joinFlightButton == null) {
             joinFlightButton = new JButton("Join");
         } else {
@@ -174,6 +176,10 @@ public class CampaignPanel extends JPanel {
         recallFlight.addActionListener(l -> {
             log.debug("I should tell the campaign manager I want to recall");
         });
+        JButton flightLoadout = new JButton("Loadout");
+        flightLoadout.addActionListener(l -> {
+            log.debug("I should tell the campaign manager I want to alter this flight's loadout");
+        });
         JButton clearMissionButton = new JButton("Clear Selection");
         clearMissionButton.addActionListener(l -> {
             for(ActiveMissionPanel mission : campaignActiveMissions) {
@@ -185,9 +191,13 @@ public class CampaignPanel extends JPanel {
             loadCampaignImage(imageWidth, imageHeight, padding, bevel);
             hostFrame.refreshUiElements();
         });
-        missionActionButtonPanel.add(joinFlightButton);
-        missionActionButtonPanel.add(recallFlight);
-        missionActionButtonPanel.add(clearMissionButton);
+        topHalf.add(joinFlightButton);
+        topHalf.add(recallFlight);
+        topHalf.add(flightLoadout);
+        bottomHalf.add(clearMissionButton);
+        missionActionButtonPanel.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
+        missionActionButtonPanel.add(topHalf, BorderLayout.CENTER);
+        missionActionButtonPanel.add(bottomHalf, BorderLayout.SOUTH);
         campaignPlannedActions.add(missionActionButtonPanel, BorderLayout.SOUTH);
         campaignPlannedActions.repaint();
     }
