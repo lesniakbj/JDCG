@@ -28,16 +28,18 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 import static ui.util.ImageScaleUtil.tryLoadImage;
 
-class CampaignPanel extends JPanel {
+public class CampaignPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(CampaignPanel.class);
 
     // Displays
@@ -53,12 +55,6 @@ class CampaignPanel extends JPanel {
     private JLabel campaignTargetsLabel;
     private JLabel campaignObjectivesLabel;
     private List<ActiveMissionPanel> campaignActiveMissions;
-
-
-    // Background Sim
-    private ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-    private ScheduledFuture<?> scheduledFuture;
-    private boolean simRunning;
 
     // Settings
     private DynamicCampaignSim campaign;
@@ -127,7 +123,8 @@ class CampaignPanel extends JPanel {
         campaignPlannedActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
         campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER), BorderLayout.NORTH);
         JPanel missionPanel = new JPanel();
-        for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
+        List<Mission> sorted = campaign.getCampaignMissionManager().getActiveMissions().stream().sorted(Comparator.comparing(Mission::getPlannedMissionDate)).collect(Collectors.toList());
+        for(Mission mission : sorted) {
             ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(campaign, mission);
             sampleMissionPanel.addMouseListener(new ActiveMissionClickListener());
             missionPanel.add(sampleMissionPanel);
@@ -137,6 +134,14 @@ class CampaignPanel extends JPanel {
 
         // Load the actions we can do to those missions
         JPanel missionActionButtonPanel = new JPanel();
+        JButton joinFlightButton = new JButton("Join");
+        joinFlightButton.addActionListener(l -> {
+            log.debug("I should tell the campaign manager I want to generate this flight");
+        });
+        JButton recallFlight = new JButton("Recall");
+        recallFlight.addActionListener(l -> {
+            log.debug("I should tell the campaign manager I want to recall");
+        });
         JButton clearMissionButton = new JButton("Clear Selection");
         clearMissionButton.addActionListener(l -> {
             for(ActiveMissionPanel mission : campaignActiveMissions) {
@@ -148,8 +153,9 @@ class CampaignPanel extends JPanel {
             loadCampaignImage(imageWidth, imageHeight, padding, bevel);
             hostFrame.refreshUiElements();
         });
+        missionActionButtonPanel.add(joinFlightButton);
+        missionActionButtonPanel.add(recallFlight);
         missionActionButtonPanel.add(clearMissionButton);
-        missionActionButtonPanel.add(new JButton("Recall Flight"));
         campaignPlannedActions.add(missionActionButtonPanel, BorderLayout.SOUTH);
         campaignPlannedActions.repaint();
     }
@@ -195,20 +201,12 @@ class CampaignPanel extends JPanel {
         });
         JButton runSim = new JButton("Run Simulation");
         runSim.addActionListener(l -> {
-            simRunning = true;
-            scheduledFuture = exec.scheduleAtFixedRate((Runnable) () -> {
-                log.debug("Running task...");
-                log.debug(simRunning);
-                if(simRunning) {
-                    campaign.stepSimulation();
-                    updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
-                }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            campaign.setSimRunning(true);
+            campaign.runSimulation(this, imageWidth, imageHeight, padding, bevel);
         });
         JButton stopSim = new JButton("Stop Simulation");
         stopSim.addActionListener(l -> {
-            simRunning = false;
-            scheduledFuture.cancel(false);
+            campaign.setSimRunning(false);
         });
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         buttonContainer.add(stepSimButton);
@@ -218,7 +216,7 @@ class CampaignPanel extends JPanel {
         campaignStatus.add(Box.createHorizontalGlue());
     }
 
-    private void updateSimulationGUI(int imageWidth, int imageHeight, Border padding, Border bevel) {
+    public void updateSimulationGUI(int imageWidth, int imageHeight, Border padding, Border bevel) {
         // Refresh the UI
         loadCampaignImage(imageWidth, imageHeight, padding, bevel);
         hostFrame.refreshUiElements();

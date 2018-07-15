@@ -8,7 +8,7 @@ public class GlobalSimSettings {
 
     public GlobalSimSettings() {
         this.missionStartType = MissionStartType.PARKING_HOT;
-        this.minutesPerSimulationStep = 10;
+        this.minutesPerSimulationStep = 5;
     }
 
     public int getMinutesPerSimulationStep() {

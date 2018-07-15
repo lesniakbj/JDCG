@@ -4,6 +4,7 @@ import sim.domain.enums.FactionSide;
 import sim.domain.enums.MapType;
 import sim.util.IDGenerator;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,12 +24,16 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
     private FactionSide side;
     private MapType mapType;
     private List<T> groupUnits;
+    private boolean shouldGenerate;
+    private Date currentCampaignDate;
 
     public UnitGroup(List<T> groupUnits) {
         this.id = IDGenerator.generateNextId(UnitGroup.class);
         this.groupUnits = groupUnits;
         this.side = FactionSide.BLUEFOR;
         this.mapType = MapType.PERSIAN_GULF;
+        this.shouldGenerate = false;
+        this.currentCampaignDate = new Date();
         this.setDirection(0.0);
         this.setMapXLocation(0.0);
         this.setMapYLocation(0.0);
@@ -56,8 +61,18 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
     }
 
     @Override
+    public boolean shouldGenerateMission() {
+        return shouldGenerate;
+    }
+
+    @Override
     public void updateStep() {
         // Update the entire group here
+    }
+
+    @Override
+    public void setCurrentCampaignDate(Date date) {
+        this.currentCampaignDate = date;
     }
 
     @Override

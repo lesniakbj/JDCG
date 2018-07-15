@@ -110,7 +110,10 @@ public class AirfieldGenerator {
                 airfield.setOwnerSide(airfieldEntry.getKey());
                 airfield.setAirfieldType(airfieldType);
                 airfield.setMunitionStockpile(airfieldMunitions.get(airfieldType));
+
+                // Critical structures get added during ground unit creation
                 airfield.setCriticalStructures(null);
+
                 convertedAirfields.add(airfield);
             }
             airfieldList.put(airfieldEntry.getKey(), convertedAirfields);

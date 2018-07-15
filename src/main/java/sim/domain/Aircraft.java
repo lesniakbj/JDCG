@@ -2,6 +2,8 @@ package sim.domain;
 
 import sim.domain.enums.AircraftType;
 
+import java.util.Date;
+
 /**
  * (c) Copyright 2018 Calabrio, Inc.
  * All Rights Reserved. www.calabrio.com LICENSED MATERIALS
@@ -24,6 +26,16 @@ public class Aircraft extends SimUnit {
     @Override
     public void updateStep() {
         // Update here
+    }
+
+    @Override
+    public void setCurrentCampaignDate(Date date) {
+
+    }
+
+    @Override
+    public boolean shouldGenerateMission() {
+        return false;
     }
 
     public AircraftType getAircraftType() {

@@ -40,8 +40,9 @@ public class Mission implements Simable {
     private boolean isInProgress;
     private boolean isClientMission;
     private boolean missionComplete;
-
     private static int minutesPerUpdate;
+    private Date currentCampaignDate;
+    private boolean shouldGenerate;
 
     public Mission() {
         minutesPerUpdate = 0;
@@ -64,6 +65,8 @@ public class Mission implements Simable {
         this.isInProgress = false;
         this.isClientMission = false;
         this.missionComplete = false;
+        this.shouldGenerate = false;
+        this.currentCampaignDate = plannedMissionDate;
     }
 
     public Mission(int n) {
@@ -87,6 +90,33 @@ public class Mission implements Simable {
         this.isInProgress = false;
         this.isClientMission = false;
         this.missionComplete = false;
+        this.shouldGenerate = false;
+        this.currentCampaignDate = plannedMissionDate;
+    }
+
+    public Mission(Date time) {
+        minutesPerUpdate = 0;
+        this.mapType = MapType.PERSIAN_GULF;
+        this.missionType = TaskType.CAS;
+
+        // Sample for testing
+        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C)));
+        this.missionAircraft = new UnitGroup<>(test);
+        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
+        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
+
+        // Sample for testing
+        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
+                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getX(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
+
+        this.missionWaypoints = waypoints;
+        this.nextWaypoint = waypoints.get(0);
+        this.plannedMissionDate = time;
+        this.isInProgress = false;
+        this.isClientMission = false;
+        this.missionComplete = false;
+        this.shouldGenerate = false;
+        this.currentCampaignDate = plannedMissionDate;
     }
 
     public TaskType getMissionType() {
@@ -172,6 +202,16 @@ public class Mission implements Simable {
 
     @Override
     public void updateStep() {
+        if(currentCampaignDate.before(plannedMissionDate)) {
+            log.debug("Waiting for mission start date...");
+            return;
+        }
+
+        if(isClientMission) {
+            shouldGenerate = true;
+            return;
+        }
+
         if(nextWaypoint != null) {
             double currentX = missionAircraft.getMapXLocation();
             double currentY = missionAircraft.getMapYLocation();
@@ -195,6 +235,10 @@ public class Mission implements Simable {
                 nextWaypoint();
                 missionAircraft.setMapXLocation(nextWaypoint.getLocationX());
                 missionAircraft.setMapYLocation(nextWaypoint.getLocationY());
+
+                // If the next Waypoint is going to be the Mission point, tell
+                // the generator that we want to generate this mission
+                shouldGenerate = getNextWaypoint().getWaypointType().equals(WaypointType.MISSION);
             } else {
                 missionAircraft.setMapXLocation(newX);
                 missionAircraft.setMapYLocation(newY);
@@ -204,6 +248,15 @@ public class Mission implements Simable {
         }
     }
 
+    @Override
+    public boolean shouldGenerateMission() {
+        return shouldGenerate;
+    }
+
+    @Override
+    public void setCurrentCampaignDate(Date date) {
+        this.currentCampaignDate = date;
+    }
 
     @Override
     public boolean equals(Object o) {
