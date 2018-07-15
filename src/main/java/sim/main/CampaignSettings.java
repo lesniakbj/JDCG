@@ -9,6 +9,7 @@ import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CampaignSettings {
     private GameMap selectedMap;
@@ -20,6 +21,7 @@ public class CampaignSettings {
     private FactionSide playerSelectedSide;
     private SquadronType selectedSquadron;
     private boolean isComplete;
+    private Date currentCampaignDate;
     private String dateFormat;
 
     public CampaignSettings() {
@@ -119,6 +121,18 @@ public class CampaignSettings {
 
     public void setComplete(boolean complete) {
         isComplete = complete;
+    }
+
+    public void setSelectedMap(GameMap selectedMap) {
+        this.selectedMap = selectedMap;
+    }
+
+    public Date getCurrentCampaignDate() {
+        return currentCampaignDate;
+    }
+
+    public void setCurrentCampaignDate(Date currentCampaignDate) {
+        this.currentCampaignDate = currentCampaignDate;
     }
 
     public String getDateFormat() {

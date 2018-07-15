@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.GameMap;
 import sim.domain.Mission;
-import sim.domain.Munition;
 import sim.domain.enums.AirfieldType;
+import sim.domain.enums.MunitionType;
 import sim.main.DynamicCampaignSim;
 import sim.util.MathUtil;
 import ui.util.DrawUtil;
@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,8 +28,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
@@ -196,7 +193,7 @@ public class CampaignPanel extends JPanel {
             dialog.setLocationRelativeTo(null);
             dialog.setModal(true);
             dialog.setVisible(true);
-            Map<Integer, Munition> loadout = ((FlightLoadoutPanel)dialog.getContentPane().getComponent(0)).getFlightLoadout();
+            Map<Integer,MunitionType> loadout = ((FlightLoadoutPanel)dialog.getContentPane().getComponent(0)).getFlightLoadout();
             if(loadout == null) {
                 log.debug("No loadout!");
             }

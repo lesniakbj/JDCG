@@ -61,4 +61,82 @@ public class StaticLists {
     static final List<AircraftType> MARINE_GROUND_STRIKE_COMPLETE_ERAS = Arrays.asList(AircraftType.A_4, AircraftType.AV_8_NA);
     static final List<AircraftType> MARINE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.F_4, AircraftType.FA_18C_LOT20);
     static final List<AircraftType> MARINE_STRIKE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.F_4, AircraftType.AV_8_NA, AircraftType.FA_18C_LOT20);
+
+    // Default Loadouts
+    public static final Map<AircraftType, Map<TaskType, Map<Integer, MunitionType>>> DEFAULT_LOADOUTS = new HashMap<AircraftType, Map<TaskType, Map<Integer, MunitionType>>>() {{
+        // F-18C Loadouts
+        Map<TaskType, Map<Integer, MunitionType>> f18TaskLoadouts = new HashMap<>();
+        Map<Integer, MunitionType> f18CASLoadout = new HashMap<>();
+        f18CASLoadout.put(1, MunitionType.AIM9M);
+        f18CASLoadout.put(2, MunitionType.MK_82);
+        f18CASLoadout.put(3, MunitionType.MK_82);
+        f18CASLoadout.put(5, MunitionType.FUEL_TANK);
+        f18CASLoadout.put(7, MunitionType.MK_82);
+        f18CASLoadout.put(8, MunitionType.MK_82);
+        f18CASLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.CAS, f18CASLoadout);
+
+        Map<Integer, MunitionType> f18CAPLoadout = new HashMap<>();
+        f18CAPLoadout.put(1, MunitionType.AIM9M);
+        f18CAPLoadout.put(2, MunitionType.AIM9MX2);
+        f18CAPLoadout.put(4, MunitionType.AIM7M);
+        f18CAPLoadout.put(5, MunitionType.FUEL_TANK);
+        f18CAPLoadout.put(6, MunitionType.AIM7M);
+        f18CAPLoadout.put(8, MunitionType.AIM9MX2);
+        f18CAPLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.CAP, f18CAPLoadout);
+
+        Map<Integer, MunitionType> f18SEADLoadout = new HashMap<>();
+        f18SEADLoadout.put(1, MunitionType.AIM9M);
+        f18SEADLoadout.put(5, MunitionType.FUEL_TANK);
+        f18SEADLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.SEAD, f18SEADLoadout);
+
+        Map<Integer, MunitionType> f18DEADLoadout = new HashMap<>();
+        f18DEADLoadout.put(1, MunitionType.AIM9M);
+        f18DEADLoadout.put(5, MunitionType.FUEL_TANK);
+        f18DEADLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.DEAD, f18DEADLoadout);
+
+        Map<Integer, MunitionType> f18EscortLoadout = new HashMap<>();
+        f18EscortLoadout.put(1, MunitionType.AIM9M);
+        f18EscortLoadout.put(2, MunitionType.AIM7M);
+        f18EscortLoadout.put(3, MunitionType.FUEL_TANK);
+        f18EscortLoadout.put(5, MunitionType.FUEL_TANK);
+        f18EscortLoadout.put(7, MunitionType.FUEL_TANK);
+        f18EscortLoadout.put(8, MunitionType.AIM7M);
+        f18EscortLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.ESCORT, f18EscortLoadout);
+
+        Map<Integer, MunitionType> f18GroundStrikeLoadout = new HashMap<>();
+        f18GroundStrikeLoadout.put(1, MunitionType.AIM9M);
+        f18GroundStrikeLoadout.put(2, MunitionType.MK_83X2);
+        f18GroundStrikeLoadout.put(5, MunitionType.FUEL_TANK);
+        f18GroundStrikeLoadout.put(8, MunitionType.MK_83X2);
+        f18GroundStrikeLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.GROUND_STRIKE, f18GroundStrikeLoadout);
+
+        Map<Integer, MunitionType> f18InterceptLoadout = new HashMap<>();
+        f18InterceptLoadout.put(1, MunitionType.AIM9M);
+        f18InterceptLoadout.put(2, MunitionType.AIM9MX2);
+        f18InterceptLoadout.put(4, MunitionType.AIM7M);
+        f18InterceptLoadout.put(5, MunitionType.FUEL_TANK);
+        f18InterceptLoadout.put(6, MunitionType.AIM7M);
+        f18InterceptLoadout.put(8, MunitionType.AIM9MX2);
+        f18InterceptLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.INTERCEPT, f18InterceptLoadout);
+
+        Map<Integer, MunitionType> f18LowLevelStrikeLoadout = new HashMap<>();
+        f18LowLevelStrikeLoadout.put(1, MunitionType.AIM9M);
+        f18LowLevelStrikeLoadout.put(2, MunitionType.MK_82SEX2);
+        f18LowLevelStrikeLoadout.put(5, MunitionType.FUEL_TANK);
+        f18LowLevelStrikeLoadout.put(8, MunitionType.MK_82SEX2);
+        f18LowLevelStrikeLoadout.put(9, MunitionType.AIM9M);
+        f18TaskLoadouts.put(TaskType.LOW_LEVEL_STRIKE, f18LowLevelStrikeLoadout);
+        put(AircraftType.FA_18C_LOT20, f18TaskLoadouts);
+
+        // A-10C Loadouts
+
+        // A-10A Loadouts
+    }};
 }

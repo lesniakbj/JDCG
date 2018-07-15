@@ -8,12 +8,14 @@ import sim.domain.Mission;
 import sim.domain.UnitGroup;
 import sim.domain.enums.FactionSide;
 import sim.gen.CampaignGenerator;
+import sim.gen.MissionGenerator;
 import ui.containers.CampaignPanel;
 
 import javax.swing.border.Border;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,7 +41,6 @@ public class DynamicCampaignSim {
 
     // Selected data
     private Mission currentlySelectedMission;
-    private Date currentCampaignDate;
     private boolean generateMission;
 
     // Background Sim
@@ -54,7 +55,6 @@ public class DynamicCampaignSim {
         this.blueforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.redforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.currentlySelectedMission = null;
-        this.currentCampaignDate = new Date();
         this.generateMission = false;
     }
 
@@ -75,11 +75,11 @@ public class DynamicCampaignSim {
     }
 
     public Date getCurrentCampaignDate() {
-        return currentCampaignDate;
+        return campaignSettings.getCurrentCampaignDate();
     }
 
     public void setCurrentCampaignDate(Date currentCampaignDate) {
-        this.currentCampaignDate = currentCampaignDate;
+        campaignSettings.setCurrentCampaignDate(currentCampaignDate);
     }
 
     public MissionManager getCampaignMissionManager() {
@@ -124,16 +124,20 @@ public class DynamicCampaignSim {
 
         // Step the current simulation time
         Calendar cal = Calendar.getInstance();
-        cal.setTime(currentCampaignDate);
+        cal.setTime(campaignSettings.getCurrentCampaignDate());
         cal.add(Calendar.MINUTE, minutesToStep);
-        this.currentCampaignDate = cal.getTime();
+        campaignSettings.setCurrentCampaignDate(cal.getTime());
 
         // Step all of the sim objects
         //  1) Sim all existing missions
         //  2) Generate new missions
         List<Mission> criticalMissions = new ArrayList<>();
-        for(Mission m : blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions()) {
-            m.setCurrentCampaignDate(currentCampaignDate);
+        List<Mission> allMissions = new ArrayList<>();
+        allMissions.addAll(blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions());
+        allMissions.addAll(redforCoalitionManager.getCoalitionMissionManager().getActiveMissions());
+        Collections.shuffle(allMissions);
+        for(Mission m : allMissions) {
+            m.setCurrentCampaignDate(campaignSettings.getCurrentCampaignDate());
             m.setMinutesPerUpdate(minutesToStep);
             log.debug(m);
             m.updateStep();
@@ -161,7 +165,7 @@ public class DynamicCampaignSim {
         CampaignGenerator gen = new CampaignGenerator(campaignSettings);
 
         // Generate the date of the campaign
-        currentCampaignDate = gen.generateCampaignDate();
+        campaignSettings.setCurrentCampaignDate(gen.generateCampaignDate());
 
         // First, generate the airbases that are going to be assigned to each team based on the settings
         Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
@@ -179,10 +183,8 @@ public class DynamicCampaignSim {
         // Then, generate all of the AirForce groups that exist within this campaign
 
         // This is a test....
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(currentCampaignDate);
-        cal.add(Calendar.HOUR, 2);
-        blueforCoalitionManager.getCoalitionMissionManager().addMission(new Mission(cal.getTime()));
+        MissionGenerator missionGenerator = new MissionGenerator();
+        missionGenerator.generateTestMissionForCoalition(this, blueforCoalitionManager);
     }
 
     public void runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel) {

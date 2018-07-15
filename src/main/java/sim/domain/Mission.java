@@ -2,19 +2,17 @@ package sim.domain;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MapType;
+import sim.domain.enums.MunitionType;
 import sim.domain.enums.TaskType;
 import sim.domain.enums.WaypointType;
-import sim.gen.WaypointGenerator;
+import sim.exception.InvalidMissionException;
 import sim.util.MathUtil;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +37,6 @@ public class Mission implements Simable {
     private List<Waypoint> missionWaypoints;
     private Waypoint nextWaypoint;
     private Date plannedMissionDate;
-    private boolean isInProgress;
     private boolean isClientMission;
     private int playerAircraft;
     private boolean missionComplete;
@@ -47,91 +44,9 @@ public class Mission implements Simable {
     private Date currentCampaignDate;
     private boolean shouldGenerate;
     private AirfieldType startingAirfield;
-    private Map<Integer,Munition> missionMunitions;
+    private Map<Integer,MunitionType> missionMunitions;
 
-    public Mission() {
-        minutesPerUpdate = 0;
-        this.mapType = MapType.PERSIAN_GULF;
-        this.missionType = TaskType.CAS;
-
-        // Sample for testing
-        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
-        this.missionAircraft = new UnitGroup<>(test);
-        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
-        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
-
-        // Sample for testing
-        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
-                AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getX(),  AirfieldType.SIR_ABU_NUAYR.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
-
-        this.missionWaypoints = waypoints;
-        this.nextWaypoint = waypoints.get(0);
-        this.plannedMissionDate = new Date();
-        this.isInProgress = false;
-        this.isClientMission = false;
-        this.playerAircraft = 0;
-        this.missionComplete = false;
-        this.shouldGenerate = false;
-        this.currentCampaignDate = plannedMissionDate;
-        this.startingAirfield = null;
-        this.missionMunitions = new HashMap<>();
-    }
-
-    public Mission(int n) {
-        minutesPerUpdate = 0;
-        this.mapType = MapType.PERSIAN_GULF;
-        this.missionType = TaskType.CAS;
-
-        // Sample for testing
-        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
-        this.missionAircraft = new UnitGroup<>(test);
-        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
-        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
-
-        // Sample for testing
-        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
-                AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getX(),  AirfieldType.BANDAR_LENGEH.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
-
-        this.missionWaypoints = waypoints;
-        this.nextWaypoint = waypoints.get(0);
-        this.plannedMissionDate = new Date();
-        this.isInProgress = false;
-        this.isClientMission = false;
-        this.playerAircraft = 0;
-        this.missionComplete = false;
-        this.shouldGenerate = false;
-        this.currentCampaignDate = plannedMissionDate;
-        this.startingAirfield = null;
-        this.missionMunitions = new HashMap<>();
-    }
-
-    public Mission(Date time) {
-        minutesPerUpdate = 0;
-        this.mapType = MapType.PERSIAN_GULF;
-        this.missionType = TaskType.CAS;
-
-        // Sample for testing
-        List<Aircraft> test = new ArrayList<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20)));
-        this.missionAircraft = new UnitGroup<>(test);
-        missionAircraft.setMapXLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX());
-        missionAircraft.setMapYLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY());
-
-        // Sample for testing
-        List<Waypoint> waypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX(), AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY(),
-                AirfieldType.KHASAB.getAirfieldMapPosition().getX(),  AirfieldType.KHASAB.getAirfieldMapPosition().getY(), missionType, MapType.PERSIAN_GULF);
-
-        this.missionWaypoints = waypoints;
-        this.nextWaypoint = waypoints.get(0);
-        this.plannedMissionDate = time;
-        this.isInProgress = false;
-        this.isClientMission = false;
-        this.playerAircraft = 0;
-        this.missionComplete = false;
-        this.shouldGenerate = false;
-        this.currentCampaignDate = plannedMissionDate;
-        this.startingAirfield = null;
-        this.missionMunitions = new HashMap<>();
-    }
+    private Mission() {}
 
     public TaskType getMissionType() {
         return missionType;
@@ -171,14 +86,6 @@ public class Mission implements Simable {
 
     public void setPlannedMissionDate(Date plannedMissionDate) {
         this.plannedMissionDate = plannedMissionDate;
-    }
-
-    public boolean isInProgress() {
-        return isInProgress;
-    }
-
-    public void setInProgress(boolean inProgress) {
-        isInProgress = inProgress;
     }
 
     public Waypoint getNextWaypoint() {
@@ -225,12 +132,52 @@ public class Mission implements Simable {
         playerAircraft = aircraft;
     }
 
-    public void setMissionMunitions(Map<Integer,Munition> missionMunitions) {
+    public void setMissionMunitions(Map<Integer,MunitionType> missionMunitions) {
         this.missionMunitions = missionMunitions;
     }
 
-    public Map<Integer,Munition> getMissionMunitions() {
+    public Map<Integer,MunitionType> getMissionMunitions() {
         return missionMunitions;
+    }
+
+    public MapType getMapType() {
+        return mapType;
+    }
+
+    public void setMapType(MapType mapType) {
+        this.mapType = mapType;
+    }
+
+    public void setNextWaypoint(Waypoint nextWaypoint) {
+        this.nextWaypoint = nextWaypoint;
+    }
+
+    public void setMissionComplete(boolean missionComplete) {
+        this.missionComplete = missionComplete;
+    }
+
+    public static int getMinutesPerUpdate() {
+        return minutesPerUpdate;
+    }
+
+    public Date getCurrentCampaignDate() {
+        return currentCampaignDate;
+    }
+
+    public boolean isShouldGenerate() {
+        return shouldGenerate;
+    }
+
+    public void setShouldGenerate(boolean shouldGenerate) {
+        this.shouldGenerate = shouldGenerate;
+    }
+
+    public AirfieldType getStartingAirfield() {
+        return startingAirfield;
+    }
+
+    public void setStartingAirfield(AirfieldType startingAirfield) {
+        this.startingAirfield = startingAirfield;
     }
 
     @Override
@@ -299,7 +246,6 @@ public class Mission implements Simable {
 
         Mission mission = (Mission) o;
 
-        if (isInProgress != mission.isInProgress) return false;
         if (isClientMission != mission.isClientMission) return false;
         if (missionComplete != mission.missionComplete) return false;
         if (mapType != mission.mapType) return false;
@@ -321,7 +267,6 @@ public class Mission implements Simable {
         result = 31 * result + (missionWaypoints != null ? missionWaypoints.hashCode() : 0);
         result = 31 * result + (nextWaypoint != null ? nextWaypoint.hashCode() : 0);
         result = 31 * result + (plannedMissionDate != null ? plannedMissionDate.hashCode() : 0);
-        result = 31 * result + (isInProgress ? 1 : 0);
         result = 31 * result + (isClientMission ? 1 : 0);
         result = 31 * result + (missionComplete ? 1 : 0);
         return result;
@@ -336,10 +281,97 @@ public class Mission implements Simable {
                 ", missionWaypoints=" + missionWaypoints +
                 ", nextWaypoint=" + nextWaypoint +
                 ", plannedMissionDate=" + plannedMissionDate +
-                ", isInProgress=" + isInProgress +
                 ", isClientMission=" + isClientMission +
                 ", missionComplete=" + missionComplete +
                 '}';
     }
 
+    public static class Builder {
+        private Mission mission;
+
+        public Builder() {
+            this.mission = new Mission();
+        }
+
+        public Builder setMissionMap(MapType map) {
+            mission.setMapType(map);
+            return this;
+        }
+
+        public Builder setMissionType(TaskType taskType) {
+            mission.setMissionType(taskType);
+            return this;
+        }
+
+        public Builder setMissionAircraft(UnitGroup<Aircraft> missionAircraft) {
+            mission.setMissionAircraft(missionAircraft);
+            return this;
+        }
+
+        public Builder setMissionWaypoints(List<Waypoint> waypoints) {
+            mission.setMissionWaypoints(waypoints);
+            mission.setNextWaypoint(waypoints.get(0));
+            return this;
+        }
+
+        public Builder setMissionDate(Date missionDate) {
+            mission.setPlannedMissionDate(missionDate);
+            return this;
+        }
+
+        public Builder setUpcomingMissionDate(Date currentDate, int minutesToMission) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(currentDate);
+            cal.add(Calendar.MINUTE, minutesToMission);
+            setCurrentCampaignDate(currentDate);
+            return setMissionDate(cal.getTime());
+        }
+
+        public Builder setIsClientMission(boolean isClientMission) {
+            mission.setClientMission(isClientMission);
+            return this;
+        }
+
+        public Builder setPlayerAircraftNumber(int playerAircraftNumber) {
+            mission.setPlayerAircraft(playerAircraftNumber);
+            return this;
+        }
+
+        public Builder setMissionComplete(boolean missionComplete) {
+            mission.setMissionComplete(missionComplete);
+            return this;
+        }
+
+        public Builder setUpdateRate(int minutesPerUpdate) {
+            mission.setMinutesPerUpdate(minutesPerUpdate);
+            return this;
+        }
+
+        public Builder setCurrentCampaignDate(Date currentCampaignDate) {
+            mission.setCurrentCampaignDate(currentCampaignDate);
+            return this;
+        }
+
+        public Builder setShouldGenerateMission(boolean shouldGenerateMission) {
+            mission.setShouldGenerate(shouldGenerateMission);
+            return this;
+        }
+
+        public Builder setStartingAirfield(AirfieldType startingAirfield) {
+            mission.setStartingAirfield(startingAirfield);
+            return this;
+        }
+
+        public Builder setMissionMunitions(Map<Integer,MunitionType> missionMunitions) {
+            mission.setMissionMunitions(missionMunitions);
+            return this;
+        }
+
+        public Mission build() throws InvalidMissionException {
+            validate();
+            return mission;
+        }
+
+        private void validate() throws InvalidMissionException {}
+    }
 }
