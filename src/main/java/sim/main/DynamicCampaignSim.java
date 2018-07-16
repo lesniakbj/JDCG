@@ -147,7 +147,12 @@ public class DynamicCampaignSim {
             }
 
             if(m.isMissionComplete()) {
-                blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions().remove(m);
+                // Remove the element
+                if(m.getMissionAircraft().getSide() == FactionSide.BLUEFOR) {
+                    blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions().remove(m);
+                } else {
+                    redforCoalitionManager.getCoalitionMissionManager().getActiveMissions().remove(m);
+                }
             }
         }
 
@@ -185,6 +190,7 @@ public class DynamicCampaignSim {
         // This is a test....
         MissionGenerator missionGenerator = new MissionGenerator();
         missionGenerator.generateTestMissionForCoalition(this, blueforCoalitionManager);
+        missionGenerator.generateTestRedforMissionForCoalition(this, redforCoalitionManager);
     }
 
     public void runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel) {

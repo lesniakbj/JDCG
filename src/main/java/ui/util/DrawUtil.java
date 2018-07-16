@@ -23,6 +23,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +119,10 @@ public class DrawUtil {
     }
 
     public static void drawActiveMissions(DynamicCampaignSim campaign, Graphics2D g) {
-        for(Mission mission : campaign.getCampaignMissionManager().getActiveMissions()) {
+        List<Mission> missions = new ArrayList<>();
+        missions.addAll(campaign.getBlueforCoalitionManager().getCoalitionMissionManager().getActiveMissions());
+        missions.addAll(campaign.getRedforCoalitionManager().getCoalitionMissionManager().getActiveMissions());
+        for(Mission mission : missions) {
             log.debug(mission);
 
             UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();

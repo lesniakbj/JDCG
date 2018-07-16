@@ -2,27 +2,19 @@ package sim.domain;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.MunitionType;
 import sim.domain.enums.TaskType;
 import sim.domain.enums.WaypointType;
 import sim.exception.InvalidMissionException;
-import sim.gen.WaypointGenerator;
 import sim.util.MathUtil;
 
-import javax.swing.table.TableRowSorter;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
