@@ -36,6 +36,7 @@ public class CampaignGenerator {
     private CampaignSettings campaignSettings;
     private Map<FactionSide, Integer> overallForceStrength;
     private Map<FactionSide, List<Airfield>> generatedAirfields;
+    private AirfieldGenerator airfieldGenerator;
 
     // Static Generator Data
     private static final double AIRCRAFT_COST = 1;
@@ -69,19 +70,20 @@ public class CampaignGenerator {
             }
             overallForceStrength.put(side, totalStrength);
         }
+
+        // Create the generators
+        airfieldGenerator = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
     }
 
     public Map<FactionSide,List<Airfield>> generateAirfieldMap() {
         if(generatedAirfields == null) {
-            AirfieldGenerator gen = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
-            generatedAirfields = gen.generateAirfields(campaignSettings, overallForceStrength, STARTING_NUMBER_OF_AIRBASES);
+            generatedAirfields = airfieldGenerator.generateAirfields(campaignSettings, overallForceStrength, STARTING_NUMBER_OF_AIRBASES);
         }
         return  generatedAirfields;
     }
 
     public Map<FactionSide,List<Airfield>> adjustAirfieldsIfNeeded(Map<FactionSide, List<Point2D.Double>> warfareFront, Map<FactionSide, List<Airfield>> generatedAirfields) {
-        AirfieldGenerator gen = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
-        return gen.adjustAirfieldsToGeneratedFront(warfareFront, generatedAirfields);
+        return airfieldGenerator.adjustAirfieldsToGeneratedFront(warfareFront, generatedAirfields);
     }
 
     public Map<FactionSide,List<Point2D.Double>> generateWarfareFront(Map<FactionSide, List<Airfield>> generatedAirfields) {
@@ -148,10 +150,5 @@ public class CampaignGenerator {
         cal.set(year, mo, day, hour, minute);
         log.debug(cal.getTime());
         return cal.getTime();
-    }
-
-    public Map<FactionSide,List<Airfield>> generateAirfieldMunitions() {
-        AirfieldGenerator gen = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
-        return gen.generateAirfieldMunitions(generatedAirfields);
     }
 }
