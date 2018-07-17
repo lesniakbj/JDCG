@@ -5,6 +5,10 @@ import static sim.domain.enums.MunitionSubType.BOMBS;
 import static sim.domain.enums.MunitionSubType.NONE;
 import static sim.domain.enums.MunitionSubType.ROCKETS;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+import sim.domain.Munition;
+
 public enum MunitionType {
     // AIM-7 Family
     AIM7M("AIM-7M", AIR_TO_AIR, null),
@@ -69,8 +73,20 @@ public enum MunitionType {
         this.side = side;
     }
 
+    public static MunitionType[] getMunitionsForSide(FactionSide side) {
+        return Arrays.stream(MunitionType.values()).filter((mt) -> mt.getSide().equals(side) || mt.getSide().equals(FactionSide.NEUTRAL)).toArray(MunitionType[]::new);
+    }
+
     public String getMunitionName() {
         return munitionName;
+    }
+
+    public MunitionSubType getSubType() {
+        return subType;
+    }
+
+    public FactionSide getSide() {
+        return side;
     }
 
     public static MunitionType fromName(String item) {

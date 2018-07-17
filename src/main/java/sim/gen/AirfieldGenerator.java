@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AirfieldGenerator {
+class AirfieldGenerator {
     private static final Logger log = LogManager.getLogger(AirfieldGenerator.class);
 
     private AirfieldType blueHomeAirfield;
@@ -29,12 +29,12 @@ public class AirfieldGenerator {
     private Map<FactionSide, Integer> overallForceStrength;
     private double munitionCost;
 
-    public AirfieldGenerator(Map<FactionSide, Integer> overallForceStrength, double munitionCost) {
+    AirfieldGenerator(Map<FactionSide, Integer> overallForceStrength, double munitionCost) {
         this.munitionCost = munitionCost;
         this.overallForceStrength = overallForceStrength;
     }
 
-    public Map<FactionSide,List<Airfield>> generateAirfields(CampaignSettings campaignSettings, Map<FactionSide, Integer> overallForceStrength, int numStartingAirfields) {
+    Map<FactionSide,List<Airfield>> generateAirfields(CampaignSettings campaignSettings, Map<FactionSide, Integer> overallForceStrength, int numStartingAirfields) {
         CampaignType campaignType = campaignSettings.getSelectedCampaignType();
         GameMap map = campaignSettings.getSelectedMap();
         List<AirfieldType> mapAirfields = map.getAirfieldTypes();
@@ -67,7 +67,7 @@ public class AirfieldGenerator {
         return airfieldList;
     }
 
-    public Map<FactionSide,List<Airfield>> adjustAirfieldsToGeneratedFront(Map<FactionSide, List<Point2D.Double>> warfareFront, Map<FactionSide, List<Airfield>> generatedAirfields) {
+    Map<FactionSide,List<Airfield>> adjustAirfieldsToGeneratedFront(Map<FactionSide, List<Point2D.Double>> warfareFront, Map<FactionSide, List<Airfield>> generatedAirfields) {
         FactionSide side = warfareFront.get(FactionSide.BLUEFOR) == null ? FactionSide.REDFOR : FactionSide.BLUEFOR;
         FactionSide other = warfareFront.get(FactionSide.BLUEFOR) == null ? FactionSide.BLUEFOR : FactionSide.REDFOR;
         List<Point2D.Double> pts = warfareFront.get(side);
@@ -108,30 +108,30 @@ public class AirfieldGenerator {
         return factionAirfields;
     }
 
-    public Map<FactionSide,List<Airfield>> generateAirfieldMunitions(Map<FactionSide,List<Airfield>> generatedAirfields) {
+    Map<FactionSide,List<Airfield>> generateAirfieldMunitions(Map<FactionSide, List<Airfield>> generatedAirfields) {
         double blueStrength = overallForceStrength.get(FactionSide.BLUEFOR);
         List<Airfield> blueFields = generatedAirfields.get(FactionSide.BLUEFOR);
         double redStrength = overallForceStrength.get(FactionSide.REDFOR);
         List<Airfield> redFields = generatedAirfields.get(FactionSide.REDFOR);
 
+        // Only stock Blue Munitions
         for(Airfield type : blueFields) {
-            // Stock 4x the munitions when it's the home airfield
             if(type.getAirfieldType().equals(blueHomeAirfield)) {
-                addMunitionsToAirfield(type, 200);
+                addMunitionsToAirfield(FactionSide.BLUEFOR, type, 200);
                 blueStrength -= (200 * munitionCost);
             } else {
-                addMunitionsToAirfield(type, 50);
+                addMunitionsToAirfield(FactionSide.BLUEFOR, type, 50);
                 blueStrength -= (50 * munitionCost);
             }
         }
 
+        // Only stock Red Munitions
         for(Airfield type : redFields) {
-            // Stock 4x the munitions when it's the home airfield
-            if(type.equals(redHomeAirfield)) {
-                addMunitionsToAirfield(type, 200);
+            if(type.getAirfieldType().equals(redHomeAirfield)) {
+                addMunitionsToAirfield(FactionSide.REDFOR, type, 200);
                 redStrength -= (200 * munitionCost);
             } else {
-                addMunitionsToAirfield(type, 50);
+                addMunitionsToAirfield(FactionSide.REDFOR, type, 50);
                 redStrength -= (50 * munitionCost);
             }
         }
@@ -205,9 +205,9 @@ public class AirfieldGenerator {
         return closestAirfields;
     }
 
-    private void addMunitionsToAirfield(Airfield type, int totalToGen) {
+    private void addMunitionsToAirfield(FactionSide side, Airfield type, int totalToGen) {
         List<MunitionStockpile> stockpile = new ArrayList<>();
-        for(MunitionType t : MunitionType.values()) {
+        for(MunitionType t : MunitionType.getMunitionsForSide(side)) {
             stockpile.add(new MunitionStockpile(t, totalToGen));
         }
         type.setMunitionStockpile(stockpile);
