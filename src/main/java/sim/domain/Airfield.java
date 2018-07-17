@@ -8,7 +8,7 @@ import java.util.List;
 public class Airfield {
     private FactionSide ownerSide;
     private AirfieldType airfieldType;
-    private List<Munition> munitionStockpile;
+    private List<MunitionStockpile> munitionStockpile;
     private List<SimUnit> criticalStructures;
     private List<UnitGroup<Aircraft>> stationedAircraft;
 
@@ -28,11 +28,11 @@ public class Airfield {
         this.airfieldType = airfieldType;
     }
 
-    public List<Munition>  getMunitionStockpile() {
+    public List<MunitionStockpile> getMunitionStockpile() {
         return munitionStockpile;
     }
 
-    public void setMunitionStockpile(List<Munition> munitionStockpile) {
+    public void setMunitionStockpile(List<MunitionStockpile> munitionStockpile) {
         this.munitionStockpile = munitionStockpile;
     }
 
@@ -50,5 +50,16 @@ public class Airfield {
 
     public void setStationedAircraft(List<UnitGroup<Aircraft>> stationedAircraft) {
         this.stationedAircraft = stationedAircraft;
+    }
+
+    @Override
+    public String toString() {
+        return "Airfield{" +
+                "ownerSide=" + ownerSide +
+                ", airfieldType=" + airfieldType +
+                ", munitionStockpile=" + munitionStockpile +
+                ", criticalStructures=" + criticalStructures +
+                ", stationedAircraft=" + stationedAircraft +
+                '}';
     }
 }

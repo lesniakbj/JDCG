@@ -26,60 +26,50 @@ public class MissionGenerator {
     public void generateTestMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager) {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition(), AirfieldType.KHASAB.getAirfieldMapPosition(), TaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
-        double x = AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getX();
-        double y = AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition().getY();
-        UnitGroup<Aircraft> craft = new UnitGroup<>(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20), new Aircraft(AircraftType.FA_18C_LOT20)), FactionSide.BLUEFOR, x, y);
+        UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
+        aircraftBuilder.setUnits(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20), new Aircraft(AircraftType.FA_18C_LOT20)))
+            .setSide(FactionSide.BLUEFOR)
+            .setMapLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition());
 
         Mission.Builder builder = new Mission.Builder();
-        builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType());
-        builder.setMissionType(TaskType.INTERCEPT);
-        builder.setMissionAircraft(craft);
-        builder.setMissionWaypoints(generatedWaypoints);
-        builder.setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 60);
-        builder.setIsClientMission(false);
-        builder.setPlayerAircraftNumber(0);
-        builder.setMissionComplete(false);
-        builder.setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep());
-        builder.setShouldGenerateMission(false);
-        builder.setStartingAirfield(AirfieldType.AL_DHAFRA_AIRBASE);
-        builder.setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.INTERCEPT));
+        builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType())
+            .setMissionType(TaskType.INTERCEPT)
+            .setMissionAircraft(aircraftBuilder.build())
+            .setMissionWaypoints(generatedWaypoints)
+            .setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 60)
+            .setIsClientMission(false)
+            .setPlayerAircraftNumber(0)
+            .setMissionComplete(false)
+            .setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep())
+            .setShouldGenerateMission(false)
+            .setStartingAirfield(AirfieldType.AL_DHAFRA_AIRBASE)
+            .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.INTERCEPT));
 
-        try {
-            Mission m = builder.build();
-            coalitionManager.getCoalitionMissionManager().addMission(m);
-        } catch (InvalidMissionException e) {
-            log.debug("Invalid mission generated!");
-            log.debug(e);
-        }
+        coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }
 
     public void generateTestRedforMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager) {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition(), AirfieldType.ABU_MUSA_ISLAND_AIRPORT.getAirfieldMapPosition(), TaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
-        double x = AirfieldType.LAR_AIRBASE.getAirfieldMapPosition().getX();
-        double y = AirfieldType.LAR_AIRBASE.getAirfieldMapPosition().getY();
-        UnitGroup<Aircraft> craft = new UnitGroup<>(Arrays.asList(new Aircraft(AircraftType.SU_27), new Aircraft(AircraftType.SU_27)), FactionSide.REDFOR, x, y);
+        UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
+        aircraftBuilder.setUnits(Arrays.asList(new Aircraft(AircraftType.SU_27), new Aircraft(AircraftType.SU_27)))
+            .setSide(FactionSide.REDFOR)
+            .setMapLocation(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition());
 
         Mission.Builder builder = new Mission.Builder();
-        builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType());
-        builder.setMissionType(TaskType.INTERCEPT);
-        builder.setMissionAircraft(craft);
-        builder.setMissionWaypoints(generatedWaypoints);
-        builder.setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 60);
-        builder.setIsClientMission(false);
-        builder.setPlayerAircraftNumber(0);
-        builder.setMissionComplete(false);
-        builder.setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep());
-        builder.setShouldGenerateMission(false);
-        builder.setStartingAirfield(AirfieldType.AL_DHAFRA_AIRBASE);
-        builder.setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.INTERCEPT));
+        builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType())
+            .setMissionType(TaskType.INTERCEPT)
+            .setMissionAircraft(aircraftBuilder.build())
+            .setMissionWaypoints(generatedWaypoints)
+            .setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 60)
+            .setIsClientMission(false)
+            .setPlayerAircraftNumber(0)
+            .setMissionComplete(false)
+            .setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep())
+            .setShouldGenerateMission(false)
+            .setStartingAirfield(AirfieldType.LAR_AIRBASE)
+            .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.INTERCEPT));
 
-        try {
-            Mission m = builder.build();
-            coalitionManager.getCoalitionMissionManager().addMission(m);
-        } catch (InvalidMissionException e) {
-            log.debug("Invalid mission generated!");
-            log.debug(e);
-        }
+        coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }
 }

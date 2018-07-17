@@ -183,7 +183,7 @@ public class JDCGUIFrame extends JFrame {
     }
 
     void refreshUiElements() {
-        instance.pack();
+        // instance.pack();
         instance.validate();
         instance.repaint();
     }

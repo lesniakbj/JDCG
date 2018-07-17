@@ -120,10 +120,14 @@ public class DrawUtil {
 
     public static void drawActiveMissions(DynamicCampaignSim campaign, Graphics2D g) {
         List<Mission> missions = new ArrayList<>();
-        missions.addAll(campaign.getBlueforCoalitionManager().getCoalitionMissionManager().getActiveMissions());
-        missions.addAll(campaign.getRedforCoalitionManager().getCoalitionMissionManager().getActiveMissions());
+        missions.addAll(campaign.getBlueforCoalitionManager().getCoalitionMissionManager().getPlannedMissions());
+        missions.addAll(campaign.getRedforCoalitionManager().getCoalitionMissionManager().getPlannedMissions());
         for(Mission mission : missions) {
             log.debug(mission);
+
+            if(!mission.isActive()) {
+                return;
+            }
 
             UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();
             Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;

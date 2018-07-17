@@ -38,12 +38,12 @@ public class CampaignGenerator {
     private Map<FactionSide, List<Airfield>> generatedAirfields;
 
     // Static Generator Data
-    private static final double AIRCRAFT_COST = 2;
-    private static final double HELICOPTER_COST = 1;
-    private static final double MUNITION_COST = .25;
-    private static final double GROUND_UNIT_COST = .5;
-    private static final double AAA_COST = 1;
-    private static final double SAM_COST = 2;
+    private static final double AIRCRAFT_COST = 1;
+    private static final double HELICOPTER_COST = .5;
+    private static final double MUNITION_COST = .1;
+    private static final double GROUND_UNIT_COST = .25;
+    private static final double AAA_COST = .5;
+    private static final double SAM_COST = 1;
     private static final int STARTING_NUMBER_OF_AIRBASES = 5;
 
     public CampaignGenerator(CampaignSettings campaignSettings) {
@@ -84,11 +84,10 @@ public class CampaignGenerator {
         return gen.adjustAirfieldsToGeneratedFront(warfareFront, generatedAirfields);
     }
 
-    public Map<FactionSide,List<Point2D.Double>> generateWarfareFront() {
+    public Map<FactionSide,List<Point2D.Double>> generateWarfareFront(Map<FactionSide, List<Airfield>> generatedAirfields) {
         Map<FactionSide, List<Point2D.Double>> retMap = new LinkedHashMap<>();
-        Map<FactionSide, List<Airfield>> airfields = generateAirfieldMap();
-        List<Airfield> blueforAirfields = airfields.get(FactionSide.BLUEFOR);
-        List<Airfield> redforAirfields = airfields.get(FactionSide.REDFOR);
+        List<Airfield> blueforAirfields = generatedAirfields.get(FactionSide.BLUEFOR);
+        List<Airfield> redforAirfields = generatedAirfields.get(FactionSide.REDFOR);
         List<Airfield> frontFields = (blueforAirfields.size() < redforAirfields.size()) ? blueforAirfields : redforAirfields;
         FactionSide frontSide = (blueforAirfields.size() < redforAirfields.size()) ? FactionSide.BLUEFOR : FactionSide.REDFOR;
 
@@ -149,5 +148,10 @@ public class CampaignGenerator {
         cal.set(year, mo, day, hour, minute);
         log.debug(cal.getTime());
         return cal.getTime();
+    }
+
+    public Map<FactionSide,List<Airfield>> generateAirfieldMunitions() {
+        AirfieldGenerator gen = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
+        return gen.generateAirfieldMunitions(generatedAirfields);
     }
 }

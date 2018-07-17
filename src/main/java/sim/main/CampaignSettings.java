@@ -1,10 +1,12 @@
 package sim.main;
 
+import java.util.Arrays;
 import sim.domain.Coalition;
 import sim.domain.GameMap;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
 import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
 
@@ -26,8 +28,8 @@ public class CampaignSettings {
 
     public CampaignSettings() {
         selectedMap = new GameMap(MapType.CAUCASUS);
-        redforCoalition = new Coalition(new ArrayList<>());
-        blueforCoalition = new Coalition(new ArrayList<>());
+        redforCoalition = new Coalition(new ArrayList<>(Arrays.asList(FactionType.RUSSIA)));
+        blueforCoalition = new Coalition(new ArrayList<>(Arrays.asList(FactionType.USA)));
         neutralCoalition = new Coalition(new ArrayList<>());
         selectedEra = ConflictEraType.MODERN;
         selectedCampaignType = CampaignType.OFFENSIVE;

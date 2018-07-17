@@ -1,6 +1,10 @@
 package sim.domain;
 
+import java.awt.geom.Point2D;
+import sim.domain.Mission.Builder;
 import sim.domain.enums.FactionSide;
+import sim.exception.InvalidMissionException;
+import sim.exception.InvalidUnitGroupException;
 import sim.util.IDGenerator;
 
 import java.util.Date;
@@ -23,6 +27,8 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
     private FactionSide side;
     private List<T> groupUnits;
     private boolean shouldGenerate;
+
+    private UnitGroup() {}
 
     public UnitGroup(List<T> groupUnits, FactionSide side, double xLocation, double yLocation) {
         this.id = IDGenerator.generateNextId(UnitGroup.class);
@@ -53,6 +59,22 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGroupUnits(List<T> groupUnits) {
+        this.groupUnits = groupUnits;
+    }
+
+    public boolean isShouldGenerate() {
+        return shouldGenerate;
+    }
+
+    public void setShouldGenerate(boolean shouldGenerate) {
+        this.shouldGenerate = shouldGenerate;
     }
 
     @Override
@@ -96,5 +118,69 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
                 ", side=" + side +
                 ", groupUnits=" + groupUnits +
                 '}';
+    }
+
+    public static class Builder<T extends SimUnit> {
+        private UnitGroup<T> unitGroup;
+
+        public Builder() {
+            this.unitGroup = new UnitGroup<>();
+        }
+
+        public Builder setUnits(List<T> units) {
+            unitGroup.setGroupUnits(units);
+            return this;
+        }
+
+        public Builder setSide(FactionSide side) {
+            unitGroup.setSide(side);
+            return this;
+        }
+
+        public Builder setGenerate(boolean generateMission) {
+            unitGroup.setShouldGenerate(generateMission);
+            return this;
+        }
+
+        public Builder setMapLocation(Point2D.Double point) {
+            unitGroup.setMapXLocation(point.getX());
+            unitGroup.setMapYLocation(point.getY());
+            return this;
+        }
+
+        public Builder setMapXLocation(double x) {
+            unitGroup.setMapXLocation(x);
+            return this;
+        }
+
+        public Builder setMapYLocation(double y) {
+            unitGroup.setMapYLocation(y);
+            return this;
+        }
+
+        public Builder setSpeed(double speed) {
+            unitGroup.setSpeedMilesPerHour(speed);
+            return this;
+        }
+
+        public Builder setDirection(double dir) {
+            unitGroup.setDirection(dir);
+            return this;
+        }
+
+        public UnitGroup<T> build(){
+            unitGroup = validate() ? unitGroup : null;
+            return unitGroup;
+        }
+
+        private boolean validate() {
+            boolean hasUnits = unitGroup.getGroupUnits() != null;
+            boolean hasSide = unitGroup.getSide() != null;
+            boolean hasMoreThanOne = unitGroup.getNumberOfUnits() > 0;
+            boolean hasX = unitGroup.getMapXLocation() != 0;
+            boolean hasY = unitGroup.getMapYLocation() != 0;
+
+            return hasUnits && hasSide && hasMoreThanOne && hasX && hasY;
+        }
     }
 }

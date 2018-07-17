@@ -18,24 +18,24 @@ import java.util.List;
  * Created by Brendan.Lesniak on 7/11/2018.
  */
 public class MissionManager {
-    private List<Mission> activeMissions;
+    private List<Mission> plannedMissions;
 
     public MissionManager() {
-        this.activeMissions = new ArrayList<>();
+        this.plannedMissions = new ArrayList<>();
     }
 
     public void addMission(Mission mission) {
-        if(activeMissions == null) {
-            activeMissions = new ArrayList<>();
+        if(plannedMissions == null) {
+            plannedMissions = new ArrayList<>();
         }
-        activeMissions.add(mission);
+        plannedMissions.add(mission);
     }
 
-    public List<Mission> getActiveMissions() {
-        return activeMissions;
+    public List<Mission> getPlannedMissions() {
+        return plannedMissions;
     }
 
-    public void setActiveMissions(List<Mission> activeMissions) {
-        this.activeMissions = activeMissions;
+    public void setPlannedMissions(List<Mission> plannedMissions) {
+        this.plannedMissions = plannedMissions;
     }
 }

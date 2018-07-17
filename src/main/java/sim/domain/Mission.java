@@ -180,9 +180,14 @@ public class Mission implements Simable {
         this.startingAirfield = startingAirfield;
     }
 
+
+    public boolean isActive() {
+        return !currentCampaignDate.before(plannedMissionDate);
+    }
+
     @Override
     public void updateStep() {
-        if(currentCampaignDate.before(plannedMissionDate)) {
+        if(!isActive()) {
             log.debug("Waiting for mission start date...");
             return;
         }
@@ -367,11 +372,19 @@ public class Mission implements Simable {
             return this;
         }
 
-        public Mission build() throws InvalidMissionException {
-            validate();
+        public Mission build() {
+            mission = validate() ? mission : null;
             return mission;
         }
 
-        private void validate() throws InvalidMissionException {}
+        private boolean validate() {
+            boolean hasMap = mission.getMapType() != null;
+            boolean hasType = mission.getMissionType() != null;
+            boolean hasAircraft = mission.getMissionAircraft() != null;
+            boolean hasWaypoints = mission.getMissionWaypoints() != null;
+            boolean hasAirfield = mission.getStartingAirfield() != null;
+
+            return hasMap && hasType && hasAircraft && hasWaypoints && hasAirfield;
+        }
     }
 }

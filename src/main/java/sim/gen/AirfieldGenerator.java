@@ -4,11 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;
 import sim.domain.GameMap;
-import sim.domain.Munition;
+import sim.domain.MunitionStockpile;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.MapType;
+import sim.domain.enums.MunitionType;
 import sim.main.CampaignSettings;
 
 import java.awt.geom.Point2D;
@@ -23,7 +24,14 @@ import java.util.stream.Collectors;
 public class AirfieldGenerator {
     private static final Logger log = LogManager.getLogger(AirfieldGenerator.class);
 
+    private AirfieldType blueHomeAirfield;
+    private AirfieldType redHomeAirfield;
+    private Map<FactionSide, Integer> overallForceStrength;
+    private double munitionCost;
+
     public AirfieldGenerator(Map<FactionSide, Integer> overallForceStrength, double munitionCost) {
+        this.munitionCost = munitionCost;
+        this.overallForceStrength = overallForceStrength;
     }
 
     public Map<FactionSide,List<Airfield>> generateAirfields(CampaignSettings campaignSettings, Map<FactionSide, Integer> overallForceStrength, int numStartingAirfields) {
@@ -37,28 +45,23 @@ public class AirfieldGenerator {
         }
 
         // Assign the home airfields
-        AirfieldType blueforHomeAirfield = null;
-        AirfieldType redforHomeAirfield = null;
         if(!map.getMapType().equals(MapType.NORMANDY)) {
             // Whichever airfield is furthest south is the bluefor home airfield
-            blueforHomeAirfield = mapAirfields.stream().max(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
-            redforHomeAirfield = mapAirfields.stream().min(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
+            blueHomeAirfield = mapAirfields.stream().max(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
+            redHomeAirfield = mapAirfields.stream().min(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
         } else {
-            redforHomeAirfield = mapAirfields.stream().max(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
-            blueforHomeAirfield = mapAirfields.stream().min(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
+            redHomeAirfield = mapAirfields.stream().max(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
+            blueHomeAirfield = mapAirfields.stream().min(Comparator.comparing((a) -> a.getAirfieldMapPosition().getY())).orElse(null);
         }
 
         // Assign the rest based on campaign type:
         //      1) DEFENSIVE - Closest 3 airbases to bluefor belong to bluefor, rest to redfor
         //      2) OFFENSIVE - Closest 3 airbases to redfor belong to redfor, rest to bluefor
         //      3) AOW - Closest 3 airbases to bluefor belong to bluefor, rest to neutral
-        Map<FactionSide, List<AirfieldType>> factionAirfields = generateFactionAirfields(campaignType, mapAirfields, blueforHomeAirfield, redforHomeAirfield, numStartingAirfields);
-
-        // Before generating Airfields, use the overall force strength to generate all campaign munitions
-        Map<AirfieldType, List<Munition>> airfieldMunitions = generateMunitionStockpiles(factionAirfields, overallForceStrength);
+        Map<FactionSide, List<AirfieldType>> factionAirfields = generateFactionAirfields(campaignType, mapAirfields, blueHomeAirfield, redHomeAirfield, numStartingAirfields);
 
         // Using all of the assigned AirfieldTypes, generate actual Airfields that will be used during the campaign
-        Map<FactionSide, List<Airfield>> airfieldList = generateRealAirfields(factionAirfields, airfieldMunitions);
+        Map<FactionSide, List<Airfield>> airfieldList = generateRealAirfields(factionAirfields);
 
         log.debug(airfieldList);
         return airfieldList;
@@ -98,10 +101,45 @@ public class AirfieldGenerator {
         Map<FactionSide,List<Airfield>> factionAirfields = new HashMap<>();
         factionAirfields.put(side, ourAirfields);
         factionAirfields.put(other, enemyAirfields);
+
+        // Generate the munitions for the airfields
+        generateAirfieldMunitions(factionAirfields);
+
         return factionAirfields;
     }
 
-    private Map<FactionSide,List<Airfield>> generateRealAirfields(Map<FactionSide, List<AirfieldType>> factionAirfields, Map<AirfieldType, List<Munition>> airfieldMunitions) {
+    public Map<FactionSide,List<Airfield>> generateAirfieldMunitions(Map<FactionSide,List<Airfield>> generatedAirfields) {
+        double blueStrength = overallForceStrength.get(FactionSide.BLUEFOR);
+        List<Airfield> blueFields = generatedAirfields.get(FactionSide.BLUEFOR);
+        double redStrength = overallForceStrength.get(FactionSide.REDFOR);
+        List<Airfield> redFields = generatedAirfields.get(FactionSide.REDFOR);
+
+        for(Airfield type : blueFields) {
+            // Stock 4x the munitions when it's the home airfield
+            if(type.getAirfieldType().equals(blueHomeAirfield)) {
+                addMunitionsToAirfield(type, 200);
+                blueStrength -= (200 * munitionCost);
+            } else {
+                addMunitionsToAirfield(type, 50);
+                blueStrength -= (50 * munitionCost);
+            }
+        }
+
+        for(Airfield type : redFields) {
+            // Stock 4x the munitions when it's the home airfield
+            if(type.equals(redHomeAirfield)) {
+                addMunitionsToAirfield(type, 200);
+                redStrength -= (200 * munitionCost);
+            } else {
+                addMunitionsToAirfield(type, 50);
+                redStrength -= (50 * munitionCost);
+            }
+        }
+
+        return generatedAirfields;
+    }
+
+    private Map<FactionSide,List<Airfield>> generateRealAirfields(Map<FactionSide, List<AirfieldType>> factionAirfields) {
         Map<FactionSide, List<Airfield>> airfieldList = new HashMap<>();
         for(Map.Entry<FactionSide, List<AirfieldType>> airfieldEntry : factionAirfields.entrySet()) {
             List<Airfield> convertedAirfields = new ArrayList<>();
@@ -109,10 +147,11 @@ public class AirfieldGenerator {
                 Airfield airfield = new Airfield();
                 airfield.setOwnerSide(airfieldEntry.getKey());
                 airfield.setAirfieldType(airfieldType);
-                airfield.setMunitionStockpile(airfieldMunitions.get(airfieldType));
 
                 // Critical structures get added during ground unit creation
                 airfield.setCriticalStructures(null);
+
+                // Filter out munitions that don't belong to your side?
 
                 convertedAirfields.add(airfield);
             }
@@ -166,8 +205,11 @@ public class AirfieldGenerator {
         return closestAirfields;
     }
 
-    private Map<AirfieldType,List<Munition>> generateMunitionStockpiles(Map<FactionSide, List<AirfieldType>> factionAirfields, Map<FactionSide, Integer> overallForceStrength) {
-        return new HashMap<>();
+    private void addMunitionsToAirfield(Airfield type, int totalToGen) {
+        List<MunitionStockpile> stockpile = new ArrayList<>();
+        for(MunitionType t : MunitionType.values()) {
+            stockpile.add(new MunitionStockpile(t, totalToGen));
+        }
+        type.setMunitionStockpile(stockpile);
     }
-
 }

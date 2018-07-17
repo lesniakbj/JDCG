@@ -133,8 +133,8 @@ public class DynamicCampaignSim {
         //  2) Generate new missions
         List<Mission> criticalMissions = new ArrayList<>();
         List<Mission> allMissions = new ArrayList<>();
-        allMissions.addAll(blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions());
-        allMissions.addAll(redforCoalitionManager.getCoalitionMissionManager().getActiveMissions());
+        allMissions.addAll(blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions());
+        allMissions.addAll(redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions());
         Collections.shuffle(allMissions);
         for(Mission m : allMissions) {
             m.setCurrentCampaignDate(campaignSettings.getCurrentCampaignDate());
@@ -149,9 +149,9 @@ public class DynamicCampaignSim {
             if(m.isMissionComplete()) {
                 // Remove the element
                 if(m.getMissionAircraft().getSide() == FactionSide.BLUEFOR) {
-                    blueforCoalitionManager.getCoalitionMissionManager().getActiveMissions().remove(m);
+                    blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().remove(m);
                 } else {
-                    redforCoalitionManager.getCoalitionMissionManager().getActiveMissions().remove(m);
+                    redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().remove(m);
                 }
             }
         }
@@ -174,7 +174,7 @@ public class DynamicCampaignSim {
 
         // First, generate the airbases that are going to be assigned to each team based on the settings
         Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
-        warfareFront = gen.generateWarfareFront();
+        warfareFront = gen.generateWarfareFront(generatedAirfields);
         generatedAirfields = gen.adjustAirfieldsIfNeeded(warfareFront, generatedAirfields);
         blueforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.BLUEFOR));
         redforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.REDFOR));
@@ -194,14 +194,14 @@ public class DynamicCampaignSim {
     }
 
     public void runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel) {
-        scheduledFuture = exec.scheduleAtFixedRate((Runnable) () -> {
+        scheduledFuture = exec.scheduleAtFixedRate(() -> {
             log.debug("Running task...");
             log.debug(simRunning);
             if(simRunning) {
                 stepSimulation();
                 campaignPanel.updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
             }
-        }, 0, 500, TimeUnit.MILLISECONDS);
+        }, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
     public void setSimRunning(boolean simRunning) {

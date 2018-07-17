@@ -125,7 +125,7 @@ public class CampaignPanel extends JPanel {
         campaignPlannedActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
         campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER), BorderLayout.NORTH);
         JPanel missionPanel = new JPanel();
-        List<Mission> sorted = campaign.getCampaignMissionManager().getActiveMissions().stream().sorted(Comparator.comparing(Mission::getPlannedMissionDate)).collect(Collectors.toList());
+        List<Mission> sorted = campaign.getCampaignMissionManager().getPlannedMissions().stream().sorted(Comparator.comparing(Mission::getPlannedMissionDate)).collect(Collectors.toList());
         for(Mission mission : sorted) {
             ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(campaign, mission);
             sampleMissionPanel.addMouseListener(new ActiveMissionClickListener());
@@ -249,7 +249,7 @@ public class CampaignPanel extends JPanel {
         campaignStatus.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
         SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
         campaignDateLabel = new JLabel(String.format("Date: %s", sdf.format(campaign.getCurrentCampaignDate())));
-        campaignSortiesLabel = new JLabel(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
+        campaignSortiesLabel = new JLabel(String.format("Planned Sorties: %d", campaign.getCampaignMissionManager().getPlannedMissions().size()));
         campaignTargetsLabel = new JLabel(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
         campaignObjectivesLabel = new JLabel(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
         campaignStatus.add(Box.createHorizontalGlue());
@@ -292,11 +292,8 @@ public class CampaignPanel extends JPanel {
     public void updateSimulationGUI(int imageWidth, int imageHeight, Border padding, Border bevel) {
         // Refresh the UI
         loadCampaignImage(imageWidth, imageHeight, padding, bevel);
-        hostFrame.refreshUiElements();
         updateCampaignStatusLabels();
-        hostFrame.refreshUiElements();
         loadActiveMissions(imageWidth, imageHeight, padding, bevel);
-        hostFrame.refreshUiElements();
         loadCampaignActions(padding, bevel);
         hostFrame.refreshUiElements();
     }
@@ -304,7 +301,7 @@ public class CampaignPanel extends JPanel {
     private void updateCampaignStatusLabels() {
         SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
         campaignDateLabel.setText(String.format("Date: %s", sdf.format(campaign.getCurrentCampaignDate())));
-        campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getActiveMissions().size()));
+        campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getPlannedMissions().size()));
         campaignTargetsLabel.setText(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
         campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
     }
