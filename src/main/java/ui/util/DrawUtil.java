@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Aircraft;
 import sim.domain.Airfield;
+import sim.domain.GroundUnit;
 import sim.domain.Mission;
 import sim.domain.UnitGroup;
 import sim.domain.Waypoint;
@@ -126,7 +127,7 @@ public class DrawUtil {
             log.debug(mission);
 
             if(!mission.isActive()) {
-                return;
+                continue;
             }
 
             UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();
@@ -183,6 +184,30 @@ public class DrawUtil {
     }
 
     public static void drawCampaignUnitGroups(DynamicCampaignSim campaign, Graphics2D g) {
+        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
+        Map<Airfield, List<UnitGroup<GroundUnit>>> defences = campaign.getBlueforCoalitionManager().getCoalitionPointDefenceGroundUnits();
+        Map<Airfield, List<UnitGroup<GroundUnit>>> defences2 = campaign.getRedforCoalitionManager().getCoalitionPointDefenceGroundUnits();
+        drawUnitGroups(defences, scaleX, scaleY, g);
+        drawUnitGroups(defences2, scaleX, scaleY, g);
+    }
+
+    private static void drawUnitGroups(Map<Airfield, List<UnitGroup<GroundUnit>>> defences, double scaleX, double scaleY, Graphics2D g) {
+        for(Map.Entry<Airfield, List<UnitGroup<GroundUnit>>> entry : defences.entrySet()) {
+            List<UnitGroup<GroundUnit>> groups = entry.getValue();
+            for(UnitGroup<GroundUnit> ug : groups) {
+                double x = ug.getMapXLocation();
+                double y = ug.getMapYLocation() - GUTTER_HEIGHT;
+                FactionSide side = ug.getSide();
+
+                g.setStroke(normalStroke);
+                g.setColor(side == FactionSide.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
+                g.fillRect((int)(x * scaleX) - 3, (int)(y * scaleY) - 3, 6, 6);
+                g.setColor(Color.BLACK);
+                g.drawRect((int)(x * scaleX) - 3, (int)(y * scaleY) - 3, 6, 6);
+            }
+        }
     }
 
     private static class Triangle extends Path2D.Double {

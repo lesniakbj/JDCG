@@ -11,4 +11,12 @@ public class MunitionStockpile {
         this.stockpile = stockpile;
         this.totalInStock = totalInStock;
     }
+
+    @Override
+    public String toString() {
+        return "MunitionStockpile{" +
+                "stockpile=" + stockpile +
+                ", totalInStock=" + totalInStock +
+                '}';
+    }
 }

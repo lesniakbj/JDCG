@@ -4,6 +4,7 @@ import dcsgen.DCSMissionGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;
+import sim.domain.GroundUnit;
 import sim.domain.Mission;
 import sim.domain.UnitGroup;
 import sim.domain.enums.FactionSide;
@@ -142,8 +143,13 @@ public class DynamicCampaignSim {
             log.debug(m);
             m.updateStep();
 
-            if(m.shouldGenerateMission()) {
+            if(m.shouldGenerateMission() && m.getMissionAircraft().getSide().equals(FactionSide.BLUEFOR)) {
                 criticalMissions.add(m);
+            }
+
+            if(m.onObjectiveWaypoint()) {
+                // Simulate the mission...
+                log.debug("I NEED TO SIM THIS MISSION HERE!");
             }
 
             if(m.isMissionComplete()) {
@@ -172,20 +178,30 @@ public class DynamicCampaignSim {
         // Generate the date of the campaign
         campaignSettings.setCurrentCampaignDate(gen.generateCampaignDate());
 
-        // First, generate the airbases that are going to be assigned to each team based on the settings
+        // First, generate the airbases that are going to be assigned to each team based on the settings of the campaign
         Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
         warfareFront = gen.generateWarfareFront(generatedAirfields);
         generatedAirfields = gen.adjustAirfieldsIfNeeded(warfareFront, generatedAirfields);
         blueforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.BLUEFOR));
         redforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.REDFOR));
 
-        // Then, generate all of the static ground units that exist within this campaign
+        // Then, generate all of the static ground units that exist within this campaign (aka air fields)
+        Map<Airfield, List<UnitGroup<GroundUnit>>> generatedPointDefenceUnitsBlue = gen.generatePointDefenceUnits(generatedAirfields, FactionSide.BLUEFOR);
+        Map<Airfield, List<UnitGroup<GroundUnit>>> generatedPointDefenceUnitsRed = gen.generatePointDefenceUnits(generatedAirfields, FactionSide.REDFOR);
+        blueforCoalitionManager.setCoalitionPointDefenceGroundUnits(generatedPointDefenceUnitsBlue);
+        redforCoalitionManager.setCoalitionPointDefenceGroundUnits(generatedPointDefenceUnitsRed);
 
-        // Then, generate all of the ground groups that exist with this campaign
+        // Then, generate all of the ground groups that exist with this campaign (aka front line units)
+        //        blueforCoalitionManager.setCoalitionFrontLineGroundUnits(UnitGroup<GroundUnit> generatedAirfields.get(FactionSide.BLUEFOR));
+        //        redforCoalitionManager.setCoalitionFrontLineGroundUnits(UnitGroup<GroundUnit> generatedAirfields.get(FactionSide.REDFOR));
 
-        // Then, generate all of the AAA/SAM groups that exist within this campaign
+        // Then, generate all of the AAA/SAM groups that exist within this campaign (mostly airfields, occasionally behind front lines)
+        //        blueforCoalitionManager.setCoalitionAirDefences(UnitGroup<AirDefence> generatedAirfields.get(FactionSide.BLUEFOR));
+        //        redforCoalitionManager.setCoalitionAirDefences(UnitGroup<AirDefence> generatedAirfields.get(FactionSide.REDFOR));
 
         // Then, generate all of the AirForce groups that exist within this campaign
+        //        blueforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.BLUEFOR));
+        //        redforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.REDFOR));
 
         // This is a test....
         MissionGenerator missionGenerator = new MissionGenerator();
@@ -201,7 +217,7 @@ public class DynamicCampaignSim {
                 stepSimulation();
                 campaignPanel.updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
             }
-        }, 0, 1000, TimeUnit.MILLISECONDS);
+        }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
     public void setSimRunning(boolean simRunning) {

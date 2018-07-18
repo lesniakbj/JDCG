@@ -61,7 +61,7 @@ public class MissionGenerator {
             .setMissionType(TaskType.INTERCEPT)
             .setMissionAircraft(aircraftBuilder.build())
             .setMissionWaypoints(generatedWaypoints)
-            .setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 60)
+            .setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 15)
             .setIsClientMission(false)
             .setPlayerAircraftNumber(0)
             .setMissionComplete(false)

@@ -44,6 +44,7 @@ public class CampaignPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(CampaignPanel.class);
 
     // Displays
+    private static BufferedImage mapImage;
     private JPanel campaignActions;
     private JPanel campaignImage;
     private JPanel campaignStatus;
@@ -108,7 +109,7 @@ public class CampaignPanel extends JPanel {
     private void loadCampaignImage(int imageWidth, int imageHeight, Border padding, Border bevel) {
         // Load the image, and alter it with any of the campaign entities
         campaignImage.removeAll();
-        BufferedImage mapImage = tryLoadImage("/map/" + campaign.getCampaignSettings().getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
+        mapImage = tryLoadImage("/map/" + campaign.getCampaignSettings().getSelectedMap().getMapName().replace(" ", "_") + "_map.png");
         mapImage = addCampaignObjects(mapImage);
         Image scaled = mapImage.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
         JLabel campaignImageLabel = new JLabel(new ImageIcon(scaled), SwingConstants.CENTER);
@@ -292,6 +293,7 @@ public class CampaignPanel extends JPanel {
     public void updateSimulationGUI(int imageWidth, int imageHeight, Border padding, Border bevel) {
         // Refresh the UI
         loadCampaignImage(imageWidth, imageHeight, padding, bevel);
+        hostFrame.refreshUiElements();
         updateCampaignStatusLabels();
         loadActiveMissions(imageWidth, imageHeight, padding, bevel);
         loadCampaignActions(padding, bevel);
@@ -312,9 +314,9 @@ public class CampaignPanel extends JPanel {
 
         // First draw any of the missions
         DrawUtil.setNormalStroke(g.getStroke());
+        DrawUtil.drawCampaignUnitGroups(campaign, g);
         DrawUtil.drawCampaignAirbases(campaign, g);
         DrawUtil.drawWarfareFront(campaign, g);
-        DrawUtil.drawCampaignUnitGroups(campaign, g);
         DrawUtil.drawCampaignSelectedMission(campaign, g);
         DrawUtil.drawActiveMissions(campaign, g);
 

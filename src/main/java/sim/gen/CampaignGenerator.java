@@ -4,12 +4,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;
 import sim.domain.Coalition;
+import sim.domain.GroundUnit;
+import sim.domain.UnitGroup;
+import sim.domain.enums.ArmorGroundUnit;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.FactionType;
+import sim.domain.enums.UnarmedGroundUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,26 +39,25 @@ public class CampaignGenerator {
     private static final Logger log = LogManager.getLogger(CampaignGenerator.class);
 
     private CampaignSettings campaignSettings;
-    private Map<FactionSide, Integer> overallForceStrength;
-    private Map<FactionSide, List<Airfield>> generatedAirfields;
     private AirfieldGenerator airfieldGenerator;
+    private GroundUnitGenerator groundUnitGenerator;
 
     // Static Generator Data
-    private static final double AIRCRAFT_COST = 1;
-    private static final double HELICOPTER_COST = .5;
-    private static final double MUNITION_COST = .1;
-    private static final double GROUND_UNIT_COST = .25;
-    private static final double AAA_COST = .5;
-    private static final double SAM_COST = 1;
+    private static final double AIRCRAFT_COST = .2;
+    private static final double HELICOPTER_COST = .15;
+    private static final double MUNITION_COST = .01;
+    private static final double GROUND_UNIT_COST = .05;
+    private static final double AAA_COST = .05;
+    private static final double SAM_COST = .1;
     private static final int STARTING_NUMBER_OF_AIRBASES = 5;
 
     public CampaignGenerator(CampaignSettings campaignSettings) {
         this.campaignSettings = campaignSettings;
 
         // Populate the overall force strength of the side
-        overallForceStrength = new HashMap<>();
+        Map<FactionSide, Double> overallForceStrength = new HashMap<>();
         for(FactionSide side : FactionSide.values()) {
-            int totalStrength = 0;
+            double totalStrength = 0;
             Coalition coalition = campaignSettings.getCoalitionBySide(side);
             for(FactionType type : coalition.getFactionTypeList()) {
                 switch(type.getOverallStrength()) {
@@ -73,13 +77,12 @@ public class CampaignGenerator {
 
         // Create the generators
         airfieldGenerator = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
+        groundUnitGenerator = new GroundUnitGenerator(overallForceStrength, GROUND_UNIT_COST);
+
     }
 
     public Map<FactionSide,List<Airfield>> generateAirfieldMap() {
-        if(generatedAirfields == null) {
-            generatedAirfields = airfieldGenerator.generateAirfields(campaignSettings, overallForceStrength, STARTING_NUMBER_OF_AIRBASES);
-        }
-        return  generatedAirfields;
+        return airfieldGenerator.generateAirfields(campaignSettings, STARTING_NUMBER_OF_AIRBASES);
     }
 
     public Map<FactionSide,List<Airfield>> adjustAirfieldsIfNeeded(Map<FactionSide, List<Point2D.Double>> warfareFront, Map<FactionSide, List<Airfield>> generatedAirfields) {
@@ -87,6 +90,7 @@ public class CampaignGenerator {
     }
 
     public Map<FactionSide,List<Point2D.Double>> generateWarfareFront(Map<FactionSide, List<Airfield>> generatedAirfields) {
+        log.debug("Generating warfare front based on the generated airfields...");
         Map<FactionSide, List<Point2D.Double>> retMap = new LinkedHashMap<>();
         List<Airfield> blueforAirfields = generatedAirfields.get(FactionSide.BLUEFOR);
         List<Airfield> redforAirfields = generatedAirfields.get(FactionSide.REDFOR);
@@ -112,16 +116,22 @@ public class CampaignGenerator {
             }
         }
 
-        lowestX -= 20;
-        lowestY -= 20;
-        highestX += 20;
-        highestY += 20;
+        lowestX -= 30;
+        lowestY -= 30;
+        highestX += 30;
+        highestY += 30;
 
         retMap.put(frontSide, Arrays.asList(new Point2D.Double(lowestX, lowestY), new Point2D.Double(lowestX, highestY), new Point2D.Double(highestX, highestY), new Point2D.Double(highestX, lowestY)));
+        log.debug("Created following bounding front: " + retMap);
         return retMap;
     }
 
+    public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(Map<FactionSide, List<Airfield>> generatedAirfields, FactionSide side) {
+        return groundUnitGenerator.generatePointDefenceUnits(campaignSettings, generatedAirfields, side);
+    }
+
     public Date generateCampaignDate() {
+        log.debug("Generating a new date for " + campaignSettings.getSelectedEra());
         int year = 0, mo = 0, day = 0, hour = 0, minute = 0;
         switch(campaignSettings.getSelectedEra()) {
             case WWII:
@@ -148,7 +158,7 @@ public class CampaignGenerator {
         // Generate the date
         Calendar cal = Calendar.getInstance();
         cal.set(year, mo, day, hour, minute);
-        log.debug(cal.getTime());
+        log.debug("Date created: " + cal.getTime());
         return cal.getTime();
     }
 }

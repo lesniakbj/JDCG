@@ -36,6 +36,7 @@ public class Mission implements Simable {
     private UnitGroup<Aircraft> missionAircraft;
     private List<Waypoint> missionWaypoints;
     private Waypoint nextWaypoint;
+    private Waypoint lastWaypoint;
     private Date plannedMissionDate;
     private boolean isClientMission;
     private int playerAircraft;
@@ -180,9 +181,14 @@ public class Mission implements Simable {
         this.startingAirfield = startingAirfield;
     }
 
-
     public boolean isActive() {
         return !currentCampaignDate.before(plannedMissionDate);
+    }
+
+
+    public boolean onObjectiveWaypoint() {
+        return lastWaypoint.getLocationX() == missionAircraft.getMapXLocation() && lastWaypoint.getLocationY()
+                == missionAircraft.getMapYLocation() && lastWaypoint.getWaypointType().equals(WaypointType.MISSION);
     }
 
     @Override
@@ -221,6 +227,7 @@ public class Mission implements Simable {
                 nextWaypoint();
                 missionAircraft.setMapXLocation(nextWaypoint.getLocationX());
                 missionAircraft.setMapYLocation(nextWaypoint.getLocationY());
+                setLastWaypoint(nextWaypoint);
 
                 // If the next Waypoint is going to be the Mission point, tell
                 // the generator that we want to generate this mission
@@ -291,6 +298,10 @@ public class Mission implements Simable {
                 '}';
     }
 
+    public void setLastWaypoint(Waypoint lastWaypoint) {
+        this.lastWaypoint = lastWaypoint;
+    }
+
     public static class Builder {
         private Mission mission;
 
@@ -316,6 +327,7 @@ public class Mission implements Simable {
         public Builder setMissionWaypoints(List<Waypoint> waypoints) {
             mission.setMissionWaypoints(waypoints);
             mission.setNextWaypoint(waypoints.get(0));
+            mission.setLastWaypoint(waypoints.get(0));
             return this;
         }
 
