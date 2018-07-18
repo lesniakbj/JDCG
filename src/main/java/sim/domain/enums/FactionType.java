@@ -1,7 +1,5 @@
 package sim.domain.enums;
 
-import com.sun.istack.internal.NotNull;
-
 public enum FactionType {
     ABKHAZIA(18, "Abkhazia", FactionStrength.LOW),
     ALGERIA(70, "Algeria", FactionStrength.LOW),
@@ -92,7 +90,6 @@ public enum FactionType {
         return dcsFactionId;
     }
 
-    @NotNull
     public String getDcsFactionName() {
         return dcsFactionName;
     }
