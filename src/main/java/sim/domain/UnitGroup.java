@@ -1,12 +1,9 @@
 package sim.domain;
 
-import java.awt.geom.Point2D;
-import sim.domain.Mission.Builder;
 import sim.domain.enums.FactionSide;
-import sim.exception.InvalidMissionException;
-import sim.exception.InvalidUnitGroupException;
 import sim.util.IDGenerator;
 
+import java.awt.geom.Point2D;
 import java.util.Date;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package sim.main;
 
-import java.util.Arrays;
 import sim.domain.Coalition;
 import sim.domain.GameMap;
 import sim.domain.enums.CampaignType;
@@ -11,6 +10,7 @@ import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class CampaignSettings {

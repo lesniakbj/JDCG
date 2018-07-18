@@ -1,6 +1,5 @@
 package sim.domain;
 
-import java.util.List;
 import sim.domain.enums.MunitionType;
 
 public class MunitionStockpile {

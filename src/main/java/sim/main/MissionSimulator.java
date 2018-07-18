@@ -2,6 +2,7 @@ package sim.main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.domain.Aircraft;
 import sim.domain.Airfield;
 import sim.domain.GroundUnit;
 import sim.domain.Mission;
@@ -20,13 +21,14 @@ public class MissionSimulator {
     public static void simulateMission(Mission mission, CampaignSettings campaignSettings, CoalitionManager blueforCoalitionManager, CoalitionManager redforCoalitionManager) {
         log.debug("Simulating mission....");
 
-        FactionSide missionSide = mission.getMissionAircraft().getSide();
+        UnitGroup<Aircraft> attackingAircraft = mission.getMissionAircraft();
+        FactionSide missionSide = attackingAircraft.getSide();
         CoalitionManager enemyManager = missionSide.equals(FactionSide.BLUEFOR) ? redforCoalitionManager : blueforCoalitionManager;
 
         switch (mission.getMissionType()) {
             case CAS:
             case GROUND_STRIKE:
-                simulateGroundMission(mission, enemyManager);
+                simulateGroundMission(mission, attackingAircraft, enemyManager);
                 break;
             case CAP:
             case ESCORT:
@@ -40,19 +42,20 @@ public class MissionSimulator {
         }
     }
 
-    private static void simulateGroundMission(Mission mission, CoalitionManager enemyManager) {
+    private static void simulateGroundMission(Mission mission, UnitGroup<Aircraft> attackingAircraft, CoalitionManager enemyManager) {
         log.debug("Simulating a ground attack mission....");
 
         // First, check if we are attacking an airfield
-        AirfieldType airfield = AirfieldType.searchByCoordinates(mission.getMissionAircraft().getMapXLocation(), mission.getMissionAircraft().getMapYLocation());
+        AirfieldType airfield = AirfieldType.searchByCoordinates(attackingAircraft.getMapXLocation(), attackingAircraft.getMapYLocation());
         if(airfield != null) {
-            simulateAttackOnAirfield(airfield, enemyManager);
+            simulateAttackOnAirfield(airfield, attackingAircraft, enemyManager);
         }
     }
 
-    private static void simulateAttackOnAirfield(AirfieldType airfield, CoalitionManager enemyManager) {
+    private static void simulateAttackOnAirfield(AirfieldType airfield, UnitGroup<Aircraft> attackingAircraft, CoalitionManager enemyManager) {
         log.debug("Simulating a ground attack mission on an airfield...");
         Map<Airfield, List<UnitGroup<GroundUnit>>> groundUnits = enemyManager.getCoalitionPointDefenceGroundUnits();
+        log.debug("Point Defences: " + groundUnits);
         Airfield airfieldUnderAttack = groundUnits.entrySet().stream().filter(a -> a.getKey().getAirfieldType().equals(airfield)).map(Map.Entry::getKey).findFirst().orElse(null);
         List<UnitGroup<GroundUnit>> groupsUnderAttack = groundUnits.entrySet().stream().filter(a -> a.getKey().getAirfieldType().equals(airfield)).map(Map.Entry::getValue).findFirst().orElse(null);
 
@@ -60,46 +63,64 @@ public class MissionSimulator {
         int rndIdx = DynamicCampaignSim.getRandomGen().nextInt(groupsUnderAttack.size());
         UnitGroup<GroundUnit> group = groupsUnderAttack.get(rndIdx);
 
-        log.debug("Group before destroy");
-        log.debug(group);
-        log.debug(groupsUnderAttack);
-        log.debug(groundUnits);
-
+        // Attack the units within that group
         List<GroundUnit> units = group.getGroupUnits();
         List<GroundUnit> destroyedUnits = new ArrayList<>();
-        double chancePlaneDestroy = 0;
-        for(GroundUnit unit : units) {
-            log.debug("Checking a unit for destruction...");
-            double chanceDestroy = 20;
-            if(unit instanceof ArmorGroundUnit) {
-                chancePlaneDestroy += 1;
-                chanceDestroy = 5;
-            }
+        for(Aircraft attackingCraft : attackingAircraft.getGroupUnits()) {
+            double chancePlaneDestroy = 0;
+            double targets = DynamicCampaignSim.getRandomGen().nextInt(units.size()) + 1;
 
-            // Check the munitions, and see scale chance based on that
-            // mission.getMissionMunitions();
+            log.debug("Aircraft: " + attackingAircraft + " attacking " + targets + " targets");
+            for(int i = 0; i < targets; i++) {
+                // Get a random unit from the group
+                GroundUnit attackedUnit = units.get(DynamicCampaignSim.getRandomGen().nextInt(units.size()));
+
+                // Set the base chance of destruction
+                double chanceDestroy = 20;
+                if(attackedUnit instanceof ArmorGroundUnit) {
+                    chancePlaneDestroy += 1;
+                    chanceDestroy = 5;
+                }
+
+                // Check the munitions, and see scale chance based on that
+                // mission.getMissionMunitions();
+
+                // Check if we destroyed the unit
+                int diceRoll = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1);
+                boolean didDestroy = (diceRoll < chanceDestroy);
+                if(didDestroy) {
+                    log.debug("DESTROYED A VEHICLE...");
+                    log.debug(attackedUnit);
+                    destroyedUnits.add(attackedUnit);
+                } else {
+                    log.debug("Nothing destroyed...");
+                }
+            }
+            units.removeAll(destroyedUnits);
+
+            // Check to see if we were destroyed during this attack run
             int diceRoll = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1);
-            boolean didDestroy = (diceRoll < chanceDestroy);
-            if(didDestroy) {
-                log.debug("DESTROYED A VEHICLE...");
-                log.debug(unit);
-                destroyedUnits.add(unit);
-            } else {
-                log.debug("Nothing destroyed...");
+            boolean planeDestroyed = (diceRoll < chancePlaneDestroy);
+            if(planeDestroyed) {
+                log.debug("DESTROYED THE PLANE...");
             }
         }
-        units.removeAll(destroyedUnits);
 
-        // Check to see if there will be any damage done to us
+        // If we removed all the units, remove that UnitGroup, otherwise update the unit group
+        if(units.isEmpty()) {
+            log.debug("No units left! Removing group...");
+            groupsUnderAttack.remove(rndIdx);
+        } else {
+            log.debug("Units left, updating group...");
+            group.setGroupUnits(units);
+            groupsUnderAttack.set(rndIdx, group);
+        }
 
         // Set the group back to the manager
-        group.setGroupUnits(units);
-        groupsUnderAttack.set(rndIdx, group);
+        log.debug(airfieldUnderAttack);
         groundUnits.put(airfieldUnderAttack, groupsUnderAttack);
-        log.debug("Group set with destroyed units");
-        log.debug(group);
-        log.debug(groupsUnderAttack);
-        log.debug(groundUnits);
+        log.debug("Point Defences: " + groundUnits);
         enemyManager.setCoalitionPointDefenceGroundUnits(groundUnits);
+        log.debug("Point Defences: " + enemyManager.getCoalitionPointDefenceGroundUnits());
     }
 }

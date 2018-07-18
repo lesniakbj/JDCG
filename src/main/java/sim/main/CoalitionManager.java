@@ -1,5 +1,7 @@
 package sim.main;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sim.domain.Airfield;
 import sim.domain.GroundUnit;
 import sim.domain.UnitGroup;
@@ -8,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CoalitionManager {
+    private static final Logger log = LogManager.getLogger(CoalitionManager.class);
+
     private List<Airfield> coalitionAirfields;
     private List<UnitGroup> coalitionGroups;
     private ObjectiveManager coalitionObjectiveManager;
@@ -59,10 +63,12 @@ public class CoalitionManager {
     }
 
     public void setCoalitionPointDefenceGroundUnits(Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits) {
+        log.debug("Setting point defences");
         this.coalitionPointDefenceGroundUnits = coalitionPointDefenceGroundUnits;
     }
 
     public Map<Airfield, List<UnitGroup<GroundUnit>>> getCoalitionPointDefenceGroundUnits() {
+        log.debug("Getting point defences");
         return coalitionPointDefenceGroundUnits;
     }
 }

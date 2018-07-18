@@ -6,15 +6,12 @@ import sim.domain.Airfield;
 import sim.domain.Coalition;
 import sim.domain.GroundUnit;
 import sim.domain.UnitGroup;
-import sim.domain.enums.ArmorGroundUnit;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.FactionType;
-import sim.domain.enums.UnarmedGroundUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -116,10 +113,10 @@ public class CampaignGenerator {
             }
         }
 
-        lowestX -= 30;
-        lowestY -= 30;
-        highestX += 30;
-        highestY += 30;
+        lowestX -= 15;
+        lowestY -= 15;
+        highestX += 15;
+        highestY += 15;
 
         retMap.put(frontSide, Arrays.asList(new Point2D.Double(lowestX, lowestY), new Point2D.Double(lowestX, highestY), new Point2D.Double(highestX, highestY), new Point2D.Double(highestX, lowestY)));
         log.debug("Created following bounding front: " + retMap);

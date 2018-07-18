@@ -178,6 +178,16 @@ public class DynamicCampaignSim {
             gen.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, simSettings.getMissionStartType());
             setSimRunning(false);
         }
+
+        // Have the campaign managers analyze the situation and plan new flights if needed / can
+        // This is a test....
+        MissionGenerator missionGenerator = new MissionGenerator();
+        if(blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
+            missionGenerator.generateTestMissionForCoalition(this, blueforCoalitionManager, getCurrentCampaignDate());
+        }
+        if(redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
+            missionGenerator.generateTestRedforMissionForCoalition(this, redforCoalitionManager, getCurrentCampaignDate());
+        }
     }
 
     public void generateNewCampaign() {
@@ -211,11 +221,6 @@ public class DynamicCampaignSim {
         // Then, generate all of the AirForce groups that exist within this campaign
         //        blueforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.BLUEFOR));
         //        redforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.REDFOR));
-
-        // This is a test....
-        MissionGenerator missionGenerator = new MissionGenerator();
-        missionGenerator.generateTestMissionForCoalition(this, blueforCoalitionManager);
-        missionGenerator.generateTestRedforMissionForCoalition(this, redforCoalitionManager);
     }
 
     public void runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel) {
@@ -232,7 +237,7 @@ public class DynamicCampaignSim {
     public void setSimRunning(boolean simRunning) {
         this.simRunning = simRunning;
 
-        if(!simRunning) {
+        if(!simRunning && scheduledFuture != null) {
             scheduledFuture.cancel(false);
         }
     }

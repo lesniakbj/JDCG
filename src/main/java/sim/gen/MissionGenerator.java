@@ -11,11 +11,11 @@ import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.MapType;
 import sim.domain.enums.TaskType;
-import sim.exception.InvalidMissionException;
 import sim.main.CoalitionManager;
 import sim.main.DynamicCampaignSim;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
@@ -23,7 +23,7 @@ import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
 public class MissionGenerator {
     private static final Logger log = LogManager.getLogger(MissionGenerator.class);
 
-    public void generateTestMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager) {
+    public void generateTestMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager, Date date) {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition(), AirfieldType.KHASAB.getAirfieldMapPosition(), TaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
         UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
@@ -36,7 +36,7 @@ public class MissionGenerator {
             .setMissionType(TaskType.INTERCEPT)
             .setMissionAircraft(aircraftBuilder.build())
             .setMissionWaypoints(generatedWaypoints)
-            .setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 60)
+            .setUpcomingMissionDate(date, 60)
             .setIsClientMission(false)
             .setPlayerAircraftNumber(0)
             .setMissionComplete(false)
@@ -48,7 +48,7 @@ public class MissionGenerator {
         coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }
 
-    public void generateTestRedforMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager) {
+    public void generateTestRedforMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager, Date date) {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition(), AirfieldType.ABU_MUSA_ISLAND_AIRPORT.getAirfieldMapPosition(), TaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
         UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
@@ -61,7 +61,7 @@ public class MissionGenerator {
             .setMissionType(TaskType.CAS)
             .setMissionAircraft(aircraftBuilder.build())
             .setMissionWaypoints(generatedWaypoints)
-            .setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 15)
+            .setUpcomingMissionDate(date, 15)
             .setIsClientMission(false)
             .setPlayerAircraftNumber(0)
             .setMissionComplete(false)

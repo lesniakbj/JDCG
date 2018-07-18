@@ -7,7 +7,6 @@ import sim.domain.enums.MapType;
 import sim.domain.enums.MunitionType;
 import sim.domain.enums.TaskType;
 import sim.domain.enums.WaypointType;
-import sim.exception.InvalidMissionException;
 import sim.util.MathUtil;
 
 import java.awt.geom.Point2D;

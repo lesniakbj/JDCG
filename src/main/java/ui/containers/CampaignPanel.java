@@ -4,8 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.GameMap;
 import sim.domain.Mission;
+import sim.domain.UnitGroup;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MunitionType;
+import sim.main.CoalitionManager;
 import sim.main.DynamicCampaignSim;
 import sim.util.MathUtil;
 import ui.util.DrawUtil;
@@ -15,6 +17,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,6 +35,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +59,8 @@ public class CampaignPanel extends JPanel {
     private JButton joinFlightButton;
     private JLabel campaignDateLabel;
     private JLabel campaignSortiesLabel;
-    private JLabel campaignTargetsLabel;
+    private JLabel campaignEnemyStatusLabel;
+    private JLabel campaignFriendlyStatusLabel;
     private JLabel campaignObjectivesLabel;
     private List<ActiveMissionPanel> campaignActiveMissions;
 
@@ -97,7 +102,6 @@ public class CampaignPanel extends JPanel {
         add(campaignPlannedActions, BorderLayout.EAST);
         add(campaignStatus, BorderLayout.SOUTH);
     }
-
 
     CampaignPanel(JDCGUIFrame hostFrame) {
         this.hostFrame = hostFrame;
@@ -251,21 +255,19 @@ public class CampaignPanel extends JPanel {
         SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
         campaignDateLabel = new JLabel(String.format("Date: %s", sdf.format(campaign.getCurrentCampaignDate())));
         campaignSortiesLabel = new JLabel(String.format("Planned Sorties: %d", campaign.getCampaignMissionManager().getPlannedMissions().size()));
-        campaignTargetsLabel = new JLabel(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+        long groundTargets = getTotalGroundUnits(campaign.getRedforCoalitionManager());
+        long groundUnits = getTotalGroundUnits(campaign.getBlueforCoalitionManager());
+        long airDefences = 0;
+        long aircraft = 0;
+        campaignEnemyStatusLabel = new JLabel(String.format("Enemy Status: %d/%d/%d", groundTargets, airDefences, aircraft));
+        campaignFriendlyStatusLabel = new JLabel(String.format("Friendly Status: %d/%d/%d", groundUnits, airDefences, aircraft));
         campaignObjectivesLabel = new JLabel(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
         campaignStatus.add(Box.createHorizontalGlue());
-        campaignStatus.add(campaignDateLabel);
-        campaignStatus.add(Box.createHorizontalGlue());
-        campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-        campaignStatus.add(campaignSortiesLabel);
-        campaignStatus.add(Box.createHorizontalGlue());
-        campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-        campaignStatus.add(campaignTargetsLabel);
-        campaignStatus.add(Box.createHorizontalGlue());
-        campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
-        campaignStatus.add(campaignObjectivesLabel);
-        campaignStatus.add(Box.createHorizontalGlue());
-        campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
+        addHorizontalComponent(campaignDateLabel);
+        addHorizontalComponent(campaignSortiesLabel);
+        addHorizontalComponent(campaignEnemyStatusLabel);
+        addHorizontalComponent(campaignFriendlyStatusLabel);
+        addHorizontalComponent(campaignObjectivesLabel);
         JPanel buttonContainer = new JPanel();
         JButton stepSimButton = new JButton("Step Simulation");
         stepSimButton.addActionListener(l -> {
@@ -290,6 +292,12 @@ public class CampaignPanel extends JPanel {
         campaignStatus.add(Box.createHorizontalGlue());
     }
 
+    private void addHorizontalComponent(JComponent component) {
+        campaignStatus.add(component);
+        campaignStatus.add(Box.createHorizontalGlue());
+        campaignStatus.add(new JSeparator(SwingConstants.VERTICAL));
+    }
+
     public void updateSimulationGUI(int imageWidth, int imageHeight, Border padding, Border bevel) {
         // Refresh the UI
         loadCampaignImage(imageWidth, imageHeight, padding, bevel);
@@ -301,11 +309,31 @@ public class CampaignPanel extends JPanel {
     }
 
     private void updateCampaignStatusLabels() {
+        // Date
         SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
         campaignDateLabel.setText(String.format("Date: %s", sdf.format(campaign.getCurrentCampaignDate())));
-        campaignSortiesLabel.setText(String.format("Active Sorties: %d", campaign.getCampaignMissionManager().getPlannedMissions().size()));
-        campaignTargetsLabel.setText(String.format("Priority Targets: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+
+        // Planned missions
+        campaignSortiesLabel.setText(String.format("Panned Sorties: %d", campaign.getCampaignMissionManager().getPlannedMissions().size()));
+
+        // Campaign status
+        long enemyCount = getTotalGroundUnits(campaign.getRedforCoalitionManager());
+        long count = getTotalGroundUnits(campaign.getBlueforCoalitionManager());
+        long airDefences = 0;
+        long aircraft = 0;
+        campaignEnemyStatusLabel.setText(String.format("Enemy Status: %d/%d/%d", enemyCount, airDefences, aircraft));
+        campaignFriendlyStatusLabel.setText(String.format("Friendly Status: %d/%d/%d", count, airDefences, aircraft));
+
+        // Critical Objectives
         campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+    }
+
+    private long getTotalGroundUnits(CoalitionManager manager) {
+        return manager.getCoalitionPointDefenceGroundUnits().entrySet().stream()
+                        .map(Map.Entry::getValue)
+                        .flatMap(Collection::stream)
+                        .map(UnitGroup::getNumberOfUnits)
+                        .mapToLong(i -> i).sum();
     }
 
 
