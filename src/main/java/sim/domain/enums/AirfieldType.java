@@ -236,4 +236,14 @@ public enum AirfieldType {
                 ", totalUniqueParkingSpots=" + totalUniqueParkingSpots +
                 '}';
     }
+
+    public static AirfieldType searchByCoordinates(double mapXLocation, double mapYLocation) {
+        Point2D.Double d = new Point2D.Double(mapXLocation, mapYLocation);
+        for(AirfieldType type : AirfieldType.values()) {
+            if(type.getAirfieldMapPosition().equals(d)) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

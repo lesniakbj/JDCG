@@ -120,7 +120,6 @@ public class DynamicCampaignSim {
     }
 
     public void stepSimulation() {
-        log.debug("Stepping sim...");
         int minutesToStep = simSettings.getMinutesPerSimulationStep();
 
         // Step the current simulation time
@@ -130,37 +129,47 @@ public class DynamicCampaignSim {
         campaignSettings.setCurrentCampaignDate(cal.getTime());
 
         // Step all of the sim objects
-        //  1) Sim all existing missions
-        //  2) Generate new missions
+        stepMissions(minutesToStep);
+
+        // Generate new missions
+
+    }
+
+    private void stepMissions(int minutesToStep) {
+        // Gather all of the planned/running missions
         List<Mission> criticalMissions = new ArrayList<>();
         List<Mission> allMissions = new ArrayList<>();
         allMissions.addAll(blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions());
         allMissions.addAll(redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions());
         Collections.shuffle(allMissions);
+
+        // Simulate each of the gathered missions
+        List<Mission> completedMissions = new ArrayList<>();
         for(Mission m : allMissions) {
+            // Update the mission
             m.setCurrentCampaignDate(campaignSettings.getCurrentCampaignDate());
             m.setMinutesPerUpdate(minutesToStep);
-            log.debug(m);
             m.updateStep();
 
+            // Check if we need to generate a DCS mission
             if(m.shouldGenerateMission() && m.getMissionAircraft().getSide().equals(FactionSide.BLUEFOR)) {
                 criticalMissions.add(m);
             }
 
+            // Check if we need to sim the results of this mission locally
             if(m.onObjectiveWaypoint()) {
                 // Simulate the mission...
-                log.debug("I NEED TO SIM THIS MISSION HERE!");
+                MissionSimulator.simulateMission(m, campaignSettings, blueforCoalitionManager, redforCoalitionManager);
             }
 
+            // If the mission is complete, remove it from the active missions
             if(m.isMissionComplete()) {
                 // Remove the element
-                if(m.getMissionAircraft().getSide() == FactionSide.BLUEFOR) {
-                    blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().remove(m);
-                } else {
-                    redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().remove(m);
-                }
+                completedMissions.add(m);
             }
         }
+        blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().removeAll(completedMissions);
+        redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().removeAll(completedMissions);
 
         // If we determine that we need to generate a mission, generate it and then alert the user
         generateMission = !criticalMissions.isEmpty();

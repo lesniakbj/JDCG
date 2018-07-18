@@ -221,8 +221,6 @@ public class Mission implements Simable {
             // to the next waypoint
             Waypoint nextWaypoint = getNextWaypoint();
             double waypointDistance = MathUtil.getDistance(currentX, currentY, nextWaypoint.getLocationX(), nextWaypoint.getLocationY());
-            log.debug(waypointDistance);
-            log.debug(pxDistance);
             if (pxDistance > waypointDistance) {
                 nextWaypoint();
                 missionAircraft.setMapXLocation(nextWaypoint.getLocationX());

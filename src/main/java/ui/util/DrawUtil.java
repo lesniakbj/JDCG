@@ -124,8 +124,6 @@ public class DrawUtil {
         missions.addAll(campaign.getBlueforCoalitionManager().getCoalitionMissionManager().getPlannedMissions());
         missions.addAll(campaign.getRedforCoalitionManager().getCoalitionMissionManager().getPlannedMissions());
         for(Mission mission : missions) {
-            log.debug(mission);
-
             if(!mission.isActive()) {
                 continue;
             }

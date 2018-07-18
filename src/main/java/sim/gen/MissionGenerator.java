@@ -58,7 +58,7 @@ public class MissionGenerator {
 
         Mission.Builder builder = new Mission.Builder();
         builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType())
-            .setMissionType(TaskType.INTERCEPT)
+            .setMissionType(TaskType.CAS)
             .setMissionAircraft(aircraftBuilder.build())
             .setMissionWaypoints(generatedWaypoints)
             .setUpcomingMissionDate(campaign.getCampaignSettings().getCurrentCampaignDate(), 15)
