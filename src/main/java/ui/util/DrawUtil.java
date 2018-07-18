@@ -201,9 +201,9 @@ public class DrawUtil {
 
                 g.setStroke(normalStroke);
                 g.setColor(side == FactionSide.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
-                g.fillRect((int)(x * scaleX) - 3, (int)(y * scaleY) - 3, 6, 6);
+                g.fillRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
                 g.setColor(Color.BLACK);
-                g.drawRect((int)(x * scaleX) - 3, (int)(y * scaleY) - 3, 6, 6);
+                g.drawRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
             }
         }
     }
