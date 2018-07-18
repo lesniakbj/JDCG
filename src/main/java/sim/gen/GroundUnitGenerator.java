@@ -39,8 +39,8 @@ public class GroundUnitGenerator {
 
             // Here we want to generate a set of ground groups per field
             int groupsPerFields = 4 + (DynamicCampaignSim.getRandomGen().nextInt(5));
+            groupsPerFields = field.isHomeAirfield() ? groupsPerFields * 4 : groupsPerFields;
             for(int i = 0; i < groupsPerFields; i++) {
-                log.debug("Creating a ground group at " + field.getAirfieldType().name() + " with " + groupsPerFields + " groups");
                 boolean xNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
                 boolean yNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
                 Point2D.Double loc = field.getAirfieldType().getAirfieldMapPosition();
@@ -53,7 +53,6 @@ public class GroundUnitGenerator {
                         .setUnits(new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit())));
                 UnitGroup<GroundUnit> g = b.build();
 
-                log.debug("Adding group: " + g);
                 airfieldDefenceGroups.add(g);
                 totalGenerated += 1;
             }

@@ -11,6 +11,7 @@ public class Airfield {
     private List<MunitionStockpile> munitionStockpile;
     private List<SimUnit> criticalStructures;
     private List<UnitGroup<Aircraft>> stationedAircraft;
+    private boolean isHomeAirfield;
 
     public FactionSide getOwnerSide() {
         return ownerSide;
@@ -61,5 +62,13 @@ public class Airfield {
                 ", criticalStructures=" + criticalStructures +
                 ", stationedAircraft=" + stationedAircraft +
                 '}';
+    }
+
+    public boolean isHomeAirfield() {
+        return isHomeAirfield;
+    }
+
+    public void setHomeAirfield(boolean homeAirfield) {
+        isHomeAirfield = homeAirfield;
     }
 }

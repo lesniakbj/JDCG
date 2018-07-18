@@ -329,11 +329,15 @@ public class CampaignPanel extends JPanel {
     }
 
     private long getTotalGroundUnits(CoalitionManager manager) {
-        return manager.getCoalitionPointDefenceGroundUnits().entrySet().stream()
-                        .map(Map.Entry::getValue)
-                        .flatMap(Collection::stream)
-                        .map(UnitGroup::getNumberOfUnits)
-                        .mapToLong(i -> i).sum();
+        long pointDefenceUnits = manager.getCoalitionPointDefenceGroundUnits().entrySet().stream()
+                                            .map(Map.Entry::getValue)
+                                            .flatMap(Collection::stream)
+                                            .map(UnitGroup::getNumberOfUnits)
+                                            .mapToLong(i -> i).sum();
+
+        long otherGroundUnits = manager.getCoalitionFrontlineGroups().stream().map(UnitGroup::getNumberOfUnits)
+                                                        .mapToLong(i -> i).sum();
+        return pointDefenceUnits + otherGroundUnits;
     }
 
 
@@ -372,7 +376,7 @@ public class CampaignPanel extends JPanel {
             for(AirfieldType airfieldType : airfieldTypes) {
                 double x = airfieldType.getAirfieldMapPosition().getX();
                 double y = airfieldType.getAirfieldMapPosition().getY();
-                if(isWithinThreshold(mouseX, mouseY, x, y, 15)) {
+                if(isWithinThreshold(mouseX, mouseY, x, y, 5)) {
                     clickedAirfieldTypes.add(airfieldType);
                 }
             }

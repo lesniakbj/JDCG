@@ -91,8 +91,8 @@ public class DynamicCampaignSim {
         return campaignSettings.getPlayerSelectedSide().equals(FactionSide.BLUEFOR) ? blueforCoalitionManager.getCoalitionObjectiveManager() : redforCoalitionManager.getCoalitionObjectiveManager();
     }
 
-    public List<UnitGroup> getCampaignGroups() {
-        return campaignSettings.getPlayerSelectedSide().equals(FactionSide.BLUEFOR) ? blueforCoalitionManager.getCoalitionGroups() : redforCoalitionManager.getCoalitionGroups();
+    public List<UnitGroup<GroundUnit>> getCampaignFrontlineGroups() {
+        return campaignSettings.getPlayerSelectedSide().equals(FactionSide.BLUEFOR) ? blueforCoalitionManager.getCoalitionFrontlineGroups() : redforCoalitionManager.getCoalitionFrontlineGroups();
     }
 
     public Mission getCurrentlySelectedMission() {

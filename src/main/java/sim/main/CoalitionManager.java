@@ -13,15 +13,15 @@ public class CoalitionManager {
     private static final Logger log = LogManager.getLogger(CoalitionManager.class);
 
     private List<Airfield> coalitionAirfields;
-    private List<UnitGroup> coalitionGroups;
+    private List<UnitGroup<GroundUnit>> coalitionFrontlineGroups;
     private ObjectiveManager coalitionObjectiveManager;
     private MissionManager coalitionMissionManager;
 
     // Convienently mapped unit groups
     Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits;
 
-    public CoalitionManager(List<UnitGroup> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
-        this.coalitionGroups = coalitionGroups;
+    public CoalitionManager(List<UnitGroup<GroundUnit>> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
+        this.coalitionFrontlineGroups = coalitionGroups;
         this.coalitionObjectiveManager = coalitionObjectiveManager;
         this.coalitionMissionManager = coalitionMissionManager;
     }
@@ -38,12 +38,12 @@ public class CoalitionManager {
         return coalitionMissionManager;
     }
 
-    public List<UnitGroup> getCoalitionGroups() {
-        return coalitionGroups;
+    public List<UnitGroup<GroundUnit>> getCoalitionFrontlineGroups() {
+        return coalitionFrontlineGroups;
     }
 
-    public void setCoalitionGroups(List<UnitGroup> coalitionGroups) {
-        this.coalitionGroups = coalitionGroups;
+    public void setCoalitionFrontlineGroups(List<UnitGroup<GroundUnit>> coalitionGroups) {
+        this.coalitionFrontlineGroups = coalitionGroups;
     }
 
     public ObjectiveManager getCoalitionObjectiveManager() {

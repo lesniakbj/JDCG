@@ -65,7 +65,7 @@ class AirfieldGenerator {
         Map<FactionSide, List<AirfieldType>> factionAirfields = generateFactionAirfields(campaignType, mapAirfields, blueHomeAirfield, redHomeAirfield, numStartingAirfields);
 
         // Using all of the assigned AirfieldTypes, generate actual Airfields that will be used during the campaign
-        Map<FactionSide, List<Airfield>> airfieldList = generateRealAirfields(factionAirfields);
+        Map<FactionSide, List<Airfield>> airfieldList = generateRealAirfields(factionAirfields, blueHomeAirfield, redHomeAirfield);
 
         log.debug(airfieldList);
         return airfieldList;
@@ -143,7 +143,7 @@ class AirfieldGenerator {
         return Math.floor(strength);
     }
 
-    private Map<FactionSide,List<Airfield>> generateRealAirfields(Map<FactionSide, List<AirfieldType>> factionAirfields) {
+    private Map<FactionSide,List<Airfield>> generateRealAirfields(Map<FactionSide, List<AirfieldType>> factionAirfields, AirfieldType blueHomeAirfield, AirfieldType redHomeAirfield) {
         log.debug("Creating campaign Airfield objects");
         Map<FactionSide, List<Airfield>> airfieldList = new HashMap<>();
         for(Map.Entry<FactionSide, List<AirfieldType>> airfieldEntry : factionAirfields.entrySet()) {
@@ -157,6 +157,9 @@ class AirfieldGenerator {
                 airfield.setCriticalStructures(null);
 
                 // Filter out munitions that don't belong to your side?
+
+                // Add home airfield flag
+                airfield.setHomeAirfield(airfieldType.equals(blueHomeAirfield) || airfieldType.equals(redHomeAirfield));
 
                 convertedAirfields.add(airfield);
             }
