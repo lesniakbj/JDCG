@@ -41,7 +41,7 @@ public class DrawUtil {
 
     private static Stroke normalStroke;
 
-    private static final int GUTTER_HEIGHT = 48;
+    private static final int GUTTER_HEIGHT = 80;
 
     public static void drawCampaignSelectedMission(DynamicCampaignSim campaign, Graphics2D g) {
         if(campaign.getCurrentlySelectedMission() != null) {
@@ -113,9 +113,9 @@ public class DrawUtil {
 
             g.setStroke(normalStroke);
             g.setColor(color);
-            g.fillRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
+            g.fillRect((int)(pointX * scaleX) - 8, (int)(pointY * scaleY) - 8,16, 16);
             g.setColor(Color.black);
-            g.drawRect((int)(pointX * scaleX) - 10, (int)(pointY * scaleY) - 10,20, 20);
+            g.drawRect((int)(pointX * scaleX) - 8, (int)(pointY * scaleY) - 8,16, 16);
         }
     }
 

@@ -356,7 +356,7 @@ public class CampaignPanel extends JPanel {
         }
 
         private void debugDistancesAndAngle(AirfieldType airfieldType) {
-            Point2D.Double destPair = AirfieldType.LAUGHLIN_AIRPORT.getAirfieldMapPosition();
+            Point2D.Double destPair = AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition();
             Point2D.Double sourcePair = airfieldType.getAirfieldMapPosition();
             double dist = MathUtil.getDistance(destPair, sourcePair);
             double angle = MathUtil.getAngleNorthFace(destPair, sourcePair);
