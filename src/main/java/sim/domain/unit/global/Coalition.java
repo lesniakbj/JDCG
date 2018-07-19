@@ -1,8 +1,7 @@
 package sim.domain.unit.global;
 
-import sim.domain.enums.FactionType;
-
 import java.util.List;
+import sim.domain.enums.FactionType;
 
 public class Coalition {
     private List<FactionType> factionTypeList;

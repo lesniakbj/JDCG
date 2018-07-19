@@ -1,8 +1,5 @@
 package sim.domain.enums;
 
-import java.util.List;
-import java.util.Map;
-
 import static sim.domain.enums.StaticLists.CLASSIC_ERAS;
 import static sim.domain.enums.StaticLists.COLD_WAR_ERAS;
 import static sim.domain.enums.StaticLists.EARLY_COLD_WAR_ERAS;
@@ -12,6 +9,9 @@ import static sim.domain.enums.StaticLists.FA_18_MUNITIONS;
 import static sim.domain.enums.StaticLists.LATE_COLD_EXTENDED_WAR_ERAS;
 import static sim.domain.enums.StaticLists.LATE_COLD_WAR_ERAS;
 import static sim.domain.enums.StaticLists.MODERN_ERAS;
+
+import java.util.List;
+import java.util.Map;
 
 public enum AircraftType {
     A_4("A-4", EXTENDED_ERAS, null),

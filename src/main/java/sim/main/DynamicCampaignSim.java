@@ -1,20 +1,6 @@
 package sim.main;
 
 import dcsgen.DCSMissionGenerator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.domain.enums.CampaignType;
-import sim.domain.enums.FactionSide;
-import sim.domain.enums.MapType;
-import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.Mission;
-import sim.domain.unit.global.Airfield;
-import sim.domain.unit.ground.GroundUnit;
-import sim.gen.CampaignGenerator;
-import sim.gen.MissionGenerator;
-import ui.containers.CampaignPanel;
-
-import javax.swing.border.Border;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +16,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.swing.border.Border;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.enums.CampaignType;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.MapType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
+import sim.gen.CampaignGenerator;
+import sim.gen.MissionGenerator;
+import ui.containers.CampaignPanel;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
@@ -230,8 +229,10 @@ public class DynamicCampaignSim {
         // Then, generate all of the ground groups that exist with this campaign (aka front line units)
         List<Point2D.Double> generationLine = getWarfareGenerationLine(warfareFront);
         List<Point2D.Double> safeArea = warfareFront.get(FactionSide.BLUEFOR) == null ? warfareFront.get(FactionSide.REDFOR) : warfareFront.get(FactionSide.BLUEFOR);
-        blueforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.BLUEFOR));
-        redforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.REDFOR));
+        blueforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.BLUEFOR, generatedAirfields.get(FactionSide.BLUEFOR)));
+        redforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.REDFOR,  generatedAirfields.get(FactionSide.REDFOR)));
+
+        log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
 
         // Then, generate all of the AAA/SAM groups that exist within this campaign (mostly airfields, occasionally behind front lines)
         //        blueforCoalitionManager.setCoalitionAirDefences(UnitGroup<AirDefence> generatedAirfields.get(FactionSide.BLUEFOR));

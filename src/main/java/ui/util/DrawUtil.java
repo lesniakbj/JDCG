@@ -1,20 +1,5 @@
 package ui.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.domain.enums.FactionSide;
-import sim.domain.enums.MapType;
-import sim.domain.enums.WaypointType;
-import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.Aircraft;
-import sim.domain.unit.air.Mission;
-import sim.domain.unit.air.Waypoint;
-import sim.domain.unit.global.Airfield;
-import sim.domain.unit.ground.GroundUnit;
-import sim.domain.unit.ground.Structure;
-import sim.main.DynamicCampaignSim;
-import sim.util.mask.PersianGulfWaterMask;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -32,6 +17,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.MapType;
+import sim.domain.enums.WaypointType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Aircraft;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.Waypoint;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.Structure;
+import sim.main.DynamicCampaignSim;
+import sim.util.mask.CaucasusWaterMask;
+import sim.util.mask.NevadaWaterMask;
+import sim.util.mask.NormandyWaterMask;
+import sim.util.mask.PersianGulfWaterMask;
 
 ;
 
@@ -197,6 +199,15 @@ public class DrawUtil {
         switch (type) {
             case PERSIAN_GULF:
                 path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            case CAUCASUS:
+                path = new CaucasusWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            case NORMANDY:
+                path = new NormandyWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            case NEVADA:
+                path = new NevadaWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
                 break;
             default:
                 path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);

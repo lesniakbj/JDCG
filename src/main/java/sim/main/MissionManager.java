@@ -1,9 +1,8 @@
 package sim.main;
 
-import sim.domain.unit.air.Mission;
-
 import java.util.ArrayList;
 import java.util.List;
+import sim.domain.unit.air.Mission;
 
 public class MissionManager {
     private List<Mission> plannedMissions;

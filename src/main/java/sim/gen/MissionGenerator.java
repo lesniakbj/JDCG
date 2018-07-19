@@ -1,5 +1,10 @@
 package sim.gen;
 
+import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AircraftType;
@@ -13,12 +18,6 @@ import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Waypoint;
 import sim.main.CoalitionManager;
 import sim.main.DynamicCampaignSim;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
 
 public class MissionGenerator {
     private static final Logger log = LogManager.getLogger(MissionGenerator.class);

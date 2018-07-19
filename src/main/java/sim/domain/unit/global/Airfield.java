@@ -1,5 +1,6 @@
 package sim.domain.unit.global;
 
+import java.util.List;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSide;
 import sim.domain.unit.UnitGroup;
@@ -7,8 +8,6 @@ import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.MunitionStockpile;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.Structure;
-
-import java.util.List;
 
 public class Airfield {
     private FactionSide ownerSide;

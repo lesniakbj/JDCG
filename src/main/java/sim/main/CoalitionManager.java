@@ -1,13 +1,12 @@
 package sim.main;
 
+import java.util.List;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
-
-import java.util.List;
-import java.util.Map;
 
 public class CoalitionManager {
     private static final Logger log = LogManager.getLogger(CoalitionManager.class);

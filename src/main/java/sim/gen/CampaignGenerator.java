@@ -1,5 +1,13 @@
 package sim.gen;
 
+import java.awt.geom.Point2D;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.FactionSide;
@@ -11,21 +19,16 @@ import sim.domain.unit.ground.GroundUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 
-import java.awt.geom.Point2D;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 public class CampaignGenerator {
     private static final Logger log = LogManager.getLogger(CampaignGenerator.class);
 
+    // Generators
     private CampaignSettings campaignSettings;
     private AirfieldGenerator airfieldGenerator;
     private GroundUnitGenerator groundUnitGenerator;
+
+    // Date
+    private Map<FactionSide, Double> overallForceStrength;
 
     // Static Generator Data
     private static final double AIRCRAFT_COST = .2;
@@ -40,7 +43,7 @@ public class CampaignGenerator {
         this.campaignSettings = campaignSettings;
 
         // Populate the overall force strength of the side
-        Map<FactionSide, Double> overallForceStrength = new HashMap<>();
+        overallForceStrength = new HashMap<>();
         for(FactionSide side : FactionSide.values()) {
             double totalStrength = 0;
             Coalition coalition = campaignSettings.getCoalitionBySide(side);
@@ -147,7 +150,11 @@ public class CampaignGenerator {
         return cal.getTime();
     }
 
-    public List<UnitGroup<GroundUnit>> generateFrontlineGroundUnits(List<Point2D.Double> frontline, List<Point2D.Double> safeArea, FactionSide side) {
-        return groundUnitGenerator.generateFrontlineUnits(campaignSettings, frontline, safeArea, side, GROUND_UNIT_COST);
+    public List<UnitGroup<GroundUnit>> generateFrontlineGroundUnits(List<Point2D.Double> frontline, List<Point2D.Double> safeArea, FactionSide side, List<Airfield> airfields) {
+        return groundUnitGenerator.generateFrontlineUnits(campaignSettings, frontline, safeArea, side, airfields, GROUND_UNIT_COST);
+    }
+
+    public Map<FactionSide, Double> getOverallForceStrength() {
+        return overallForceStrength;
     }
 }
