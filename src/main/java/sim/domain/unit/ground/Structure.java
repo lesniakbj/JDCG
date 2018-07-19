@@ -1,10 +1,8 @@
-package sim.domain.enums;
-
-import sim.domain.GroundUnit;
+package sim.domain.unit.ground;
 
 import java.util.Date;
 
-public class ArtilleryGroundUnit extends GroundUnit {
+public class Structure extends GroundUnit {
     @Override
     public void updateStep() {
 

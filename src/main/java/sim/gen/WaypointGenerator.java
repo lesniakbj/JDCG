@@ -2,10 +2,10 @@ package sim.gen;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Waypoint;
 import sim.domain.enums.MapType;
 import sim.domain.enums.TaskType;
 import sim.domain.enums.WaypointType;
+import sim.domain.unit.air.Waypoint;
 import sim.main.DynamicCampaignSim;
 import sim.util.MathUtil;
 

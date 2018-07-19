@@ -1,4 +1,4 @@
-package sim.domain;
+package sim.domain.unit.air;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,6 +7,8 @@ import sim.domain.enums.MapType;
 import sim.domain.enums.MunitionType;
 import sim.domain.enums.TaskType;
 import sim.domain.enums.WaypointType;
+import sim.domain.unit.Simable;
+import sim.domain.unit.UnitGroup;
 import sim.util.MathUtil;
 
 import java.awt.geom.Point2D;

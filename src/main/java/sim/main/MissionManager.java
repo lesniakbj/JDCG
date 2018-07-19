@@ -1,6 +1,6 @@
 package sim.main;
 
-import sim.domain.Mission;
+import sim.domain.unit.air.Mission;
 
 import java.util.ArrayList;
 import java.util.List;

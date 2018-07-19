@@ -2,12 +2,12 @@ package sim.gen;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Airfield;
-import sim.domain.Coalition;
-import sim.domain.GroundUnit;
-import sim.domain.UnitGroup;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.FactionType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.global.Coalition;
+import sim.domain.unit.ground.GroundUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 
@@ -145,5 +145,9 @@ public class CampaignGenerator {
         cal.set(year, mo, day, hour, minute);
         log.debug("Date created: " + cal.getTime());
         return cal.getTime();
+    }
+
+    public List<UnitGroup<GroundUnit>> generateFrontlineGroundUnits(List<Point2D.Double> frontline, List<Point2D.Double> safeArea, FactionSide side) {
+        return groundUnitGenerator.generateFrontlineUnits(campaignSettings, frontline, safeArea, side, GROUND_UNIT_COST);
     }
 }

@@ -1,4 +1,4 @@
-package sim.domain;
+package sim.domain.unit;
 
 import sim.domain.enums.FactionSide;
 import sim.util.IDGenerator;

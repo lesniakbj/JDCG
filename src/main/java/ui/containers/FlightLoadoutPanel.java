@@ -2,9 +2,9 @@ package ui.containers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Mission;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.MunitionType;
+import sim.domain.unit.air.Mission;
 import ui.util.SpringUtilities;
 
 import javax.swing.ImageIcon;

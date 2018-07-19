@@ -2,15 +2,18 @@ package ui.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Aircraft;
-import sim.domain.Airfield;
-import sim.domain.GroundUnit;
-import sim.domain.Mission;
-import sim.domain.UnitGroup;
-import sim.domain.Waypoint;
 import sim.domain.enums.FactionSide;
+import sim.domain.enums.MapType;
 import sim.domain.enums.WaypointType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Aircraft;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.Waypoint;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.Structure;
 import sim.main.DynamicCampaignSim;
+import sim.util.mask.PersianGulfWaterMask;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -25,8 +28,10 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 ;
 
@@ -101,6 +106,9 @@ public class DrawUtil {
     }
 
     public static void drawCampaignAirbases(DynamicCampaignSim campaign, Graphics2D g) {
+        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
         List<Airfield> airfields = campaign.getBlueforCoalitionManager().getCoalitionAirfields();
         airfields.addAll(campaign.getRedforCoalitionManager().getCoalitionAirfields());
         for(Airfield airfield : airfields) {
@@ -108,8 +116,6 @@ public class DrawUtil {
 
             double pointX = airfield.getAirfieldType().getAirfieldMapPosition().getX();
             double pointY = airfield.getAirfieldType().getAirfieldMapPosition().getY() - GUTTER_HEIGHT;
-            double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
-            double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
 
             g.setStroke(normalStroke);
             g.setColor(color);
@@ -120,6 +126,9 @@ public class DrawUtil {
     }
 
     public static void drawActiveMissions(DynamicCampaignSim campaign, Graphics2D g) {
+        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
         List<Mission> missions = new ArrayList<>();
         missions.addAll(campaign.getBlueforCoalitionManager().getCoalitionMissionManager().getPlannedMissions());
         missions.addAll(campaign.getRedforCoalitionManager().getCoalitionMissionManager().getPlannedMissions());
@@ -133,8 +142,6 @@ public class DrawUtil {
 
             double pointX = missionGroup.getMapXLocation();
             double pointY = missionGroup.getMapYLocation() - GUTTER_HEIGHT;
-            double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
-            double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
             double x = (pointX * scaleX) - 5;
             double y = (pointY * scaleY) - 5;
 
@@ -181,31 +188,83 @@ public class DrawUtil {
         }
     }
 
+    public static void drawWaterMask(DynamicCampaignSim campaign, Graphics2D g) {
+        MapType type = campaign.getCampaignSettings().getSelectedMap().getMapType();
+        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
+        Path2D.Double path;
+        switch (type) {
+            case PERSIAN_GULF:
+                path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            default:
+                path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
+        }
+
+        g.setStroke(WIDE);
+        g.setColor(Color.BLUE);
+        g.draw(path);
+    }
+
     public static void drawCampaignUnitGroups(DynamicCampaignSim campaign, Graphics2D g) {
         double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
         double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
 
+        // Draw the airfield unit groups
         Map<Airfield, List<UnitGroup<GroundUnit>>> defences = campaign.getBlueforCoalitionManager().getCoalitionPointDefenceGroundUnits();
         Map<Airfield, List<UnitGroup<GroundUnit>>> defences2 = campaign.getRedforCoalitionManager().getCoalitionPointDefenceGroundUnits();
-        drawUnitGroups(defences, scaleX, scaleY, g);
-        drawUnitGroups(defences2, scaleX, scaleY, g);
+        List<UnitGroup<GroundUnit>> defencesUnits = defences.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+        List<UnitGroup<GroundUnit>> defencesUnit2 = defences2.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+        drawUnitGroups(defencesUnits, scaleX, scaleY, g);
+        drawUnitGroups(defencesUnit2, scaleX, scaleY, g);
+
+        // Draw the frontline unit groups
+        List<UnitGroup<GroundUnit>> frontline = campaign.getBlueforCoalitionManager().getCoalitionFrontlineGroups();
+        List<UnitGroup<GroundUnit>> frontline2 = campaign.getRedforCoalitionManager().getCoalitionFrontlineGroups();
+        drawUnitGroups(frontline, scaleX, scaleY, g);
+        drawUnitGroups(frontline2, scaleX, scaleY, g);
     }
 
-    private static void drawUnitGroups(Map<Airfield, List<UnitGroup<GroundUnit>>> defences, double scaleX, double scaleY, Graphics2D g) {
-        for(Map.Entry<Airfield, List<UnitGroup<GroundUnit>>> entry : defences.entrySet()) {
-            List<UnitGroup<GroundUnit>> groups = entry.getValue();
-            for(UnitGroup<GroundUnit> ug : groups) {
-                double x = ug.getMapXLocation();
-                double y = ug.getMapYLocation() - GUTTER_HEIGHT;
-                FactionSide side = ug.getSide();
+    private static void drawUnitGroups(List<UnitGroup<GroundUnit>> unitGroupList, double scaleX, double scaleY, Graphics2D g) {
+        for(UnitGroup<GroundUnit> unitGroup : unitGroupList) {
+            double x = unitGroup.getMapXLocation();
+            double y = unitGroup.getMapYLocation() - GUTTER_HEIGHT;
+            FactionSide side = unitGroup.getSide();
+
+            g.setStroke(normalStroke);
+            g.setColor(side == FactionSide.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
+            g.fillRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
+            g.setColor(Color.BLACK);
+            g.drawRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
+        }
+    }
+
+    public static void drawCampaignAirbaseStructures(DynamicCampaignSim campaign, Graphics2D g) {
+        log.debug("Drawing structures");
+        List<Airfield> airfields = campaign.getBlueforCoalitionManager().getCoalitionAirfields();
+        airfields.addAll(campaign.getRedforCoalitionManager().getCoalitionAirfields());
+
+        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
+        for(Airfield airfield : airfields) {
+            for(Structure s : airfield.getCriticalStructures()) {
+                double x = s.getMapXLocation();
+                double y = s.getMapYLocation() - GUTTER_HEIGHT;
+                FactionSide side = airfield.getOwnerSide();
 
                 g.setStroke(normalStroke);
                 g.setColor(side == FactionSide.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
-                g.fillRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
+                g.fillOval((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
                 g.setColor(Color.BLACK);
-                g.drawRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
+                g.drawOval((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
             }
         }
+    }
+
+    public static void setNormalStroke(Stroke stroke) {
+        normalStroke = stroke;
     }
 
     private static class Triangle extends Path2D.Double {
@@ -215,9 +274,5 @@ public class DrawUtil {
             lineTo(points[2].getX(), points[2].getY());
             closePath();
         }
-    }
-
-    public static void setNormalStroke(Stroke stroke) {
-        normalStroke = stroke;
     }
 }

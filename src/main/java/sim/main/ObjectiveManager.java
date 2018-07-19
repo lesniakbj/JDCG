@@ -1,6 +1,6 @@
 package sim.main;
 
-import sim.domain.SimUnit;
+import sim.domain.unit.SimUnit;
 
 import java.util.ArrayList;
 import java.util.List;

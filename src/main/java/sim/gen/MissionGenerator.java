@@ -2,15 +2,15 @@ package sim.gen;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Aircraft;
-import sim.domain.Mission;
-import sim.domain.UnitGroup;
-import sim.domain.Waypoint;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.MapType;
 import sim.domain.enums.TaskType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Aircraft;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.Waypoint;
 import sim.main.CoalitionManager;
 import sim.main.DynamicCampaignSim;
 

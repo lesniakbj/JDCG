@@ -1,7 +1,5 @@
 package ui.containers;
 
-import sim.domain.Coalition;
-import sim.domain.GameMap;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
@@ -10,6 +8,8 @@ import sim.domain.enums.FactionType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
 import sim.domain.enums.TaskType;
+import sim.domain.unit.global.Coalition;
+import sim.domain.unit.global.GameMap;
 import sim.main.CampaignSettings;
 import ui.util.SpringUtilities;
 

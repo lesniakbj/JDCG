@@ -1,4 +1,4 @@
-package sim.domain;
+package sim.domain.unit;
 
 public abstract class SimUnit implements Simable {
     private boolean isClientUnit;

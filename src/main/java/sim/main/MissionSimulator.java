@@ -2,14 +2,14 @@ package sim.main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Aircraft;
-import sim.domain.Airfield;
-import sim.domain.GroundUnit;
-import sim.domain.Mission;
-import sim.domain.UnitGroup;
 import sim.domain.enums.AirfieldType;
-import sim.domain.enums.ArmorGroundUnit;
 import sim.domain.enums.FactionSide;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Aircraft;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.ArmorGroundUnit;
+import sim.domain.unit.ground.GroundUnit;
 
 import java.util.ArrayList;
 import java.util.List;

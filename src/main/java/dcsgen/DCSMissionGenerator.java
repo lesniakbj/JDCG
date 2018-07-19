@@ -2,9 +2,9 @@ package dcsgen;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Mission;
-import sim.domain.Waypoint;
 import sim.domain.enums.MissionStartType;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.Waypoint;
 import sim.main.CoalitionManager;
 
 public class DCSMissionGenerator {

@@ -1,7 +1,12 @@
-package sim.domain;
+package sim.domain.unit.global;
 
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSide;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Aircraft;
+import sim.domain.unit.air.MunitionStockpile;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.Structure;
 
 import java.util.List;
 
@@ -9,7 +14,8 @@ public class Airfield {
     private FactionSide ownerSide;
     private AirfieldType airfieldType;
     private List<MunitionStockpile> munitionStockpile;
-    private List<SimUnit> criticalStructures;
+    private List<Structure> criticalStructures;
+    private List<UnitGroup<GroundUnit>> airfieldGroundGroups;
     private List<UnitGroup<Aircraft>> stationedAircraft;
     private boolean isHomeAirfield;
 
@@ -37,11 +43,11 @@ public class Airfield {
         this.munitionStockpile = munitionStockpile;
     }
 
-    public List<SimUnit> getCriticalStructures() {
+    public List<Structure> getCriticalStructures() {
         return criticalStructures;
     }
 
-    public void setCriticalStructures(List<SimUnit> criticalStructures) {
+    public void setCriticalStructures(List<Structure> criticalStructures) {
         this.criticalStructures = criticalStructures;
     }
 
@@ -51,6 +57,14 @@ public class Airfield {
 
     public void setStationedAircraft(List<UnitGroup<Aircraft>> stationedAircraft) {
         this.stationedAircraft = stationedAircraft;
+    }
+
+    public List<UnitGroup<GroundUnit>> getAirfieldGroundGroups() {
+        return airfieldGroundGroups;
+    }
+
+    public void setAirfieldGroundGroups(List<UnitGroup<GroundUnit>> airfieldGroundGroups) {
+        this.airfieldGroundGroups = airfieldGroundGroups;
     }
 
     @Override

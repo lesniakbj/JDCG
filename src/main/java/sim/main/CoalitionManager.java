@@ -2,9 +2,9 @@ package sim.main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Airfield;
-import sim.domain.GroundUnit;
-import sim.domain.UnitGroup;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
 
 import java.util.List;
 import java.util.Map;

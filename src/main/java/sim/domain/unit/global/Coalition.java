@@ -1,4 +1,4 @@
-package sim.domain;
+package sim.domain.unit.global;
 
 import sim.domain.enums.FactionType;
 

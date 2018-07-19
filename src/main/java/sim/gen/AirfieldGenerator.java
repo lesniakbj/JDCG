@@ -2,15 +2,17 @@ package sim.gen;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Airfield;
-import sim.domain.GameMap;
-import sim.domain.MunitionStockpile;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSide;
 import sim.domain.enums.MapType;
 import sim.domain.enums.MunitionType;
+import sim.domain.unit.air.MunitionStockpile;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.global.GameMap;
+import sim.domain.unit.ground.Structure;
 import sim.main.CampaignSettings;
+import sim.main.DynamicCampaignSim;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -116,14 +118,14 @@ class AirfieldGenerator {
         double redStrength = overallForceStrength.get(FactionSide.REDFOR);
         List<Airfield> redFields = generatedAirfields.get(FactionSide.REDFOR);
 
-        log.debug(blueStrength);
-        log.debug(redStrength);
+        log.debug("Blue Strength: " + blueStrength);
+        log.debug("Red Strength: " + redStrength);
 
         blueStrength = addStock(blueStrength, blueFields, blueHomeAirfield, 100, 20, FactionSide.BLUEFOR);
         redStrength = addStock(redStrength, redFields, redHomeAirfield, 100, 20, FactionSide.REDFOR);
 
-        log.debug(blueStrength);
-        log.debug(redStrength);
+        log.debug("Blue Strength: " + blueStrength);
+        log.debug("Red Strength: " + redStrength);
         overallForceStrength.put(FactionSide.BLUEFOR, blueStrength);
         overallForceStrength.put(FactionSide.REDFOR, redStrength);
     }
@@ -154,18 +156,42 @@ class AirfieldGenerator {
                 airfield.setAirfieldType(airfieldType);
 
                 // Critical structures get added during ground unit creation
-                airfield.setCriticalStructures(null);
-
-                // Filter out munitions that don't belong to your side?
+                boolean isHomeAirfield = airfieldType.equals(blueHomeAirfield) || airfieldType.equals(redHomeAirfield);
+                airfield.setCriticalStructures(generateAirfieldCriticalStructures(airfieldType, isHomeAirfield));
 
                 // Add home airfield flag
-                airfield.setHomeAirfield(airfieldType.equals(blueHomeAirfield) || airfieldType.equals(redHomeAirfield));
+                airfield.setHomeAirfield(isHomeAirfield);
 
                 convertedAirfields.add(airfield);
             }
             airfieldList.put(airfieldEntry.getKey(), convertedAirfields);
         }
         return airfieldList;
+    }
+
+    private List<Structure> generateAirfieldCriticalStructures(AirfieldType airfieldType, boolean isHomeAirfield) {
+        log.debug("Generating structures " + airfieldType);
+        int minStructures = 3;
+        int total = minStructures + DynamicCampaignSim.getRandomGen().nextInt(3);
+
+        if(isHomeAirfield) {
+            total += 3;
+        }
+
+        List<Structure> structures = new ArrayList<>();
+        for(int i = 0; i < total; i++) {
+            boolean xNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
+            boolean yNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
+            Structure s = new Structure();
+            s.setMapXLocation(airfieldType.getAirfieldMapPosition().getX() + (DynamicCampaignSim.getRandomGen().nextInt(5) * (xNeg ? -1 : 1)));
+            s.setMapYLocation(airfieldType.getAirfieldMapPosition().getY() + (DynamicCampaignSim.getRandomGen().nextInt(5) * (yNeg ? -1 : 1)));
+            s.setSpeedMilesPerHour(0.0);
+            s.setDirection(0.0);
+            structures.add(s);
+        }
+
+        log.debug(structures);
+        return structures;
     }
 
     private Map<FactionSide,List<AirfieldType>> generateFactionAirfields(CampaignType campaignType, List<AirfieldType> mapAirfields, AirfieldType blueforHomeAirfield, AirfieldType redforHomeAirfield, int numStartingAirfields) {

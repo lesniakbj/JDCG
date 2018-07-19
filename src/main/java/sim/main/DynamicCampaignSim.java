@@ -3,11 +3,13 @@ package sim.main;
 import dcsgen.DCSMissionGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.Airfield;
-import sim.domain.GroundUnit;
-import sim.domain.Mission;
-import sim.domain.UnitGroup;
+import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSide;
+import sim.domain.enums.MapType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
 import sim.gen.CampaignGenerator;
 import sim.gen.MissionGenerator;
 import ui.containers.CampaignPanel;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
@@ -105,6 +109,21 @@ public class DynamicCampaignSim {
 
     public static Random getRandomGen() {
         return randomGen;
+    }
+
+
+    public List<Airfield> getAllAirfields() {
+        List<Airfield> airfields = new ArrayList<>();
+        airfields.addAll(blueforCoalitionManager.getCoalitionAirfields());
+        airfields.addAll(redforCoalitionManager.getCoalitionAirfields());
+        return airfields;
+    }
+
+    public Map<Airfield, List<UnitGroup<GroundUnit>>> getAllAirfieldGroundGroups() {
+        Map<Airfield, List<UnitGroup<GroundUnit>>> airfieldGroups = new HashMap<>();
+        airfieldGroups.putAll(blueforCoalitionManager.getCoalitionPointDefenceGroundUnits());
+        airfieldGroups.putAll(redforCoalitionManager.getCoalitionPointDefenceGroundUnits());
+        return airfieldGroups;
     }
 
     public CoalitionManager getBlueforCoalitionManager() {
@@ -205,14 +224,14 @@ public class DynamicCampaignSim {
         redforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.REDFOR));
 
         // Then, generate all of the static ground units that exist within this campaign (aka air fields)
-        Map<Airfield, List<UnitGroup<GroundUnit>>> generatedPointDefenceUnitsBlue = gen.generatePointDefenceUnits(generatedAirfields, FactionSide.BLUEFOR);
-        Map<Airfield, List<UnitGroup<GroundUnit>>> generatedPointDefenceUnitsRed = gen.generatePointDefenceUnits(generatedAirfields, FactionSide.REDFOR);
-        blueforCoalitionManager.setCoalitionPointDefenceGroundUnits(generatedPointDefenceUnitsBlue);
-        redforCoalitionManager.setCoalitionPointDefenceGroundUnits(generatedPointDefenceUnitsRed);
+        blueforCoalitionManager.setCoalitionPointDefenceGroundUnits(gen.generatePointDefenceUnits(generatedAirfields, FactionSide.BLUEFOR));
+        redforCoalitionManager.setCoalitionPointDefenceGroundUnits(gen.generatePointDefenceUnits(generatedAirfields, FactionSide.REDFOR));
 
         // Then, generate all of the ground groups that exist with this campaign (aka front line units)
-        //        blueforCoalitionManager.setCoalitionFrontLineGroundUnits(UnitGroup<GroundUnit> generatedAirfields.get(FactionSide.BLUEFOR));
-        //        redforCoalitionManager.setCoalitionFrontLineGroundUnits(UnitGroup<GroundUnit> generatedAirfields.get(FactionSide.REDFOR));
+        List<Point2D.Double> generationLine = getWarfareGenerationLine(warfareFront);
+        List<Point2D.Double> safeArea = warfareFront.get(FactionSide.BLUEFOR) == null ? warfareFront.get(FactionSide.REDFOR) : warfareFront.get(FactionSide.BLUEFOR);
+        blueforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.BLUEFOR));
+        redforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.REDFOR));
 
         // Then, generate all of the AAA/SAM groups that exist within this campaign (mostly airfields, occasionally behind front lines)
         //        blueforCoalitionManager.setCoalitionAirDefences(UnitGroup<AirDefence> generatedAirfields.get(FactionSide.BLUEFOR));
@@ -221,6 +240,26 @@ public class DynamicCampaignSim {
         // Then, generate all of the AirForce groups that exist within this campaign
         //        blueforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.BLUEFOR));
         //        redforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.REDFOR));
+    }
+
+    private List<Point2D.Double> getWarfareGenerationLine(Map<FactionSide, List<Point2D.Double>> warfareFront) {
+        // Get the actual warfare front
+        List<Point2D.Double> front = warfareFront.get(FactionSide.BLUEFOR) == null ? warfareFront.get(FactionSide.REDFOR) : warfareFront.get(FactionSide.BLUEFOR);
+
+        // Find the South horizontal line of the front
+        Point2D.Double leftX = null;
+        Point2D.Double rightX = null;
+        Point2D.Double targetY = front.get(0);
+        List<Point2D.Double> line;
+        if(campaignSettings.getSelectedCampaignType().equals(CampaignType.OFFENSIVE) && !campaignSettings.getSelectedMap().getMapType().equals(MapType.NORMANDY)) {
+            double maxY = front.stream().mapToDouble(Point2D.Double::getY).max().orElse(0.0);
+            line = front.stream().filter(d -> d.getY() == maxY).collect(Collectors.toList());
+        } else {
+            double minY = front.stream().mapToDouble(Point2D.Double::getY).min().orElse(0.0);
+            line = front.stream().filter(d -> d.getY() == minY).collect(Collectors.toList());
+        }
+
+        return line;
     }
 
     public void runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel) {

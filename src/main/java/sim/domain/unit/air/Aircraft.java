@@ -1,6 +1,7 @@
-package sim.domain;
+package sim.domain.unit.air;
 
 import sim.domain.enums.AircraftType;
+import sim.domain.unit.SimUnit;
 
 import java.util.Date;
 

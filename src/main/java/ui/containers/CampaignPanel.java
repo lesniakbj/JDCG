@@ -2,14 +2,15 @@ package ui.containers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.GameMap;
-import sim.domain.Mission;
-import sim.domain.UnitGroup;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MunitionType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.global.GameMap;
+import sim.domain.unit.ground.GroundUnit;
 import sim.main.CoalitionManager;
 import sim.main.DynamicCampaignSim;
-import sim.util.MathUtil;
 import ui.util.DrawUtil;
 
 import javax.swing.BorderFactory;
@@ -31,7 +32,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -259,9 +259,10 @@ public class CampaignPanel extends JPanel {
         long groundUnits = getTotalGroundUnits(campaign.getBlueforCoalitionManager());
         long airDefences = 0;
         long aircraft = 0;
+        int total = campaign.getRedforCoalitionManager().getCoalitionAirfields().stream().mapToInt(a -> a.getCriticalStructures().size()).sum();
         campaignEnemyStatusLabel = new JLabel(String.format("Enemy Status: %d/%d/%d", groundTargets, airDefences, aircraft));
         campaignFriendlyStatusLabel = new JLabel(String.format("Friendly Status: %d/%d/%d", groundUnits, airDefences, aircraft));
-        campaignObjectivesLabel = new JLabel(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+        campaignObjectivesLabel = new JLabel(String.format("Critical Objectives Remaining: %d", total));
         campaignStatus.add(Box.createHorizontalGlue());
         addHorizontalComponent(campaignDateLabel);
         addHorizontalComponent(campaignSortiesLabel);
@@ -325,7 +326,8 @@ public class CampaignPanel extends JPanel {
         campaignFriendlyStatusLabel.setText(String.format("Friendly Status: %d/%d/%d", count, airDefences, aircraft));
 
         // Critical Objectives
-        campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", campaign.getCampaignObjectiveManager().getMainObjectiveList().size()));
+        int total = campaign.getRedforCoalitionManager().getCoalitionAirfields().stream().mapToInt(a -> a.getCriticalStructures().size()).sum();
+        campaignObjectivesLabel.setText(String.format("Critical Objectives Remaining: %d", total));
     }
 
     private long getTotalGroundUnits(CoalitionManager manager) {
@@ -343,12 +345,20 @@ public class CampaignPanel extends JPanel {
 
     private BufferedImage addCampaignObjects(BufferedImage image) {
         Graphics2D g = (Graphics2D)image.getGraphics();
-
-        // First draw any of the missions
         DrawUtil.setNormalStroke(g.getStroke());
+
+        // Draw all of the group units
         DrawUtil.drawCampaignUnitGroups(campaign, g);
+
+        // Draw everything related to airbases
+        DrawUtil.drawCampaignAirbaseStructures(campaign, g);
         DrawUtil.drawCampaignAirbases(campaign, g);
+
+        // Draw where the battle is happening
         DrawUtil.drawWarfareFront(campaign, g);
+        // DrawUtil.drawWaterMask(campaign, g);
+
+        // Draw everything related to missions
         DrawUtil.drawCampaignSelectedMission(campaign, g);
         DrawUtil.drawActiveMissions(campaign, g);
 
@@ -383,16 +393,12 @@ public class CampaignPanel extends JPanel {
 
             // For debug, get the distance between where we clicked (if on an object), and where the AbuNair airfield is
             for(AirfieldType airfieldType : clickedAirfieldTypes) {
-                debugDistancesAndAngle(airfieldType);
+                Airfield field = campaign.getAllAirfields().stream().filter(a -> a.getAirfieldType().equals(airfieldType)).findFirst().orElse(null);
+                List<UnitGroup<GroundUnit>> fieldUnits = campaign.getAllAirfieldGroundGroups().get(field);
+                JOptionPane.showMessageDialog(null, "This is where Airfield Information would be shown", "Airfield Information", JOptionPane.INFORMATION_MESSAGE);
+                log.debug(field);
+                log.debug(fieldUnits);
             }
-        }
-
-        private void debugDistancesAndAngle(AirfieldType airfieldType) {
-            Point2D.Double destPair = AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition();
-            Point2D.Double sourcePair = airfieldType.getAirfieldMapPosition();
-            double dist = MathUtil.getDistance(destPair, sourcePair);
-            double angle = MathUtil.getAngleNorthFace(destPair, sourcePair);
-            log.debug(String.format("Distance from %s to AL_DHAFRA_AIRBASE: %f px, %f mi, %f deg", airfieldType.name(), dist, airfieldType.getMap().scaleDistance(dist), angle));
         }
 
         @Override

@@ -1,4 +1,4 @@
-package sim.domain;
+package sim.domain.unit.air;
 
 import sim.domain.enums.MunitionType;
 
