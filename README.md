@@ -4,9 +4,9 @@ JDCG - Java DCS Campaign Generator
 JDCG is a Dynamic Campaign Simulation and Mission Generator for the Flight Simulator DCS: World. The goal of this project is to bring the feeling
 of the Dynamic Campaign from BMS into the modern simulator that is DCS: World. This project involves three different parts, which all work together
 to get the feeling of a BMS Dynamic Campaign:
-1) Air Campaign Generator
-2) Air Campaign Simulator
-3) DCS Mission Generator
+1) Air Campaign Generator (sim.gen.*)
+2) Air Campaign Simulator (sim.*)
+3) DCS Mission Generator (dcsgen.*)
 
 The Air Campaign Generator runs outside of DCS, and will generate a starting situation in which the campaign will be played.
 This can create various scenarios from Offensive to Defensive campaigns, and supports all of the maps available in DCS: World.
