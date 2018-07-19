@@ -1,6 +1,7 @@
 package sim.gen;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +17,7 @@ import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
 import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 
@@ -31,12 +33,12 @@ public class CampaignGenerator {
     private Map<FactionSide, Double> overallForceStrength;
 
     // Static Generator Data
-    private static final double AIRCRAFT_COST = .2;
-    private static final double HELICOPTER_COST = .15;
+    private static final double AIRCRAFT_COST = 1;
+    private static final double HELICOPTER_COST = .75;
     private static final double MUNITION_COST = .01;
     private static final double GROUND_UNIT_COST = .05;
-    private static final double AAA_COST = .05;
-    private static final double SAM_COST = .1;
+    private static final double AAA_COST = .25;
+    private static final double SAM_COST = .5;
     private static final int STARTING_NUMBER_OF_AIRBASES = 5;
 
     public CampaignGenerator(CampaignSettings campaignSettings) {
@@ -66,7 +68,6 @@ public class CampaignGenerator {
         // Create the generators
         airfieldGenerator = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
         groundUnitGenerator = new GroundUnitGenerator(overallForceStrength, GROUND_UNIT_COST);
-
     }
 
     public Map<FactionSide,List<Airfield>> generateAirfieldMap() {
@@ -115,7 +116,7 @@ public class CampaignGenerator {
     }
 
     public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(Map<FactionSide, List<Airfield>> generatedAirfields, FactionSide side) {
-        return groundUnitGenerator.generatePointDefenceUnits(campaignSettings, generatedAirfields, side);
+        return groundUnitGenerator.generatePointDefenceUnits(campaignSettings, generatedAirfields, side, GROUND_UNIT_COST);
     }
 
     public Date generateCampaignDate() {
@@ -152,6 +153,10 @@ public class CampaignGenerator {
 
     public List<UnitGroup<GroundUnit>> generateFrontlineGroundUnits(List<Point2D.Double> frontline, List<Point2D.Double> safeArea, FactionSide side, List<Airfield> airfields) {
         return groundUnitGenerator.generateFrontlineUnits(campaignSettings, frontline, safeArea, side, airfields, GROUND_UNIT_COST);
+    }
+
+    public List<UnitGroup<AirDefenceUnit>> generateAirDefences(List<UnitGroup<GroundUnit>> blueGroundUnits, List<Airfield> airfields, FactionSide side) {
+        return groundUnitGenerator.generateAirDefenceUnits(campaignSettings, blueGroundUnits, airfields, side, AAA_COST, SAM_COST);
     }
 
     public Map<FactionSide, Double> getOverallForceStrength() {

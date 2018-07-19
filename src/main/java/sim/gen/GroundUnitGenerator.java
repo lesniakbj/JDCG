@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,9 @@ import sim.domain.unit.ground.ArmorGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.UnarmedGroundUnit;
 import sim.domain.unit.ground.UnarmedShipGroundUnit;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
+import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
+import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 import sim.util.mask.CaucasusWaterMask;
@@ -30,15 +34,13 @@ import sim.util.mask.PersianGulfWaterMask;
 public class GroundUnitGenerator {
     private static final Logger log = LogManager.getLogger(GroundUnitGenerator.class);
 
-    private final double groundUnitCost;
     private final Map<FactionSide, Double> overallForceStrength;
 
     public GroundUnitGenerator(Map<FactionSide, Double> overallForceStrength, double groundUnitCost) {
-        this.groundUnitCost = groundUnitCost;
         this.overallForceStrength = overallForceStrength;
     }
 
-    public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(CampaignSettings campaignSettings, Map<FactionSide, List<Airfield>> generatedAirfields, FactionSide side) {
+    public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(CampaignSettings campaignSettings, Map<FactionSide, List<Airfield>> generatedAirfields, FactionSide side, double groundUnitCost) {
         List<Airfield> airfields = generatedAirfields.get(side);
         Map<Airfield, List<UnitGroup<GroundUnit>>> returnMap = new HashMap<>();
 
@@ -166,6 +168,33 @@ public class GroundUnitGenerator {
         overallForceStrength.put(side, currentStrength - totalCost);
 
         return groundGroups;
+    }
+
+    public List<UnitGroup<AirDefenceUnit>> generateAirDefenceUnits(CampaignSettings campaignSettings, List<UnitGroup<GroundUnit>> blueGroundUnits, List<Airfield> airfields, FactionSide side, double aaaCost, double samCost) {
+        // We want to use 1/2 of our remaining points to generate the ground groups
+        double targetCost = overallForceStrength.get(side) / 2;
+
+        // Calculate loop and generation control variables
+        int maxUnitsPerGroup = 2;
+        int maxUnits = (int) (targetCost / samCost);
+        int targetSAMIterations = (maxUnits / maxUnitsPerGroup) / 4;
+        int targetAAAIterations = (maxUnits / maxUnitsPerGroup) - targetSAMIterations;
+        log.debug("Going to generate: " + maxUnits);
+
+        // Generation loop
+        List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
+        airDefenceGroups.addAll(generateAirDefenceGroups(ArtilleryAirDefenceUnit.class, targetAAAIterations));
+        airDefenceGroups.addAll(generateAirDefenceGroups(MissileAirDefenceUnit.class, targetSAMIterations));
+
+        return airDefenceGroups;
+    }
+
+    private List<UnitGroup<AirDefenceUnit>> generateAirDefenceGroups(Class<? extends AirDefenceUnit> airDefenceClass, int iterations) {
+        List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
+        for(int i = 0; i < iterations; i++) {
+            log.debug("Number of " + airDefenceClass.getSimpleName() + " iterations: " + i);
+        }
+        return airDefenceGroups;
     }
 
     private int generateGeneralAreaUnit(CampaignType type, Path2D.Double waterMask, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, List<Point2D.Double> safeArea, List<Airfield> airfields) {

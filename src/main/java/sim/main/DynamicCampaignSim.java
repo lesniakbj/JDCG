@@ -110,7 +110,6 @@ public class DynamicCampaignSim {
         return randomGen;
     }
 
-
     public List<Airfield> getAllAirfields() {
         List<Airfield> airfields = new ArrayList<>();
         airfields.addAll(blueforCoalitionManager.getCoalitionAirfields());
@@ -229,14 +228,16 @@ public class DynamicCampaignSim {
         // Then, generate all of the ground groups that exist with this campaign (aka front line units)
         List<Point2D.Double> generationLine = getWarfareGenerationLine(warfareFront);
         List<Point2D.Double> safeArea = warfareFront.get(FactionSide.BLUEFOR) == null ? warfareFront.get(FactionSide.REDFOR) : warfareFront.get(FactionSide.BLUEFOR);
-        blueforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.BLUEFOR, generatedAirfields.get(FactionSide.BLUEFOR)));
-        redforCoalitionManager.setCoalitionFrontlineGroups(gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.REDFOR,  generatedAirfields.get(FactionSide.REDFOR)));
+        List<UnitGroup<GroundUnit>> blueGroundUnits = gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.BLUEFOR, generatedAirfields.get(FactionSide.BLUEFOR));
+        List<UnitGroup<GroundUnit>> redGroundUnits = gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.REDFOR, generatedAirfields.get(FactionSide.REDFOR));
+        blueforCoalitionManager.setCoalitionFrontlineGroups(blueGroundUnits);
+        redforCoalitionManager.setCoalitionFrontlineGroups(redGroundUnits);
 
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
 
         // Then, generate all of the AAA/SAM groups that exist within this campaign (mostly airfields, occasionally behind front lines)
-        //        blueforCoalitionManager.setCoalitionAirDefences(UnitGroup<AirDefence> generatedAirfields.get(FactionSide.BLUEFOR));
-        //        redforCoalitionManager.setCoalitionAirDefences(UnitGroup<AirDefence> generatedAirfields.get(FactionSide.REDFOR));
+        blueforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(blueGroundUnits, generatedAirfields.get(FactionSide.BLUEFOR), FactionSide.BLUEFOR));
+        redforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(blueGroundUnits, generatedAirfields.get(FactionSide.REDFOR), FactionSide.REDFOR));
 
         // Then, generate all of the AirForce groups that exist within this campaign
         //        blueforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.BLUEFOR));

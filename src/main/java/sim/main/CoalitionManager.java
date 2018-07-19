@@ -7,17 +7,20 @@ import org.apache.logging.log4j.Logger;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
 
 public class CoalitionManager {
     private static final Logger log = LogManager.getLogger(CoalitionManager.class);
 
+    // Campaign Data
     private List<Airfield> coalitionAirfields;
     private List<UnitGroup<GroundUnit>> coalitionFrontlineGroups;
+    private Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits;
+    private List<UnitGroup<AirDefenceUnit>> coalitionAirDefences;
+
+    // Campaign Managers
     private ObjectiveManager coalitionObjectiveManager;
     private MissionManager coalitionMissionManager;
-
-    // Convienently mapped unit groups
-    Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits;
 
     public CoalitionManager(List<UnitGroup<GroundUnit>> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
         this.coalitionFrontlineGroups = coalitionGroups;
@@ -69,5 +72,13 @@ public class CoalitionManager {
     public Map<Airfield, List<UnitGroup<GroundUnit>>> getCoalitionPointDefenceGroundUnits() {
         log.debug("Getting point defences");
         return coalitionPointDefenceGroundUnits;
+    }
+
+    public void setCoalitionAirDefences(List<UnitGroup<AirDefenceUnit>> coalitionAirDefences) {
+        this.coalitionAirDefences = coalitionAirDefences;
+    }
+
+    public List<UnitGroup<AirDefenceUnit>> getCoalitionAirDefences() {
+        return coalitionAirDefences;
     }
 }
