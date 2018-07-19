@@ -5,9 +5,11 @@ import org.apache.logging.log4j.Logger;
 import sim.domain.enums.FactionSide;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.ArmedShipGroundUnit;
 import sim.domain.unit.ground.ArmorGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.UnarmedGroundUnit;
+import sim.domain.unit.ground.UnarmedShipGroundUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 import sim.util.mask.PersianGulfWaterMask;
@@ -73,10 +75,6 @@ public class GroundUnitGenerator {
         return returnMap;
     }
 
-    private List<GroundUnit> generateGroundUnitsForAirfield() {
-        return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
-    }
-
     public List<UnitGroup<GroundUnit>> generateFrontlineUnits(CampaignSettings campaignSettings, List<Point2D.Double> warfareFront, List<Point2D.Double> safeArea, FactionSide side, double groundUnitCost) {
         // Is the group supposed to be generated to the South or North?
         boolean genSouth = (side == FactionSide.BLUEFOR);
@@ -107,34 +105,86 @@ public class GroundUnitGenerator {
         // Generate our number of groups
         List<UnitGroup<GroundUnit>> groundGroups = new ArrayList<>();
         for(int i = 0; i < targetIterations; i++) {
+            // Check how we will be generating this group
             boolean isWaterUnit = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1) < percentOfWaterUnits;
             double mapX = xLeft + (DynamicCampaignSim.getRandomGen().nextInt((int) (xRight - xLeft)));
             double mapY = warfareFront.get(0).getY() - (DynamicCampaignSim.getRandomGen().nextInt(25) * (genSouth ? -1 : 1));
             double dir = genSouth ? 0.0 : 180.0;
 
             if(isWaterUnit) {
-                log.debug("This is supposed to be in water");
-                if(waterMask.contains(mapX, mapY)) {
-                    List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
-                    UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
-                    UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
-                            .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
-                    groundGroups.add(g);
-                }
+                generateWaterUnit(waterMask, mapX, mapY, groundGroups, dir, side);
             } else {
-                while(waterMask.contains(mapX, mapY)) {
-                    mapY = mapY - (10 * (genSouth ? -1 : 1));
-                }
-                mapY = mapY - DynamicCampaignSim.getRandomGen().nextInt(25) * (genSouth ? -1 : 1);
+                boolean generateCloseToFront = DynamicCampaignSim.getRandomGen().nextBoolean();
 
-                List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
-                UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
-                UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
-                        .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
-                groundGroups.add(g);
+                if(generateCloseToFront) {
+                    generateUnitCloseToFront(waterMask, mapX, mapY, groundGroups, dir, side, genSouth);
+                } else {
+                    generateGeneralAreaUnit(waterMask, mapX, mapY, groundGroups, dir, side, safeArea);
+                }
             }
         }
 
         return groundGroups;
+    }
+
+    private void generateGeneralAreaUnit(Path2D.Double waterMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, List<Point2D.Double> safeArea) {
+        Path2D.Double safePath = new Path2D.Double();
+        for(Point2D.Double point : safeArea) {
+            safePath.moveTo(point.getX(), point.getY());
+        }
+
+        int startX = 598;
+        int endX = 966 - startX;
+        int startY, endY;
+        if(side == FactionSide.REDFOR) {
+            startY = 108;
+            endY = 510 - startY;
+        } else {
+            startY = 510;
+            endY = 694 - startY;
+        }
+
+        while (waterMask.contains(mapX, mapY) || safePath.contains(mapX, mapY)) {
+            log.debug("Throwing a needle untle we find a valid spot");
+            mapX = startX + DynamicCampaignSim.getRandomGen().nextInt(endX);
+            mapY = startY + DynamicCampaignSim.getRandomGen().nextInt(endY);
+        }
+
+        List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
+        UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
+        UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
+                .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
+        groundGroups.add(g);
+    }
+
+    private void generateUnitCloseToFront(Path2D.Double waterMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, boolean genSouth) {
+        while (waterMask.contains(mapX, mapY)) {
+            mapY = mapY - (10 * (genSouth ? -1 : 1));
+        }
+        mapY = mapY - DynamicCampaignSim.getRandomGen().nextInt(25) * (genSouth ? -1 : 1);
+
+        List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
+        UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
+        UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
+                .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
+        groundGroups.add(g);
+    }
+
+    private void generateWaterUnit(Path2D.Double waterMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side) {
+        if(waterMask.contains(mapX, mapY)) {
+            List<GroundUnit> groundUnits = generateWaterUnits();
+            UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
+            UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
+                    .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
+            groundGroups.add(g);
+        }
+    }
+
+    private List<GroundUnit> generateGroundUnitsForAirfield() {
+        return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
+    }
+
+    private List<GroundUnit> generateWaterUnits() {
+        return new ArrayList<>(Arrays.asList(new UnarmedShipGroundUnit(), new ArmedShipGroundUnit(), new ArmedShipGroundUnit(), new UnarmedShipGroundUnit()));
     }
 }
