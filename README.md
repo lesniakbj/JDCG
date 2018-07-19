@@ -21,5 +21,10 @@ from the Air Campaign, and will allow the user to feel like they are taking part
 The following shows the general gameplay loop that JDCG requires:
 
 
-Here is an example of a Campaign Generation:
+Here are examples of Campaign Configuration:
+![Example basic configuration](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_config1.png)
+![Example faction configuration](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_config2.png)
+
+Here are examples of Campaign Generation:
 ![Example map / campaign generation](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_generations.png)
+![Example flight generations](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_generation_flights.png)

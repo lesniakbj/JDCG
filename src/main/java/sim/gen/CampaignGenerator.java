@@ -55,10 +55,10 @@ public class CampaignGenerator {
                         totalStrength += 200;
                         break;
                     case MEDIUM:
-                        totalStrength += 100;
+                        totalStrength += 40;
                         break;
                     case LOW:
-                        totalStrength += 50;
+                        totalStrength += 10;
                         break;
                 }
             }

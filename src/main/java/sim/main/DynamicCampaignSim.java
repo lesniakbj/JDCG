@@ -212,9 +212,11 @@ public class DynamicCampaignSim {
         CampaignGenerator gen = new CampaignGenerator(campaignSettings);
 
         // Generate the date of the campaign
+        log.debug("Generating the current campaign date...");
         campaignSettings.setCurrentCampaignDate(gen.generateCampaignDate());
 
         // First, generate the airbases that are going to be assigned to each team based on the settings of the campaign
+        log.debug("Generating the current campaign airfields...");
         Map<FactionSide, List<Airfield>> generatedAirfields = gen.generateAirfieldMap();
         warfareFront = gen.generateWarfareFront(generatedAirfields);
         generatedAirfields = gen.adjustAirfieldsIfNeeded(warfareFront, generatedAirfields);
@@ -222,10 +224,12 @@ public class DynamicCampaignSim {
         redforCoalitionManager.setCoalitionAirfields(generatedAirfields.get(FactionSide.REDFOR));
 
         // Then, generate all of the static ground units that exist within this campaign (aka air fields)
+        log.debug("Generating the current campaign airfield defence units...");
         blueforCoalitionManager.setCoalitionPointDefenceGroundUnits(gen.generatePointDefenceUnits(generatedAirfields, FactionSide.BLUEFOR));
         redforCoalitionManager.setCoalitionPointDefenceGroundUnits(gen.generatePointDefenceUnits(generatedAirfields, FactionSide.REDFOR));
 
         // Then, generate all of the ground groups that exist with this campaign (aka front line units)
+        log.debug("Generating the current campaign front line units...");
         List<Point2D.Double> generationLine = getWarfareGenerationLine(warfareFront);
         List<Point2D.Double> safeArea = warfareFront.get(FactionSide.BLUEFOR) == null ? warfareFront.get(FactionSide.REDFOR) : warfareFront.get(FactionSide.BLUEFOR);
         List<UnitGroup<GroundUnit>> blueGroundUnits = gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSide.BLUEFOR, generatedAirfields.get(FactionSide.BLUEFOR));
@@ -233,11 +237,12 @@ public class DynamicCampaignSim {
         blueforCoalitionManager.setCoalitionFrontlineGroups(blueGroundUnits);
         redforCoalitionManager.setCoalitionFrontlineGroups(redGroundUnits);
 
-        log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
-
         // Then, generate all of the AAA/SAM groups that exist within this campaign (mostly airfields, occasionally behind front lines)
+        log.debug("Generating the current campaign air defence units...");
         blueforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(blueGroundUnits, generatedAirfields.get(FactionSide.BLUEFOR), FactionSide.BLUEFOR));
         redforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(blueGroundUnits, generatedAirfields.get(FactionSide.REDFOR), FactionSide.REDFOR));
+
+        log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
 
         // Then, generate all of the AirForce groups that exist within this campaign
         //        blueforCoalitionManager.setCoalitionAirGroups(generatedAirfields.get(FactionSide.BLUEFOR));
