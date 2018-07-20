@@ -1,6 +1,7 @@
 package sim.domain.enums;
 
 public enum FactionType {
+    ALL(-1, "All", FactionStrength.LOW),
     ABKHAZIA(18, "Abkhazia", FactionStrength.LOW),
     ALGERIA(70, "Algeria", FactionStrength.LOW),
     AUSTRALIA(21, "Australia", FactionStrength.MEDIUM),

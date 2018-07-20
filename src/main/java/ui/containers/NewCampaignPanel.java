@@ -319,7 +319,7 @@ public class NewCampaignPanel extends JPanel {
     private JPanel generateNeutralFactionTable() {
         // Load the list of factions for display
         List<FactionType> defaultFactionTypeList = Arrays.stream(FactionType.values()).filter((factionType) -> factionType != FactionType.USA && factionType
-                != FactionType.RUSSIA).collect(Collectors.toList());
+                != FactionType.RUSSIA && factionType != FactionType.ALL).collect(Collectors.toList());
 
         // Create the panel
         String[][] data = generateColumnData(defaultFactionTypeList);
@@ -384,6 +384,7 @@ public class NewCampaignPanel extends JPanel {
         @Override
         public void stateChanged(ChangeEvent e) {
             // Update the overview panel
+            overviewPanel.setSelectedFactions(campaignSettings.getCoalitionBySide(campaignSettings.getPlayerSelectedSide()));
             overviewPanel.setMapSelection(campaignSettings.getSelectedMap());
             overviewPanel.setSelectedEra(campaignSettings.getSelectedEra());
             overviewPanel.setCampaignType(campaignSettings.getSelectedCampaignType());
@@ -598,6 +599,7 @@ public class NewCampaignPanel extends JPanel {
                     }
                 }
             }
+            validSquadrons.add(SquadronType.NONE);
 
             // Assign the squadrons to the drop down box
             DefaultComboBoxModel model = (DefaultComboBoxModel)squadronBox.getModel();
@@ -639,7 +641,6 @@ public class NewCampaignPanel extends JPanel {
                 Image scaled = mapImage.getScaledInstance(IMG_WIDTH * 2, (int) ((IMG_WIDTH * 2) * NORMAL_IMAGE_RATIO), Image.SCALE_SMOOTH);
                 squadronImagePanel.removeAll();
                 squadronImagePanel.add(new JLabel(new ImageIcon(scaled), SwingConstants.CENTER), BorderLayout.CENTER);
-                squadronImagePanel.repaint();
 
                 // Update the squadron status
                 squadronName.setText(selectedSquadron.getSquadronName());
@@ -647,12 +648,15 @@ public class NewCampaignPanel extends JPanel {
                 squadronAircraft.setText(selectedSquadron.getAircraftTypes().stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
                 squadronActiveEras.setText(selectedSquadron.getEra().stream().map(ConflictEraType::getEraName).collect(Collectors.joining(", ")));
             }
+            squadronImagePanel.repaint();
         }
     }
 
     private class NewCampaignOverviewPanel extends JPanel {
         private final String[] labels = {"Map Selected: ", "Campaign Era Selected: ", "Campaign Type Selected: ", "Selected Coalition: ", "Selected Squadron: ", "Squadron Tasks: ", "Squadron Aircraft: ", "Era Aircraft: ", "Selected Aircraft: "};
         private Map<String, JLabel> labelMapping;
+        private JComboBox<String> aircraftSelector;
+        private Coalition selectedFactions;
 
         NewCampaignOverviewPanel() {
             setLayout(new BorderLayout());
@@ -661,21 +665,26 @@ public class NewCampaignPanel extends JPanel {
             JPanel container = new JPanel();
             container.setLayout(new SpringLayout());
             labelMapping = new HashMap<>();
-            for(String labelString : labels) {
-                JLabel label = new JLabel(labelString);
+            for(int i = 0; i < labels.length - 1; i++ ) {
+                JLabel label = new JLabel(labels[i]);
                 JLabel data = new JLabel();
                 label.setLabelFor(data);
                 container.add(label);
                 container.add(data);
-                labelMapping.put(labelString, data);
+                labelMapping.put(labels[i], data);
             }
+            container.add(new JLabel(labels[labels.length - 1]));
+            aircraftSelector = new JComboBox<>();
+            container.add(aircraftSelector);
             SpringUtilities.makeCompactGrid(container, 9, 2, 435, 300,10, 6);
+            aircraftSelector.setPreferredSize(new Dimension(50, (int)aircraftSelector.getPreferredSize().getHeight()));
 
             // Campaign Start Button
             JPanel containerPanel = new JPanel();
             JButton startCampaignButton = new JButton("Start Campaign");
             containerPanel.add(startCampaignButton);
             startCampaignButton.addActionListener((e) -> {
+                campaignSettings.setSelectedAircraft(AircraftType.fromName((String)aircraftSelector.getSelectedItem()));
                 campaignSettings.setComplete(true);
                 (SwingUtilities.getWindowAncestor(self)).dispose();
             });
@@ -719,18 +728,53 @@ public class NewCampaignPanel extends JPanel {
         }
 
         private List<AircraftType> setEraAircraft(List<AircraftType> aircraft) {
+            // Filter based on Era
             ConflictEraType era = ConflictEraType.fromName(labelMapping.get(labels[1]).getText());
+            List<FactionType> factionTypes = selectedFactions.getFactionTypeList();
             List<AircraftType> eraCraft = new ArrayList<>();
             if(era != null) {
                 eraCraft = aircraft.stream().filter((craft) -> craft.getAircraftEras().contains(era)).collect(Collectors.toList());
             }
 
-            labelMapping.get(labels[7]).setText(eraCraft.stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
+            // Filter based on Faction
+            List<AircraftType> removed = new ArrayList<>();
+            for(AircraftType aircraftType : eraCraft) {
+                boolean foundMatch = false;
+                for(FactionType type : factionTypes) {
+                    if(aircraftType.getUsers().contains(type)) {
+                        foundMatch = true;
+                        break;
+                    }
+                }
+
+                if(!foundMatch) {
+                    removed.add(aircraftType);
+                }
+            }
+            eraCraft.removeAll(removed);
+
+            if(eraCraft.isEmpty()) {
+                labelMapping.get(labels[7]).setText("Please choose another Era or Set of Factions");
+            } else {
+                labelMapping.get(labels[7]).setText(eraCraft.stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
+            }
+
             return eraCraft;
         }
 
         private void setSelectedAircraft(List<AircraftType> selectedAircraft) {
-            labelMapping.get(labels[8]).setText(selectedAircraft.stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
+            if(selectedAircraft.isEmpty()) {
+                aircraftSelector.removeAllItems();
+                aircraftSelector.addItem("Please choose another Era or Set of Factions");
+            } else {
+                aircraftSelector.removeAllItems();
+                aircraftSelector.setModel(new DefaultComboBoxModel<>(selectedAircraft.stream().filter(AircraftType::isPlayerFlyable).map(AircraftType::getAircraftName).toArray(String[]::new)));
+            }
+            campaignSettings.setSelectedAircraft(AircraftType.fromName((String)aircraftSelector.getSelectedItem()));
+        }
+
+        public void setSelectedFactions(Coalition selectedFactions) {
+            this.selectedFactions = selectedFactions;
         }
     }
 }

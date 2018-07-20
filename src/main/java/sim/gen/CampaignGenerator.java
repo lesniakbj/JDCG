@@ -167,6 +167,6 @@ public class CampaignGenerator {
     }
 
     public List<UnitGroup<AirUnit>> generateAirGroups(List<Airfield> airfields, FactionSide side) {
-        return airUnitGenerator.generateAircraftGroups(airfields, side);
+        return airUnitGenerator.generateAircraftGroups(campaignSettings, airfields, side);
     }
 }

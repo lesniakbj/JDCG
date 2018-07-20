@@ -209,7 +209,8 @@ public class DynamicCampaignSim {
     }
 
     public void generateNewCampaign() {
-        log.debug("Generating a new campaign...");
+        log.debug("Generating a new campaign with the following settings...");
+        log.debug("Campaign Settings: " + campaignSettings);
         CampaignGenerator gen = new CampaignGenerator(campaignSettings);
 
         // Generate the date of the campaign

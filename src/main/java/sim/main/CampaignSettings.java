@@ -1,5 +1,6 @@
 package sim.main;
 
+import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
 import sim.domain.enums.FactionSide;
@@ -22,6 +23,7 @@ public class CampaignSettings {
     private CampaignType selectedCampaignType;
     private FactionSide playerSelectedSide;
     private SquadronType selectedSquadron;
+    private AircraftType selectedAircraft;
     private boolean isComplete;
     private Date currentCampaignDate;
     private String dateFormat;
@@ -145,16 +147,29 @@ public class CampaignSettings {
         this.dateFormat = dateFormat;
     }
 
+    public AircraftType getSelectedAircraft() {
+        return selectedAircraft;
+    }
+
+    public void setSelectedAircraft(AircraftType selectedAircraft) {
+        this.selectedAircraft = selectedAircraft;
+    }
+
+    @Override
     public String toString() {
         return "CampaignSettings{" +
-                "\t" + selectedMap + ",\n" +
-                "\t" + redforCoalition + ",\n" +
-                "\t" + blueforCoalition + ",\n" +
-                "\t" + neutralCoalition + ",\n" +
-                "\t" + selectedEra + ",\n" +
-                "\t" + selectedCampaignType + ",\n" +
-                "\t" + playerSelectedSide + ",\n" +
-                "\t" + selectedSquadron + ",\n" +
-                "}";
+                "selectedMap=" + selectedMap +
+                ", redforCoalition=" + redforCoalition +
+                ", blueforCoalition=" + blueforCoalition +
+                ", neutralCoalition=" + neutralCoalition +
+                ", selectedEra=" + selectedEra +
+                ", selectedCampaignType=" + selectedCampaignType +
+                ", playerSelectedSide=" + playerSelectedSide +
+                ", selectedSquadron=" + selectedSquadron +
+                ", selectedAircraft=" + selectedAircraft +
+                ", isComplete=" + isComplete +
+                ", currentCampaignDate=" + currentCampaignDate +
+                ", dateFormat='" + dateFormat + '\'' +
+                '}';
     }
 }

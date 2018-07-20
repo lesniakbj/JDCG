@@ -43,7 +43,7 @@ public enum SquadronType {
     VMFA115("VMFA-115 - Marine Fighter Attack Squadron 115 - Silver Eagles", COMPLETE_ERAS, FLEET_DEFENSE, MARINE_FIGHTER_COMPLETE_ERAS, FactionType.USA),
 
     // No Attached Squadron
-    NONE("None", MODERN_ERAS, ALL_TASK_TYPES, USER_AVAILABLE_AIRCRAFT, FactionType.USA);
+    NONE("None - All Task and Aircraft Types", COMPLETE_ERAS, ALL_TASK_TYPES, AircraftType.getPlayerAircraftTypes(), FactionType.ALL);
 
     private String squadronName;
     private List<ConflictEraType> era;
