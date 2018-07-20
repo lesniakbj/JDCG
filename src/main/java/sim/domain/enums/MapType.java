@@ -1,8 +1,9 @@
 package sim.domain.enums;
 
+import javafx.util.Pair;
+
 import java.util.HashMap;
 import java.util.Map;
-import javafx.util.Pair;
 
 public enum MapType {
     CAUCASUS("Caucasus", null, null, null, null, null, 2.1756, (1 / .42), (1 / .43)),

@@ -1,13 +1,15 @@
 package sim.main;
 
-import java.util.List;
-import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
+
+import java.util.List;
+import java.util.Map;
 
 public class CoalitionManager {
     private static final Logger log = LogManager.getLogger(CoalitionManager.class);
@@ -17,6 +19,7 @@ public class CoalitionManager {
     private List<UnitGroup<GroundUnit>> coalitionFrontlineGroups;
     private Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits;
     private List<UnitGroup<AirDefenceUnit>> coalitionAirDefences;
+    private List<UnitGroup<AirUnit>> coalitionAirGroups;
 
     // Campaign Managers
     private ObjectiveManager coalitionObjectiveManager;
@@ -80,5 +83,13 @@ public class CoalitionManager {
 
     public List<UnitGroup<AirDefenceUnit>> getCoalitionAirDefences() {
         return coalitionAirDefences;
+    }
+
+    public void setCoalitionAirGroups(List<UnitGroup<AirUnit>> coalitionAirGroups) {
+        this.coalitionAirGroups = coalitionAirGroups;
+    }
+
+    public List<UnitGroup<AirUnit>> getCoalitionAirGroups() {
+        return coalitionAirGroups;
     }
 }

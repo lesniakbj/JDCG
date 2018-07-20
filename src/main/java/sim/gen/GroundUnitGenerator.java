@@ -1,15 +1,5 @@
 package sim.gen;
 
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.CampaignType;
@@ -30,6 +20,16 @@ import sim.util.mask.CaucasusWaterMask;
 import sim.util.mask.NevadaWaterMask;
 import sim.util.mask.NormandyWaterMask;
 import sim.util.mask.PersianGulfWaterMask;
+
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GroundUnitGenerator {
     private static final Logger log = LogManager.getLogger(GroundUnitGenerator.class);
@@ -158,19 +158,20 @@ public class GroundUnitGenerator {
 
             // If we generated that unit, we want to update the cost figures
             if(unitsGenerated != 0) {
-                log.debug("We generated a group of " + unitsGenerated + " units!");
                 totalCost += unitsGenerated * groundUnitCost;
             }
         }
 
         // Update the cost map here
         double currentStrength = overallForceStrength.get(side);
+        log.debug(side + " Strength: " + currentStrength);
+        log.debug("Cost: " + totalCost);
         overallForceStrength.put(side, currentStrength - totalCost);
 
         return groundGroups;
     }
 
-    public List<UnitGroup<AirDefenceUnit>> generateAirDefenceUnits(CampaignSettings campaignSettings, List<UnitGroup<GroundUnit>> blueGroundUnits, List<Airfield> airfields, FactionSide side, double aaaCost, double samCost) {
+    public List<UnitGroup<AirDefenceUnit>> generateAirDefenceUnits(CampaignSettings campaignSettings, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSide side, double aaaCost, double samCost) {
         // We want to use 1/2 of our remaining points to generate the ground groups
         double targetCost = overallForceStrength.get(side) / 2;
 
@@ -181,19 +182,77 @@ public class GroundUnitGenerator {
         int targetAAAIterations = (maxUnits / maxUnitsPerGroup) - targetSAMIterations;
         log.debug("Going to generate: " + maxUnits);
 
+        // Get the water mask to prevent generation in the water
+        Path2D.Double waterMask;
+        switch(campaignSettings.getSelectedMap().getMapType()) {
+            case PERSIAN_GULF:
+                waterMask = new PersianGulfWaterMask();
+                break;
+            case CAUCASUS:
+                waterMask = new CaucasusWaterMask();
+                break;
+            case NORMANDY:
+                waterMask = new NormandyWaterMask();
+                break;
+            case NEVADA:
+                waterMask = new NevadaWaterMask();
+                break;
+            default:
+                waterMask = new PersianGulfWaterMask();
+        }
+
         // Generation loop
         List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
-        airDefenceGroups.addAll(generateAirDefenceGroups(ArtilleryAirDefenceUnit.class, targetAAAIterations));
-        airDefenceGroups.addAll(generateAirDefenceGroups(MissileAirDefenceUnit.class, targetSAMIterations));
+        try {
+            airDefenceGroups.addAll(generateAirDefenceGroups(ArtilleryAirDefenceUnit.class, targetAAAIterations, waterMask, groundUnits, airfields, side, true, aaaCost));
+            airDefenceGroups.addAll(generateAirDefenceGroups(MissileAirDefenceUnit.class, targetSAMIterations, waterMask, groundUnits, airfields, side, false, samCost));
+        }  catch (IllegalAccessException | InstantiationException e) {
+            log.debug(e);
+        }
 
         return airDefenceGroups;
     }
 
-    private List<UnitGroup<AirDefenceUnit>> generateAirDefenceGroups(Class<? extends AirDefenceUnit> airDefenceClass, int iterations) {
+    private List<UnitGroup<AirDefenceUnit>> generateAirDefenceGroups(Class<? extends AirDefenceUnit> airDefenceClass, int iterations, Path2D.Double waterMask, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSide side, boolean isAAA, double cost) throws IllegalAccessException, InstantiationException {
         List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
+
+        double total = 0;
         for(int i = 0; i < iterations; i++) {
-            log.debug("Number of " + airDefenceClass.getSimpleName() + " iterations: " + i);
+            // 75% ground unit / 25% airfield split if AAA, 75% Airfield / 25% ground unit if SAM
+            int airfieldPercent = 75;
+            if(isAAA) {
+                airfieldPercent = 25;
+            }
+            boolean isAtAirfield = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1) < airfieldPercent;
+
+            // Get the coordinates for this group
+            double x, y;
+            boolean xNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
+            boolean yNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
+            do {
+                if (isAtAirfield) {
+                    Airfield airfield = airfields.get(DynamicCampaignSim.getRandomGen().nextInt(airfields.size()));
+                    x = airfield.getAirfieldType().getAirfieldMapPosition().getX() - (DynamicCampaignSim.getRandomGen().nextInt(3) * (xNeg ? -1 : 1));
+                    y = airfield.getAirfieldType().getAirfieldMapPosition().getY() - (DynamicCampaignSim.getRandomGen().nextInt(3) * (yNeg ? -1 : 1));
+                } else {
+                    UnitGroup<GroundUnit> groundGroup = groundUnits.get(DynamicCampaignSim.getRandomGen().nextInt(groundUnits.size()));
+                    x = groundGroup.getMapXLocation() - (DynamicCampaignSim.getRandomGen().nextInt(3) * (xNeg ? -1 : 1));
+                    y = groundGroup.getMapYLocation() - (DynamicCampaignSim.getRandomGen().nextInt(3) * (yNeg ? -1 : 1));
+                }
+            } while (waterMask.contains(x, y));
+
+            List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass, 2);
+            UnitGroup.Builder<AirDefenceUnit> b = new UnitGroup.Builder<>();
+            UnitGroup<AirDefenceUnit> ad = b.setMapXLocation(x).setMapYLocation(y).setSide(side)
+                    .setSpeed(0.0).setDirection(0.0).setUnits(units).build();
+            airDefenceGroups.add(ad);
+            total += units.size();
         }
+
+        double current = overallForceStrength.get(side);
+        log.debug(side + " Points: " + current);
+        log.debug("Cost: " + (total * cost));
+        overallForceStrength.put(side, current - (total * cost));
         return airDefenceGroups;
     }
 
@@ -305,5 +364,13 @@ public class GroundUnitGenerator {
 
     private List<GroundUnit> generateWaterUnits() {
         return new ArrayList<>(Arrays.asList(new UnarmedShipGroundUnit(), new ArmedShipGroundUnit(), new ArmedShipGroundUnit(), new UnarmedShipGroundUnit()));
+    }
+
+    private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, int amount) throws IllegalAccessException, InstantiationException {
+        List<AirDefenceUnit> list = new ArrayList<>();
+        for(int i = 0; i < amount; i++) {
+            list.add(clazz.newInstance());
+        }
+        return list;
     }
 }

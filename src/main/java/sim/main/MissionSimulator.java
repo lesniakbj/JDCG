@@ -1,8 +1,5 @@
 package sim.main;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
@@ -13,6 +10,10 @@ import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.ArmorGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MissionSimulator {
     private static final Logger log = LogManager.getLogger(MissionSimulator.class);

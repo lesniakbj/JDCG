@@ -1,7 +1,19 @@
 package sim.gen;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.global.Coalition;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
+import sim.main.CampaignSettings;
+import sim.main.DynamicCampaignSim;
+
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,17 +21,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.domain.enums.FactionSide;
-import sim.domain.enums.FactionType;
-import sim.domain.unit.UnitGroup;
-import sim.domain.unit.global.Airfield;
-import sim.domain.unit.global.Coalition;
-import sim.domain.unit.ground.GroundUnit;
-import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.main.CampaignSettings;
-import sim.main.DynamicCampaignSim;
 
 public class CampaignGenerator {
     private static final Logger log = LogManager.getLogger(CampaignGenerator.class);
@@ -28,6 +29,7 @@ public class CampaignGenerator {
     private CampaignSettings campaignSettings;
     private AirfieldGenerator airfieldGenerator;
     private GroundUnitGenerator groundUnitGenerator;
+    private AirUnitGenerator airUnitGenerator;
 
     // Date
     private Map<FactionSide, Double> overallForceStrength;
@@ -68,6 +70,7 @@ public class CampaignGenerator {
         // Create the generators
         airfieldGenerator = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
         groundUnitGenerator = new GroundUnitGenerator(overallForceStrength, GROUND_UNIT_COST);
+        airUnitGenerator = new AirUnitGenerator(overallForceStrength, AIRCRAFT_COST, HELICOPTER_COST);
     }
 
     public Map<FactionSide,List<Airfield>> generateAirfieldMap() {
@@ -161,5 +164,9 @@ public class CampaignGenerator {
 
     public Map<FactionSide, Double> getOverallForceStrength() {
         return overallForceStrength;
+    }
+
+    public List<UnitGroup<AirUnit>> generateAirGroups(List<Airfield> airfields, FactionSide side) {
+        return airUnitGenerator.generateAircraftGroups(airfields, side);
     }
 }

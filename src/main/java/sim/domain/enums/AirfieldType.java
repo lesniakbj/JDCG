@@ -1,5 +1,7 @@
 package sim.domain.enums;
 
+import sim.util.MathUtil;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import sim.util.MathUtil;
 
 public enum AirfieldType {
     // PG airfields

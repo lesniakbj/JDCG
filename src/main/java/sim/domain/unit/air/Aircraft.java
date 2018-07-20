@@ -1,10 +1,10 @@
 package sim.domain.unit.air;
 
-import java.util.Date;
 import sim.domain.enums.AircraftType;
-import sim.domain.unit.SimUnit;
 
-public class Aircraft extends SimUnit {
+import java.util.Date;
+
+public class Aircraft extends AirUnit {
     private AircraftType aircraftType;
 
     public Aircraft(AircraftType aircraftType) {

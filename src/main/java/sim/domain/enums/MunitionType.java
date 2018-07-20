@@ -1,13 +1,22 @@
 package sim.domain.enums;
 
-import static sim.domain.enums.MunitionSubType.AIR_TO_AIR;
-import static sim.domain.enums.MunitionSubType.BOMBS;
-import static sim.domain.enums.MunitionSubType.NONE;
-import static sim.domain.enums.MunitionSubType.ROCKETS;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.util.Arrays;
 
+import static sim.domain.enums.MunitionSubType.AIR_TO_AIR;
+import static sim.domain.enums.MunitionSubType.AIR_TO_SURFACE;
+import static sim.domain.enums.MunitionSubType.ANTI_RADIATION;
+import static sim.domain.enums.MunitionSubType.BOMBS;
+import static sim.domain.enums.MunitionSubType.GUN_POD;
+import static sim.domain.enums.MunitionSubType.NONE;
+import static sim.domain.enums.MunitionSubType.ROCKETS;
+
 public enum MunitionType {
+    // =============================================
+    //              BLUEFOR WEAPONRY
+    // =============================================
+
     // AIM-7 Family
     AIM7M("AIM-7M", AIR_TO_AIR, FactionSide.BLUEFOR, true),
     AIM7F("AIM-7F", AIR_TO_AIR, FactionSide.BLUEFOR, true),
@@ -55,10 +64,66 @@ public enum MunitionType {
     MK_5_HE_7("7 Mk-5 HE", ROCKETS, FactionSide.BLUEFOR, true),
     MK_5_HE_7X2("7 Mk-5 HE x 2", ROCKETS, FactionSide.BLUEFOR, false),
 
-    // Removed Pylons
-    REMOVE_PYLON("Remove Pylon", NONE, FactionSide.BLUEFOR, false),
+    // =============================================
+    //              REDFOR WEAPONRY
+    // =============================================
 
-    // Fuel Tank
+    // R27 Family
+    R27R("R-27R", AIR_TO_AIR, FactionSide.REDFOR, true),
+    R27ER("R-27ER", AIR_TO_AIR, FactionSide.REDFOR, true),
+    R27T("R-27T", AIR_TO_AIR, FactionSide.REDFOR, true),
+    R27ET("R-27ET", AIR_TO_AIR, FactionSide.REDFOR, true),
+
+    // R73 Family
+    R73("R-73", AIR_TO_AIR, FactionSide.REDFOR, true),
+
+    // Bombs
+    FAB100("FAB-100", BOMBS, FactionSide.REDFOR, true),
+    FAB100X4("FAB-100 x 4", BOMBS, FactionSide.REDFOR, false),
+    FAB250("FAB-250", BOMBS, FactionSide.REDFOR, true),
+    FAB500("FAB-500", BOMBS, FactionSide.REDFOR, true),
+    FAB1500("FAB-1500", BOMBS, FactionSide.REDFOR, true),
+
+    // Guided Bombs
+    KAB500KR("KAB-500kr", BOMBS, FactionSide.REDFOR, true),
+
+    // Anti-Runway / Concrete
+    BETAB500SHP("BetAB-500ShP", BOMBS, FactionSide.REDFOR, true),
+
+    // Illumination
+    SAB100("SAB-100", BOMBS, FactionSide.REDFOR, true),
+
+    // Cluster Munitions
+    RBK250("RBK-250 PTAB 2.5M", BOMBS, FactionSide.REDFOR, true),
+    RBK500("RBK-500 PTAB 10 5", BOMBS, FactionSide.REDFOR, true),
+    RBK500U("RBK-500U PTAB 1M", BOMBS, FactionSide.REDFOR, true),
+    KMGU2AO("KMGU-2 96x AO 2.5RT", BOMBS, FactionSide.REDFOR, true),
+    KMGU2PTAB("KMGU-2 96x PTAB 2.5KO", BOMBS, FactionSide.REDFOR, true),
+
+    // Gun Pods
+    SPPU22("SPPU-22-1", GUN_POD, FactionSide.REDFOR, true),
+
+    // Rockets
+    S8("S-8", ROCKETS, FactionSide.REDFOR, true),
+    S13("S-13", ROCKETS, FactionSide.REDFOR, true),
+    S24B("S-24B", ROCKETS, FactionSide.REDFOR, true),
+    S25OFM("S-25 OMF", ROCKETS, FactionSide.REDFOR, true),
+
+    // Air to Surface Missile
+    KH25ML("Kh-25ML", AIR_TO_SURFACE, FactionSide.REDFOR, true),
+    KH29T("Kh-29T", AIR_TO_SURFACE, FactionSide.REDFOR, true),
+    KH29L("Kh-29L", AIR_TO_SURFACE, FactionSide.REDFOR, true),
+    S25L("S-25L", AIR_TO_SURFACE, FactionSide.REDFOR, true),
+    A4172("9A4172 Vikhr", AIR_TO_SURFACE, FactionSide.REDFOR, true),
+
+    // Anti-Radiation
+    KH58U("Kh-58U", ANTI_RADIATION, FactionSide.REDFOR, true),
+    KH25MPU("Kh-25MPU", ANTI_RADIATION, FactionSide.REDFOR, true),
+
+    // =============================================
+    //                      BOTH
+    // =============================================
+    REMOVE_PYLON("Remove Pylon", NONE, FactionSide.BLUEFOR, false),
     FUEL_TANK("Fuel Tank", MunitionSubType.FUEL_TANK, FactionSide.BLUEFOR, true);
 
     private MunitionSubType subType;

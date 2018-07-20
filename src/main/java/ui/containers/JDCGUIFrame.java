@@ -1,7 +1,26 @@
 package ui.containers;
 
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.main.CampaignSettings;
+import sim.main.DynamicCampaignSim;
+import sim.save.JSONUtil;
+import ui.constants.CoalitionActions;
+import ui.constants.FileActions;
+import ui.constants.InfoActions;
+import ui.constants.MissionActions;
+import ui.constants.UIAction;
 
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,26 +37,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.main.CampaignSettings;
-import sim.main.DynamicCampaignSim;
-import sim.save.JSONUtil;
-import ui.constants.CoalitionActions;
-import ui.constants.FileActions;
-import ui.constants.InfoActions;
-import ui.constants.MissionActions;
-import ui.constants.UIAction;
+
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 
 public class JDCGUIFrame extends JFrame {
     private static final Logger log = LogManager.getLogger(JDCGUIFrame.class);

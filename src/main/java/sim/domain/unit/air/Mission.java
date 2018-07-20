@@ -1,10 +1,5 @@
 package sim.domain.unit.air;
 
-import java.awt.geom.Point2D;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
@@ -15,6 +10,12 @@ import sim.domain.enums.WaypointType;
 import sim.domain.unit.Simable;
 import sim.domain.unit.UnitGroup;
 import sim.util.MathUtil;
+
+import java.awt.geom.Point2D;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Mission implements Simable {
     private static final Logger log = LogManager.getLogger(Mission.class);

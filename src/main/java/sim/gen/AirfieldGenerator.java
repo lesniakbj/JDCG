@@ -1,13 +1,5 @@
 package sim.gen;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
@@ -21,6 +13,15 @@ import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.Structure;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
+
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 class AirfieldGenerator {
     private static final Logger log = LogManager.getLogger(AirfieldGenerator.class);
@@ -117,14 +118,14 @@ class AirfieldGenerator {
         double redStrength = overallForceStrength.get(FactionSide.REDFOR);
         List<Airfield> redFields = generatedAirfields.get(FactionSide.REDFOR);
 
-        log.debug("Blue Strength: " + blueStrength);
-        log.debug("Red Strength: " + redStrength);
+        log.debug("Before Generating Blue Airfield Munitions: " + blueStrength);
+        log.debug("Before Generating Red Airfield Munitions: " + redStrength);
 
         blueStrength = addStock(blueStrength, blueFields, blueHomeAirfield, 100, 20, FactionSide.BLUEFOR);
         redStrength = addStock(redStrength, redFields, redHomeAirfield, 100, 20, FactionSide.REDFOR);
 
-        log.debug("Blue Strength: " + blueStrength);
-        log.debug("Red Strength: " + redStrength);
+        log.debug("After Generating Blue Airfield Munitions: " + blueStrength);
+        log.debug("After Generating Red Airfield Munitions: " + redStrength);
         overallForceStrength.put(FactionSide.BLUEFOR, blueStrength);
         overallForceStrength.put(FactionSide.REDFOR, redStrength);
     }
@@ -169,7 +170,7 @@ class AirfieldGenerator {
     }
 
     private List<Structure> generateAirfieldCriticalStructures(AirfieldType airfieldType, boolean isHomeAirfield) {
-        log.debug("Generating structures " + airfieldType);
+        log.debug("Generating structures");
         int minStructures = 3;
         int total = minStructures + DynamicCampaignSim.getRandomGen().nextInt(3);
 
@@ -189,7 +190,7 @@ class AirfieldGenerator {
             structures.add(s);
         }
 
-        log.debug(structures);
+        log.debug("Number of Structures Generated: " + structures.size());
         return structures;
     }
 

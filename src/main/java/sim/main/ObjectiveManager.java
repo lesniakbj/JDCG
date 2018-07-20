@@ -1,8 +1,9 @@
 package sim.main;
 
+import sim.domain.unit.SimUnit;
+
 import java.util.ArrayList;
 import java.util.List;
-import sim.domain.unit.SimUnit;
 
 public class ObjectiveManager {
     private List<SimUnit> mainObjectiveList;

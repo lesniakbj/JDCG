@@ -1,7 +1,8 @@
 package ui.containers;
 
-import javax.swing.JPanel;
 import sim.domain.enums.MapType;
+
+import javax.swing.JPanel;
 
 public class MapSelectionPanel extends JPanel {
     private MapType map;
