@@ -17,12 +17,12 @@ import java.awt.geom.Path2D;
  *
  * Created by Brendan.Lesniak on 7/19/2018.
  */
-public class WaterMask extends Path2D.Double {
-    private static final Logger log = LogManager.getLogger(WaterMask.class);
+public abstract class Mask extends Path2D.Double {
+    private static final Logger log = LogManager.getLogger(Mask.class);
 
     private int[][] points;
 
-    public WaterMask(int[][] points) {
+    public Mask(int[][] points) {
         this.points = points;
         if(points.length == 0) {
             return;
@@ -35,7 +35,7 @@ public class WaterMask extends Path2D.Double {
         closePath();
     }
 
-    public WaterMask(int[][] points, double scaleX, double scaleY, int gutterHeight) {
+    public Mask(int[][] points, double scaleX, double scaleY, int gutterHeight) {
         if(points.length == 0) {
             return;
         }

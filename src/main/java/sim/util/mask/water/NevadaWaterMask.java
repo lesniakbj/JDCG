@@ -1,4 +1,6 @@
-package sim.util.mask;
+package sim.util.mask.water;
+
+import sim.util.mask.Mask;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -12,7 +14,7 @@ package sim.util.mask;
  *
  * Created by Brendan.Lesniak on 7/19/2018.
  */
-public class NevadaWaterMask extends WaterMask{
+public class NevadaWaterMask extends Mask {
     private static int[][] maskPoints = new int[0][0];
 
     public NevadaWaterMask() {

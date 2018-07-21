@@ -365,6 +365,7 @@ public class CampaignPanel extends JPanel {
         // Draw where the battle is happening
         // DrawUtil.drawWarfareFront(campaign, g);
         // DrawUtil.drawWaterMask(campaign, g);
+        DrawUtil.drawExclusionMask(campaign, g);
 
         // Draw everything related to missions
         DrawUtil.drawCampaignSelectedMission(campaign, g);

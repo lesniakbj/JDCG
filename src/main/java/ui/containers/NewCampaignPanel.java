@@ -83,7 +83,8 @@ public class NewCampaignPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         JTabbedPane pane = new JTabbedPane();
-        pane.addTab("Map", createMapPanel());
+        JPanel mapPanel = createMapPanel();
+        pane.addTab("Map", mapPanel);
         pane.addTab("Factions", createFactionsPanel());
         pane.addTab("Era", createEraPanel());
         pane.addTab("Squadron", createSquadronPanel());
@@ -93,6 +94,7 @@ public class NewCampaignPanel extends JPanel {
         pane.addChangeListener(new PanelChangeListener());
 
         this.add(pane, BorderLayout.NORTH);
+        setPreferredSize(new Dimension(1200, 1072));
     }
 
     private JPanel createMapPanel() {
@@ -600,6 +602,7 @@ public class NewCampaignPanel extends JPanel {
                 }
             }
             validSquadrons.add(SquadronType.NONE);
+            validSquadrons.add(SquadronType.NONE_HELICOPTER);
 
             // Assign the squadrons to the drop down box
             DefaultComboBoxModel model = (DefaultComboBoxModel)squadronBox.getModel();
@@ -668,6 +671,7 @@ public class NewCampaignPanel extends JPanel {
             for(int i = 0; i < labels.length - 1; i++ ) {
                 JLabel label = new JLabel(labels[i]);
                 JLabel data = new JLabel();
+                data.setPreferredSize(new Dimension(50, (int)data.getPreferredSize().getHeight()));
                 label.setLabelFor(data);
                 container.add(label);
                 container.add(data);
@@ -675,9 +679,9 @@ public class NewCampaignPanel extends JPanel {
             }
             container.add(new JLabel(labels[labels.length - 1]));
             aircraftSelector = new JComboBox<>();
+            aircraftSelector.setPrototypeDisplayValue("text here");
             container.add(aircraftSelector);
             SpringUtilities.makeCompactGrid(container, 9, 2, 435, 300,10, 6);
-            aircraftSelector.setPreferredSize(new Dimension(50, (int)aircraftSelector.getPreferredSize().getHeight()));
 
             // Campaign Start Button
             JPanel containerPanel = new JPanel();

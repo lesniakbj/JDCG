@@ -18,7 +18,6 @@ import static sim.domain.enums.StaticLists.MODERN_ERAS;
 import static sim.domain.enums.StaticLists.NAVY_COMPLETE_ERA_AIRCRAFT;
 import static sim.domain.enums.StaticLists.NAVY_MODERN_ERA_AIRCRAFT;
 import static sim.domain.enums.StaticLists.STRIKE_FIGHTER;
-import static sim.domain.enums.StaticLists.USER_AVAILABLE_AIRCRAFT;
 
 public enum SquadronType {
     // USA Air Force Squadrons
@@ -43,7 +42,8 @@ public enum SquadronType {
     VMFA115("VMFA-115 - Marine Fighter Attack Squadron 115 - Silver Eagles", COMPLETE_ERAS, FLEET_DEFENSE, MARINE_FIGHTER_COMPLETE_ERAS, FactionType.USA),
 
     // No Attached Squadron
-    NONE("None - All Task and Aircraft Types", COMPLETE_ERAS, ALL_TASK_TYPES, AircraftType.getPlayerAircraftTypes(), FactionType.ALL);
+    NONE("All Tasks and Fixed Wing Aircraft Types", COMPLETE_ERAS, ALL_TASK_TYPES, AircraftType.getFixedWingPlayable(), FactionType.ALL),
+    NONE_HELICOPTER("All Tasks and Helicopter Types", COMPLETE_ERAS, ALL_TASK_TYPES, AircraftType.getHelicoptersPlayable(), FactionType.ALL);
 
     private String squadronName;
     private List<ConflictEraType> era;

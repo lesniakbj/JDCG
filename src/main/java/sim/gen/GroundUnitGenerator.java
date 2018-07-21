@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSide;
+import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.ArmedShipGroundUnit;
@@ -16,10 +17,14 @@ import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
-import sim.util.mask.CaucasusWaterMask;
-import sim.util.mask.NevadaWaterMask;
-import sim.util.mask.NormandyWaterMask;
-import sim.util.mask.PersianGulfWaterMask;
+import sim.util.mask.exclusion.CaucasusExclusionMask;
+import sim.util.mask.exclusion.NevadaExclusionMask;
+import sim.util.mask.exclusion.NormandyExclusionMask;
+import sim.util.mask.exclusion.PersianGulfExclusionMask;
+import sim.util.mask.water.CaucasusWaterMask;
+import sim.util.mask.water.NevadaWaterMask;
+import sim.util.mask.water.NormandyWaterMask;
+import sim.util.mask.water.PersianGulfWaterMask;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -88,6 +93,9 @@ public class GroundUnitGenerator {
 
         // Is the group supposed to be generated to the South or North?
         boolean genSouth = (side == FactionSide.BLUEFOR);
+        if(campaignSettings.getSelectedMap().getMapType().equals(MapType.NORMANDY)) {
+            genSouth = (side == FactionSide.REDFOR);
+        }
 
         // We want to use 1/3 of our remaining points to generate the ground groups
         double targetCost = overallForceStrength.get(side) / 3;
@@ -117,6 +125,25 @@ public class GroundUnitGenerator {
                 waterMask = new PersianGulfWaterMask();
         }
 
+        // Where should we NOT generate units on the map?
+        Path2D.Double exclusionMask;
+        switch(campaignSettings.getSelectedMap().getMapType()) {
+            case PERSIAN_GULF:
+                exclusionMask = new PersianGulfExclusionMask();
+                break;
+            case CAUCASUS:
+                exclusionMask = new CaucasusExclusionMask();
+                break;
+            case NORMANDY:
+                exclusionMask = new NormandyExclusionMask();
+                break;
+            case NEVADA:
+                exclusionMask = new NevadaExclusionMask();
+                break;
+            default:
+                exclusionMask = new CaucasusExclusionMask();
+        }
+
         // Do various bounds calculations
         assert warfareFront.size() == 2;
         boolean left = warfareFront.get(0).getX() < warfareFront.get(1).getX();
@@ -141,18 +168,18 @@ public class GroundUnitGenerator {
             // Generate the unit and return the number generated
             int unitsGenerated;
             if(isWaterUnit) {
-                unitsGenerated = generateWaterUnit(waterMask, mapX, mapY, groundGroups, dir, side);
+                unitsGenerated = generateWaterUnit(waterMask, exclusionMask, mapX, mapY, groundGroups, dir, side);
             } else {
                 int generateCloseToFront = DynamicCampaignSim.getRandomGen().nextInt(100) + 1;
 
                 if(!type.equals(CampaignType.ALL_OUT_WAR)) {
                     if (generateCloseToFront < 35) {
-                        unitsGenerated = generateUnitCloseToFront(waterMask, mapX, mapY, groundGroups, dir, side, genSouth);
+                        unitsGenerated = generateUnitCloseToFront(waterMask, exclusionMask, mapX, mapY, groundGroups, dir, side, genSouth);
                     } else {
-                        unitsGenerated = generateGeneralAreaUnit(type, waterMask, groundGroups, dir, side, safeArea, airfields);
+                        unitsGenerated = generateGeneralAreaUnit(type, waterMask, exclusionMask, groundGroups, dir, side, safeArea, airfields);
                     }
                 } else {
-                    unitsGenerated = generateGeneralAreaUnit(type, waterMask, groundGroups, dir, side, safeArea, airfields);
+                    unitsGenerated = generateGeneralAreaUnit(type, waterMask, exclusionMask, groundGroups, dir, side, safeArea, airfields);
                 }
             }
 
@@ -256,7 +283,7 @@ public class GroundUnitGenerator {
         return airDefenceGroups;
     }
 
-    private int generateGeneralAreaUnit(CampaignType type, Path2D.Double waterMask, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, List<Point2D.Double> safeArea, List<Airfield> airfields) {
+    private int generateGeneralAreaUnit(CampaignType type, Path2D.Double waterMask, Path2D.Double exclusionMask, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, List<Point2D.Double> safeArea, List<Airfield> airfields) {
         // Generate the bounding area that we want to keep units within if possible
         double x = safeArea.get(0).getX();
         double y = safeArea.get(0).getY();
@@ -314,40 +341,52 @@ public class GroundUnitGenerator {
         return groundUnits.size();
     }
 
-    private int generateUnitCloseToFront(Path2D.Double waterMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, boolean genSouth) {
+    private int generateUnitCloseToFront(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, boolean genSouth) {
         // While we are in the water mask, move away from the front line until we find a valid location,
         // we only want to search in the Y direction for 150 miles, otherwise we'll search the X direction
-        double startY = mapY;
-        int maxDistance = 225;
-        while (waterMask.contains(mapX, mapY)) {
-            mapY = mapY - (10 * (genSouth ? -1 : 1));
-
-            maxDistance -= 10;
-            if(maxDistance == 0) {
-                break;
-            }
-        }
-
-        if(maxDistance == 0) {
-            mapY = startY - (DynamicCampaignSim.getRandomGen().nextInt(maxDistance)* (genSouth ? -1 : 1));
-            while(waterMask.contains(mapX, mapY)) {
-                mapX = mapX + 10;
-            }
-        } else {
-            mapY = mapY - DynamicCampaignSim.getRandomGen().nextInt(25) * (genSouth ? -1 : 1);
+        Point2D.Double point = generateXYFromMask(mapY, mapX, waterMask, genSouth);
+        if (exclusionMask.contains(point)) {
+            point = generateXYFromMask(point.getX(), point.getY(), exclusionMask, genSouth);
         }
 
         List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
-        UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
+        UnitGroup<GroundUnit> g = b.setMapXLocation(point.getX()).setMapYLocation(point.getY()).setSide(side)
                 .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
         groundGroups.add(g);
         return groundUnits.size();
     }
 
-    private int generateWaterUnit(Path2D.Double waterMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side) {
+    private Point2D.Double generateXYFromMask(double mapY, double mapX, Path2D.Double mask, boolean genSouth) {
+
+        double startY = mapY;
+        int density = 20;
+        int maxDistance = 125;
+        int currentDistance = maxDistance;
+        while (mask.contains(mapX, mapY)) {
+            mapY = mapY - (10 * (genSouth ? -1 : 1));
+
+            currentDistance -= 10;
+            if(currentDistance <= 0) {
+                break;
+            }
+        }
+
+        if(currentDistance <= 0) {
+            while(mask.contains(mapX, mapY)) {
+                mapY = startY - (DynamicCampaignSim.getRandomGen().nextInt(maxDistance) * (genSouth ? -1 : 1));
+                mapX = mapX + 10;
+            }
+        } else {
+            mapY = mapY - DynamicCampaignSim.getRandomGen().nextInt(density) * (genSouth ? -1 : 1);
+        }
+
+        return new Point2D.Double(mapX, mapY);
+    }
+
+    private int generateWaterUnit(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side) {
         // If the point we generated is within water, generate a water group
-        if(waterMask.contains(mapX, mapY)) {
+        if(waterMask.contains(mapX, mapY) && !exclusionMask.contains(mapX, mapY)) {
             List<GroundUnit> groundUnits = generateWaterUnits();
             UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
             UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)

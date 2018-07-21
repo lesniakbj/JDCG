@@ -15,10 +15,14 @@ import sim.domain.unit.ground.Structure;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.main.DynamicCampaignSim;
-import sim.util.mask.CaucasusWaterMask;
-import sim.util.mask.NevadaWaterMask;
-import sim.util.mask.NormandyWaterMask;
-import sim.util.mask.PersianGulfWaterMask;
+import sim.util.mask.exclusion.CaucasusExclusionMask;
+import sim.util.mask.exclusion.NevadaExclusionMask;
+import sim.util.mask.exclusion.NormandyExclusionMask;
+import sim.util.mask.exclusion.PersianGulfExclusionMask;
+import sim.util.mask.water.CaucasusWaterMask;
+import sim.util.mask.water.NevadaWaterMask;
+import sim.util.mask.water.NormandyWaterMask;
+import sim.util.mask.water.PersianGulfWaterMask;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -48,6 +52,7 @@ public class DrawUtil {
     private static final Color ACCENT_COLOR = new Color(229, 225, 24, 217);
     private static final Stroke DASHED = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
     private static final Stroke WIDE = new BasicStroke(5);
+    private static final Stroke SEMI_WIDE = new BasicStroke(2);
 
     private static Stroke normalStroke;
 
@@ -222,6 +227,35 @@ public class DrawUtil {
         g.draw(path);
     }
 
+    public static void drawExclusionMask(DynamicCampaignSim campaign, Graphics2D g) {
+        MapType type = campaign.getCampaignSettings().getSelectedMap().getMapType();
+        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
+        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+
+        Path2D.Double path;
+        switch (type) {
+            case PERSIAN_GULF:
+                path = new PersianGulfExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            case CAUCASUS:
+                path = new CaucasusExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            case NORMANDY:
+                path = new NormandyExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            case NEVADA:
+                path = new NevadaExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
+                break;
+            default:
+                // path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
+                path = new CaucasusExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
+        }
+
+        g.setStroke(WIDE);
+        g.setColor(Color.BLACK);
+        g.draw(path);
+    }
+
     public static void drawCampaignUnitGroups(DynamicCampaignSim campaign, Graphics2D g) {
         double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
         double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
@@ -302,7 +336,7 @@ public class DrawUtil {
             pointY = (pointY * scaleY) - (range / 2);
 
             // Draw
-            g.setStroke(normalStroke);
+            g.setStroke(SEMI_WIDE);
             g.setColor(isAAA ? Color.BLACK : color);
             g.drawOval((int)pointX, (int)pointY, (int)range, (int)range);
         }

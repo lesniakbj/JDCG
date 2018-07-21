@@ -1,4 +1,6 @@
-package sim.util.mask;
+package sim.util.mask.water;
+
+import sim.util.mask.Mask;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -12,12 +14,14 @@ package sim.util.mask;
  *
  * Created by Brendan.Lesniak on 7/19/2018.
  */
-public class CaucasusWaterMask extends WaterMask {
-    private static int[][] maskPoints = new int[][] {{456, 146}, {396, 162}, {387, 657}, {404, 685},
-                                                    {962, 687}, {976, 672}, {1004, 628}, {1020, 586},
-                                                    {989, 516}, {973, 468}, {934, 455}, {916, 428},
-                                                    {872, 423}, {843, 413}, {833, 389}, {797, 380},
-                                                    {693, 278}, {605, 243}};
+public class CaucasusWaterMask extends Mask {
+    private static int[][] maskPoints = new int[][] {
+            {456, 146}, {396, 162}, {387, 657}, {404, 685},
+            {962, 687}, {976, 672}, {1004, 628}, {1020, 586},
+            {989, 516}, {973, 468}, {934, 455}, {916, 428},
+            {872, 423}, {843, 413}, {833, 389}, {797, 380},
+            {693, 278}, {605, 243}
+    };
 
     public CaucasusWaterMask() {
         super(maskPoints);

@@ -1,7 +1,5 @@
 package sim.domain.enums;
 
-import com.sun.org.apache.regexp.internal.RE;
-
 import java.util.Arrays;
 
 import static sim.domain.enums.MunitionSubType.AIR_TO_AIR;
