@@ -1,7 +1,6 @@
 package sim.domain.unit;
 
 import sim.domain.enums.FactionSideType;
-import sim.util.IDGenerator;
 
 import java.awt.geom.Point2D;
 import java.util.Date;

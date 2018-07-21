@@ -1,8 +1,16 @@
 package sim.domain.unit.air;
 
+import sim.domain.enums.AircraftType;
+
 import java.util.Date;
 
 public class Helicopter extends AirUnit {
+    private AircraftType selectedType;
+
+    public Helicopter(AircraftType selectedType) {
+        this.selectedType = selectedType;
+    }
+
     @Override
     public void updateStep() {
 

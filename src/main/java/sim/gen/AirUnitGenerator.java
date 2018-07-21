@@ -10,6 +10,7 @@ import sim.domain.enums.SubTaskType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Aircraft;
+import sim.domain.unit.air.Helicopter;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
 import sim.main.CampaignSettings;
@@ -213,42 +214,42 @@ public class AirUnitGenerator {
         switch (generalTaskType) {
             case FIGHTER:
                 groupSize = 0;
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, false);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, false);
                 break;
             case ATTACK:
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, false);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, false);
                 break;
             case RECON:
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, false);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, false);
                 break;
             case REFUELING:
                 groupSize = 1;
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, false);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, false);
                 break;
             case TRANSPORT:
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, false);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, false);
                 break;
             case AWACS:
                 groupSize = 1;
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, false);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, false);
                 break;
             case BOMBER:
                 groupSize = 1;
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, false);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, false);
                 break;
             case HELI_ATTACK:
                 groupSize = 0;
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, true);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, true);
                 break;
             case HELI_TRANSPORT:
-                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, requiredSpecificTaskTypes, groupSize, side, true);
+                createdAirGroups = createAirGroupsOfTypeWithGroupSize(validAircraftTypes, actualToCreate, generalTaskType, requiredSpecificTaskTypes, groupSize, side, true);
                 break;
         }
 
         return createdAirGroups;
     }
 
-    private List<UnitGroup<AirUnit>> createAirGroupsOfTypeWithGroupSize(Set<AircraftType> validAircraftTypes, int actualToCreate, List<SubTaskType> requiredSpecificTaskTypes, int groupSize, FactionSideType side, boolean isHelicopter) {
+    private List<UnitGroup<AirUnit>> createAirGroupsOfTypeWithGroupSize(Set<AircraftType> validAircraftTypes, int actualToCreate, MajorTaskType generalTaskType, List<SubTaskType> requiredSpecificTaskTypes, int groupSize, FactionSideType side, boolean isHelicopter) {
         boolean genSize = false;
         if(groupSize == 0) {
             genSize = true;
@@ -267,7 +268,8 @@ public class AirUnitGenerator {
             if(actualToCreate - groupSize > 0) {
                 List<AirUnit> airUnits = new ArrayList<>();
                 for (int i = 0; i < groupSize; i++) {
-                    Aircraft aircraft = new Aircraft(selectedType);
+                    AirUnit aircraft = isHelicopter ? new Helicopter(selectedType) : new Aircraft(selectedType);
+                    aircraft.setAssignedTaskType(generalTaskType);
                     airUnits.add(aircraft);
                 }
 

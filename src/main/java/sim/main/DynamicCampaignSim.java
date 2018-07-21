@@ -205,9 +205,6 @@ public class DynamicCampaignSim {
         }
         blueforCoalitionManager.setCoalitionAirGroups(blueAirUnits);
         redforCoalitionManager.setCoalitionAirGroups(redAirUnits);
-
-        log.debug("Stationed Aircraft: " + blueforCoalitionManager.getCoalitionAirfields().stream().map(a -> a.getAirfieldType().name() + ": " + a.getStationedAircraft().stream().mapToInt(UnitGroup::getNumberOfUnits).sum()).collect(Collectors.joining(", ")));
-        log.debug("Stationed Aircraft: " + redforCoalitionManager.getCoalitionAirfields().stream().map(a -> a.getAirfieldType().name() + ": " + a.getStationedAircraft().stream().mapToInt(UnitGroup::getNumberOfUnits).sum()).collect(Collectors.joining(", ")));
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
     }
 
@@ -223,8 +220,15 @@ public class DynamicCampaignSim {
         // Step all of the sim objects
         stepMissions(minutesToStep);
 
-        // Generate new missions
-
+        // Have the campaign managers analyze the situation and plan new flights if needed
+        // This is a test....
+        MissionGenerator missionGenerator = new MissionGenerator();
+        if(blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
+            missionGenerator.generateTestMissionForCoalition(this, blueforCoalitionManager, getCurrentCampaignDate());
+        }
+        if(redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
+            missionGenerator.generateTestRedforMissionForCoalition(this, redforCoalitionManager, getCurrentCampaignDate());
+        }
     }
 
     private void stepMissions(int minutesToStep) {
@@ -244,7 +248,10 @@ public class DynamicCampaignSim {
             m.updateStep();
 
             // Check if we need to generate a DCS mission
-            if(m.shouldGenerateMission() && m.getMissionAircraft().getSide().equals(FactionSideType.BLUEFOR)) {
+            boolean missionShouldGen = m.shouldGenerateMission();
+            boolean missionOnSide = m.getMissionAircraft().getSide().equals(campaignSettings.getPlayerSelectedSide());
+            boolean generateSettingOn = simSettings.getGenerateMissionsOnMissionWaypoint();
+            if(missionShouldGen && missionOnSide && generateSettingOn) {
                 criticalMissions.add(m);
             }
 
@@ -269,16 +276,6 @@ public class DynamicCampaignSim {
             DCSMissionGenerator gen = new DCSMissionGenerator();
             gen.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, simSettings.getMissionStartType());
             setSimRunning(false);
-        }
-
-        // Have the campaign managers analyze the situation and plan new flights if needed / can
-        // This is a test....
-        MissionGenerator missionGenerator = new MissionGenerator();
-        if(blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
-            missionGenerator.generateTestMissionForCoalition(this, blueforCoalitionManager, getCurrentCampaignDate());
-        }
-        if(redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
-            missionGenerator.generateTestRedforMissionForCoalition(this, redforCoalitionManager, getCurrentCampaignDate());
         }
     }
 
