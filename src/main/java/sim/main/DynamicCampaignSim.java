@@ -206,6 +206,8 @@ public class DynamicCampaignSim {
         blueforCoalitionManager.setCoalitionAirGroups(blueAirUnits);
         redforCoalitionManager.setCoalitionAirGroups(redAirUnits);
 
+        log.debug("Stationed Aircraft: " + blueforCoalitionManager.getCoalitionAirfields().stream().map(a -> a.getAirfieldType().name() + ": " + a.getStationedAircraft().stream().mapToInt(UnitGroup::getNumberOfUnits).sum()).collect(Collectors.joining(", ")));
+        log.debug("Stationed Aircraft: " + redforCoalitionManager.getCoalitionAirfields().stream().map(a -> a.getAirfieldType().name() + ": " + a.getStationedAircraft().stream().mapToInt(UnitGroup::getNumberOfUnits).sum()).collect(Collectors.joining(", ")));
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
     }
 

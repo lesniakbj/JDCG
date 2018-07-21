@@ -8,6 +8,7 @@ import sim.domain.unit.air.MunitionStockpile;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.Structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Airfield {
@@ -67,6 +68,21 @@ public class Airfield {
         this.airfieldGroundGroups = airfieldGroundGroups;
     }
 
+    public boolean isHomeAirfield() {
+        return isHomeAirfield;
+    }
+
+    public void setHomeAirfield(boolean homeAirfield) {
+        isHomeAirfield = homeAirfield;
+    }
+
+    public void addAircraftGroup(UnitGroup<AirUnit> group) {
+        if(stationedAircraft == null) {
+            stationedAircraft = new ArrayList<>();
+        }
+        stationedAircraft.add(group);
+    }
+
     @Override
     public String toString() {
         return "Airfield{" +
@@ -74,15 +90,9 @@ public class Airfield {
                 ", airfieldType=" + airfieldType +
                 ", munitionStockpile=" + munitionStockpile +
                 ", criticalStructures=" + criticalStructures +
+                ", airfieldGroundGroups=" + airfieldGroundGroups +
                 ", stationedAircraft=" + stationedAircraft +
+                ", isHomeAirfield=" + isHomeAirfield +
                 '}';
-    }
-
-    public boolean isHomeAirfield() {
-        return isHomeAirfield;
-    }
-
-    public void setHomeAirfield(boolean homeAirfield) {
-        isHomeAirfield = homeAirfield;
     }
 }

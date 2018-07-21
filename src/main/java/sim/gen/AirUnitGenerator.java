@@ -140,7 +140,31 @@ public class AirUnitGenerator {
         totalCost += transportHeli.stream().mapToInt(UnitGroup::getNumberOfUnits).sum() * helicopterCost;
         overallForceStrength.put(side, (pointsToUse - totalCost));
 
+        // Assign the units to their various airfields...
+        assignToAirfields(airfields, airUnits);
+
         return airUnits;
+    }
+
+    private void assignToAirfields(List<Airfield> airfields, List<UnitGroup<AirUnit>> airUnits) {
+        long totalGroups = airUnits.size();
+        long totalAirfields = airfields.size();
+        int total = (int)Math.floor(totalGroups / totalAirfields);
+
+        log.debug("Assigning " + totalGroups + " Aircraft Groups to " + totalAirfields + " Airfields");
+        for(Airfield airfield : airfields) {
+            for(int i = 0; i < total; i++) {
+                UnitGroup<AirUnit> group = airUnits.remove(DynamicCampaignSim.getRandomGen().nextInt(airUnits.size()));
+                airfield.addAircraftGroup(group);
+            }
+        }
+
+        while(!airUnits.isEmpty()) {
+            log.debug("Assigning spare groups");
+            Airfield airfield = airfields.get(DynamicCampaignSim.getRandomGen().nextInt(airfields.size()));
+            UnitGroup<AirUnit> group = airUnits.remove(DynamicCampaignSim.getRandomGen().nextInt(airUnits.size()));
+            airfield.addAircraftGroup(group);
+        }
     }
 
     private List<UnitGroup<AirUnit>> createAirGroupsOfType(Set<AircraftType> validAircraftTypes, AircraftType selectedType, FactionSideType side) {
