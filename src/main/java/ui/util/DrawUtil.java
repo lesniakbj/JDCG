@@ -2,7 +2,7 @@ package ui.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.WaypointType;
 import sim.domain.unit.UnitGroup;
@@ -15,14 +15,7 @@ import sim.domain.unit.ground.Structure;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.main.DynamicCampaignSim;
-import sim.util.mask.exclusion.CaucasusExclusionMask;
-import sim.util.mask.exclusion.NevadaExclusionMask;
-import sim.util.mask.exclusion.NormandyExclusionMask;
-import sim.util.mask.exclusion.PersianGulfExclusionMask;
-import sim.util.mask.water.CaucasusWaterMask;
-import sim.util.mask.water.NevadaWaterMask;
-import sim.util.mask.water.NormandyWaterMask;
-import sim.util.mask.water.PersianGulfWaterMask;
+import sim.util.mask.MaskFactory;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -64,7 +57,7 @@ public class DrawUtil {
             UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();
 
             // Set our colors and other visual elements up based on the faction
-            Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
+            Color mainColor = missionGroup.getSide().equals(FactionSideType.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
 
             // Get the locations of relevant objects
             int pointX = (int)missionGroup.getMapXLocation();
@@ -123,7 +116,7 @@ public class DrawUtil {
         airfields.addAll(campaign.getBlueforCoalitionManager().getCoalitionAirfields());
         airfields.addAll(campaign.getRedforCoalitionManager().getCoalitionAirfields());
         for(Airfield airfield : airfields) {
-            Color color = (airfield.getOwnerSide().equals(FactionSide.BLUEFOR)) ? BLUEFOR_COLOR : REDFOR_COLOR;
+            Color color = (airfield.getOwnerSide().equals(FactionSideType.BLUEFOR)) ? BLUEFOR_COLOR : REDFOR_COLOR;
 
             double pointX = airfield.getAirfieldType().getAirfieldMapPosition().getX();
             double pointY = airfield.getAirfieldType().getAirfieldMapPosition().getY() - GUTTER_HEIGHT;
@@ -149,7 +142,7 @@ public class DrawUtil {
             }
 
             UnitGroup<Aircraft> missionGroup = mission.getMissionAircraft();
-            Color mainColor = missionGroup.getSide().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
+            Color mainColor = missionGroup.getSide().equals(FactionSideType.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
 
             double pointX = missionGroup.getMapXLocation();
             double pointY = missionGroup.getMapYLocation() - GUTTER_HEIGHT;
@@ -179,14 +172,14 @@ public class DrawUtil {
     }
 
     public static void drawWarfareFront(DynamicCampaignSim campaign, Graphics2D g){
-        Map<FactionSide, List<Point2D.Double>> warfareFront = campaign.getWarfareFront();
+        Map<FactionSideType, List<Point2D.Double>> warfareFront = campaign.getWarfareFront();
 
         double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
         double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
 
         Polygon p = new Polygon();
-        for(Map.Entry<FactionSide, List<Point2D.Double>> entry : warfareFront.entrySet()) {
-            Color mainColor = entry.getKey().equals(FactionSide.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
+        for(Map.Entry<FactionSideType, List<Point2D.Double>> entry : warfareFront.entrySet()) {
+            Color mainColor = entry.getKey().equals(FactionSideType.BLUEFOR) ? BLUEFOR_COLOR : REDFOR_COLOR;
             for(Point2D.Double pt : entry.getValue()) {
                 double pointX = pt.getX();
                 double pointY = pt.getY() - GUTTER_HEIGHT;
@@ -204,23 +197,7 @@ public class DrawUtil {
         double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
         double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
 
-        Path2D.Double path;
-        switch (type) {
-            case PERSIAN_GULF:
-                path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            case CAUCASUS:
-                path = new CaucasusWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            case NORMANDY:
-                path = new NormandyWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            case NEVADA:
-                path = new NevadaWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            default:
-                path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
-        }
+        Path2D.Double path = MaskFactory.getScaledWaterMask(type, scaleX, scaleY, GUTTER_HEIGHT);
 
         g.setStroke(WIDE);
         g.setColor(Color.BLUE);
@@ -232,25 +209,7 @@ public class DrawUtil {
         double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
         double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
 
-        Path2D.Double path;
-        switch (type) {
-            case PERSIAN_GULF:
-                path = new PersianGulfExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            case CAUCASUS:
-                path = new CaucasusExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            case NORMANDY:
-                path = new NormandyExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            case NEVADA:
-                path = new NevadaExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
-                break;
-            default:
-                // path = new PersianGulfWaterMask(scaleX, scaleY, GUTTER_HEIGHT);
-                path = new CaucasusExclusionMask(scaleX, scaleY, GUTTER_HEIGHT);
-        }
-
+        Path2D.Double path = MaskFactory.getScaledExclusionMask(type, scaleX, scaleY, GUTTER_HEIGHT);
         g.setStroke(WIDE);
         g.setColor(Color.BLACK);
         g.draw(path);
@@ -279,10 +238,10 @@ public class DrawUtil {
         for(UnitGroup<GroundUnit> unitGroup : unitGroupList) {
             double x = unitGroup.getMapXLocation();
             double y = unitGroup.getMapYLocation() - GUTTER_HEIGHT;
-            FactionSide side = unitGroup.getSide();
+            FactionSideType side = unitGroup.getSide();
 
             g.setStroke(normalStroke);
-            g.setColor(side == FactionSide.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
+            g.setColor(side == FactionSideType.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
             g.fillRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
             g.setColor(Color.BLACK);
             g.drawRect((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
@@ -303,10 +262,10 @@ public class DrawUtil {
             for(Structure s : airfield.getCriticalStructures()) {
                 double x = s.getMapXLocation();
                 double y = s.getMapYLocation() - GUTTER_HEIGHT;
-                FactionSide side = airfield.getOwnerSide();
+                FactionSideType side = airfield.getOwnerSide();
 
                 g.setStroke(normalStroke);
-                g.setColor(side == FactionSide.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
+                g.setColor(side == FactionSideType.BLUEFOR ? BLUEFOR_COLOR : REDFOR_COLOR);
                 g.fillOval((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
                 g.setColor(Color.BLACK);
                 g.drawOval((int)(x * scaleX) - 4, (int)(y * scaleY) - 4, 8, 8);
@@ -326,7 +285,7 @@ public class DrawUtil {
         defenceGroups.addAll(campaign.getBlueforCoalitionManager().getCoalitionAirDefences());
         defenceGroups.addAll(campaign.getRedforCoalitionManager().getCoalitionAirDefences());
         for(UnitGroup<AirDefenceUnit> unitGroup : defenceGroups) {
-            Color color = (unitGroup.getSide().equals(FactionSide.BLUEFOR)) ? BLUEFOR_COLOR : REDFOR_COLOR;
+            Color color = (unitGroup.getSide().equals(FactionSideType.BLUEFOR)) ? BLUEFOR_COLOR : REDFOR_COLOR;
             boolean isAAA = unitGroup.getGroupUnits().get(0).getClass().isAssignableFrom(ArtilleryAirDefenceUnit.class);
             double range = isAAA ? 20 : 50;
 

@@ -1,6 +1,6 @@
 package sim.domain.unit;
 
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.util.IDGenerator;
 
 import java.awt.geom.Point2D;
@@ -9,13 +9,13 @@ import java.util.List;
 
 public class UnitGroup<T extends SimUnit> extends SimUnit {
     private int id;
-    private FactionSide side;
+    private FactionSideType side;
     private List<T> groupUnits;
     private boolean shouldGenerate;
 
     private UnitGroup() {}
 
-    public UnitGroup(List<T> groupUnits, FactionSide side, double xLocation, double yLocation) {
+    public UnitGroup(List<T> groupUnits, FactionSideType side, double xLocation, double yLocation) {
         this.id = IDGenerator.generateNextId(UnitGroup.class);
         this.groupUnits = groupUnits;
         this.side = side;
@@ -34,11 +34,11 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
         return groupUnits.size();
     }
 
-    public FactionSide getSide() {
+    public FactionSideType getSide() {
         return side;
     }
 
-    public void setSide(FactionSide side) {
+    public void setSide(FactionSideType side) {
         this.side = side;
     }
 
@@ -117,7 +117,7 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
             return this;
         }
 
-        public Builder setSide(FactionSide side) {
+        public Builder setSide(FactionSideType side) {
             unitGroup.setSide(side);
             return this;
         }

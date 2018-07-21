@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.TaskType;
 import sim.domain.unit.UnitGroup;
@@ -28,7 +28,7 @@ public class MissionGenerator {
 
         UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
         aircraftBuilder.setUnits(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20), new Aircraft(AircraftType.FA_18C_LOT20)))
-            .setSide(FactionSide.BLUEFOR)
+            .setSide(FactionSideType.BLUEFOR)
             .setMapLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition());
 
         Mission.Builder builder = new Mission.Builder();
@@ -53,7 +53,7 @@ public class MissionGenerator {
 
         UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
         aircraftBuilder.setUnits(Arrays.asList(new Aircraft(AircraftType.SU_27), new Aircraft(AircraftType.SU_27)))
-            .setSide(FactionSide.REDFOR)
+            .setSide(FactionSideType.REDFOR)
             .setMapLocation(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition());
 
         Mission.Builder builder = new Mission.Builder();

@@ -3,7 +3,7 @@ package sim.main;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
@@ -21,7 +21,7 @@ public class CampaignSettings {
     private Coalition neutralCoalition;
     private ConflictEraType selectedEra;
     private CampaignType selectedCampaignType;
-    private FactionSide playerSelectedSide;
+    private FactionSideType playerSelectedSide;
     private SquadronType selectedSquadron;
     private AircraftType selectedAircraft;
     private boolean isComplete;
@@ -35,7 +35,7 @@ public class CampaignSettings {
         neutralCoalition = new Coalition(new ArrayList<>());
         selectedEra = ConflictEraType.MODERN;
         selectedCampaignType = CampaignType.OFFENSIVE;
-        playerSelectedSide = FactionSide.BLUEFOR;
+        playerSelectedSide = FactionSideType.BLUEFOR;
         selectedSquadron = SquadronType.NONE;
         dateFormat = "MM/dd/yyyy HH:mm:ss";
     }
@@ -67,7 +67,7 @@ public class CampaignSettings {
         selectedCampaignType = type;
     }
 
-    public void setPlayerSelectedSide(FactionSide selectedSide) {
+    public void setPlayerSelectedSide(FactionSideType selectedSide) {
         playerSelectedSide = selectedSide;
     }
 
@@ -79,7 +79,7 @@ public class CampaignSettings {
         return selectedMap;
     }
 
-    public Coalition getCoalitionBySide(FactionSide side) {
+    public Coalition getCoalitionBySide(FactionSideType side) {
         switch (side) {
             case BLUEFOR:
                 return getBlueforCoalition();
@@ -111,7 +111,7 @@ public class CampaignSettings {
         return selectedCampaignType;
     }
 
-    public FactionSide getPlayerSelectedSide() {
+    public FactionSideType getPlayerSelectedSide() {
         return playerSelectedSide;
     }
 

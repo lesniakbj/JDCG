@@ -3,7 +3,7 @@ package ui.containers;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
@@ -55,9 +55,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static sim.domain.enums.FactionSide.BLUEFOR;
-import static sim.domain.enums.FactionSide.NEUTRAL;
-import static sim.domain.enums.FactionSide.REDFOR;
+import static sim.domain.enums.FactionSideType.BLUEFOR;
+import static sim.domain.enums.FactionSideType.NEUTRAL;
+import static sim.domain.enums.FactionSideType.REDFOR;
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 import static ui.util.ImageScaleUtil.NORMAL_IMAGE_RATIO;
 import static ui.util.ImageScaleUtil.tryLoadImage;
@@ -67,7 +67,7 @@ public class NewCampaignPanel extends JPanel {
     private NewCampaignPanel self;
     private NewCampaignOverviewPanel overviewPanel;
     private CampaignSettings campaignSettings;
-    private Map<FactionSide, JTable> factionTables;
+    private Map<FactionSideType, JTable> factionTables;
     private JComboBox<String> squadronBox;
 
     private static final int MAP_WIDTH = 550;
@@ -84,11 +84,11 @@ public class NewCampaignPanel extends JPanel {
 
         JTabbedPane pane = new JTabbedPane();
         JPanel mapPanel = createMapPanel();
-        pane.addTab("Map", mapPanel);
+        pane.addTab("Map Selection", mapPanel);
         pane.addTab("Factions", createFactionsPanel());
-        pane.addTab("Era", createEraPanel());
-        pane.addTab("Squadron", createSquadronPanel());
-        pane.addTab("Campaign Overview", createCampaignOverviewPanel());
+        pane.addTab("Era & Campaign Type", createEraPanel());
+        pane.addTab("Squadron & Coalition", createSquadronPanel());
+        pane.addTab("Campaign Overview & Confirmation", createCampaignOverviewPanel());
 
         // Create the pane action listener to save state on changes
         pane.addChangeListener(new PanelChangeListener());
@@ -265,7 +265,7 @@ public class NewCampaignPanel extends JPanel {
         return overviewPanel;
     }
 
-    private JPanel generateFactionTable(FactionSide side) {
+    private JPanel generateFactionTable(FactionSideType side) {
         // Load the list of factions for display
         List<FactionType> defaultFactionTypeList;
         if(side.equals(BLUEFOR)) {
@@ -469,10 +469,10 @@ public class NewCampaignPanel extends JPanel {
                 String[] data = {parsedFactionType.getDcsFactionName(), parsedFactionType.getOverallStrength().getFactionStrength()};
                 switch (move) {
                     case LEFT:
-                        ((DefaultTableModel) factionTables.get(FactionSide.BLUEFOR).getModel()).addRow(data);
+                        ((DefaultTableModel) factionTables.get(FactionSideType.BLUEFOR).getModel()).addRow(data);
                         break;
                     case RIGHT:
-                        ((DefaultTableModel) factionTables.get(FactionSide.REDFOR).getModel()).addRow(data);
+                        ((DefaultTableModel) factionTables.get(FactionSideType.REDFOR).getModel()).addRow(data);
                         break;
                     case RETURN:
                     default:
@@ -481,7 +481,7 @@ public class NewCampaignPanel extends JPanel {
             }
 
             // Otherwise check to see if it is one of the periphery tables
-            JTable blueforSide = factionTables.get(FactionSide.BLUEFOR);
+            JTable blueforSide = factionTables.get(FactionSideType.BLUEFOR);
             selectedRow =  blueforSide.getSelectedRow();
             if(selectedRow != -1) {
                 // Parse the row before we move it
@@ -494,7 +494,7 @@ public class NewCampaignPanel extends JPanel {
                 String[] data = {parsedFactionType.getDcsFactionName(), parsedFactionType.getOverallStrength().getFactionStrength()};
                 switch (move) {
                     case RIGHT:
-                        ((DefaultTableModel) factionTables.get(FactionSide.REDFOR).getModel()).addRow(data);
+                        ((DefaultTableModel) factionTables.get(FactionSideType.REDFOR).getModel()).addRow(data);
                         break;
                     case RETURN:
                         ((DefaultTableModel) factionTables.get(NEUTRAL).getModel()).addRow(data);
@@ -506,7 +506,7 @@ public class NewCampaignPanel extends JPanel {
             }
 
             // Otherwise check to see if it is one of the periphery tables
-            JTable redforSide = factionTables.get(FactionSide.REDFOR);
+            JTable redforSide = factionTables.get(FactionSideType.REDFOR);
             selectedRow =  redforSide.getSelectedRow();
             if(selectedRow != -1) {
                 // Parse the row before we move it
@@ -519,7 +519,7 @@ public class NewCampaignPanel extends JPanel {
                 String[] data = {parsedFactionType.getDcsFactionName(), parsedFactionType.getOverallStrength().getFactionStrength()};
                 switch (move) {
                     case LEFT:
-                        ((DefaultTableModel) factionTables.get(FactionSide.BLUEFOR).getModel()).addRow(data);
+                        ((DefaultTableModel) factionTables.get(FactionSideType.BLUEFOR).getModel()).addRow(data);
                         break;
                     case RETURN:
                         ((DefaultTableModel) factionTables.get(NEUTRAL).getModel()).addRow(data);
@@ -536,7 +536,7 @@ public class NewCampaignPanel extends JPanel {
             campaignSettings.setNeutralCoalition(new Coalition(getCoalitionFactions(NEUTRAL)));
         }
 
-        private List<FactionType> getCoalitionFactions(FactionSide side) {
+        private List<FactionType> getCoalitionFactions(FactionSideType side) {
             JTable table = getFactionTable(side);
             List<FactionType> factionTypes = new ArrayList<>();
             for(int i = 0; i < table.getModel().getRowCount(); i++) {
@@ -545,7 +545,7 @@ public class NewCampaignPanel extends JPanel {
             return factionTypes;
         }
 
-        JTable getFactionTable(FactionSide side) {
+        JTable getFactionTable(FactionSideType side) {
             return factionTables.get(side);
         }
     }
@@ -588,7 +588,7 @@ public class NewCampaignPanel extends JPanel {
         @Override
         public void itemStateChanged(ItemEvent e) {
             // Get the faction side that was selected, as well as the factions associated with that side
-            FactionSide side = FactionSide.valueOf(((JRadioButton)e.getSource()).getText());
+            FactionSideType side = FactionSideType.valueOf(((JRadioButton)e.getSource()).getText());
             Coalition coalition = campaignSettings.getCoalitionBySide(side);
             List<FactionType> coalitionFactionTypes = coalition.getFactionTypeList();
 
@@ -709,7 +709,7 @@ public class NewCampaignPanel extends JPanel {
             labelMapping.get(labels[2]).setText(selectedCampaignType.getCampaignTypeName());
         }
 
-        public void setSelectedSide(FactionSide playerSelectedSide) {
+        public void setSelectedSide(FactionSideType playerSelectedSide) {
             labelMapping.get(labels[3]).setText(playerSelectedSide.name());
         }
 

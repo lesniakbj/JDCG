@@ -3,7 +3,7 @@ package sim.main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Mission;
@@ -22,8 +22,8 @@ public class MissionSimulator {
         log.debug("Simulating mission....");
 
         UnitGroup<Aircraft> attackingAircraft = mission.getMissionAircraft();
-        FactionSide missionSide = attackingAircraft.getSide();
-        CoalitionManager enemyManager = missionSide.equals(FactionSide.BLUEFOR) ? redforCoalitionManager : blueforCoalitionManager;
+        FactionSideType missionSide = attackingAircraft.getSide();
+        CoalitionManager enemyManager = missionSide.equals(FactionSideType.BLUEFOR) ? redforCoalitionManager : blueforCoalitionManager;
 
         switch (mission.getMissionType()) {
             case CAS:

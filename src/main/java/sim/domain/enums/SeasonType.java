@@ -1,6 +1,6 @@
 package sim.domain.enums;
 
-public enum Season {
+public enum SeasonType {
     WINTER,
     SPRING,
     SUMMER,

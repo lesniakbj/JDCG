@@ -1,5 +1,6 @@
 package sim.domain.enums;
 
+import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,12 +21,24 @@ public abstract class StaticLists {
 
     // Commonly used task lists
     static final List<TaskType> ALL_TASK_TYPES = Arrays.asList(TaskType.values());
-    static final List<TaskType> AIR_SUPERIORITY = Arrays.asList(TaskType.CAP, TaskType.INTERCEPT, TaskType.ESCORT);
-    static final List<TaskType> STRIKE_FIGHTER = Arrays.asList(TaskType.CAP, TaskType.INTERCEPT, TaskType.GROUND_STRIKE, TaskType.CAS);
+    static final List<TaskType> AIR_SUPERIORITY = Arrays.asList(TaskType.CAP, TaskType.INTERCEPT, TaskType.ESCORT, TaskType.RECON);
+    static final List<TaskType> STRIKE_FIGHTER = Arrays.asList(TaskType.CAP, TaskType.INTERCEPT, TaskType.ESCORT, TaskType.GROUND_STRIKE, TaskType.CAS, TaskType.INTERDICTION);
     static final List<TaskType> FLEET_DEFENSE = Arrays.asList(TaskType.CAP, TaskType.INTERCEPT, TaskType.ESCORT);
-    static final List<TaskType> GROUND_STRIKE = Arrays.asList(TaskType.CAS, TaskType.GROUND_STRIKE);
+    static final List<TaskType> GROUND_STRIKE = Arrays.asList(TaskType.CAS, TaskType.GROUND_STRIKE, TaskType.INTERDICTION, TaskType.LOW_LEVEL_STRIKE);
     static final List<TaskType> HIGH_RISK_GROUND_STRIKE = Arrays.asList(TaskType.CAS, TaskType.GROUND_STRIKE, TaskType.SEAD, TaskType.DEAD);
-    public static final List<TaskType> SEAD_STRIKE = Arrays.asList(TaskType.CAS, TaskType.GROUND_STRIKE, TaskType.SEAD, TaskType.DEAD);
+    static final List<TaskType> UNARMED = Arrays.asList(TaskType.BDA, TaskType.RECON);
+    static final List<TaskType> GROUND_STRIKE_CONTROLLER = Arrays.asList(TaskType.BDA, TaskType.CAS, TaskType.FAC, TaskType.INTERDICTION, TaskType.GROUND_STRIKE, TaskType.RECON);
+    static final List<TaskType> CLASSIC_TASKS = Arrays.asList(TaskType.BDA, TaskType.CAS, TaskType.INTERDICTION, TaskType.GROUND_STRIKE, TaskType.RECON, TaskType.CAP, TaskType.INTERCEPT, TaskType.ESCORT);
+    static final List<TaskType> SU25_TASKS = Arrays.asList(TaskType.BDA, TaskType.CAS, TaskType.INTERDICTION, TaskType.GROUND_STRIKE, TaskType.RECON, TaskType.SEAD, TaskType.DEAD);
+    static final List<TaskType> AV8_TASKS = Arrays.asList(TaskType.BDA, TaskType.CAP, TaskType.CAS, TaskType.DEAD, TaskType.ESCORT, TaskType.FAC, TaskType.INTERDICTION, TaskType.GROUND_STRIKE, TaskType.LOW_LEVEL_STRIKE, TaskType.RECON, TaskType.SEAD);
+    static final List<TaskType> UNARMED_TRANSPORT = Arrays.asList(TaskType.AIRLIFT, TaskType.TRANSPORT, TaskType.RECON);
+    static final List<TaskType> HELI_UNARMED_TRANSPORT = Arrays.asList(TaskType.AIRLIFT, TaskType.BDA, TaskType.FAC, TaskType.RECON, TaskType.TRANSPORT);
+    static final List<TaskType> HELI_ARMED_TRANSPORT = Arrays.asList(TaskType.GROUND_STRIKE, TaskType.INTERDICTION, TaskType.AIRLIFT, TaskType.BDA, TaskType.FAC, TaskType.RECON, TaskType.TRANSPORT);
+    static final List<TaskType> AWACS = Collections.singletonList(TaskType.AWACS);
+    static final List<TaskType> TANKER = Collections.singletonList(TaskType.REFUELING);
+    static final List<TaskType> RECON = Arrays.asList(TaskType.FAC, TaskType.BDA, TaskType.RECON);
+    static final List<TaskType> BOMBER = Arrays.asList(TaskType.GROUND_STRIKE, TaskType.INTERDICTION);
+    static final List<TaskType> STEALTH_BOMBER = Arrays.asList(TaskType.GROUND_STRIKE, TaskType.INTERDICTION, TaskType.STEALTH);
 
     // Aircraft Loadouts (has to be initialized before AircraftType)
     static final Map<Integer, List<MunitionType>> FA_18_MUNITIONS = new HashMap<Integer, List<MunitionType>>() {{

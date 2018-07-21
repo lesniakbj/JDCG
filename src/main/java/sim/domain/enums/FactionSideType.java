@@ -1,6 +1,6 @@
 package sim.domain.enums;
 
-public enum FactionSide {
+public enum FactionSideType {
     REDFOR,
     BLUEFOR,
     NEUTRAL;

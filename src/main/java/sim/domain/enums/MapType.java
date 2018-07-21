@@ -13,7 +13,7 @@ public enum MapType {
 
     private String mapName;
     private Rectangle mapBounds;
-    private Map<Season, Pair<Integer, Integer>> tempMap;
+    private Map<SeasonType, Pair<Integer, Integer>> tempMap;
     private double mapScalePixelsPerMile;
     private double mapXScale;
     private double mapYScale;
@@ -22,10 +22,10 @@ public enum MapType {
         this.mapName = mapName;
         this.mapBounds = mapBounds;
         this.tempMap = new HashMap<>();
-        tempMap.put(Season.WINTER, tempBlockWinter);
-        tempMap.put(Season.SPRING, tempBlockSpring);
-        tempMap.put(Season.SUMMER, tempBlockSummer);
-        tempMap.put(Season.FALL, tempBlockFall);
+        tempMap.put(SeasonType.WINTER, tempBlockWinter);
+        tempMap.put(SeasonType.SPRING, tempBlockSpring);
+        tempMap.put(SeasonType.SUMMER, tempBlockSummer);
+        tempMap.put(SeasonType.FALL, tempBlockFall);
         this.mapScalePixelsPerMile = mapScalePixelsPerMile;
         this.mapXScale = mapXScale;
         this.mapYScale = mapYScale;
@@ -47,11 +47,11 @@ public enum MapType {
         this.mapBounds = mapBounds;
     }
 
-    public Map<Season, Pair<Integer, Integer>> getTempMap() {
+    public Map<SeasonType, Pair<Integer, Integer>> getTempMap() {
         return tempMap;
     }
 
-    public void setTempMap(Map<Season, Pair<Integer, Integer>> tempMap) {
+    public void setTempMap(Map<SeasonType, Pair<Integer, Integer>> tempMap) {
         this.tempMap = tempMap;
     }
 

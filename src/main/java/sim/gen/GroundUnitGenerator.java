@@ -3,7 +3,7 @@ package sim.gen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.CampaignType;
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
@@ -17,14 +17,7 @@ import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
-import sim.util.mask.exclusion.CaucasusExclusionMask;
-import sim.util.mask.exclusion.NevadaExclusionMask;
-import sim.util.mask.exclusion.NormandyExclusionMask;
-import sim.util.mask.exclusion.PersianGulfExclusionMask;
-import sim.util.mask.water.CaucasusWaterMask;
-import sim.util.mask.water.NevadaWaterMask;
-import sim.util.mask.water.NormandyWaterMask;
-import sim.util.mask.water.PersianGulfWaterMask;
+import sim.util.mask.MaskFactory;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -39,13 +32,20 @@ import java.util.Map;
 public class GroundUnitGenerator {
     private static final Logger log = LogManager.getLogger(GroundUnitGenerator.class);
 
-    private final Map<FactionSide, Double> overallForceStrength;
+    private final Map<FactionSideType, Double> overallForceStrength;
+    private double groundUnitCost;
+    private double aaaCost;
+    private double samCost;
 
-    public GroundUnitGenerator(Map<FactionSide, Double> overallForceStrength, double groundUnitCost) {
+
+    public GroundUnitGenerator(Map<FactionSideType, Double> overallForceStrength, double groundUnitCost, double aaaCost, double samCost) {
         this.overallForceStrength = overallForceStrength;
+        this.groundUnitCost = groundUnitCost;
+        this.aaaCost = aaaCost;
+        this.samCost = samCost;
     }
 
-    public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(CampaignSettings campaignSettings, Map<FactionSide, List<Airfield>> generatedAirfields, FactionSide side, double groundUnitCost) {
+    public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(CampaignSettings campaignSettings, Map<FactionSideType, List<Airfield>> generatedAirfields, FactionSideType side) {
         List<Airfield> airfields = generatedAirfields.get(side);
         Map<Airfield, List<UnitGroup<GroundUnit>>> returnMap = new HashMap<>();
 
@@ -62,7 +62,7 @@ public class GroundUnitGenerator {
                 Point2D.Double loc = field.getAirfieldType().getAirfieldMapPosition();
                 double mapX = loc.getX() + (DynamicCampaignSim.getRandomGen().nextInt(6) * (xNeg ? -1 : 1));
                 double mapY = loc.getY() + (DynamicCampaignSim.getRandomGen().nextInt(6) * (yNeg ? -1 : 1));
-                double dir = (side == FactionSide.BLUEFOR) ? 0.0 : 180.0;
+                double dir = (side == FactionSideType.BLUEFOR) ? 0.0 : 180.0;
 
                 List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
                 UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
@@ -87,14 +87,14 @@ public class GroundUnitGenerator {
         return returnMap;
     }
 
-    public List<UnitGroup<GroundUnit>> generateFrontlineUnits(CampaignSettings campaignSettings, List<Point2D.Double> warfareFront, List<Point2D.Double> safeArea, FactionSide side, List<Airfield> airfields, double groundUnitCost) {
+    public List<UnitGroup<GroundUnit>> generateFrontlineUnits(CampaignSettings campaignSettings, List<Point2D.Double> warfareFront, List<Point2D.Double> safeArea, FactionSideType side, List<Airfield> airfields) {
         // The campaign type is used to define generation areas
         CampaignType type = campaignSettings.getSelectedCampaignType();
 
         // Is the group supposed to be generated to the South or North?
-        boolean genSouth = (side == FactionSide.BLUEFOR);
+        boolean genSouth = (side == FactionSideType.BLUEFOR);
         if(campaignSettings.getSelectedMap().getMapType().equals(MapType.NORMANDY)) {
-            genSouth = (side == FactionSide.REDFOR);
+            genSouth = (side == FactionSideType.REDFOR);
         }
 
         // We want to use 1/3 of our remaining points to generate the ground groups
@@ -106,43 +106,11 @@ public class GroundUnitGenerator {
         int targetIterations = maxUnits / maxUnitsPerGroup;
 
         // How many of them should end up in water
-        int percentOfWaterUnits = 10;
-        Path2D.Double waterMask;
-        switch(campaignSettings.getSelectedMap().getMapType()) {
-            case PERSIAN_GULF:
-                waterMask = new PersianGulfWaterMask();
-                break;
-            case CAUCASUS:
-                waterMask = new CaucasusWaterMask();
-                break;
-            case NORMANDY:
-                waterMask = new NormandyWaterMask();
-                break;
-            case NEVADA:
-                waterMask = new NevadaWaterMask();
-                break;
-            default:
-                waterMask = new PersianGulfWaterMask();
-        }
-
         // Where should we NOT generate units on the map?
-        Path2D.Double exclusionMask;
-        switch(campaignSettings.getSelectedMap().getMapType()) {
-            case PERSIAN_GULF:
-                exclusionMask = new PersianGulfExclusionMask();
-                break;
-            case CAUCASUS:
-                exclusionMask = new CaucasusExclusionMask();
-                break;
-            case NORMANDY:
-                exclusionMask = new NormandyExclusionMask();
-                break;
-            case NEVADA:
-                exclusionMask = new NevadaExclusionMask();
-                break;
-            default:
-                exclusionMask = new CaucasusExclusionMask();
-        }
+        int percentOfWaterUnits = 10;
+        MapType mapType = campaignSettings.getSelectedMap().getMapType();
+        Path2D.Double waterMask = MaskFactory.getWaterMask(mapType);
+        Path2D.Double exclusionMask = MaskFactory.getExclusionMask(mapType);
 
         // Do various bounds calculations
         assert warfareFront.size() == 2;
@@ -198,7 +166,7 @@ public class GroundUnitGenerator {
         return groundGroups;
     }
 
-    public List<UnitGroup<AirDefenceUnit>> generateAirDefenceUnits(CampaignSettings campaignSettings, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSide side, double aaaCost, double samCost) {
+    public List<UnitGroup<AirDefenceUnit>> generateAirDefenceUnits(CampaignSettings campaignSettings, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSideType side) {
         // We want to use 1/2 of our remaining points to generate the ground groups
         double targetCost = overallForceStrength.get(side) / 2;
 
@@ -210,23 +178,7 @@ public class GroundUnitGenerator {
         log.debug("Going to generate: " + maxUnits);
 
         // Get the water mask to prevent generation in the water
-        Path2D.Double waterMask;
-        switch(campaignSettings.getSelectedMap().getMapType()) {
-            case PERSIAN_GULF:
-                waterMask = new PersianGulfWaterMask();
-                break;
-            case CAUCASUS:
-                waterMask = new CaucasusWaterMask();
-                break;
-            case NORMANDY:
-                waterMask = new NormandyWaterMask();
-                break;
-            case NEVADA:
-                waterMask = new NevadaWaterMask();
-                break;
-            default:
-                waterMask = new PersianGulfWaterMask();
-        }
+        Path2D.Double waterMask = MaskFactory.getWaterMask(campaignSettings.getSelectedMap().getMapType());
 
         // Generation loop
         List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
@@ -240,7 +192,7 @@ public class GroundUnitGenerator {
         return airDefenceGroups;
     }
 
-    private List<UnitGroup<AirDefenceUnit>> generateAirDefenceGroups(Class<? extends AirDefenceUnit> airDefenceClass, int iterations, Path2D.Double waterMask, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSide side, boolean isAAA, double cost) throws IllegalAccessException, InstantiationException {
+    private List<UnitGroup<AirDefenceUnit>> generateAirDefenceGroups(Class<? extends AirDefenceUnit> airDefenceClass, int iterations, Path2D.Double waterMask, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSideType side, boolean isAAA, double cost) throws IllegalAccessException, InstantiationException {
         List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
 
         double total = 0;
@@ -283,7 +235,7 @@ public class GroundUnitGenerator {
         return airDefenceGroups;
     }
 
-    private int generateGeneralAreaUnit(CampaignType type, Path2D.Double waterMask, Path2D.Double exclusionMask, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, List<Point2D.Double> safeArea, List<Airfield> airfields) {
+    private int generateGeneralAreaUnit(CampaignType type, Path2D.Double waterMask, Path2D.Double exclusionMask, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side, List<Point2D.Double> safeArea, List<Airfield> airfields) {
         // Generate the bounding area that we want to keep units within if possible
         double x = safeArea.get(0).getX();
         double y = safeArea.get(0).getY();
@@ -313,9 +265,9 @@ public class GroundUnitGenerator {
             unitInWater = waterMask.contains(mapX, mapY);
             notInArea = !bound.contains(mapX, mapY);
             if(isOffensive) {
-                notInSafeArea = (side == FactionSide.REDFOR) != safePath.contains(mapX, mapY);
+                notInSafeArea = (side == FactionSideType.REDFOR) != safePath.contains(mapX, mapY);
             } else if(isDefensive){
-                notInSafeArea = (side == FactionSide.REDFOR) == safePath.contains(mapX, mapY);
+                notInSafeArea = (side == FactionSideType.REDFOR) == safePath.contains(mapX, mapY);
             } else {
                 notInSafeArea = false;
             }
@@ -341,7 +293,7 @@ public class GroundUnitGenerator {
         return groundUnits.size();
     }
 
-    private int generateUnitCloseToFront(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side, boolean genSouth) {
+    private int generateUnitCloseToFront(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side, boolean genSouth) {
         // While we are in the water mask, move away from the front line until we find a valid location,
         // we only want to search in the Y direction for 150 miles, otherwise we'll search the X direction
         Point2D.Double point = generateXYFromMask(mapY, mapX, waterMask, genSouth);
@@ -384,7 +336,7 @@ public class GroundUnitGenerator {
         return new Point2D.Double(mapX, mapY);
     }
 
-    private int generateWaterUnit(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSide side) {
+    private int generateWaterUnit(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side) {
         // If the point we generated is within water, generate a water group
         if(waterMask.contains(mapX, mapY) && !exclusionMask.contains(mapX, mapY)) {
             List<GroundUnit> groundUnits = generateWaterUnits();

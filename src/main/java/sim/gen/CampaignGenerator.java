@@ -2,7 +2,7 @@ package sim.gen;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.enums.FactionSide;
+import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
@@ -32,11 +32,12 @@ public class CampaignGenerator {
     private AirUnitGenerator airUnitGenerator;
 
     // Date
-    private Map<FactionSide, Double> overallForceStrength;
+    private Map<FactionSideType, Double> overallForceStrength;
 
     // Static Generator Data
-    private static final double AIRCRAFT_COST = 1;
-    private static final double HELICOPTER_COST = .75;
+    private static final double MAX_ALLOWED_POINTS = 400;
+    private static final double AIRCRAFT_COST = .75;
+    private static final double HELICOPTER_COST = .5;
     private static final double MUNITION_COST = .01;
     private static final double GROUND_UNIT_COST = .05;
     private static final double AAA_COST = .25;
@@ -48,7 +49,7 @@ public class CampaignGenerator {
 
         // Populate the overall force strength of the side
         overallForceStrength = new HashMap<>();
-        for(FactionSide side : FactionSide.values()) {
+        for(FactionSideType side : FactionSideType.values()) {
             double totalStrength = 0;
             Coalition coalition = campaignSettings.getCoalitionBySide(side);
             for(FactionType type : coalition.getFactionTypeList()) {
@@ -64,30 +65,46 @@ public class CampaignGenerator {
                         break;
                 }
             }
-            overallForceStrength.put(side, totalStrength);
+            overallForceStrength.put(side, Math.min(totalStrength, MAX_ALLOWED_POINTS));
         }
 
         // Create the generators
         airfieldGenerator = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
-        groundUnitGenerator = new GroundUnitGenerator(overallForceStrength, GROUND_UNIT_COST);
+        groundUnitGenerator = new GroundUnitGenerator(overallForceStrength, GROUND_UNIT_COST, AAA_COST, SAM_COST);
         airUnitGenerator = new AirUnitGenerator(overallForceStrength, AIRCRAFT_COST, HELICOPTER_COST);
     }
 
-    public Map<FactionSide,List<Airfield>> generateAirfieldMap() {
+    public Map<FactionSideType,List<Airfield>> generateAirfieldMap() {
         return airfieldGenerator.generateAirfields(campaignSettings, STARTING_NUMBER_OF_AIRBASES);
     }
 
-    public Map<FactionSide,List<Airfield>> adjustAirfieldsIfNeeded(Map<FactionSide, List<Point2D.Double>> warfareFront, Map<FactionSide, List<Airfield>> generatedAirfields) {
+    public Map<FactionSideType,List<Airfield>> adjustAirfieldsIfNeeded(Map<FactionSideType, List<Point2D.Double>> warfareFront, Map<FactionSideType, List<Airfield>> generatedAirfields) {
         return airfieldGenerator.adjustAirfieldsToGeneratedFront(warfareFront, generatedAirfields);
     }
 
-    public Map<FactionSide,List<Point2D.Double>> generateWarfareFront(Map<FactionSide, List<Airfield>> generatedAirfields) {
+    public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(Map<FactionSideType, List<Airfield>> generatedAirfields, FactionSideType side) {
+        return groundUnitGenerator.generatePointDefenceUnits(campaignSettings, generatedAirfields, side);
+    }
+
+    public List<UnitGroup<GroundUnit>> generateFrontlineGroundUnits(List<Point2D.Double> frontline, List<Point2D.Double> safeArea, FactionSideType side, List<Airfield> airfields) {
+        return groundUnitGenerator.generateFrontlineUnits(campaignSettings, frontline, safeArea, side, airfields);
+    }
+
+    public List<UnitGroup<AirDefenceUnit>> generateAirDefences(List<UnitGroup<GroundUnit>> blueGroundUnits, List<Airfield> airfields, FactionSideType side) {
+        return groundUnitGenerator.generateAirDefenceUnits(campaignSettings, blueGroundUnits, airfields, side);
+    }
+
+    public List<UnitGroup<AirUnit>> generateAirGroups(List<Airfield> airfields, FactionSideType side) {
+        return airUnitGenerator.generateAircraftGroups(campaignSettings, airfields, side);
+    }
+
+    public Map<FactionSideType,List<Point2D.Double>> generateWarfareFront(Map<FactionSideType, List<Airfield>> generatedAirfields) {
         log.debug("Generating warfare front based on the generated airfields...");
-        Map<FactionSide, List<Point2D.Double>> retMap = new LinkedHashMap<>();
-        List<Airfield> blueforAirfields = generatedAirfields.get(FactionSide.BLUEFOR);
-        List<Airfield> redforAirfields = generatedAirfields.get(FactionSide.REDFOR);
+        Map<FactionSideType, List<Point2D.Double>> retMap = new LinkedHashMap<>();
+        List<Airfield> blueforAirfields = generatedAirfields.get(FactionSideType.BLUEFOR);
+        List<Airfield> redforAirfields = generatedAirfields.get(FactionSideType.REDFOR);
         List<Airfield> frontFields = (blueforAirfields.size() < redforAirfields.size()) ? blueforAirfields : redforAirfields;
-        FactionSide frontSide = (blueforAirfields.size() < redforAirfields.size()) ? FactionSide.BLUEFOR : FactionSide.REDFOR;
+        FactionSideType frontSide = (blueforAirfields.size() < redforAirfields.size()) ? FactionSideType.BLUEFOR : FactionSideType.REDFOR;
 
         double lowestX = Double.MAX_VALUE, lowestY = Double.MAX_VALUE;
         double highestX = 0, highestY = 0;
@@ -116,10 +133,6 @@ public class CampaignGenerator {
         retMap.put(frontSide, Arrays.asList(new Point2D.Double(lowestX, lowestY), new Point2D.Double(lowestX, highestY), new Point2D.Double(highestX, highestY), new Point2D.Double(highestX, lowestY)));
         log.debug("Created following bounding front: " + retMap);
         return retMap;
-    }
-
-    public Map<Airfield, List<UnitGroup<GroundUnit>>> generatePointDefenceUnits(Map<FactionSide, List<Airfield>> generatedAirfields, FactionSide side) {
-        return groundUnitGenerator.generatePointDefenceUnits(campaignSettings, generatedAirfields, side, GROUND_UNIT_COST);
     }
 
     public Date generateCampaignDate() {
@@ -154,19 +167,7 @@ public class CampaignGenerator {
         return cal.getTime();
     }
 
-    public List<UnitGroup<GroundUnit>> generateFrontlineGroundUnits(List<Point2D.Double> frontline, List<Point2D.Double> safeArea, FactionSide side, List<Airfield> airfields) {
-        return groundUnitGenerator.generateFrontlineUnits(campaignSettings, frontline, safeArea, side, airfields, GROUND_UNIT_COST);
-    }
-
-    public List<UnitGroup<AirDefenceUnit>> generateAirDefences(List<UnitGroup<GroundUnit>> blueGroundUnits, List<Airfield> airfields, FactionSide side) {
-        return groundUnitGenerator.generateAirDefenceUnits(campaignSettings, blueGroundUnits, airfields, side, AAA_COST, SAM_COST);
-    }
-
-    public Map<FactionSide, Double> getOverallForceStrength() {
+    public Map<FactionSideType, Double> getOverallForceStrength() {
         return overallForceStrength;
-    }
-
-    public List<UnitGroup<AirUnit>> generateAirGroups(List<Airfield> airfields, FactionSide side) {
-        return airUnitGenerator.generateAircraftGroups(campaignSettings, airfields, side);
     }
 }
