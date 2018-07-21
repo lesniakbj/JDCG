@@ -3,7 +3,7 @@ package sim.domain.unit.global;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.Aircraft;
+import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.MunitionStockpile;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.Structure;
@@ -16,7 +16,7 @@ public class Airfield {
     private List<MunitionStockpile> munitionStockpile;
     private List<Structure> criticalStructures;
     private List<UnitGroup<GroundUnit>> airfieldGroundGroups;
-    private List<UnitGroup<Aircraft>> stationedAircraft;
+    private List<UnitGroup<AirUnit>> stationedAircraft;
     private boolean isHomeAirfield;
 
     public FactionSideType getOwnerSide() {
@@ -51,11 +51,11 @@ public class Airfield {
         this.criticalStructures = criticalStructures;
     }
 
-    public List<UnitGroup<Aircraft>> getStationedAircraft() {
+    public List<UnitGroup<AirUnit>> getStationedAircraft() {
         return stationedAircraft;
     }
 
-    public void setStationedAircraft(List<UnitGroup<Aircraft>> stationedAircraft) {
+    public void setStationedAircraft(List<UnitGroup<AirUnit>> stationedAircraft) {
         this.stationedAircraft = stationedAircraft;
     }
 

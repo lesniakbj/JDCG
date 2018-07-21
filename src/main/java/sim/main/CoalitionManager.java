@@ -20,6 +20,7 @@ public class CoalitionManager {
     private Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits;
     private List<UnitGroup<AirDefenceUnit>> coalitionAirDefences;
     private List<UnitGroup<AirUnit>> coalitionAirGroups;
+    private List<UnitGroup<AirUnit>> coalitionPlayerAirGroups;
 
     // Campaign Managers
     private ObjectiveManager coalitionObjectiveManager;
@@ -68,12 +69,10 @@ public class CoalitionManager {
     }
 
     public void setCoalitionPointDefenceGroundUnits(Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits) {
-        log.debug("Setting point defences");
         this.coalitionPointDefenceGroundUnits = coalitionPointDefenceGroundUnits;
     }
 
     public Map<Airfield, List<UnitGroup<GroundUnit>>> getCoalitionPointDefenceGroundUnits() {
-        log.debug("Getting point defences");
         return coalitionPointDefenceGroundUnits;
     }
 
@@ -91,5 +90,13 @@ public class CoalitionManager {
 
     public List<UnitGroup<AirUnit>> getCoalitionAirGroups() {
         return coalitionAirGroups;
+    }
+
+    public void setCoalitionPlayerAirGroups(List<UnitGroup<AirUnit>> coalitionPlayerAirGroups) {
+        this.coalitionPlayerAirGroups = coalitionPlayerAirGroups;
+    }
+
+    public List<UnitGroup<AirUnit>> getCoalitionPlayerAirGroups() {
+        return coalitionPlayerAirGroups;
     }
 }

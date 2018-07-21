@@ -12,19 +12,9 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
     private FactionSideType side;
     private List<T> groupUnits;
     private boolean shouldGenerate;
+    private boolean playerGeneratedGroup;
 
     private UnitGroup() {}
-
-    public UnitGroup(List<T> groupUnits, FactionSideType side, double xLocation, double yLocation) {
-        this.id = IDGenerator.generateNextId(UnitGroup.class);
-        this.groupUnits = groupUnits;
-        this.side = side;
-        this.setMapXLocation(xLocation);
-        this.setMapYLocation(yLocation);
-        this.setSpeedMilesPerHour(0.0);
-        this.setDirection(0.0);
-        this.shouldGenerate = false;
-    }
 
     public List<T> getGroupUnits() {
         return groupUnits;
@@ -60,6 +50,14 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
 
     public void setShouldGenerate(boolean shouldGenerate) {
         this.shouldGenerate = shouldGenerate;
+    }
+
+    public boolean isPlayerGeneratedGroup() {
+        return playerGeneratedGroup;
+    }
+
+    public void setPlayerGeneratedGroup(boolean playerGeneratedGroup) {
+        this.playerGeneratedGroup = playerGeneratedGroup;
     }
 
     @Override
@@ -150,6 +148,11 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
 
         public Builder setDirection(double dir) {
             unitGroup.setDirection(dir);
+            return this;
+        }
+
+        public Builder setPlayerGeneratedGroup(boolean isPlayer) {
+            unitGroup.setPlayerGeneratedGroup(isPlayer);
             return this;
         }
 

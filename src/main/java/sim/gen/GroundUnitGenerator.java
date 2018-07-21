@@ -66,8 +66,9 @@ public class GroundUnitGenerator {
 
                 List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
                 UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
-                UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
-                                                .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
+                UnitGroup<GroundUnit> g = b.setUnits(groundUnits).setMapXLocation(mapX).setMapYLocation(mapY)
+                                                .setSide(side).setPlayerGeneratedGroup(false)
+                                                .setSpeed(0.0).setDirection(dir).build();
 
                 airfieldDefenceGroups.add(g);
                 totalGenerated += groundUnits.size();
@@ -223,7 +224,8 @@ public class GroundUnitGenerator {
             List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass, 2);
             UnitGroup.Builder<AirDefenceUnit> b = new UnitGroup.Builder<>();
             UnitGroup<AirDefenceUnit> ad = b.setMapXLocation(x).setMapYLocation(y).setSide(side)
-                    .setSpeed(0.0).setDirection(0.0).setUnits(units).build();
+                                            .setPlayerGeneratedGroup(false).setSpeed(0.0)
+                                            .setDirection(0.0).setUnits(units).build();
             airDefenceGroups.add(ad);
             total += units.size();
         }
@@ -287,7 +289,8 @@ public class GroundUnitGenerator {
         List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
         UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
-                .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
+                                    .setPlayerGeneratedGroup(false).setSpeed(0.0)
+                                    .setDirection(dir).setUnits(groundUnits).build();
         groundGroups.add(g);
 
         return groundUnits.size();
@@ -304,7 +307,8 @@ public class GroundUnitGenerator {
         List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
         UnitGroup<GroundUnit> g = b.setMapXLocation(point.getX()).setMapYLocation(point.getY()).setSide(side)
-                .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
+                                    .setPlayerGeneratedGroup(false).setSpeed(0.0)
+                                    .setDirection(dir).setUnits(groundUnits).build();
         groundGroups.add(g);
         return groundUnits.size();
     }
@@ -342,7 +346,8 @@ public class GroundUnitGenerator {
             List<GroundUnit> groundUnits = generateWaterUnits();
             UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
             UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
-                    .setSpeed(0.0).setDirection(dir).setUnits(groundUnits).build();
+                                        .setPlayerGeneratedGroup(false).setSpeed(0.0)
+                                        .setDirection(dir).setUnits(groundUnits).build();
             groundGroups.add(g);
             return groundUnits.size();
         }

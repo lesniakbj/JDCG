@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MunitionType;
 import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.GameMap;
@@ -260,10 +261,11 @@ public class CampaignPanel extends JPanel {
         long groundUnits = getTotalGroundUnits(campaign.getBlueforCoalitionManager());
         long airDefencesRed = getTotalAirDefenceUnits(campaign.getRedforCoalitionManager().getCoalitionAirDefences());
         long airDefencesBlue = getTotalAirDefenceUnits(campaign.getBlueforCoalitionManager().getCoalitionAirDefences());
-        long aircraft = 0;
+        long aircraftRed = getTotalAirUnits(campaign.getRedforCoalitionManager().getCoalitionAirGroups()) + getTotalAirUnits(campaign.getRedforCoalitionManager().getCoalitionPlayerAirGroups());
+        long aircraftBlue = getTotalAirUnits(campaign.getBlueforCoalitionManager().getCoalitionAirGroups()) + getTotalAirUnits(campaign.getBlueforCoalitionManager().getCoalitionPlayerAirGroups());
         int total = campaign.getRedforCoalitionManager().getCoalitionAirfields().stream().mapToInt(a -> a.getCriticalStructures().size()).sum();
-        campaignEnemyStatusLabel = new JLabel(String.format("Enemy Status: %d/%d/%d", groundTargets, airDefencesRed, aircraft));
-        campaignFriendlyStatusLabel = new JLabel(String.format("Friendly Status: %d/%d/%d", groundUnits, airDefencesBlue, aircraft));
+        campaignEnemyStatusLabel = new JLabel(String.format("Enemy Status: %d/%d/%d", groundTargets, airDefencesRed, aircraftRed));
+        campaignFriendlyStatusLabel = new JLabel(String.format("Friendly Status: %d/%d/%d", groundUnits, airDefencesBlue, aircraftBlue));
         campaignObjectivesLabel = new JLabel(String.format("Critical Objectives Remaining: %d", total));
         campaignStatus.add(Box.createHorizontalGlue());
         addHorizontalComponent(campaignDateLabel);
@@ -324,9 +326,10 @@ public class CampaignPanel extends JPanel {
         long count = getTotalGroundUnits(campaign.getBlueforCoalitionManager());
         long airDefencesRed = getTotalAirDefenceUnits(campaign.getRedforCoalitionManager().getCoalitionAirDefences());
         long airDefencesBlue = getTotalAirDefenceUnits(campaign.getBlueforCoalitionManager().getCoalitionAirDefences());
-        long aircraft = 0;
-        campaignEnemyStatusLabel.setText(String.format("Enemy Status: %d/%d/%d", enemyCount, airDefencesRed, aircraft));
-        campaignFriendlyStatusLabel.setText(String.format("Friendly Status: %d/%d/%d", count, airDefencesBlue, aircraft));
+        long aircraftRed = getTotalAirUnits(campaign.getRedforCoalitionManager().getCoalitionAirGroups()) + getTotalAirUnits(campaign.getRedforCoalitionManager().getCoalitionPlayerAirGroups());
+        long aircraftBlue = getTotalAirUnits(campaign.getBlueforCoalitionManager().getCoalitionAirGroups()) + getTotalAirUnits(campaign.getBlueforCoalitionManager().getCoalitionPlayerAirGroups());
+        campaignEnemyStatusLabel.setText(String.format("Enemy Status: %d/%d/%d", enemyCount, airDefencesRed, aircraftRed));
+        campaignFriendlyStatusLabel.setText(String.format("Friendly Status: %d/%d/%d", count, airDefencesBlue, aircraftBlue));
 
         // Critical Objectives
         int total = campaign.getRedforCoalitionManager().getCoalitionAirfields().stream().mapToInt(a -> a.getCriticalStructures().size()).sum();
@@ -335,6 +338,14 @@ public class CampaignPanel extends JPanel {
 
     private long getTotalAirDefenceUnits(List<UnitGroup<AirDefenceUnit>> coalitionAirDefences) {
         return coalitionAirDefences.stream().map(UnitGroup::getNumberOfUnits).mapToLong(i -> i).sum();
+    }
+
+    private long getTotalAirUnits(List<UnitGroup<AirUnit>> coalitionAircraft) {
+        if(coalitionAircraft == null) {
+            return 0;
+        }
+
+        return coalitionAircraft.stream().map(UnitGroup::getNumberOfUnits).mapToLong(i -> i).sum();
     }
 
     private long getTotalGroundUnits(CoalitionManager manager) {
@@ -348,7 +359,6 @@ public class CampaignPanel extends JPanel {
                                                         .mapToLong(i -> i).sum();
         return pointDefenceUnits + otherGroundUnits;
     }
-
 
     private BufferedImage addCampaignObjects(BufferedImage image) {
         Graphics2D g = (Graphics2D)image.getGraphics();

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.MunitionType;
-import sim.domain.enums.TaskType;
+import sim.domain.enums.SubTaskType;
 import sim.domain.enums.WaypointType;
 import sim.domain.unit.Simable;
 import sim.domain.unit.UnitGroup;
@@ -21,7 +21,7 @@ public class Mission implements Simable {
     private static final Logger log = LogManager.getLogger(Mission.class);
 
     private MapType mapType;
-    private TaskType missionType;
+    private SubTaskType missionType;
     private UnitGroup<Aircraft> missionAircraft;
     private List<Waypoint> missionWaypoints;
     private Waypoint nextWaypoint;
@@ -38,11 +38,11 @@ public class Mission implements Simable {
 
     private Mission() {}
 
-    public TaskType getMissionType() {
+    public SubTaskType getMissionType() {
         return missionType;
     }
 
-    public void setMissionType(TaskType missionType) {
+    public void setMissionType(SubTaskType missionType) {
         this.missionType = missionType;
     }
 
@@ -301,8 +301,8 @@ public class Mission implements Simable {
             return this;
         }
 
-        public Builder setMissionType(TaskType taskType) {
-            mission.setMissionType(taskType);
+        public Builder setMissionType(SubTaskType SubTaskType) {
+            mission.setMissionType(SubTaskType);
             return this;
         }
 

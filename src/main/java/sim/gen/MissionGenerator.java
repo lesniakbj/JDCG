@@ -6,7 +6,7 @@ import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
-import sim.domain.enums.TaskType;
+import sim.domain.enums.SubTaskType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Mission;
@@ -24,7 +24,7 @@ public class MissionGenerator {
     private static final Logger log = LogManager.getLogger(MissionGenerator.class);
 
     public void generateTestMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager, Date date) {
-        List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition(), AirfieldType.KHASAB.getAirfieldMapPosition(), TaskType.INTERCEPT, MapType.PERSIAN_GULF);
+        List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition(), AirfieldType.KHASAB.getAirfieldMapPosition(), SubTaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
         UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
         aircraftBuilder.setUnits(Arrays.asList(new Aircraft(AircraftType.FA_18C_LOT20), new Aircraft(AircraftType.FA_18C_LOT20)))
@@ -33,7 +33,7 @@ public class MissionGenerator {
 
         Mission.Builder builder = new Mission.Builder();
         builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType())
-            .setMissionType(TaskType.INTERCEPT)
+            .setMissionType(SubTaskType.INTERCEPT)
             .setMissionAircraft(aircraftBuilder.build())
             .setMissionWaypoints(generatedWaypoints)
             .setUpcomingMissionDate(date, 60)
@@ -43,13 +43,13 @@ public class MissionGenerator {
             .setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep())
             .setShouldGenerateMission(false)
             .setStartingAirfield(AirfieldType.AL_DHAFRA_AIRBASE)
-            .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.INTERCEPT));
+            .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(SubTaskType.INTERCEPT));
 
         coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }
 
     public void generateTestRedforMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager, Date date) {
-        List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition(), AirfieldType.ABU_MUSA_ISLAND_AIRPORT.getAirfieldMapPosition(), TaskType.INTERCEPT, MapType.PERSIAN_GULF);
+        List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition(), AirfieldType.ABU_MUSA_ISLAND_AIRPORT.getAirfieldMapPosition(), SubTaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
         UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
         aircraftBuilder.setUnits(Arrays.asList(new Aircraft(AircraftType.SU_27), new Aircraft(AircraftType.SU_27)))
@@ -58,7 +58,7 @@ public class MissionGenerator {
 
         Mission.Builder builder = new Mission.Builder();
         builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType())
-            .setMissionType(TaskType.CAS)
+            .setMissionType(SubTaskType.CAS)
             .setMissionAircraft(aircraftBuilder.build())
             .setMissionWaypoints(generatedWaypoints)
             .setUpcomingMissionDate(date, 15)
@@ -68,7 +68,7 @@ public class MissionGenerator {
             .setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep())
             .setShouldGenerateMission(false)
             .setStartingAirfield(AirfieldType.LAR_AIRBASE)
-            .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(TaskType.INTERCEPT));
+            .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(SubTaskType.INTERCEPT));
 
         coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }

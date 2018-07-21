@@ -47,11 +47,11 @@ public enum SquadronType {
 
     private String squadronName;
     private List<ConflictEraType> era;
-    private List<TaskType> taskTypes;
+    private List<SubTaskType> taskTypes;
     private List<AircraftType> aircraft;
     private FactionType factionTypeUser;
 
-    SquadronType(String squadronName, List<ConflictEraType> era, List<TaskType> taskTypes, List<AircraftType> aircraft, FactionType factionTypeUser) {
+    SquadronType(String squadronName, List<ConflictEraType> era, List<SubTaskType> taskTypes, List<AircraftType> aircraft, FactionType factionTypeUser) {
         this.squadronName = squadronName;
         this.era = era;
         this.taskTypes = taskTypes;
@@ -68,7 +68,7 @@ public enum SquadronType {
         return null;
     }
 
-    public List<TaskType> getTaskList() {
+    public List<SubTaskType> getTaskList() {
         return taskTypes;
     }
 

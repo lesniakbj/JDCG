@@ -7,6 +7,7 @@ import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
@@ -178,20 +179,32 @@ public class DynamicCampaignSim {
         log.debug("Generating the current campaign front line units...");
         List<Point2D.Double> generationLine = getWarfareGenerationLine(warfareFront);
         List<Point2D.Double> safeArea = warfareFront.get(FactionSideType.BLUEFOR) == null ? warfareFront.get(FactionSideType.REDFOR) : warfareFront.get(FactionSideType.BLUEFOR);
-        List<UnitGroup<GroundUnit>> blueGroundUnits = gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSideType.BLUEFOR, generatedAirfields.get(FactionSideType.BLUEFOR));
-        List<UnitGroup<GroundUnit>> redGroundUnits = gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSideType.REDFOR, generatedAirfields.get(FactionSideType.REDFOR));
+        List<UnitGroup<GroundUnit>> blueGroundUnits = gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSideType.BLUEFOR, blueforCoalitionManager.getCoalitionAirfields());
+        List<UnitGroup<GroundUnit>> redGroundUnits = gen.generateFrontlineGroundUnits(generationLine, safeArea, FactionSideType.REDFOR, redforCoalitionManager.getCoalitionAirfields());
         blueforCoalitionManager.setCoalitionFrontlineGroups(blueGroundUnits);
         redforCoalitionManager.setCoalitionFrontlineGroups(redGroundUnits);
 
         // Then, generate all of the AAA/SAM groups that exist within this campaign (mostly airfields, occasionally behind front lines)
         log.debug("Generating the current campaign air defence units...");
-        blueforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(blueGroundUnits, generatedAirfields.get(FactionSideType.BLUEFOR), FactionSideType.BLUEFOR));
-        redforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(redGroundUnits, generatedAirfields.get(FactionSideType.REDFOR), FactionSideType.REDFOR));
+        blueforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(blueGroundUnits, blueforCoalitionManager.getCoalitionAirfields(), FactionSideType.BLUEFOR));
+        redforCoalitionManager.setCoalitionAirDefences(gen.generateAirDefences(redGroundUnits, redforCoalitionManager.getCoalitionAirfields(), FactionSideType.REDFOR));
 
         // Then, generate all of the AirForce groups that exist within this campaign
         log.debug("Generating the current campaign air units...");
-        blueforCoalitionManager.setCoalitionAirGroups(gen.generateAirGroups(generatedAirfields.get(FactionSideType.BLUEFOR), FactionSideType.BLUEFOR));
-        redforCoalitionManager.setCoalitionAirGroups(gen.generateAirGroups(generatedAirfields.get(FactionSideType.REDFOR), FactionSideType.REDFOR));
+        List<UnitGroup<AirUnit>> blueAirUnits = gen.generateAirGroups(blueforCoalitionManager.getCoalitionAirfields(), FactionSideType.BLUEFOR);
+        List<UnitGroup<AirUnit>> redAirUnits = gen.generateAirGroups(redforCoalitionManager.getCoalitionAirfields(), FactionSideType.REDFOR);
+        List<UnitGroup<AirUnit>> playerUnits;
+        if(campaignSettings.getPlayerSelectedSide().equals(FactionSideType.BLUEFOR)) {
+            playerUnits = blueAirUnits.stream().filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
+            blueAirUnits = blueAirUnits.stream().filter(g -> !g.isPlayerGeneratedGroup()).collect(Collectors.toList());
+            blueforCoalitionManager.setCoalitionPlayerAirGroups(playerUnits);
+        } else {
+            playerUnits = redAirUnits.stream().filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
+            redAirUnits = blueAirUnits.stream().filter(g -> !g.isPlayerGeneratedGroup()).collect(Collectors.toList());
+            redforCoalitionManager.setCoalitionPlayerAirGroups(playerUnits);
+        }
+        blueforCoalitionManager.setCoalitionAirGroups(blueAirUnits);
+        redforCoalitionManager.setCoalitionAirGroups(redAirUnits);
 
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
     }

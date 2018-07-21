@@ -36,9 +36,9 @@ public class CampaignGenerator {
 
     // Static Generator Data
     private static final double MAX_ALLOWED_POINTS = 400;
-    private static final double AIRCRAFT_COST = .75;
-    private static final double HELICOPTER_COST = .5;
-    private static final double MUNITION_COST = .01;
+    private static final double AIRCRAFT_COST = .5;
+    private static final double HELICOPTER_COST = .25;
+    private static final double MUNITION_COST = .005;
     private static final double GROUND_UNIT_COST = .05;
     private static final double AAA_COST = .25;
     private static final double SAM_COST = .5;

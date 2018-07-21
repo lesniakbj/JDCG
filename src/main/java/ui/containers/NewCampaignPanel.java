@@ -7,7 +7,7 @@ import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
-import sim.domain.enums.TaskType;
+import sim.domain.enums.SubTaskType;
 import sim.domain.unit.global.Coalition;
 import sim.domain.unit.global.GameMap;
 import sim.main.CampaignSettings;
@@ -211,7 +211,7 @@ public class NewCampaignPanel extends JPanel {
         JLabel squadronNameLabel = new JLabel("Squadron Name: ");
         JLabel squadronName = new JLabel(SquadronType.NONE.getSquadronName());
         JLabel squadronTasksLabel = new JLabel("Squadron Tasks: ");
-        JLabel squadronTasks = new JLabel(SquadronType.NONE.getTaskList().stream().map(TaskType::getTaskName).collect(Collectors.joining(", ")));
+        JLabel squadronTasks = new JLabel(SquadronType.NONE.getTaskList().stream().map(SubTaskType::getTaskName).collect(Collectors.joining(", ")));
         JLabel squadronAircraftLabel = new JLabel("Squadron Aircraft: ");
         JLabel squadronAircraft = new JLabel(SquadronType.NONE.getAircraftTypes().stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
         JLabel squadronEraLabel = new JLabel("Squadron Active Eras: ");
@@ -647,7 +647,7 @@ public class NewCampaignPanel extends JPanel {
 
                 // Update the squadron status
                 squadronName.setText(selectedSquadron.getSquadronName());
-                squadronTasks.setText(selectedSquadron.getTaskList().stream().map(TaskType::getTaskName).collect(Collectors.joining(", ")));
+                squadronTasks.setText(selectedSquadron.getTaskList().stream().map(SubTaskType::getTaskName).collect(Collectors.joining(", ")));
                 squadronAircraft.setText(selectedSquadron.getAircraftTypes().stream().map(AircraftType::getAircraftName).collect(Collectors.joining(", ")));
                 squadronActiveEras.setText(selectedSquadron.getEra().stream().map(ConflictEraType::getEraName).collect(Collectors.joining(", ")));
             }
@@ -721,8 +721,8 @@ public class NewCampaignPanel extends JPanel {
             setSelectedAircraft(eraCraft);
         }
 
-        private void setSelectedSquadronTask(List<TaskType> squadronTaskTypes) {
-            String tasks = squadronTaskTypes.stream().map(TaskType::getTaskName).collect(Collectors.joining(", "));
+        private void setSelectedSquadronTask(List<SubTaskType> squadronTaskTypes) {
+            String tasks = squadronTaskTypes.stream().map(SubTaskType::getTaskName).collect(Collectors.joining(", "));
             labelMapping.get(labels[5]).setText(tasks);
         }
 

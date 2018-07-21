@@ -1,8 +1,9 @@
 package sim.domain.enums;
 
-public enum TaskType {
+public enum SubTaskType {
     AIRLIFT("Munition Airlift"),
     AWACS("AWACS"),
+    BOMBER("Strategic Bomber"),
     BDA("Battle Damage Assessment"),
     CAP("CAP"),
     CAS("CAS"),
@@ -21,7 +22,7 @@ public enum TaskType {
 
     private String taskName;
 
-    TaskType(String taskName) {
+    SubTaskType(String taskName) {
         this.taskName = taskName;
     }
 

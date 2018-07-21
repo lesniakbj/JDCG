@@ -3,7 +3,7 @@ package sim.gen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.MapType;
-import sim.domain.enums.TaskType;
+import sim.domain.enums.SubTaskType;
 import sim.domain.enums.WaypointType;
 import sim.domain.unit.air.Waypoint;
 import sim.main.DynamicCampaignSim;
@@ -23,14 +23,14 @@ public class WaypointGenerator {
     private static final int MIN_DEVIATION = 20;
     private static final int MIN_NAV_DEVIATION = 35;
 
-    public static List<Waypoint> generateMissionWaypoints(Point2D.Double start, Point2D.Double mission, TaskType taskType, MapType map) {
-        return generateMissionWaypoints(start.getX(), start.getY(), mission.getX(), mission.getY(), taskType, map);
+    public static List<Waypoint> generateMissionWaypoints(Point2D.Double start, Point2D.Double mission, SubTaskType SubTaskType, MapType map) {
+        return generateMissionWaypoints(start.getX(), start.getY(), mission.getX(), mission.getY(), SubTaskType, map);
     }
 
-    public static List<Waypoint> generateMissionWaypoints(double startX, double startY, double missionObjX, double missionObjY, TaskType taskType, MapType map) {
+    public static List<Waypoint> generateMissionWaypoints(double startX, double startY, double missionObjX, double missionObjY, SubTaskType SubTaskType, MapType map) {
         boolean generateLeftToRight = DynamicCampaignSim.getRandomGen().nextBoolean();
         int waypointSpeed = MIN_SPEED + DynamicCampaignSim.getRandomGen().nextInt(150);
-        int waypointAltitude = (taskType.equals(TaskType.LOW_LEVEL_STRIKE)) ? LOW_LEVEL_ALT : MIN_ALT + DynamicCampaignSim.getRandomGen().nextInt(10000);
+        int waypointAltitude = (SubTaskType.equals(SubTaskType.LOW_LEVEL_STRIKE)) ? LOW_LEVEL_ALT : MIN_ALT + DynamicCampaignSim.getRandomGen().nextInt(10000);
 
         // Create the first and last Waypoint
         Waypoint end = new Waypoint(startX, startY, waypointSpeed, waypointAltitude, false, WaypointType.LANDING);

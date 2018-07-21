@@ -152,12 +152,12 @@ public enum AircraftType {
     private String aircraftName;
     private boolean playerFlyable;
     private boolean isHelicopter;
-    private List<TaskType> possibleTasks;
+    private List<SubTaskType> possibleTasks;
     private List<ConflictEraType> aircraftEras;
     private Map<Integer, List<MunitionType>> stationMunitions;
     private List<FactionType> users;
 
-    AircraftType(String aircraftName, boolean playerFlyable, boolean isHelicopter, List<TaskType> possibleTasks, List<ConflictEraType> aircraftEras, Map<Integer, List<MunitionType>> stationMunitions, List<FactionType> users) {
+    AircraftType(String aircraftName, boolean playerFlyable, boolean isHelicopter, List<SubTaskType> possibleTasks, List<ConflictEraType> aircraftEras, Map<Integer, List<MunitionType>> stationMunitions, List<FactionType> users) {
         this.aircraftName = aircraftName;
         this.playerFlyable = playerFlyable;
         this.isHelicopter = isHelicopter;
@@ -191,7 +191,7 @@ public enum AircraftType {
         return isHelicopter;
     }
 
-    public List<TaskType> getPossibleTasks() {
+    public List<SubTaskType> getPossibleTasks() {
         return possibleTasks;
     }
 
@@ -223,7 +223,7 @@ public enum AircraftType {
         return Arrays.stream(AircraftType.values()).filter(a -> a.getAircraftEras().contains(type)).collect(Collectors.toList());
     }
 
-    public static List<AircraftType> getAircraftByTask(List<AircraftType> list, TaskType type) {
+    public static List<AircraftType> getAircraftByTask(List<AircraftType> list, SubTaskType type) {
         return list.stream().filter(a -> a.getPossibleTasks().contains(type)).collect(Collectors.toList());
     }
 
