@@ -1,4 +1,4 @@
-package sim.gen;
+package sim.gen.air;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

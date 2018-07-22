@@ -1,8 +1,7 @@
-package ui.containers;
+package ui.containers.menu;
 
 import sim.domain.enums.MissionStartType;
-import sim.main.GlobalSimSettings;
-import ui.util.SpringUtilities;
+import sim.settings.GlobalSimSettings;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -10,7 +9,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -23,7 +21,7 @@ public class SimSettingsPanel extends JPanel {
     private JTextField missionStep;
     private JCheckBox generateMissions;
 
-    SimSettingsPanel(GlobalSimSettings simSettings) {
+    public SimSettingsPanel(GlobalSimSettings simSettings) {
         // Create the campaign settings
         simulationSettings = new GlobalSimSettings(simSettings);
 

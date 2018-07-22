@@ -10,7 +10,10 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.main.CampaignSettings;
+import sim.gen.air.AirUnitGenerator;
+import sim.gen.ground.AirfieldGenerator;
+import sim.gen.ground.GroundUnitGenerator;
+import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 
 import java.awt.geom.Point2D;

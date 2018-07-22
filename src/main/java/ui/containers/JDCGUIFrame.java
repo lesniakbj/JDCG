@@ -2,15 +2,17 @@ package ui.containers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.main.CampaignSettings;
+import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
-import sim.main.GlobalSimSettings;
-import sim.save.JSONUtil;
+import sim.settings.GlobalSimSettings;
+import sim.util.save.JSONUtil;
 import ui.constants.CoalitionActions;
 import ui.constants.FileActions;
 import ui.constants.InfoActions;
 import ui.constants.MissionActions;
 import ui.constants.UIAction;
+import ui.containers.menu.NewCampaignPanel;
+import ui.containers.menu.SimSettingsPanel;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;

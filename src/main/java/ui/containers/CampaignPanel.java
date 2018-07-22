@@ -11,8 +11,9 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.main.CoalitionManager;
+import sim.manager.CoalitionManager;
 import sim.main.DynamicCampaignSim;
+import ui.containers.menu.FlightLoadoutPanel;
 import ui.util.DrawUtil;
 
 import javax.swing.BorderFactory;
@@ -410,9 +411,12 @@ public class CampaignPanel extends JPanel {
             for(AirfieldType airfieldType : clickedAirfieldTypes) {
                 Airfield field = campaign.getAllAirfields().stream().filter(a -> a.getAirfieldType().equals(airfieldType)).findFirst().orElse(null);
                 List<UnitGroup<GroundUnit>> fieldUnits = campaign.getAllAirfieldGroundGroups().get(field);
-                JOptionPane.showMessageDialog(null, "This is where Airfield Information would be shown", "Airfield Information", JOptionPane.INFORMATION_MESSAGE);
-                log.debug(field);
-                log.debug(fieldUnits);
+                // boolean airbaseHasBeenReconned = something();
+                if(field != null && !campaign.getCampaignSettings().getPlayerSelectedSide().equals(field.getOwnerSide())) {
+                    JOptionPane.showMessageDialog(null, "You need to recon this Airbase to get information related to it!", "Airfield Information", JOptionPane.INFORMATION_MESSAGE);
+                    log.debug(field);
+                    log.debug(fieldUnits);
+                }
             }
         }
 

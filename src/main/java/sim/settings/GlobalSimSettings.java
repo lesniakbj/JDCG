@@ -1,4 +1,4 @@
-package sim.main;
+package sim.settings;
 
 import sim.domain.TaskGenerationSetting;
 import sim.domain.enums.MajorTaskType;
@@ -6,7 +6,6 @@ import sim.domain.enums.MissionStartType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GlobalSimSettings {
     private MissionStartType missionStartType;

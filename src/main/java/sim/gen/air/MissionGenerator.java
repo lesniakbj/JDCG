@@ -1,4 +1,4 @@
-package sim.gen;
+package sim.gen.air;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,17 +14,15 @@ import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Waypoint;
-import sim.domain.unit.ground.GroundUnit;
-import sim.main.CampaignSettings;
-import sim.main.CoalitionManager;
+import sim.settings.CampaignSettings;
+import sim.manager.CoalitionManager;
 import sim.main.DynamicCampaignSim;
-import sim.main.GlobalSimSettings;
+import sim.settings.GlobalSimSettings;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;

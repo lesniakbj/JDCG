@@ -1,4 +1,4 @@
-package sim.main;
+package sim.manager;
 
 import sim.domain.unit.SimUnit;
 

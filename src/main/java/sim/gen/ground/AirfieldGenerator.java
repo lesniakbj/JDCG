@@ -1,4 +1,4 @@
-package sim.gen;
+package sim.gen.ground;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +11,7 @@ import sim.domain.unit.air.MunitionStockpile;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.Structure;
-import sim.main.CampaignSettings;
+import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 
 import java.awt.geom.Point2D;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class AirfieldGenerator {
+public class AirfieldGenerator {
     private static final Logger log = LogManager.getLogger(AirfieldGenerator.class);
 
     private AirfieldType blueHomeAirfield;
@@ -31,12 +31,12 @@ class AirfieldGenerator {
     private Map<FactionSideType, Double> overallForceStrength;
     private double munitionCost;
 
-    AirfieldGenerator(Map<FactionSideType, Double> overallForceStrength, double munitionCost) {
+    public AirfieldGenerator(Map<FactionSideType, Double> overallForceStrength, double munitionCost) {
         this.munitionCost = munitionCost;
         this.overallForceStrength = overallForceStrength;
     }
 
-    Map<FactionSideType,List<Airfield>> generateAirfields(CampaignSettings campaignSettings, int numStartingAirfields) {
+    public Map<FactionSideType,List<Airfield>> generateAirfields(CampaignSettings campaignSettings, int numStartingAirfields) {
         log.debug("Generating airfields for each coalition...");
         CampaignType campaignType = campaignSettings.getSelectedCampaignType();
         GameMap map = campaignSettings.getSelectedMap();
@@ -73,7 +73,7 @@ class AirfieldGenerator {
         return airfieldList;
     }
 
-    Map<FactionSideType,List<Airfield>> adjustAirfieldsToGeneratedFront(Map<FactionSideType, List<Point2D.Double>> warfareFront, Map<FactionSideType, List<Airfield>> generatedAirfields) {
+    public Map<FactionSideType,List<Airfield>> adjustAirfieldsToGeneratedFront(Map<FactionSideType, List<Point2D.Double>> warfareFront, Map<FactionSideType, List<Airfield>> generatedAirfields) {
         log.debug("Adjusting ownership of airfields if they fall within the warfare front....");
         FactionSideType side = warfareFront.get(FactionSideType.BLUEFOR) == null ? FactionSideType.REDFOR : FactionSideType.BLUEFOR;
         FactionSideType other = warfareFront.get(FactionSideType.BLUEFOR) == null ? FactionSideType.BLUEFOR : FactionSideType.REDFOR;

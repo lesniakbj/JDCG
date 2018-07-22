@@ -11,7 +11,12 @@ import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.gen.CampaignGenerator;
-import sim.gen.MissionGenerator;
+import sim.gen.air.MissionGenerator;
+import sim.manager.CoalitionManager;
+import sim.manager.MissionManager;
+import sim.manager.ObjectiveManager;
+import sim.settings.CampaignSettings;
+import sim.settings.GlobalSimSettings;
 import ui.containers.CampaignPanel;
 
 import javax.swing.border.Border;
@@ -44,8 +49,10 @@ public class DynamicCampaignSim {
     private CoalitionManager blueforCoalitionManager;
     private CoalitionManager redforCoalitionManager;
 
-    // Generators
+    // Generators and Simulators
+    private DCSMissionGenerator dcsMissionGenerator;
     private MissionGenerator missionGenerator;
+    private MissionSimulator missionSimulator;
 
     // Selected data
     private Mission currentlySelectedMission;
@@ -65,6 +72,8 @@ public class DynamicCampaignSim {
         this.currentlySelectedMission = null;
         this.generateMission = false;
         this.missionGenerator = new MissionGenerator();
+        this.missionSimulator = new MissionSimulator();
+        this.dcsMissionGenerator = new DCSMissionGenerator();
     }
 
     public GlobalSimSettings getSimSettings() {
@@ -203,6 +212,16 @@ public class DynamicCampaignSim {
         log.debug(redforCoalitionManager.getCoalitionPlayerAirGroups());
     }
 
+    /**
+     * After generating a campaign, we will simulate all of missions within that campaign.
+     * The step simulation does the following:
+     *  1) Steps all Missions within the campaign
+     *      a) Updates the Missions based on their state (speed, waypoints, etc)
+     *      b) Checks to see if it needs to generate a DCS mission
+     *      c) Checks to see if we need to Sim the Mission
+     *      d) Marks the mission as completed
+    *
+     */
     public void stepSimulation() {
         int minutesToStep = simSettings.getMinutesPerSimulationStep();
 
@@ -246,7 +265,7 @@ public class DynamicCampaignSim {
             // Check if we need to sim the results of this mission locally
             if(m.onObjectiveWaypoint()) {
                 // Simulate the mission...
-                MissionSimulator.simulateMission(m, campaignSettings, blueforCoalitionManager, redforCoalitionManager);
+                missionSimulator.simulateMission(m, campaignSettings, blueforCoalitionManager, redforCoalitionManager);
             }
 
             // If the mission is complete, remove it from the active missions
@@ -261,8 +280,7 @@ public class DynamicCampaignSim {
         // If we determine that we need to generate a mission, generate it and then alert the user
         generateMission = !criticalMissions.isEmpty();
         if(generateMission) {
-            DCSMissionGenerator gen = new DCSMissionGenerator();
-            gen.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, simSettings.getMissionStartType());
+            dcsMissionGenerator.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, simSettings.getMissionStartType());
             setSimRunning(false);
         }
     }

@@ -1,4 +1,4 @@
-package sim.main;
+package sim.settings;
 
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;

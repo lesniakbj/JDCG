@@ -1,4 +1,4 @@
-package ui.containers;
+package ui.containers.menu;
 
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
@@ -10,7 +10,7 @@ import sim.domain.enums.SquadronType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.unit.global.Coalition;
 import sim.domain.unit.global.GameMap;
-import sim.main.CampaignSettings;
+import sim.settings.CampaignSettings;
 import ui.util.SpringUtilities;
 
 import javax.swing.BorderFactory;
@@ -74,7 +74,7 @@ public class NewCampaignPanel extends JPanel {
     private static final int MAP_WIDTH = 550;
     private static final String[] FACTION_COLUMNS = {"FactionType Name", "FactionType Strength"};
 
-    NewCampaignPanel() {
+    public NewCampaignPanel() {
         self = this;
 
         // Create the campaign settings

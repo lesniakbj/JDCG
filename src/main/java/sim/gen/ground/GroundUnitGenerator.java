@@ -1,4 +1,4 @@
-package sim.gen;
+package sim.gen.ground;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@ import sim.domain.unit.ground.UnarmedShipGroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
-import sim.main.CampaignSettings;
+import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
 import sim.util.mask.MaskFactory;
 

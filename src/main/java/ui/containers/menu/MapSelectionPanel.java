@@ -1,4 +1,4 @@
-package ui.containers;
+package ui.containers.menu;
 
 import sim.domain.enums.MapType;
 

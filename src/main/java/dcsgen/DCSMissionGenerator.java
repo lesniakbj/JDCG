@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import sim.domain.enums.MissionStartType;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Waypoint;
-import sim.main.CoalitionManager;
+import sim.manager.CoalitionManager;
 
 public class DCSMissionGenerator {
     private static final Logger log = LogManager.getLogger(DCSMissionGenerator.class);
