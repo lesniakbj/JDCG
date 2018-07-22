@@ -65,6 +65,6 @@ It has the following features:
 ![Example basic configuration](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_config1.png)
 ![Example faction configuration](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_config2.png)
 
-## stExample of Campaign Generation
+## Example of Campaign Generation
 ![Example map / campaign generation](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_generations.png)
 ![Example flight generations](https://raw.githubusercontent.com/lesniakbj/JDCG/master/src/main/resources/examples/example_generation_flights.png)
