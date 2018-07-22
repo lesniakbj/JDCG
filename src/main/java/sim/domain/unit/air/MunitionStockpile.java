@@ -13,9 +13,9 @@ public class MunitionStockpile {
 
     @Override
     public String toString() {
-        return "MunitionStockpile{" +
-                "stockpile=" + stockpile +
-                ", totalInStock=" + totalInStock +
-                '}';
+        return "{\"MunitionStockpile\":{"
+                + "\"stockpile\":\"" + stockpile + "\""
+                + ", \"totalInStock\":\"" + totalInStock + "\""
+                + "}}";
     }
 }

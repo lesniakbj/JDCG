@@ -28,8 +28,9 @@ public class Helicopter extends AirUnit {
 
     @Override
     public String toString() {
-        return "Helicopter{" +
-                "selectedType=" + selectedType +
-                '}';
+        return "{\"Helicopter\":"
+                + super.toString()
+                + ", \"selectedType\":\"" + selectedType + "\""
+                + "}";
     }
 }

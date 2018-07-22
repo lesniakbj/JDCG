@@ -157,19 +157,19 @@ public class CampaignSettings {
 
     @Override
     public String toString() {
-        return "CampaignSettings{" +
-                "selectedMap=" + selectedMap +
-                ", redforCoalition=" + redforCoalition +
-                ", blueforCoalition=" + blueforCoalition +
-                ", neutralCoalition=" + neutralCoalition +
-                ", selectedEra=" + selectedEra +
-                ", selectedCampaignType=" + selectedCampaignType +
-                ", playerSelectedSide=" + playerSelectedSide +
-                ", selectedSquadron=" + selectedSquadron +
-                ", selectedAircraft=" + selectedAircraft +
-                ", isComplete=" + isComplete +
-                ", currentCampaignDate=" + currentCampaignDate +
-                ", dateFormat='" + dateFormat + '\'' +
-                '}';
+        return "{\"CampaignSettings\":{"
+                + "\"selectedMap\":" + selectedMap
+                + ", \"redforCoalition\":" + redforCoalition
+                + ", \"blueforCoalition\":" + blueforCoalition
+                + ", \"neutralCoalition\":" + neutralCoalition
+                + ", \"selectedEra\":\"" + selectedEra + "\""
+                + ", \"selectedCampaignType\":\"" + selectedCampaignType + "\""
+                + ", \"playerSelectedSide\":\"" + playerSelectedSide + "\""
+                + ", \"selectedSquadron\":\"" + selectedSquadron + "\""
+                + ", \"selectedAircraft\":\"" + selectedAircraft + "\""
+                + ", \"isComplete\":\"" + isComplete + "\""
+                + ", \"currentCampaignDate\":" + currentCampaignDate
+                + ", \"dateFormat\":\"" + dateFormat + "\""
+                + "}}";
     }
 }

@@ -95,12 +95,16 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
 
     @Override
     public String toString() {
-        return "UnitGroup{" +
-                "id=" + id +
-                ", side=" + side +
-                ", groupUnits=" + groupUnits +
-                '}';
+        return "{\"UnitGroup\":"
+                + super.toString()
+                + ", \"id\":\"" + id + "\""
+                + ", \"side\":\"" + side + "\""
+                + ", \"groupUnits\":" + groupUnits
+                + ", \"shouldGenerate\":\"" + shouldGenerate + "\""
+                + ", \"playerGeneratedGroup\":\"" + playerGeneratedGroup + "\""
+                + "}";
     }
+
 
     public static class Builder<T extends SimUnit> {
         private UnitGroup<T> unitGroup;

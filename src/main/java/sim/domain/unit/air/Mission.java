@@ -7,6 +7,7 @@ import sim.domain.enums.MapType;
 import sim.domain.enums.MunitionType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.enums.WaypointType;
+import sim.domain.unit.SimUnit;
 import sim.domain.unit.Simable;
 import sim.domain.unit.UnitGroup;
 import sim.util.MathUtil;
@@ -37,6 +38,7 @@ public class Mission implements Simable {
     private List<Waypoint> missionWaypoints;
     private Waypoint nextWaypoint;
     private Waypoint lastWaypoint;
+    private SimUnit target;
 
     private boolean isClientMission;
     private boolean missionComplete;
@@ -218,6 +220,22 @@ public class Mission implements Simable {
         onStationEndDate = cal.getTime();
     }
 
+    public Date getOnStationEndDate() {
+        return onStationEndDate;
+    }
+
+    public void setOnStationEndDate(Date onStationEndDate) {
+        this.onStationEndDate = onStationEndDate;
+    }
+
+    public SimUnit getTarget() {
+        return target;
+    }
+
+    public void setTarget(SimUnit target) {
+        this.target = target;
+    }
+
     @Override
     public void updateStep() {
         if(!isActive()) {
@@ -324,16 +342,25 @@ public class Mission implements Simable {
 
     @Override
     public String toString() {
-        return "Mission{" +
-                "mapType=" + mapType +
-                ", missionType=" + missionType +
-                ", missionAircraft=" + missionAircraft +
-                ", missionWaypoints=" + missionWaypoints +
-                ", nextWaypoint=" + nextWaypoint +
-                ", plannedMissionDate=" + plannedMissionDate +
-                ", isClientMission=" + isClientMission +
-                ", missionComplete=" + missionComplete +
-                '}';
+        return "{\"Mission\":{"
+                + "\"mapType\":\"" + mapType + "\""
+                + ", \"missionType\":\"" + missionType + "\""
+                + ", \"startingAirfield\":\"" + startingAirfield + "\""
+                + ", \"missionAircraft\":" + missionAircraft
+                + ", \"missionMunitions\":" + missionMunitions
+                + ", \"plannedMissionDate\":" + plannedMissionDate
+                + ", \"currentCampaignDate\":" + currentCampaignDate
+                + ", \"onStationEndDate\":" + onStationEndDate
+                + ", \"isOnStation\":\"" + isOnStation + "\""
+                + ", \"timeOnStation\":\"" + timeOnStation + "\""
+                + ", \"missionWaypoints\":" + missionWaypoints
+                + ", \"nextWaypoint\":" + nextWaypoint
+                + ", \"lastWaypoint\":" + lastWaypoint
+                + ", \"isClientMission\":\"" + isClientMission + "\""
+                + ", \"missionComplete\":\"" + missionComplete + "\""
+                + ", \"shouldGenerate\":\"" + shouldGenerate + "\""
+                + ", \"playerAircraft\":\"" + playerAircraft + "\""
+                + "}}";
     }
 
     public static class Builder {
@@ -421,6 +448,11 @@ public class Mission implements Simable {
         public Builder setTimeOnStation(int length) {
             mission.setTimeOnStation(length);
             mission.setOnStation(false);
+            return this;
+        }
+
+        public Builder setTarget(SimUnit target) {
+            mission.setTarget(target);
             return this;
         }
 

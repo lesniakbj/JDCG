@@ -14,23 +14,28 @@ import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Waypoint;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.Structure;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.settings.CampaignSettings;
 import sim.manager.CoalitionManager;
 import sim.main.DynamicCampaignSim;
 import sim.settings.GlobalSimSettings;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
 
 public class MissionGenerator {
     private static final Logger log = LogManager.getLogger(MissionGenerator.class);
-
-    private static final int MAX_PLANNABLE_MISSIONS = 25;
 
     public void generateTestMissionForCoalition(CampaignSettings campaign, CoalitionManager coalitionManager, Date date) {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition(), AirfieldType.KHASAB.getAirfieldMapPosition(), SubTaskType.INTERCEPT, MapType.PERSIAN_GULF);
@@ -59,62 +64,54 @@ public class MissionGenerator {
     }
 
     public void updateAndGenerate(CampaignSettings campaignSettings, GlobalSimSettings simSettings, CoalitionManager blueforCoalitionManager, CoalitionManager redforCoalitionManager) {
-        updateAndGenerateForCoalition(campaignSettings, simSettings, blueforCoalitionManager, redforCoalitionManager);
-        updateAndGenerateForCoalition(campaignSettings, simSettings, redforCoalitionManager, blueforCoalitionManager);
+        generateATOForCoalition(campaignSettings, simSettings, blueforCoalitionManager, redforCoalitionManager, FactionSideType.BLUEFOR);
+        generateATOForCoalition(campaignSettings, simSettings, redforCoalitionManager, blueforCoalitionManager, FactionSideType.REDFOR);
     }
 
-    private void updateAndGenerateForCoalition(CampaignSettings campaignSettings, GlobalSimSettings simSettings, CoalitionManager friendlyManager, CoalitionManager enemyManager) {
-        // Check if we even can to generate new missions
-        List<Mission> currentMissions = friendlyManager.getCoalitionMissionManager().getPlannedMissions();
-        if(currentMissions.size() == MAX_PLANNABLE_MISSIONS) {
-            log.debug("Max planned mission threshold hit, wait for missions to finish");
-            return;
-        }
+    private void generateATOForCoalition(CampaignSettings campaignSettings, GlobalSimSettings simSettings, CoalitionManager friendlyManager, CoalitionManager enemyManager, FactionSideType side) {
+        log.debug("Creating ATO for: " + side);
+        // ATO Generation takes the following parameters:
+        //  1) Critical Targets that need to be Attacked
+        //  2) Critical Threats to Defensive Targets
+        //  3) The available air groups and their airfields
+        //  4) Player playable groups (will prefer to try to generate user playable missions)
+        //  5) Whether we have support assets available
+        //  6) The currently running missions
 
-        // Check to see if there are any threats we need to respond to
+        // Critical Targets
+        List<GroundUnit> criticalAttackTargets = enemyManager.getCoalitionAirfields().stream().map(Airfield::getCriticalStructures).flatMap(Collection::stream).collect(Collectors.toList());
+        // criticalAttackTargets.addAll(getCriticalGroundUnits());
 
-        // Generate Tanker/AWACS missions
-        if(!friendlyManager.getCoalitionMissionManager().isHasAWACSActive()) {
-            log.debug("Time to generate an AWACS mission");
-        }
+        // Critical Threats
+        List<Airfield> coalitionAirfields = friendlyManager.getCoalitionAirfields();
+        List<UnitGroup<AirDefenceUnit>> coalitionAirDefences = friendlyManager.getCoalitionAirDefences();
+        List<Structure> criticalDefenceTargets = coalitionAirfields.stream().map(Airfield::getCriticalStructures).flatMap(Collection::stream).collect(Collectors.toList());
+        List<UnitGroup<AirUnit>> criticalAirThreats = findCriticalAirThreats(coalitionAirfields, coalitionAirDefences, criticalDefenceTargets, enemyManager);
 
-        if(!friendlyManager.getCoalitionMissionManager().isHasTankerActive()) {
-            log.debug("Time to generate a Tanker mission");
-        }
+        // Available Air Groups
+        Map<Airfield, List<UnitGroup<AirUnit>>> availableGroups = coalitionAirfields.stream().collect(Collectors.toMap(a -> a, Airfield::getStationedAircraft));
+        List<UnitGroup<AirUnit>> playableGroups = coalitionAirfields.stream().map(Airfield::getStationedAircraft).flatMap(Collection::stream).filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
 
-        // Otherwise, get the generation ratios and generate missions based on that
-        List<TaskGenerationSetting> taskRatios = simSettings.getTaskRatios().stream().sorted(Comparator.comparingInt(TaskGenerationSetting::getGenerationPriority)).collect(Collectors.toList());
-        log.debug(taskRatios);
-        for(TaskGenerationSetting task : taskRatios) {
-            boolean shouldGenerateMission;
-            switch (task.getTaskType()) {
-                // The following get created on their own...
-                case REFUELING:
-                case AWACS:
-                    continue;
-                // Only plan on "strategic missions"
-                case BOMBER:
-                    continue;
-                // Special case, plan these whenever there is an available slot (100%)
-                case HELI_TRANSPORT:
-                case HELI_ATTACK:
-                    shouldGenerateMission = true;
-                    break;
-                default:
-                    shouldGenerateMission = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1) < task.getGenerationChance();
-                    break;
-            }
-            log.debug("Mission of " + task.getTaskType().name() + " should be generated?: " + shouldGenerateMission);
+        // Currently running missions
+        List<Mission> runningMissions = friendlyManager.getCoalitionMissionManager().getPlannedMissions();
 
-            if(shouldGenerateMission) {
-                List<Mission> missions = generatePackageForTypeForCoalition(campaignSettings, simSettings, friendlyManager, enemyManager, task.getTaskType());
-            }
-        }
+        // Generate the ATO for the friendly manager
+        generateATO(friendlyManager, criticalAttackTargets, criticalAirThreats, availableGroups, playableGroups, runningMissions);
     }
 
-    private List<Mission> generatePackageForTypeForCoalition(CampaignSettings campaignSettings, GlobalSimSettings simSettings, CoalitionManager friendlyManager, CoalitionManager enemyManager, MajorTaskType taskType) {
-        List<UnitGroup<AirUnit>> availableAircraft = friendlyManager.getCoalitionAirGroups();
-        log.debug("I have these aircraft to make a mission with: " + availableAircraft);
-        return null;
+    private void generateATO(CoalitionManager friendlyManager, List<GroundUnit> criticalAttackTargets, List<UnitGroup<AirUnit>> criticalAirThreats, Map<Airfield, List<UnitGroup<AirUnit>>> availableGroups, List<UnitGroup<AirUnit>> playableGroups, List<Mission> runningMissions) {
+        log.debug("Attack Targets: " + criticalAttackTargets);
+        log.debug("Critical Air Threats: " + criticalAirThreats);
+        log.debug("Available Groups: " + availableGroups);
+        log.debug("Player Available Groups: " + playableGroups);
+        log.debug("Running Missions: " + runningMissions);
+    }
+
+    private List<UnitGroup<AirUnit>> findCriticalAirThreats(List<Airfield> coalitionAirfields, List<UnitGroup<AirDefenceUnit>> coalitionAirDefences, List<Structure> criticalDefenceTargets, CoalitionManager enemyManager) {
+        log.debug("Looking for enemy aircraft that are a threat to: " + coalitionAirfields);
+        log.debug("Looking for enemy aircraft that are a threat to: " + criticalDefenceTargets);
+        log.debug("Threat of critical target is reduced by: " + coalitionAirDefences);
+        log.debug("Looking at the aircraft from enemy: " + enemyManager.getCoalitionAirGroups());
+        return new ArrayList<>();
     }
 }

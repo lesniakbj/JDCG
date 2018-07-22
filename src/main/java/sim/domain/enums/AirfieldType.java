@@ -233,19 +233,21 @@ public enum AirfieldType {
 
     @Override
     public String toString() {
-        return "AirfieldType{" +
-                "id=" + id +
-                ", map=" + map +
-                ", airfieldPosition=" + airfieldPosition +
-                ", airfieldMapPosition=" + airfieldMapPosition +
-                ", tacanChannel='" + tacanChannel + '\'' +
-                ", availableRunways=" + availableRunways +
-                ", normalParkingSpots=" + normalParkingSpots +
-                ", helicopterParkingSpots=" + helicopterParkingSpots +
-                ", heavyParkingSpots=" + heavyParkingSpots +
-                ", uniqueParkingSpots=" + uniqueParkingSpots +
-                ", totalUniqueParkingSpots=" + totalUniqueParkingSpots +
-                '}';
+        return "{\"AirfieldType\":"
+                + super.toString()
+                + ", \"id\":\"" + id + "\""
+                + ", \"map\":\"" + map + "\""
+                + ", \"parkingRange\":\"" + parkingRange + "\""
+                + ", \"airfieldPosition\":" + airfieldPosition
+                + ", \"airfieldMapPosition\":" + airfieldMapPosition
+                + ", \"tacanChannel\":\"" + tacanChannel + "\""
+                + ", \"availableRunways\":" + availableRunways
+                + ", \"normalParkingSpots\":" + normalParkingSpots
+                + ", \"helicopterParkingSpots\":" + helicopterParkingSpots
+                + ", \"heavyParkingSpots\":" + heavyParkingSpots
+                + ", \"uniqueParkingSpots\":" + uniqueParkingSpots
+                + ", \"totalUniqueParkingSpots\":\"" + totalUniqueParkingSpots + "\""
+                + "}";
     }
 
     public static AirfieldType searchByCoordinates(double mapXLocation, double mapYLocation) {

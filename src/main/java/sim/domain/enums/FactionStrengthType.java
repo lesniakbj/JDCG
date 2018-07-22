@@ -17,8 +17,9 @@ public enum FactionStrengthType {
 
     @Override
     public String toString() {
-        return "FactionStrengthType{" +
-                "factionStrength='" + factionStrength + '\'' +
-                '}';
+        return "{\"FactionStrengthType\":"
+                + super.toString()
+                + ", \"factionStrength\":\"" + factionStrength + "\""
+                + "}";
     }
 }

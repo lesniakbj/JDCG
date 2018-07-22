@@ -110,10 +110,11 @@ public enum FactionType {
 
     @Override
     public String toString() {
-        return "FactionType{" +
-                "dcsFactionId=" + dcsFactionId +
-                ", dcsFactionName='" + dcsFactionName + '\'' +
-                ", overallStrength=" + overallStrength +
-                '}';
+        return "{\"FactionType\":"
+                + super.toString()
+                + ", \"dcsFactionId\":\"" + dcsFactionId + "\""
+                + ", \"dcsFactionName\":\"" + dcsFactionName + "\""
+                + ", \"overallStrength\":\"" + overallStrength + "\""
+                + "}";
     }
 }

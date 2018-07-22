@@ -13,9 +13,9 @@ public class Coalition {
 
     @Override
     public String toString() {
-        return "Coalition{" +
-                "factionTypeList=" + factionTypeList +
-                '}';
+        return "{\"Coalition\":{"
+                + "\"factionTypeList\":" + factionTypeList
+                + "}}";
     }
 
     public List<FactionType> getFactionTypeList() {

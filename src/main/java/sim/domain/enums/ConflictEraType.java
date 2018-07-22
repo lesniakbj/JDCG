@@ -26,9 +26,11 @@ public enum ConflictEraType {
 
     @Override
     public String toString() {
-        return "ConflictEraType{" +
-                "conflictEraName='" + conflictEraName + '\'' +
-                '}';
+        return "{\"ConflictEraType\":"
+                + super.toString()
+                + ", \"conflictEraName\":\"" + conflictEraName + "\""
+                + ", \"eraDescription\":\"" + eraDescription + "\""
+                + "}";
     }
 
     public static ConflictEraType fromName(String eraToFind) {

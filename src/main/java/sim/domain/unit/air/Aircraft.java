@@ -36,8 +36,9 @@ public class Aircraft extends AirUnit {
 
     @Override
     public String toString() {
-        return "Aircraft{" +
-                "aircraftType=" + aircraftType +
-                '}';
+        return "{\"Aircraft\":"
+                + super.toString()
+                + ", \"aircraftType\":\"" + aircraftType + "\""
+                + "}";
     }
 }

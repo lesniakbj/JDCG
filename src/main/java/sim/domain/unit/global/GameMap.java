@@ -29,10 +29,10 @@ public class GameMap {
 
     @Override
     public String toString() {
-        return "Map{" +
-                "mapSelection=" + mapSelection +
-                ", airfieldTypes=" + airfieldTypes +
-                '}';
+        return "{\"GameMap\":{"
+                + "\"mapSelection\":\"" + mapSelection + "\""
+                + ", \"airfieldTypes\":" + airfieldTypes
+                + "}}";
     }
 
     public MapType getMapType() {

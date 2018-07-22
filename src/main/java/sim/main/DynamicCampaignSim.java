@@ -206,10 +206,6 @@ public class DynamicCampaignSim {
         gen.generateAirGroups(blueforCoalitionManager.getCoalitionAirfields(), FactionSideType.BLUEFOR);
         gen.generateAirGroups(redforCoalitionManager.getCoalitionAirfields(), FactionSideType.REDFOR);
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
-        log.debug(blueforCoalitionManager.getCoalitionAirGroups());
-        log.debug(blueforCoalitionManager.getCoalitionPlayerAirGroups());
-        log.debug(redforCoalitionManager.getCoalitionAirGroups());
-        log.debug(redforCoalitionManager.getCoalitionPlayerAirGroups());
     }
 
     /**

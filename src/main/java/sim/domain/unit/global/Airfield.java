@@ -85,14 +85,14 @@ public class Airfield {
 
     @Override
     public String toString() {
-        return "Airfield{" +
-                "ownerSide=" + ownerSide +
-                ", airfieldType=" + airfieldType +
-                ", munitionStockpile=" + munitionStockpile +
-                ", criticalStructures=" + criticalStructures +
-                ", airfieldGroundGroups=" + airfieldGroundGroups +
-                ", stationedAircraft=" + stationedAircraft +
-                ", isHomeAirfield=" + isHomeAirfield +
-                '}';
+        return "{\"Airfield\":{"
+                + "\"ownerSide\":\"" + ownerSide + "\""
+                + ", \"airfieldType\":\"" + airfieldType + "\""
+                + ", \"munitionStockpile\":" + munitionStockpile
+                + ", \"criticalStructures\":" + criticalStructures
+                + ", \"airfieldGroundGroups\":" + airfieldGroundGroups
+                + ", \"stationedAircraft\":" + stationedAircraft
+                + ", \"isHomeAirfield\":\"" + isHomeAirfield + "\""
+                + "}}";
     }
 }

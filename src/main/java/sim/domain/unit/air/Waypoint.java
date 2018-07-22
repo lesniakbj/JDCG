@@ -68,17 +68,6 @@ public class Waypoint {
     }
 
     @Override
-    public String toString() {
-        return "Waypoint{" +
-                "locationX=" + locationX +
-                ", locationY=" + locationY +
-                ", speedMilesPerHour=" + speedMilesPerHour +
-                ", height=" + height +
-                ", isMissionWaypoint=" + isMissionWaypoint +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -104,6 +93,18 @@ public class Waypoint {
         result = 31 * result + height;
         result = 31 * result + (isMissionWaypoint ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "{\"Waypoint\":{"
+                + "\"locationX\":\"" + locationX + "\""
+                + ", \"locationY\":\"" + locationY + "\""
+                + ", \"speedMilesPerHour\":\"" + speedMilesPerHour + "\""
+                + ", \"height\":\"" + height + "\""
+                + ", \"isMissionWaypoint\":\"" + isMissionWaypoint + "\""
+                + ", \"waypointType\":\"" + waypointType + "\""
+                + "}}";
     }
 
 }

@@ -39,10 +39,10 @@ public class TaskGenerationSetting {
 
     @Override
     public String toString() {
-        return "TaskGenerationSetting{" +
-                "taskType=" + taskType +
-                ", generationChance=" + generationChance +
-                ", generationPriority=" + generationPriority +
-                '}';
+        return "{\"TaskGenerationSetting\":{"
+                + "\"taskType\":\"" + taskType + "\""
+                + ", \"generationChance\":\"" + generationChance + "\""
+                + ", \"generationPriority\":\"" + generationPriority + "\""
+                + "}}";
     }
 }

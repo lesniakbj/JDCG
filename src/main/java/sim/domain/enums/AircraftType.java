@@ -226,13 +226,4 @@ public enum AircraftType {
     public static List<AircraftType> getAircraftByTask(List<AircraftType> list, SubTaskType type) {
         return list.stream().filter(a -> a.getPossibleTasks().contains(type)).collect(Collectors.toList());
     }
-
-    @Override
-    public String toString() {
-        return "AircraftType{" +
-                "aircraftName='" + aircraftName + '\'' +
-                ", aircraftEras=" + aircraftEras +
-                ", stationMunitions=" + stationMunitions +
-                '}';
-    }
 }
