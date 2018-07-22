@@ -216,7 +216,7 @@ public class DynamicCampaignSim {
         stepMissions(minutesToStep);
 
         // Have the campaign managers analyze the situation and plan new flights if needed
-        missionGenerator.updateAndGenerate(campaignSettings, blueforCoalitionManager, redforCoalitionManager);
+        missionGenerator.updateAndGenerate(campaignSettings, simSettings, blueforCoalitionManager, redforCoalitionManager);
     }
 
     private void stepMissions(int minutesToStep) {
@@ -238,7 +238,7 @@ public class DynamicCampaignSim {
             // Check if we need to generate a DCS mission
             boolean missionShouldGen = m.shouldGenerateMission();
             boolean missionOnSide = m.getMissionAircraft().getSide().equals(campaignSettings.getPlayerSelectedSide());
-            boolean generateSettingOn = simSettings.getGenerateMissionsOnMissionWaypoint();
+            boolean generateSettingOn = simSettings.isGenerateMissionsOnMissionWaypoint();
             if(missionShouldGen && missionOnSide && generateSettingOn) {
                 criticalMissions.add(m);
             }

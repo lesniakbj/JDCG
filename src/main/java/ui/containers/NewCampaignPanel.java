@@ -14,6 +14,7 @@ import sim.main.CampaignSettings;
 import ui.util.SpringUtilities;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -662,14 +663,14 @@ public class NewCampaignPanel extends JPanel {
         private Coalition selectedFactions;
 
         NewCampaignOverviewPanel() {
-            setLayout(new BorderLayout());
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             // Main Campaign Data
             JPanel container = new JPanel();
-            container.setLayout(new SpringLayout());
+            container.setLayout(new GridLayout(9, 2, 10, 6));
             labelMapping = new HashMap<>();
             for(int i = 0; i < labels.length - 1; i++ ) {
-                JLabel label = new JLabel(labels[i]);
+                JLabel label = new JLabel(labels[i], SwingConstants.RIGHT);
                 JLabel data = new JLabel();
                 data.setPreferredSize(new Dimension(50, (int)data.getPreferredSize().getHeight()));
                 label.setLabelFor(data);
@@ -677,11 +678,10 @@ public class NewCampaignPanel extends JPanel {
                 container.add(data);
                 labelMapping.put(labels[i], data);
             }
-            container.add(new JLabel(labels[labels.length - 1]));
+            container.add(new JLabel(labels[labels.length - 1], SwingConstants.RIGHT));
             aircraftSelector = new JComboBox<>();
             aircraftSelector.setPrototypeDisplayValue("text here");
             container.add(aircraftSelector);
-            SpringUtilities.makeCompactGrid(container, 9, 2, 435, 300,10, 6);
 
             // Campaign Start Button
             JPanel containerPanel = new JPanel();
@@ -693,8 +693,8 @@ public class NewCampaignPanel extends JPanel {
                 (SwingUtilities.getWindowAncestor(self)).dispose();
             });
 
-            add(container, BorderLayout.NORTH);
-            add(containerPanel, BorderLayout.CENTER);
+            add(container);
+            add(containerPanel);
         }
 
         public void setMapSelection(GameMap selectedMap) {
