@@ -9,8 +9,14 @@ public class GlobalSimSettings {
 
     public GlobalSimSettings() {
         this.missionStartType = MissionStartType.PARKING_HOT;
-        this.minutesPerSimulationStep = 5;
-        this.generateMissionsOnMissionWaypoint = true;
+        this.minutesPerSimulationStep = 1;
+        this.generateMissionsOnMissionWaypoint = false;
+    }
+
+    public GlobalSimSettings(GlobalSimSettings simSettings) {
+        this.missionStartType = simSettings.getMissionStartType();
+        this.minutesPerSimulationStep = simSettings.getMinutesPerSimulationStep();
+        this.generateMissionsOnMissionWaypoint = simSettings.getGenerateMissionsOnMissionWaypoint();
     }
 
     public int getMinutesPerSimulationStep() {

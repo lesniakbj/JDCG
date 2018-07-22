@@ -2,6 +2,7 @@ package sim.main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.units.qual.A;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.unit.UnitGroup;
@@ -10,10 +11,16 @@ import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.ArmorGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
+import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
+import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MissionSimulator {
     private static final Logger log = LogManager.getLogger(MissionSimulator.class);
@@ -23,12 +30,14 @@ public class MissionSimulator {
 
         UnitGroup<Aircraft> attackingAircraft = mission.getMissionAircraft();
         FactionSideType missionSide = attackingAircraft.getSide();
-        CoalitionManager enemyManager = missionSide.equals(FactionSideType.BLUEFOR) ? redforCoalitionManager : blueforCoalitionManager;
+        CoalitionManager enemyManager = missionSide.equals(campaignSettings.getPlayerSelectedSide()) ? redforCoalitionManager : blueforCoalitionManager;
+        Point2D.Double missionLocation = new Point2D.Double(mission.getLastWaypoint().getLocationX(), mission.getLastWaypoint().getLocationY());
+        List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence = searchForAirDefences(missionLocation, enemyManager, 20);
 
         switch (mission.getMissionType()) {
             case CAS:
             case GROUND_STRIKE:
-                simulateGroundMission(mission, attackingAircraft, enemyManager);
+                simulateGroundMission(mission, attackingAircraft, missionEnemyAirDefence, enemyManager);
                 break;
             case CAP:
             case ESCORT:
@@ -42,17 +51,25 @@ public class MissionSimulator {
         }
     }
 
-    private static void simulateGroundMission(Mission mission, UnitGroup<Aircraft> attackingAircraft, CoalitionManager enemyManager) {
+    private static List<UnitGroup<AirDefenceUnit>> searchForAirDefences(Point2D.Double missionLocation, CoalitionManager enemyManager, int radiusToSearch) {
+        List<UnitGroup<AirDefenceUnit>> enemyAirDefences = enemyManager.getCoalitionAirDefences();
+        List<UnitGroup<AirDefenceUnit>> returnDefences;
+        Ellipse2D.Double bounds = new Ellipse2D.Double(missionLocation.getX() - (radiusToSearch / 2), missionLocation.getY() - (radiusToSearch / 2), radiusToSearch, radiusToSearch);
+        returnDefences = enemyAirDefences.stream().filter(g -> bounds.contains(g.getMapXLocation(), g.getMapYLocation())).collect(Collectors.toList());
+        return returnDefences;
+    }
+
+    private static void simulateGroundMission(Mission mission, UnitGroup<Aircraft> attackingAircraft, List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence, CoalitionManager enemyManager) {
         log.debug("Simulating a ground attack mission....");
 
         // First, check if we are attacking an airfield
         AirfieldType airfield = AirfieldType.searchByCoordinates(attackingAircraft.getMapXLocation(), attackingAircraft.getMapYLocation());
         if(airfield != null) {
-            simulateAttackOnAirfield(airfield, attackingAircraft, enemyManager);
+            simulateAttackOnAirfield(airfield, attackingAircraft, missionEnemyAirDefence, enemyManager);
         }
     }
 
-    private static void simulateAttackOnAirfield(AirfieldType airfield, UnitGroup<Aircraft> attackingAircraft, CoalitionManager enemyManager) {
+    private static void simulateAttackOnAirfield(AirfieldType airfield, UnitGroup<Aircraft> attackingAircraft, List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence, CoalitionManager enemyManager) {
         log.debug("Simulating a ground attack mission on an airfield...");
         Map<Airfield, List<UnitGroup<GroundUnit>>> groundUnits = enemyManager.getCoalitionPointDefenceGroundUnits();
         log.debug("Point Defences: " + groundUnits);
@@ -63,11 +80,27 @@ public class MissionSimulator {
         int rndIdx = DynamicCampaignSim.getRandomGen().nextInt(groupsUnderAttack.size());
         UnitGroup<GroundUnit> group = groupsUnderAttack.get(rndIdx);
 
+        // Based on the air defence, automatically increase the chance
+        // of destruction of a plane
+        double adBoost = 0;
+        for(UnitGroup<AirDefenceUnit> adGroup : missionEnemyAirDefence) {
+            for(AirDefenceUnit u : adGroup.getGroupUnits()) {
+                if(u.getClass().isAssignableFrom(ArtilleryAirDefenceUnit.class)) {
+                    adBoost += 1.75;
+                    continue;
+                }
+
+                if(u.getClass().isAssignableFrom(MissileAirDefenceUnit.class)) {
+                    adBoost += 5;
+                }
+            }
+        }
+
         // Attack the units within that group
         List<GroundUnit> units = group.getGroupUnits();
         List<GroundUnit> destroyedUnits = new ArrayList<>();
         for(Aircraft attackingCraft : attackingAircraft.getGroupUnits()) {
-            double chancePlaneDestroy = 0;
+            double chancePlaneDestroy = adBoost;
             double targets = DynamicCampaignSim.getRandomGen().nextInt(units.size()) + 1;
 
             log.debug("Aircraft: " + attackingAircraft + " attacking " + targets + " targets");

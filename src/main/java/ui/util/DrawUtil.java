@@ -249,8 +249,6 @@ public class DrawUtil {
     }
 
     public static void drawCampaignAirbaseStructures(DynamicCampaignSim campaign, Graphics2D g) {
-        log.debug("Drawing structures");
-
         List<Airfield> airfields = new ArrayList<>();
         airfields.addAll(campaign.getBlueforCoalitionManager().getCoalitionAirfields());
         airfields.addAll(campaign.getRedforCoalitionManager().getCoalitionAirfields());

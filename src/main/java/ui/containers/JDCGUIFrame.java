@@ -289,13 +289,16 @@ public class JDCGUIFrame extends JFrame {
             GlobalSimSettings settings = ((SimSettingsPanel)newDialog.getContentPane().getComponent(0)).getSimulationSettings();
 
             // If the settings are complete, we can proceed with populating the main portions of the frame
+            log.debug("Setting Sim Settings: " + settings);
+            log.debug("Old Sim Settings: " + campaign.getSimSettings());
             campaign.setSimSettings(settings);
+            log.debug("New Sim Settings: " + campaign.getSimSettings());
         }
 
         private JDialog createCampaignSimulationPreferencesPanel() {
             JDialog simPreferencesDialog = new JDialog();
 
-            JPanel panel = new SimSettingsPanel();
+            JPanel panel = new SimSettingsPanel(campaign.getSimSettings());
             simPreferencesDialog.add(panel);
             simPreferencesDialog.pack();
             simPreferencesDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
