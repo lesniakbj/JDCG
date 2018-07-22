@@ -1,4 +1,4 @@
-package sim.main;
+package sim.campaign;
 
 import dcsgen.DCSMissionGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +16,7 @@ import sim.gen.air.MissionGenerator;
 import sim.manager.CoalitionManager;
 import sim.manager.MissionManager;
 import sim.manager.ObjectiveManager;
+import sim.mission.MissionSimulator;
 import sim.settings.CampaignSettings;
 import sim.settings.GlobalSimSettings;
 import ui.containers.CampaignPanel;
