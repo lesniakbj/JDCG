@@ -11,6 +11,7 @@ import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Waypoint;
+import sim.main.CampaignSettings;
 import sim.main.CoalitionManager;
 import sim.main.DynamicCampaignSim;
 
@@ -23,7 +24,7 @@ import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
 public class MissionGenerator {
     private static final Logger log = LogManager.getLogger(MissionGenerator.class);
 
-    public void generateTestMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager, Date date) {
+    public void generateTestMissionForCoalition(CampaignSettings campaign, CoalitionManager coalitionManager, Date date) {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition(), AirfieldType.KHASAB.getAirfieldMapPosition(), SubTaskType.INTERCEPT, MapType.PERSIAN_GULF);
 
         UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
@@ -32,7 +33,7 @@ public class MissionGenerator {
             .setMapLocation(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition());
 
         Mission.Builder builder = new Mission.Builder();
-        builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType())
+        builder.setMissionMap(campaign.getSelectedMap().getMapType())
             .setMissionType(SubTaskType.CAS)
             .setMissionAircraft(aircraftBuilder.build())
             .setMissionWaypoints(generatedWaypoints)
@@ -40,7 +41,7 @@ public class MissionGenerator {
             .setIsClientMission(false)
             .setPlayerAircraftNumber(0)
             .setMissionComplete(false)
-            .setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep())
+            .setUpdateRate(1)
             .setShouldGenerateMission(false)
             .setStartingAirfield(AirfieldType.AL_DHAFRA_AIRBASE)
             .setTimeOnStation(30)
@@ -49,28 +50,35 @@ public class MissionGenerator {
         coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }
 
-    public void generateTestRedforMissionForCoalition(DynamicCampaignSim campaign, CoalitionManager coalitionManager, Date date) {
-        List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition(), AirfieldType.ABU_MUSA_ISLAND_AIRPORT.getAirfieldMapPosition(), SubTaskType.INTERCEPT, MapType.PERSIAN_GULF);
+    public void updateAndGenerate(CampaignSettings campaignSettings, CoalitionManager blueforCoalitionManager, CoalitionManager redforCoalitionManager) {
+        // We need to know the player's Coalition Manager so we can generate missions for their groups more intelligently
+        FactionSideType playerSide = campaignSettings.getPlayerSelectedSide() == FactionSideType.BLUEFOR ? FactionSideType.BLUEFOR : FactionSideType.REDFOR;
+        CoalitionManager playerManager = campaignSettings.getPlayerSelectedSide() == FactionSideType.BLUEFOR ? blueforCoalitionManager : redforCoalitionManager;
+        CoalitionManager enemyManager = playerManager.equals(blueforCoalitionManager) ? redforCoalitionManager : blueforCoalitionManager;
 
-        UnitGroup.Builder<Aircraft> aircraftBuilder = new UnitGroup.Builder<>();
-        aircraftBuilder.setUnits(Arrays.asList(new Aircraft(AircraftType.SU_27), new Aircraft(AircraftType.SU_27)))
-            .setSide(FactionSideType.REDFOR)
-            .setMapLocation(AirfieldType.LAR_AIRBASE.getAirfieldMapPosition());
+        boolean playerFirst = DynamicCampaignSim.getRandomGen().nextBoolean();
+        if(playerFirst) {
+            updateAndGenerateForCoalition(campaignSettings, playerManager, enemyManager, playerSide);
+            updateAndGenerateForCoalition(campaignSettings, enemyManager, playerManager, playerSide);
+        } else {
+            updateAndGenerateForCoalition(campaignSettings, enemyManager, playerManager, playerSide);
+            updateAndGenerateForCoalition(campaignSettings, playerManager, enemyManager, playerSide);
+        }
 
-        Mission.Builder builder = new Mission.Builder();
-        builder.setMissionMap(campaign.getCampaignSettings().getSelectedMap().getMapType())
-            .setMissionType(SubTaskType.CAS)
-            .setMissionAircraft(aircraftBuilder.build())
-            .setMissionWaypoints(generatedWaypoints)
-            .setUpcomingMissionDate(date, 15)
-            .setIsClientMission(false)
-            .setPlayerAircraftNumber(0)
-            .setMissionComplete(false)
-            .setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep())
-            .setShouldGenerateMission(false)
-            .setStartingAirfield(AirfieldType.LAR_AIRBASE)
-            .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(SubTaskType.INTERCEPT));
+        // Currently running missions for each side
+        List<Mission> playerMissions = playerManager.getCoalitionMissionManager().getPlannedMissions();
+        List<Mission> enemyMissions = enemyManager.getCoalitionMissionManager().getPlannedMissions();
+        log.debug(playerMissions);
+        log.debug(enemyMissions);
+    }
 
-        coalitionManager.getCoalitionMissionManager().addMission(builder.build());
+    private void updateAndGenerateForCoalition(CampaignSettings campaignSettings, CoalitionManager friendlyManager, CoalitionManager enemyManager, FactionSideType playerSide) {
+        // Check if we even need to generate new missions
+
+        // Check to see what tasks percentages we need to generate
+
+        // Roll dice and generate a task if we need to, and if the threat level is
+        // deemed acceptable
+        generateTestMissionForCoalition(campaignSettings, friendlyManager, campaignSettings.getCurrentCampaignDate());
     }
 }

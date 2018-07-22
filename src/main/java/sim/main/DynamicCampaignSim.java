@@ -44,6 +44,9 @@ public class DynamicCampaignSim {
     private CoalitionManager blueforCoalitionManager;
     private CoalitionManager redforCoalitionManager;
 
+    // Generators
+    private MissionGenerator missionGenerator;
+
     // Selected data
     private Mission currentlySelectedMission;
     private boolean generateMission;
@@ -61,6 +64,7 @@ public class DynamicCampaignSim {
         this.redforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.currentlySelectedMission = null;
         this.generateMission = false;
+        this.missionGenerator = new MissionGenerator();
     }
 
     public GlobalSimSettings getSimSettings() {
@@ -212,14 +216,7 @@ public class DynamicCampaignSim {
         stepMissions(minutesToStep);
 
         // Have the campaign managers analyze the situation and plan new flights if needed
-        // This is a test....
-        MissionGenerator missionGenerator = new MissionGenerator();
-        if(blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
-            missionGenerator.generateTestMissionForCoalition(this, blueforCoalitionManager, getCurrentCampaignDate());
-        }
-        if(redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().size() < 8) {
-            missionGenerator.generateTestRedforMissionForCoalition(this, redforCoalitionManager, getCurrentCampaignDate());
-        }
+        missionGenerator.updateAndGenerate(campaignSettings, blueforCoalitionManager, redforCoalitionManager);
     }
 
     private void stepMissions(int minutesToStep) {
