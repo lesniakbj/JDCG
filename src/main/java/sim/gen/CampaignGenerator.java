@@ -2,6 +2,8 @@ package sim.gen;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.ai.threat.ThreatGrid;
+import sim.ai.threat.gen.ThreatGridGenerator;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
 import sim.domain.unit.UnitGroup;
@@ -13,10 +15,12 @@ import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.gen.air.AirUnitGenerator;
 import sim.gen.ground.AirfieldGenerator;
 import sim.gen.ground.GroundUnitGenerator;
-import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
+import sim.manager.CoalitionManager;
+import sim.settings.CampaignSettings;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CampaignGenerator {
     private static final Logger log = LogManager.getLogger(CampaignGenerator.class);
@@ -33,6 +38,7 @@ public class CampaignGenerator {
     private AirfieldGenerator airfieldGenerator;
     private GroundUnitGenerator groundUnitGenerator;
     private AirUnitGenerator airUnitGenerator;
+    private ThreatGridGenerator threatGridGenerator;
 
     // Date
     private Map<FactionSideType, Double> overallForceStrength;
@@ -75,6 +81,7 @@ public class CampaignGenerator {
         airfieldGenerator = new AirfieldGenerator(overallForceStrength, MUNITION_COST);
         groundUnitGenerator = new GroundUnitGenerator(overallForceStrength, GROUND_UNIT_COST, AAA_COST, SAM_COST);
         airUnitGenerator = new AirUnitGenerator(overallForceStrength, AIRCRAFT_COST, HELICOPTER_COST);
+        threatGridGenerator = new ThreatGridGenerator();
     }
 
     public Map<FactionSideType,List<Airfield>> generateAirfieldMap() {
@@ -101,6 +108,10 @@ public class CampaignGenerator {
         return airUnitGenerator.generateAircraftGroups(campaignSettings, airfields, side);
     }
 
+    public ThreatGrid generateThreatGridForCoalition(CoalitionManager friendlyCoalition, CoalitionManager enemyCoalition, Rectangle2D.Double threatGridBounds, FactionSideType side) {
+        return threatGridGenerator.generateThreatGridForCoalition(friendlyCoalition, enemyCoalition, threatGridBounds, side);
+    }
+
     public Map<FactionSideType,List<Point2D.Double>> generateWarfareFront(Map<FactionSideType, List<Airfield>> generatedAirfields) {
         log.debug("Generating warfare front based on the generated airfields...");
         Map<FactionSideType, List<Point2D.Double>> retMap = new LinkedHashMap<>();
@@ -117,13 +128,17 @@ public class CampaignGenerator {
 
             if(x < lowestX) {
                 lowestX = x;
-            } else if(x > highestX) {
+            }
+
+            if(x > highestX) {
                 highestX = x;
             }
 
             if(y < lowestY) {
                 lowestY = y;
-            } else if(y > highestY) {
+            }
+
+            if(y > highestY) {
                 highestY = y;
             }
         }
@@ -172,5 +187,44 @@ public class CampaignGenerator {
 
     public Map<FactionSideType, Double> getOverallForceStrength() {
         return overallForceStrength;
+    }
+
+    public Rectangle2D.Double generateThreatGridBounds(Map<FactionSideType, List<Airfield>> generatedAirfields) {
+        List<Airfield> airfields = generatedAirfields.entrySet().stream().flatMap(es -> es.getValue().stream()).collect(Collectors.toList());
+
+        double lowestX = Double.MAX_VALUE, lowestY = Double.MAX_VALUE;
+        double highestX = Double.MIN_VALUE, highestY = Double.MIN_VALUE;
+        for(Airfield a : airfields) {
+            log.debug(a);
+            double x = a.getAirfieldType().getAirfieldMapPosition().getX();
+            double y = a.getAirfieldType().getAirfieldMapPosition().getY();
+
+            if(x < lowestX) {
+                lowestX = x;
+            }
+
+            if(x > highestX) {
+                highestX = x;
+            }
+
+            if(y < lowestY) {
+                lowestY = y;
+            }
+
+            if(y > highestY) {
+                highestY = y;
+            }
+        }
+
+        lowestX -= 15;
+        lowestY -= 15;
+        highestX += 15;
+        highestY += 15;
+        log.debug(lowestX);
+        log.debug(lowestY);
+        log.debug(highestX);
+        log.debug(lowestY);
+
+        return new Rectangle2D.Double(lowestX, lowestY, (highestX - lowestX), (highestY - lowestY));
     }
 }

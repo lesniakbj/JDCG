@@ -13,8 +13,8 @@ import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Helicopter;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
-import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
+import sim.settings.CampaignSettings;
 
 import java.util.ArrayList;
 import java.util.Arrays;

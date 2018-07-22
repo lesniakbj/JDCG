@@ -11,8 +11,8 @@ import sim.domain.unit.air.MunitionStockpile;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.Structure;
-import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
+import sim.settings.CampaignSettings;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;

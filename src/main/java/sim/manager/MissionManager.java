@@ -1,5 +1,6 @@
 package sim.manager;
 
+import sim.ai.threat.ThreatGrid;
 import sim.domain.unit.air.Mission;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 public class MissionManager {
     private List<Mission> plannedMissions;
+    private ThreatGrid threatGrid;
     private boolean hasAWACSActive;
     private boolean hasTankerActive;
 
@@ -43,5 +45,23 @@ public class MissionManager {
 
     public void setHasTankerActive(boolean hasTankerActive) {
         this.hasTankerActive = hasTankerActive;
+    }
+
+    public ThreatGrid getThreatGrid() {
+        return threatGrid;
+    }
+
+    public void setThreatGrid(ThreatGrid threatGrid) {
+        this.threatGrid = threatGrid;
+    }
+
+    @Override
+    public String toString() {
+        return "{\"MissionManager\":{"
+                + "\"plannedMissions\":" + plannedMissions
+                + ", \"threatGrid\":" + threatGrid
+                + ", \"hasAWACSActive\":\"" + hasAWACSActive + "\""
+                + ", \"hasTankerActive\":\"" + hasTankerActive + "\""
+                + "}}";
     }
 }

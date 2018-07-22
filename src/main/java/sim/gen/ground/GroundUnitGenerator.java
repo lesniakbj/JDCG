@@ -15,8 +15,8 @@ import sim.domain.unit.ground.UnarmedShipGroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
-import sim.settings.CampaignSettings;
 import sim.main.DynamicCampaignSim;
+import sim.settings.CampaignSettings;
 import sim.util.mask.MaskFactory;
 
 import java.awt.geom.Ellipse2D;

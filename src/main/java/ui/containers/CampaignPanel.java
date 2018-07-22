@@ -11,8 +11,8 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.manager.CoalitionManager;
 import sim.main.DynamicCampaignSim;
+import sim.manager.CoalitionManager;
 import ui.containers.menu.FlightLoadoutPanel;
 import ui.util.DrawUtil;
 
@@ -66,6 +66,7 @@ public class CampaignPanel extends JPanel {
     private JLabel campaignFriendlyStatusLabel;
     private JLabel campaignObjectivesLabel;
     private List<ActiveMissionPanel> campaignActiveMissions;
+    private boolean drawThreatGrid;
 
     // Settings
     private DynamicCampaignSim campaign;
@@ -85,7 +86,7 @@ public class CampaignPanel extends JPanel {
 
         // Create the panel that will hold the actions that can be done the campaign
         campaignActions = new JPanel(new BorderLayout());
-        loadCampaignActions(padding, bevel);
+        loadCampaignActions(imageWidth, imageHeight, padding, bevel);
 
         // Create the panel that will show everything that is currently in progress
         campaignPlannedActions = new JPanel(new BorderLayout());
@@ -239,15 +240,19 @@ public class CampaignPanel extends JPanel {
         return flightLoadoutDialog;
     }
 
-    private void loadCampaignActions(Border padding, Border bevel) {
+    private void loadCampaignActions(int imageWidth, int imageHeight, Border padding, Border bevel) {
         // Load the actions that we can perform during the campaign
         campaignActions.removeAll();
         campaignActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
         JPanel buttonPanel = new JPanel();
         JButton planMissionButton = new JButton("Mission Planner");
-        JButton someOtherAction = new JButton("Some Other Action");
+        JButton viewThreatGrid = new JButton("View Threat Grid");
+        viewThreatGrid.addActionListener(l -> {
+            drawThreatGrid = !drawThreatGrid;
+            updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
+        });
         buttonPanel.add(planMissionButton);
-        buttonPanel.add(someOtherAction);
+        buttonPanel.add(viewThreatGrid);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         campaignActions.add(buttonPanel, BorderLayout.WEST);
     }
@@ -310,7 +315,7 @@ public class CampaignPanel extends JPanel {
         hostFrame.refreshUiElements();
         updateCampaignStatusLabels();
         loadActiveMissions(imageWidth, imageHeight, padding, bevel);
-        loadCampaignActions(padding, bevel);
+        loadCampaignActions(imageWidth, imageHeight, padding, bevel);
         hostFrame.refreshUiElements();
     }
 
@@ -373,6 +378,9 @@ public class CampaignPanel extends JPanel {
         // DrawUtil.drawWarfareFront(campaign, g);
         // DrawUtil.drawWaterMask(campaign, g);
         // DrawUtil.drawExclusionMask(campaign, g);
+        if(drawThreatGrid) {
+            DrawUtil.drawThreatGrid(campaign, g);
+        }
 
         // Draw everything related to missions
         DrawUtil.drawCampaignSelectedMission(campaign, g);

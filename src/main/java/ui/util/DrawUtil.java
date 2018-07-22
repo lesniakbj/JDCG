@@ -2,6 +2,8 @@ package ui.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.ai.threat.ThreatGrid;
+import sim.ai.threat.ThreatGridCell;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.WaypointType;
@@ -19,6 +21,7 @@ import sim.util.mask.MaskFactory;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -26,6 +29,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -40,9 +44,10 @@ import java.util.stream.Collectors;
 public class DrawUtil {
     private static final Logger log = LogManager.getLogger(DrawUtil.class);
 
-    private static final Color BLUEFOR_COLOR = new Color(52, 138, 236, 200);
-    private static final Color REDFOR_COLOR = new Color(255, 0, 0, 200);;
-    private static final Color ACCENT_COLOR = new Color(229, 225, 24, 217);
+    private static final Color BLUEFOR_COLOR = new Color(52, 138, 236, 225);
+    private static final Color REDFOR_COLOR = new Color(255, 0, 0, 225);
+    private static final Color NEUTRAL_COLOR = new Color(154,69,118, 0);
+    private static final Color ACCENT_COLOR = new Color(229, 225, 24, 225);
     private static final Stroke DASHED = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
     private static final Stroke WIDE = new BasicStroke(5);
     private static final Stroke SEMI_WIDE = new BasicStroke(2);
@@ -206,13 +211,67 @@ public class DrawUtil {
 
     public static void drawExclusionMask(DynamicCampaignSim campaign, Graphics2D g) {
         MapType type = campaign.getCampaignSettings().getSelectedMap().getMapType();
-        double scaleX = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapXScale();
-        double scaleY = campaign.getCampaignSettings().getSelectedMap().getMapType().getMapYScale();
+        double scaleX = type.getMapXScale();
+        double scaleY = type.getMapYScale();
 
         Path2D.Double path = MaskFactory.getScaledExclusionMask(type, scaleX, scaleY, GUTTER_HEIGHT);
         g.setStroke(WIDE);
         g.setColor(Color.BLACK);
         g.draw(path);
+    }
+
+    public static void drawThreatGrid(DynamicCampaignSim campaign, Graphics2D g) {
+        MapType type = campaign.getCampaignSettings().getSelectedMap().getMapType();
+        double scaleX = type.getMapXScale();
+        double scaleY = type.getMapYScale();
+        ThreatGrid grid = campaign.getPlayerThreatGrid();
+
+        double gridX = (grid.getX() * scaleX);
+        double gridY = ((grid.getY() - GUTTER_HEIGHT) * scaleY);
+        double gridW = grid.getW() * scaleX;
+        double gridH = grid.getH() * scaleY;
+        double cellWX = grid.getCellWidth() * scaleX;
+        double cellWY = grid.getCellWidth() * scaleY;
+
+        drawGrid(g, grid, gridX, gridY, gridW, gridH, cellWX, cellWY);
+    }
+
+    private static void drawGrid(Graphics2D g, ThreatGrid grid, double gridX, double gridY, double gridW, double gridH, double cellWX, double cellWY) {
+        Rectangle2D.Double drawGrid = new Rectangle2D.Double(gridX, gridY, gridW, gridH);
+        g.setStroke(WIDE);
+        for(int x = 0; x < grid.getNumCellsX(); x++) {
+            for(int y = 0; y < grid.getNumCellsY(); y++) {
+                ThreatGridCell cell = grid.getThreatGrid()[x][y];
+                Rectangle2D.Double rect = new Rectangle2D.Double(gridX + (x * cellWX), gridY + (y * cellWY), cellWX, cellWY);
+                g.setColor(getThreatColorForCell(cell));
+                g.fill(rect);
+            }
+        }
+    }
+
+    private static Color getThreatColorForCell(ThreatGridCell cell) {
+        double threatLevel = cell.getThreatLevel();
+        if(threatLevel == 0) {
+            return NEUTRAL_COLOR;
+        }
+
+        int alpha = (int)(threatLevel * 255);
+        if(threatLevel < 0) {
+            if(threatLevel == -1.0) {
+                alpha += 35;
+            }
+            alpha = alpha * - 1;
+            return new Color(REDFOR_COLOR.getRed(), REDFOR_COLOR.getGreen(), REDFOR_COLOR.getBlue(), alpha);
+        }
+
+        if(threatLevel > 0) {
+            if(threatLevel == 1.0) {
+                alpha -= 35;
+            }
+            return new Color(BLUEFOR_COLOR.getRed(), BLUEFOR_COLOR.getGreen(), BLUEFOR_COLOR.getBlue(), alpha);
+        }
+
+        return REDFOR_COLOR;
     }
 
     public static void drawCampaignUnitGroups(DynamicCampaignSim campaign, Graphics2D g) {

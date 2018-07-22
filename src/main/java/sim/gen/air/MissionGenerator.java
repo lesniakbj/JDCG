@@ -2,11 +2,9 @@ package sim.gen.air;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.TaskGenerationSetting;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSideType;
-import sim.domain.enums.MajorTaskType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.unit.UnitGroup;
@@ -18,15 +16,13 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.Structure;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.settings.CampaignSettings;
 import sim.manager.CoalitionManager;
-import sim.main.DynamicCampaignSim;
+import sim.settings.CampaignSettings;
 import sim.settings.GlobalSimSettings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

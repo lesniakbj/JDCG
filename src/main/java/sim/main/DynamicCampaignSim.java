@@ -3,6 +3,7 @@ package sim.main;
 import dcsgen.DCSMissionGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.ai.threat.ThreatGrid;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
@@ -21,6 +22,7 @@ import ui.containers.CampaignPanel;
 
 import javax.swing.border.Border;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -45,6 +47,7 @@ public class DynamicCampaignSim {
     private CampaignSettings campaignSettings;
 
     // Campaign data
+    private Rectangle2D.Double threatGridBounds;
     private Map<FactionSideType, List<Point2D.Double>> warfareFront;
     private CoalitionManager blueforCoalitionManager;
     private CoalitionManager redforCoalitionManager;
@@ -150,6 +153,10 @@ public class DynamicCampaignSim {
         return warfareFront;
     }
 
+    public ThreatGrid getPlayerThreatGrid() {
+        return campaignSettings.getPlayerSelectedSide() == FactionSideType.BLUEFOR ? blueforCoalitionManager.getMissionManager().getThreatGrid() : redforCoalitionManager.getMissionManager().getThreatGrid();
+    }
+
     /**
      * Is used to generate a new DCS Dynamic Campaign. Goes through the following
      * process to generate the campaign:
@@ -206,6 +213,13 @@ public class DynamicCampaignSim {
         gen.generateAirGroups(blueforCoalitionManager.getCoalitionAirfields(), FactionSideType.BLUEFOR);
         gen.generateAirGroups(redforCoalitionManager.getCoalitionAirfields(), FactionSideType.REDFOR);
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
+
+        // Then, generate the initial threat grids that will be used for the campaign AI managers
+        threatGridBounds = gen.generateThreatGridBounds(generatedAirfields);
+        ThreatGrid blueGrid = gen.generateThreatGridForCoalition(blueforCoalitionManager, redforCoalitionManager, threatGridBounds, FactionSideType.BLUEFOR);
+        ThreatGrid redGrid = gen.generateThreatGridForCoalition(redforCoalitionManager, blueforCoalitionManager, threatGridBounds, FactionSideType.BLUEFOR);
+        blueforCoalitionManager.getMissionManager().setThreatGrid(blueGrid);
+        redforCoalitionManager.getMissionManager().setThreatGrid(redGrid);
     }
 
     /**
@@ -229,6 +243,8 @@ public class DynamicCampaignSim {
 
         // Step all of the sim objects
         stepMissions(minutesToStep);
+
+        // Update coalition threat grids
 
         // Have the campaign managers analyze the situation and plan new flights if needed
         missionGenerator.updateAndGenerate(campaignSettings, simSettings, blueforCoalitionManager, redforCoalitionManager);
