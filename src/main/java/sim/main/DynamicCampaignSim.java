@@ -7,7 +7,6 @@ import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
@@ -191,21 +190,13 @@ public class DynamicCampaignSim {
 
         // Then, generate all of the AirForce groups that exist within this campaign
         log.debug("Generating the current campaign air units...");
-        List<UnitGroup<AirUnit>> blueAirUnits = gen.generateAirGroups(blueforCoalitionManager.getCoalitionAirfields(), FactionSideType.BLUEFOR);
-        List<UnitGroup<AirUnit>> redAirUnits = gen.generateAirGroups(redforCoalitionManager.getCoalitionAirfields(), FactionSideType.REDFOR);
-        List<UnitGroup<AirUnit>> playerUnits;
-        if(campaignSettings.getPlayerSelectedSide().equals(FactionSideType.BLUEFOR)) {
-            playerUnits = blueAirUnits.stream().filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
-            blueAirUnits = blueAirUnits.stream().filter(g -> !g.isPlayerGeneratedGroup()).collect(Collectors.toList());
-            blueforCoalitionManager.setCoalitionPlayerAirGroups(playerUnits);
-        } else {
-            playerUnits = redAirUnits.stream().filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
-            redAirUnits = blueAirUnits.stream().filter(g -> !g.isPlayerGeneratedGroup()).collect(Collectors.toList());
-            redforCoalitionManager.setCoalitionPlayerAirGroups(playerUnits);
-        }
-        blueforCoalitionManager.setCoalitionAirGroups(blueAirUnits);
-        redforCoalitionManager.setCoalitionAirGroups(redAirUnits);
+        gen.generateAirGroups(blueforCoalitionManager.getCoalitionAirfields(), FactionSideType.BLUEFOR);
+        gen.generateAirGroups(redforCoalitionManager.getCoalitionAirfields(), FactionSideType.REDFOR);
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
+        log.debug(blueforCoalitionManager.getCoalitionAirGroups());
+        log.debug(blueforCoalitionManager.getCoalitionPlayerAirGroups());
+        log.debug(redforCoalitionManager.getCoalitionAirGroups());
+        log.debug(redforCoalitionManager.getCoalitionPlayerAirGroups());
     }
 
     public void stepSimulation() {

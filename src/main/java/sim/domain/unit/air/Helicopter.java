@@ -25,4 +25,11 @@ public class Helicopter extends AirUnit {
     public boolean shouldGenerateMission() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Helicopter{" +
+                "selectedType=" + selectedType +
+                '}';
+    }
 }

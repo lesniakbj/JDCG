@@ -341,10 +341,6 @@ public class CampaignPanel extends JPanel {
     }
 
     private long getTotalAirUnits(List<UnitGroup<AirUnit>> coalitionAircraft) {
-        if(coalitionAircraft == null) {
-            return 0;
-        }
-
         return coalitionAircraft.stream().map(UnitGroup::getNumberOfUnits).mapToLong(i -> i).sum();
     }
 

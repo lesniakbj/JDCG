@@ -43,6 +43,7 @@ public class MissionGenerator {
             .setUpdateRate(campaign.getSimSettings().getMinutesPerSimulationStep())
             .setShouldGenerateMission(false)
             .setStartingAirfield(AirfieldType.AL_DHAFRA_AIRBASE)
+            .setTimeOnStation(30)
             .setMissionMunitions(DEFAULT_LOADOUTS.get(AircraftType.FA_18C_LOT20).get(SubTaskType.INTERCEPT));
 
         coalitionManager.getCoalitionMissionManager().addMission(builder.build());

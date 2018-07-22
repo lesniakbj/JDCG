@@ -76,19 +76,20 @@ public class AirUnitGenerator {
         // Get the total number of points that we can possibly use for generation
         double pointsToUse = overallForceStrength.get(side);
 
+        // Return list
+        List<UnitGroup<AirUnit>> airUnits = new ArrayList<>();
+
         // Ensure we generate aircraft of the type that the User is playing as (always 8 or 16 aircraft)
         List<UnitGroup<AirUnit>> playerAircraft = new ArrayList<>();
         if(selectedType != null) {
             log.debug("Generating player aircraft... " + selectedType);
             playerAircraft = createAirGroupsOfType(validAircraftTypes, selectedType, side);
+            airUnits.addAll(playerAircraft);
         }
 
         // Assume that we are generating all aircraft (not helicopters), as they cost more, giving
         // us a upper bound for the # units we can create
         double totalAircraft = pointsToUse / aircraftCost;
-
-        // Return list
-        List<UnitGroup<AirUnit>> airUnits = new ArrayList<>();
 
         // Generate every type for the campaign
         double totalFighter = Math.floor(totalAircraft * FIGHTER);
@@ -143,6 +144,7 @@ public class AirUnitGenerator {
 
         // Assign the units to their various airfields...
         assignToAirfields(airfields, airUnits);
+        log.debug(airUnits);
 
         return airUnits;
     }
@@ -171,8 +173,8 @@ public class AirUnitGenerator {
     private List<UnitGroup<AirUnit>> createAirGroupsOfType(Set<AircraftType> validAircraftTypes, AircraftType selectedType, FactionSideType side) {
         List<UnitGroup<AirUnit>> groups = new ArrayList<>();
         if (!validAircraftTypes.contains(selectedType)){
+            log.debug("Couldn't create player aircraft!");
             return groups;
-
         }
 
         // Create 4 groups of 4 units each
@@ -193,6 +195,7 @@ public class AirUnitGenerator {
                     .setMapXLocation(-1.0)
                     .setMapYLocation(-1.0);
 
+            log.debug("Building player aircraft");
             groups.add(b.build());
         }
 

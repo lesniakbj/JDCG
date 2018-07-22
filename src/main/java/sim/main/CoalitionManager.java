@@ -8,8 +8,10 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CoalitionManager {
     private static final Logger log = LogManager.getLogger(CoalitionManager.class);
@@ -19,8 +21,6 @@ public class CoalitionManager {
     private List<UnitGroup<GroundUnit>> coalitionFrontlineGroups;
     private Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits;
     private List<UnitGroup<AirDefenceUnit>> coalitionAirDefences;
-    private List<UnitGroup<AirUnit>> coalitionAirGroups;
-    private List<UnitGroup<AirUnit>> coalitionPlayerAirGroups;
 
     // Campaign Managers
     private ObjectiveManager coalitionObjectiveManager;
@@ -84,19 +84,11 @@ public class CoalitionManager {
         return coalitionAirDefences;
     }
 
-    public void setCoalitionAirGroups(List<UnitGroup<AirUnit>> coalitionAirGroups) {
-        this.coalitionAirGroups = coalitionAirGroups;
-    }
-
     public List<UnitGroup<AirUnit>> getCoalitionAirGroups() {
-        return coalitionAirGroups;
-    }
-
-    public void setCoalitionPlayerAirGroups(List<UnitGroup<AirUnit>> coalitionPlayerAirGroups) {
-        this.coalitionPlayerAirGroups = coalitionPlayerAirGroups;
+        return coalitionAirfields.stream().map(Airfield::getStationedAircraft).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     public List<UnitGroup<AirUnit>> getCoalitionPlayerAirGroups() {
-        return coalitionPlayerAirGroups;
+        return coalitionAirfields.stream().map(Airfield::getStationedAircraft).flatMap(Collection::stream).filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
     }
 }

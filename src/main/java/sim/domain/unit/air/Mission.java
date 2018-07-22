@@ -20,21 +20,29 @@ import java.util.Map;
 public class Mission implements Simable {
     private static final Logger log = LogManager.getLogger(Mission.class);
 
+    private static int minutesPerUpdate;
+
     private MapType mapType;
     private SubTaskType missionType;
+    private AirfieldType startingAirfield;
     private UnitGroup<Aircraft> missionAircraft;
+    private Map<Integer,MunitionType> missionMunitions;
+    private Date plannedMissionDate;
+    private Date currentCampaignDate;
+
+    private Date onStationEndDate;
+    private boolean isOnStation;
+    private int timeOnStation;
+
     private List<Waypoint> missionWaypoints;
     private Waypoint nextWaypoint;
     private Waypoint lastWaypoint;
-    private Date plannedMissionDate;
+
     private boolean isClientMission;
-    private int playerAircraft;
     private boolean missionComplete;
-    private static int minutesPerUpdate;
-    private Date currentCampaignDate;
     private boolean shouldGenerate;
-    private AirfieldType startingAirfield;
-    private Map<Integer,MunitionType> missionMunitions;
+
+    private int playerAircraft;
 
     private Mission() {}
 
@@ -50,7 +58,7 @@ public class Mission implements Simable {
         return missionAircraft;
     }
 
-    public void setMissionAircraft(UnitGroup missionAircraft) {
+    public void setMissionAircraft(UnitGroup<Aircraft> missionAircraft) {
         this.missionAircraft = missionAircraft;
     }
 
@@ -174,10 +182,40 @@ public class Mission implements Simable {
         return !currentCampaignDate.before(plannedMissionDate);
     }
 
-
     public boolean onObjectiveWaypoint() {
         return lastWaypoint.getLocationX() == missionAircraft.getMapXLocation() && lastWaypoint.getLocationY()
                 == missionAircraft.getMapYLocation() && lastWaypoint.getWaypointType().equals(WaypointType.MISSION);
+    }
+
+    public void setLastWaypoint(Waypoint lastWaypoint) {
+        this.lastWaypoint = lastWaypoint;
+    }
+
+    public Waypoint getLastWaypoint() {
+        return lastWaypoint;
+    }
+
+    public int getTimeOnStation() {
+        return timeOnStation;
+    }
+
+    public void setTimeOnStation(int timeOnStation) {
+        this.timeOnStation = timeOnStation;
+    }
+
+    public boolean isOnStation() {
+        return isOnStation;
+    }
+
+    public void setOnStation(boolean onStation) {
+        isOnStation = onStation;
+    }
+
+    private void setOnStationEndDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(currentCampaignDate);
+        cal.add(Calendar.MINUTE, timeOnStation);
+        onStationEndDate = cal.getTime();
     }
 
     @Override
@@ -190,6 +228,11 @@ public class Mission implements Simable {
         if(isClientMission) {
             log.debug("Client mission, should generate it...");
             shouldGenerate = true;
+            return;
+        }
+
+        if(onStationEndDate != null && currentCampaignDate.before(onStationEndDate)) {
+            log.debug("We're currently on station...");
             return;
         }
 
@@ -219,6 +262,14 @@ public class Mission implements Simable {
                 // If the next Waypoint is going to be the Mission point, tell
                 // the generator that we want to generate this mission
                 shouldGenerate = getNextWaypoint() != null && getNextWaypoint().getWaypointType().equals(WaypointType.MISSION);
+
+                // Finally, check to see if we are on station
+                if(lastWaypoint.getWaypointType().equals(WaypointType.MISSION)) {
+                    if(timeOnStation != 0) {
+                        isOnStation = true;
+                        setOnStationEndDate();
+                    }
+                }
             } else {
                 missionAircraft.setMapXLocation(newX);
                 missionAircraft.setMapYLocation(newY);
@@ -283,10 +334,6 @@ public class Mission implements Simable {
                 ", isClientMission=" + isClientMission +
                 ", missionComplete=" + missionComplete +
                 '}';
-    }
-
-    public void setLastWaypoint(Waypoint lastWaypoint) {
-        this.lastWaypoint = lastWaypoint;
     }
 
     public static class Builder {
@@ -368,6 +415,12 @@ public class Mission implements Simable {
 
         public Builder setMissionMunitions(Map<Integer,MunitionType> missionMunitions) {
             mission.setMissionMunitions(missionMunitions);
+            return this;
+        }
+
+        public Builder setTimeOnStation(int length) {
+            mission.setTimeOnStation(length);
+            mission.setOnStation(false);
             return this;
         }
 

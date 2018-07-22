@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.main.CampaignSettings;
 import sim.main.DynamicCampaignSim;
+import sim.main.GlobalSimSettings;
 import sim.save.JSONUtil;
 import ui.constants.CoalitionActions;
 import ui.constants.FileActions;
@@ -247,6 +248,9 @@ public class JDCGUIFrame extends JFrame {
             switch (infoAction) {
                 case GOALS:
                     break;
+                case PREFERENCES:
+                    handleCampaignSimulationPreferencesMenu();
+                    break;
             }
         }
 
@@ -267,6 +271,36 @@ public class JDCGUIFrame extends JFrame {
                 case JOptionPane.CANCEL_OPTION:
                     break;
             }
+        }
+
+        private void handleCampaignSimulationPreferencesMenu() {
+            if(campaign == null) {
+                log.debug("Campaing is null, abort..");
+                JOptionPane.showMessageDialog(null, "Please start a campaign before adjusting Simulation Settings!");
+                return;
+            }
+
+            JDialog newDialog = createCampaignSimulationPreferencesPanel();
+            newDialog.setTitle("Global Simulation Settings");
+            newDialog.setResizable(false);
+            newDialog.setLocationRelativeTo(null);
+            newDialog.setModal(true);
+            newDialog.setVisible(true);
+            GlobalSimSettings settings = ((SimSettingsPanel)newDialog.getContentPane().getComponent(0)).getSimulationSettings();
+
+            // If the settings are complete, we can proceed with populating the main portions of the frame
+            campaign.setSimSettings(settings);
+        }
+
+        private JDialog createCampaignSimulationPreferencesPanel() {
+            JDialog simPreferencesDialog = new JDialog();
+
+            JPanel panel = new SimSettingsPanel();
+            simPreferencesDialog.add(panel);
+            simPreferencesDialog.pack();
+            simPreferencesDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+            return simPreferencesDialog;
         }
 
         private void handleNewCampaignMenu() {
