@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatGrid;
 import sim.ai.threat.gen.ThreatGridGenerator;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
 import sim.domain.unit.UnitGroup;
@@ -15,7 +16,6 @@ import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.gen.air.AirUnitGenerator;
 import sim.gen.ground.AirfieldGenerator;
 import sim.gen.ground.GroundUnitGenerator;
-import sim.main.DynamicCampaignSim;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
 

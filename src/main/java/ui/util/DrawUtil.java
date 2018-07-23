@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatGrid;
 import sim.ai.threat.ThreatGridCell;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.WaypointType;
@@ -16,7 +17,6 @@ import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.Structure;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
-import sim.main.DynamicCampaignSim;
 import sim.util.mask.MaskFactory;
 
 import java.awt.BasicStroke;

@@ -2,6 +2,7 @@ package sim.gen.ground;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
@@ -15,7 +16,6 @@ import sim.domain.unit.ground.UnarmedShipGroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
-import sim.main.DynamicCampaignSim;
 import sim.settings.CampaignSettings;
 import sim.util.mask.MaskFactory;
 

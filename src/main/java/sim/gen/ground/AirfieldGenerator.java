@@ -2,6 +2,7 @@ package sim.gen.ground;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSideType;
@@ -11,7 +12,6 @@ import sim.domain.unit.air.MunitionStockpile;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.Structure;
-import sim.main.DynamicCampaignSim;
 import sim.settings.CampaignSettings;
 
 import java.awt.geom.Point2D;

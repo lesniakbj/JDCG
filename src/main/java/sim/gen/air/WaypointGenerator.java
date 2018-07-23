@@ -2,11 +2,11 @@ package sim.gen.air;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.enums.WaypointType;
 import sim.domain.unit.air.Waypoint;
-import sim.main.DynamicCampaignSim;
 import sim.util.MathUtil;
 
 import java.awt.geom.Point2D;

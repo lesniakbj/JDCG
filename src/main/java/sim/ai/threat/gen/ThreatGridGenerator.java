@@ -48,13 +48,11 @@ public class ThreatGridGenerator {
         return populateThreatGridValues(grid, friendlyCoalition, enemyCoalition);
     }
 
-    private ThreatGrid populateThreatGridValues(ThreatGrid grid, CoalitionManager friendlyCoalition, CoalitionManager enemyCoalition) {
+    public ThreatGrid populateThreatGridValues(ThreatGrid grid, CoalitionManager friendlyCoalition, CoalitionManager enemyCoalition) {
         for(int x = 0; x < grid.getNumCellsX(); x++) {
             for(int y = 0; y < grid.getNumCellsY(); y++) {
                 ThreatGridCell cell = grid.getThreatGrid()[x][y];
                 Rectangle2D.Double cellBounds = new Rectangle2D.Double(cell.getX(), cell.getY(), grid.getCellWidth(), grid.getCellWidth());
-                log.debug(cellBounds);
-
                 double threatLevel = threatCalculator.calculateThreatLevel(cellBounds, friendlyCoalition, enemyCoalition);
                 cell.setThreatLevel(threatLevel);
             }

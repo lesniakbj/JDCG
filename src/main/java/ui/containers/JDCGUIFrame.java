@@ -2,7 +2,7 @@ package ui.containers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.main.DynamicCampaignSim;
+import sim.campaign.DynamicCampaignSim;
 import sim.settings.CampaignSettings;
 import sim.settings.GlobalSimSettings;
 import sim.util.save.JSONUtil;

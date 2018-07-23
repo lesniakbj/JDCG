@@ -48,14 +48,12 @@ public class DynamicCampaignSim {
     private CampaignSettings campaignSettings;
 
     // Campaign data
-    private Rectangle2D.Double threatGridBounds;
     private Map<FactionSideType, List<Point2D.Double>> warfareFront;
     private CoalitionManager blueforCoalitionManager;
     private CoalitionManager redforCoalitionManager;
 
     // Generators and Simulators
     private DCSMissionGenerator dcsMissionGenerator;
-    private MissionGenerator missionGenerator;
     private MissionSimulator missionSimulator;
 
     // Selected data
@@ -75,7 +73,6 @@ public class DynamicCampaignSim {
         this.redforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.currentlySelectedMission = null;
         this.generateMission = false;
-        this.missionGenerator = new MissionGenerator();
         this.missionSimulator = new MissionSimulator();
         this.dcsMissionGenerator = new DCSMissionGenerator();
     }
@@ -216,7 +213,7 @@ public class DynamicCampaignSim {
         log.debug("After generation, strengths are: " + gen.getOverallForceStrength());
 
         // Then, generate the initial threat grids that will be used for the campaign AI managers
-        threatGridBounds = gen.generateThreatGridBounds(generatedAirfields);
+        Rectangle2D.Double threatGridBounds = gen.generateThreatGridBounds(generatedAirfields);
         ThreatGrid blueGrid = gen.generateThreatGridForCoalition(blueforCoalitionManager, redforCoalitionManager, threatGridBounds, FactionSideType.BLUEFOR);
         ThreatGrid redGrid = gen.generateThreatGridForCoalition(redforCoalitionManager, blueforCoalitionManager, threatGridBounds, FactionSideType.BLUEFOR);
         blueforCoalitionManager.getMissionManager().setThreatGrid(blueGrid);
@@ -242,14 +239,16 @@ public class DynamicCampaignSim {
         cal.add(Calendar.MINUTE, minutesToStep);
         campaignSettings.setCurrentCampaignDate(cal.getTime());
 
-        // Step all of the sim objects
+
+        // Step all the missions before having the AI/Coalition Managers Update
+        log.debug("Stepping Missions...");
         stepMissions(minutesToStep);
 
-        // Update coalition threat grids
-
-        // Have the campaign managers analyze the situation and plan new flights if needed
-        missionGenerator.updateAndGenerate(campaignSettings, simSettings, blueforCoalitionManager, redforCoalitionManager);
+        // Update the coalition managers
+        blueforCoalitionManager.update(redforCoalitionManager, minutesToStep);
+        redforCoalitionManager.update(blueforCoalitionManager, minutesToStep);
     }
+
 
     private void stepMissions(int minutesToStep) {
         // Gather all of the planned/running missions

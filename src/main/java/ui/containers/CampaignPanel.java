@@ -2,6 +2,7 @@ package ui.containers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MunitionType;
 import sim.domain.unit.UnitGroup;
@@ -11,7 +12,6 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.main.DynamicCampaignSim;
 import sim.manager.CoalitionManager;
 import ui.containers.menu.FlightLoadoutPanel;
 import ui.util.DrawUtil;

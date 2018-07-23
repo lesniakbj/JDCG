@@ -2,9 +2,9 @@ package ui.containers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Mission;
-import sim.main.DynamicCampaignSim;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;

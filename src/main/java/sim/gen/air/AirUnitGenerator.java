@@ -2,6 +2,7 @@ package sim.gen.air;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
@@ -13,7 +14,6 @@ import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Helicopter;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
-import sim.main.DynamicCampaignSim;
 import sim.settings.CampaignSettings;
 
 import java.util.ArrayList;

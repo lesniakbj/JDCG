@@ -2,13 +2,18 @@ package sim.manager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.ai.threat.gen.ThreatGridGenerator;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
+import sim.gen.air.MissionGenerator;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,11 +30,13 @@ public class CoalitionManager {
     // Campaign Managers
     private ObjectiveManager coalitionObjectiveManager;
     private MissionManager coalitionMissionManager;
+    private MissionGenerator missionGenerator;
 
     public CoalitionManager(List<UnitGroup<GroundUnit>> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
         this.coalitionFrontlineGroups = coalitionGroups;
         this.coalitionObjectiveManager = coalitionObjectiveManager;
         this.coalitionMissionManager = coalitionMissionManager;
+        this.missionGenerator = new MissionGenerator();
     }
 
     public List<Airfield> getCoalitionAirfields() {
@@ -90,5 +97,22 @@ public class CoalitionManager {
 
     public List<UnitGroup<AirUnit>> getCoalitionPlayerAirGroups() {
         return coalitionAirfields.stream().map(Airfield::getStationedAircraft).flatMap(Collection::stream).filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
+    }
+
+    public void update(CoalitionManager enemyCoalitionManager, int minutesToStep) {
+        // Update the Threat Grid
+        log.debug("Updating threat grid...");
+        ThreatGridGenerator threatGridGenerator = new ThreatGridGenerator();
+        log.debug(coalitionMissionManager.getThreatGrid());
+        threatGridGenerator.populateThreatGridValues(coalitionMissionManager.getThreatGrid(), this, enemyCoalitionManager);
+        log.debug(coalitionMissionManager.getThreatGrid());
+
+        // Let the AI tell us our next action
+        log.debug("Running AI / Decision Process...");
+
+        // Respond to that action
+        log.debug("Running process that was decided upon...");
+        // Might be something like this...
+        // missionGenerator.updateAndGenerate(campaignSettings, simSettings, this, enemyCoalitionManager);
     }
 }
