@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
 import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
@@ -292,7 +293,7 @@ public class CampaignPanel extends JPanel {
                 runSim.setText("Run Simulation");
             } else {
                 campaign.setSimRunning(true);
-                campaign.runSimulation(this, imageWidth, imageHeight, padding, bevel);
+                ScheduledFuture future = campaign.runSimulation(this, imageWidth, imageHeight, padding, bevel, runSim);
                 runSim.setText("Stop Simulation");
             }
         });
@@ -375,7 +376,7 @@ public class CampaignPanel extends JPanel {
         DrawUtil.drawCampaignAirbases(campaign, g);
 
         // Draw where the battle is happening (generation debugging)
-        DrawUtil.drawWarfareFront(campaign, g);
+        // DrawUtil.drawWarfareFront(campaign, g);
         // DrawUtil.drawWaterMask(campaign, g);
         // DrawUtil.drawExclusionMask(campaign, g);
         if(drawThreatGrid) {

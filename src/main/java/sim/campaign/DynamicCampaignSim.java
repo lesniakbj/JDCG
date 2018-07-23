@@ -20,6 +20,7 @@ import sim.settings.CampaignSettings;
 import sim.settings.GlobalSimSettings;
 import ui.containers.CampaignPanel;
 
+import javax.swing.JButton;
 import javax.swing.border.Border;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -314,15 +315,17 @@ public class DynamicCampaignSim {
         return line;
     }
 
-    public void runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel) {
+    private JButton runSimButton;
+    public ScheduledFuture runSimulation(CampaignPanel campaignPanel, int imageWidth, int imageHeight, Border padding, Border bevel, JButton runSim) {
+        runSimButton = runSim;
         scheduledFuture = exec.scheduleAtFixedRate(() -> {
             log.debug("Running task...");
-            log.debug(simRunning);
             if(simRunning) {
                 stepSimulation();
                 campaignPanel.updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
             }
         }, 0, 500, TimeUnit.MILLISECONDS);
+        return scheduledFuture;
     }
 
     public void setSimRunning(boolean simRunning) {
@@ -330,6 +333,7 @@ public class DynamicCampaignSim {
 
         if(!simRunning && scheduledFuture != null) {
             scheduledFuture.cancel(false);
+            runSimButton.setText("Run Simulation");
         }
     }
 

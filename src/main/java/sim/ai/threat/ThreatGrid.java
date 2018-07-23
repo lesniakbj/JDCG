@@ -31,9 +31,11 @@ public class ThreatGrid {
         for(int xvar = 0; xvar < threatGrid.length; xvar++) {
             for(int yvar = 0; yvar < threatGrid[xvar].length; yvar++) {
                 ThreatGridCell cell = new ThreatGridCell();
-                cell.setThreatLevel( 0.0);
-                cell.setX(x + (xvar * cellWidth));
-                cell.setY(y + (yvar * cellWidth));
+                cell.setThreatLevel(0.0);
+                cell.setX(xvar);
+                cell.setY(yvar);
+                cell.setMapX(x + (xvar * cellWidth));
+                cell.setMapY(y + (yvar * cellWidth));
                 cell.setIgnoreDuringThreatCalculations(false);
                 threatGrid[xvar][yvar] = cell;
             }
@@ -107,7 +109,7 @@ public class ThreatGrid {
     @Override
     public String toString() {
         return "{\"ThreatGrid\":{"
-                + "\"threatGrid\":" + Arrays.toString(threatGrid)
+                + "\"threatGrid\":" + Arrays.deepToString(threatGrid)
                 + ", \"x\":\"" + x + "\""
                 + ", \"y\":\"" + y + "\""
                 + ", \"w\":\"" + w + "\""

@@ -28,6 +28,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -95,13 +96,10 @@ public class DrawUtil {
                     g.drawString(waypoint.getWaypointType().name(), (int)(x - 10), (int)(y - 10));
 
                     // Draw the connecting line
-                    int lastX = (int) (lastWaypointLocationX * scaleX);
-                    int lastY = (int) (lastWaypointLocationY * scaleY);
-                    int curX = (int) (waypointX * scaleX);
-                    int curY = (int) (waypointY * scaleY);
+                    Line2D.Double line = new Line2D.Double((lastWaypointLocationX * scaleX), (lastWaypointLocationY * scaleY), (waypointX * scaleX), (waypointY * scaleY));
                     g.setColor(ACCENT_COLOR);
                     g.setStroke(DASHED);
-                    g.drawLine(lastX, lastY, curX, curY);
+                    g.draw(line);
                     g.setStroke(normalStroke);
 
                     lastWaypointLocationX = waypointX;
@@ -243,6 +241,11 @@ public class DrawUtil {
                 Rectangle2D.Double rect = new Rectangle2D.Double(gridX + (x * cellWX), gridY + (y * cellWY), cellWX, cellWY);
                 g.setColor(getThreatColorForCell(cell));
                 g.fill(rect);
+                if(cell.isIgnoreDuringThreatCalculations()) {
+                    g.setColor(Color.BLACK);
+                    Line2D.Double line = new Line2D.Double(rect.getX(), rect.getY(), rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight());
+                    g.draw(line);
+                }
             }
         }
     }

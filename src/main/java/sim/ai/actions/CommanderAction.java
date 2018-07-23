@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public class CommanderAction {
-    List<Map<UnitGroup, AIAction>> actionList;
+    Map<UnitGroup, AIAction> actionMap;
 
-    public List<Map<UnitGroup, AIAction>> getActionList() {
-        return actionList;
+    public Map<UnitGroup, AIAction> getActionMap() {
+        return actionMap;
     }
 
-    public void setActionList(List<Map<UnitGroup, AIAction>> actionList) {
-        this.actionList = actionList;
+    public void setActionMap(Map<UnitGroup, AIAction> actionList) {
+        this.actionMap = actionList;
     }
 }

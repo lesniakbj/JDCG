@@ -24,11 +24,13 @@ public class CoalitionManager {
     private List<UnitGroup<GroundUnit>> coalitionFrontlineGroups;
     private Map<Airfield,List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits;
     private List<UnitGroup<AirDefenceUnit>> coalitionAirDefences;
+    private CommanderAction lastActionsTaken;
 
     // Campaign Managers
     private ObjectiveManager coalitionObjectiveManager;
     private MissionManager coalitionMissionManager;
     private ATOGenerator commander;
+
 
     public CoalitionManager(List<UnitGroup<GroundUnit>> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
         this.coalitionFrontlineGroups = coalitionGroups;
@@ -107,7 +109,7 @@ public class CoalitionManager {
 
         // Let the AI tell us our next action
         log.debug("Running AI / Decision Process...");
-        CommanderAction action = commander.generateATO(this, enemyCoalitionManager);
+        CommanderAction actions = commander.generateATO(this, enemyCoalitionManager, lastActionsTaken);
         // The AI will generate a CommanderAction, which is a list of
         // groups and what the AI said for each group to do. From there,
         // we need to execute what the.
@@ -116,5 +118,7 @@ public class CoalitionManager {
         log.debug("Running process that was decided upon...");
         // Might be something like this...
         // missionGenerator.updateAndGenerate(campaignSettings, simSettings, this, enemyCoalitionManager);
+
+        lastActionsTaken = actions;
     }
 }
