@@ -1,22 +1,23 @@
 package sim.ai.actions;
 
+import java.util.List;
 import sim.ai.threat.ThreatGrid;
 
 public class GenerationResult {
-    private CommanderAction lastActionsTaken;
+    private List<AIAction> actionsToTake;
     private ThreatGrid results;
 
-    public GenerationResult(CommanderAction lastActionsTaken, ThreatGrid results) {
-        this.lastActionsTaken = lastActionsTaken;
+    public GenerationResult(List<AIAction> actionsToTake, ThreatGrid results) {
+        this.actionsToTake = actionsToTake;
         this.results = results;
     }
 
-    public CommanderAction getActionsTaken() {
-        return lastActionsTaken;
+    public List<AIAction> getActionsTaken() {
+        return actionsToTake;
     }
 
-    public void setActionsTaken(CommanderAction lastActionsTaken) {
-        this.lastActionsTaken = lastActionsTaken;
+    public void setActionsTaken(List<AIAction> lastActionsTaken) {
+        this.actionsToTake = lastActionsTaken;
     }
 
     public ThreatGrid getResults() {
@@ -30,7 +31,7 @@ public class GenerationResult {
     @Override
     public String toString() {
         return "{\"GenerationResult\":{"
-                + "\"lastActionsTaken\":" + lastActionsTaken
+                + "\"lastActionsTaken\":" + actionsToTake
                 + ", \"results\":" + results
                 + "}}";
     }

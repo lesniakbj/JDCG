@@ -1,5 +1,14 @@
 package sim.gen.air;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
@@ -15,16 +24,6 @@ import sim.domain.unit.air.Helicopter;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
 import sim.settings.CampaignSettings;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class AirUnitGenerator {
     private static final Logger log = LogManager.getLogger(AirUnitGenerator.class);

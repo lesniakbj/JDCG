@@ -1,29 +1,7 @@
 package ui.containers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.campaign.DynamicCampaignSim;
-import sim.settings.CampaignSettings;
-import sim.settings.GlobalSimSettings;
-import sim.util.save.JSONUtil;
-import ui.constants.CoalitionActions;
-import ui.constants.FileActions;
-import ui.constants.InfoActions;
-import ui.constants.MissionActions;
-import ui.constants.UIAction;
-import ui.containers.menu.NewCampaignPanel;
-import ui.containers.menu.SimSettingsPanel;
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
 
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,8 +18,29 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
+import sim.settings.CampaignSettings;
+import sim.settings.GlobalSimSettings;
+import sim.util.save.JSONUtil;
+import ui.constants.CoalitionActions;
+import ui.constants.FileActions;
+import ui.constants.InfoActions;
+import ui.constants.MissionActions;
+import ui.constants.UIAction;
+import ui.containers.menu.NewCampaignPanel;
+import ui.containers.menu.SimSettingsPanel;
 
 public class JDCGUIFrame extends JFrame {
     private static final Logger log = LogManager.getLogger(JDCGUIFrame.class);

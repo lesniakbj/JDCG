@@ -1,5 +1,10 @@
 package sim.domain.unit.air;
 
+import java.awt.geom.Point2D;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
@@ -12,12 +17,6 @@ import sim.domain.unit.Simable;
 import sim.domain.unit.UnitGroup;
 import sim.util.MathUtil;
 
-import java.awt.geom.Point2D;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 public class Mission implements Simable {
     private static final Logger log = LogManager.getLogger(Mission.class);
 
@@ -26,7 +25,7 @@ public class Mission implements Simable {
     private MapType mapType;
     private SubTaskType missionType;
     private AirfieldType startingAirfield;
-    private UnitGroup<Aircraft> missionAircraft;
+    private UnitGroup<AirUnit> missionAircraft;
     private Map<Integer,MunitionType> missionMunitions;
     private Date plannedMissionDate;
     private Date currentCampaignDate;
@@ -56,11 +55,11 @@ public class Mission implements Simable {
         this.missionType = missionType;
     }
 
-    public UnitGroup<Aircraft> getMissionAircraft() {
+    public UnitGroup<AirUnit> getMissionAircraft() {
         return missionAircraft;
     }
 
-    public void setMissionAircraft(UnitGroup<Aircraft> missionAircraft) {
+    public void setMissionAircraft(UnitGroup<AirUnit> missionAircraft) {
         this.missionAircraft = missionAircraft;
     }
 
@@ -380,7 +379,7 @@ public class Mission implements Simable {
             return this;
         }
 
-        public Builder setMissionAircraft(UnitGroup<Aircraft> missionAircraft) {
+        public Builder setMissionAircraft(UnitGroup<AirUnit> missionAircraft) {
             mission.setMissionAircraft(missionAircraft);
             return this;
         }

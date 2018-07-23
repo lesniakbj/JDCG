@@ -1,8 +1,15 @@
 package sim.ai.threat;
 
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.ArmedShipGroundUnit;
 import sim.domain.unit.ground.ArmorGroundUnit;
@@ -14,10 +21,6 @@ import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.manager.CoalitionManager;
-
-import java.awt.geom.Rectangle2D;
-import java.util.List;
-import java.util.Map;
 
 public class ThreatCalculator {
     private static final Logger log = LogManager.getLogger(ThreatCalculator.class);
@@ -41,11 +44,26 @@ public class ThreatCalculator {
         threat = calculateAirDefenceThreat(friendlyCoalition.getCoalitionAirDefences(), cellBounds, threat, .05, true);
         threat = calculateAirDefenceThreat(enemyCoalition.getCoalitionAirDefences(), cellBounds, threat, .05, false);
 
+        // Calculate Threats of Aircraft
+        threat = calculateAirThreat(friendlyCoalition.getCoalitionMissionManager().getPlannedMissions(), cellBounds, threat, .20, true);
+        threat = calculateAirThreat(enemyCoalition.getCoalitionMissionManager().getPlannedMissions(), cellBounds, threat, .20, false);
+
         if(threat < 0) {
             return Math.max(minThreatLevel, threat);
         } else {
             return Math.min(maxThreatLevel, threat);
         }
+    }
+
+    private double calculateAirThreat(List<Mission> plannedMissions, Rectangle2D.Double cellBounds, double currentThreat, double threatForAircraftGroup, boolean isFriendly) {
+        List<UnitGroup<AirUnit>> airGroupsInProgress = plannedMissions.stream().map(Mission::getMissionAircraft).collect(Collectors.toList());
+        for(UnitGroup<AirUnit> airUnitGroup : airGroupsInProgress) {
+            if (cellBounds.contains(airUnitGroup.getMapXLocation(), airUnitGroup.getMapYLocation())) {
+                // For each aircraft group, add the base threat
+                currentThreat += threatForAircraftGroup * (isFriendly ? 1 : -1);
+            }
+        }
+        return currentThreat;
     }
 
     private double calculateAirDefenceThreat(List<UnitGroup<AirDefenceUnit>> coalitionAirDefences, Rectangle2D.Double cellBounds, double currentThreat, double threatForAirDefence, boolean isFriendly) {
@@ -111,6 +129,7 @@ public class ThreatCalculator {
 
         return unitThreat;
     }
+
     private double calculateAirDefenceUnitThreat(AirDefenceUnit u, double baseThreat) {
         double unitThreat = baseThreat;
 

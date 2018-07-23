@@ -1,7 +1,5 @@
 package sim.domain.enums;
 
-import java.util.Arrays;
-
 import static sim.domain.enums.MunitionSubType.AIR_TO_AIR;
 import static sim.domain.enums.MunitionSubType.AIR_TO_SURFACE;
 import static sim.domain.enums.MunitionSubType.ANTI_RADIATION;
@@ -9,6 +7,8 @@ import static sim.domain.enums.MunitionSubType.BOMBS;
 import static sim.domain.enums.MunitionSubType.GUN_POD;
 import static sim.domain.enums.MunitionSubType.NONE;
 import static sim.domain.enums.MunitionSubType.ROCKETS;
+
+import java.util.Arrays;
 
 public enum MunitionType {
     // =============================================

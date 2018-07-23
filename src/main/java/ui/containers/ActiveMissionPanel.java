@@ -1,19 +1,5 @@
 package ui.containers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.campaign.DynamicCampaignSim;
-import sim.domain.unit.air.Aircraft;
-import sim.domain.unit.air.Mission;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,6 +10,19 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
 
 public class ActiveMissionPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(ActiveMissionPanel.class);
@@ -45,9 +44,9 @@ public class ActiveMissionPanel extends JPanel {
 
         JPanel topHalf = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topHalf.add(new JLabel("Type: " + plannedMission.getMissionType().getTaskName()));
-        List<Aircraft> aircraftList = plannedMission.getMissionAircraft().getGroupUnits();
-        Map<Aircraft, Integer> aircraftTypes = aircraftList.stream().collect(Collectors.toMap((a) -> a, (a) -> 1, (v1, v2) -> v1 + v2));
-        for(Map.Entry<Aircraft, Integer> aircraftIntegerEntry : aircraftTypes.entrySet()) {
+        List<AirUnit> aircraftList = plannedMission.getMissionAircraft().getGroupUnits();
+        Map<AirUnit, Integer> aircraftTypes = aircraftList.stream().collect(Collectors.toMap((a) -> a, (a) -> 1, ( v1, v2) -> (int)v1 + v2));
+        for(Map.Entry<AirUnit, Integer> aircraftIntegerEntry : aircraftTypes.entrySet()) {
             topHalf.add(new JLabel("Aircraft: " + aircraftIntegerEntry.getKey().getAircraftType().getAircraftName() + "(" + aircraftIntegerEntry.getValue() + ")"));
         }
 

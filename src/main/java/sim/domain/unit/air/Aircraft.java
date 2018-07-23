@@ -1,14 +1,12 @@
 package sim.domain.unit.air;
 
+import java.util.Date;
 import sim.domain.enums.AircraftType;
 
-import java.util.Date;
-
 public class Aircraft extends AirUnit {
-    private AircraftType aircraftType;
 
     public Aircraft(AircraftType aircraftType) {
-        this.aircraftType = aircraftType;
+        super.setAircraftType(aircraftType);
     }
 
     @Override
@@ -26,19 +24,12 @@ public class Aircraft extends AirUnit {
         return false;
     }
 
-    public AircraftType getAircraftType() {
-        return aircraftType;
-    }
-
-    public void setAircraftType(AircraftType aircraftType) {
-        this.aircraftType = aircraftType;
-    }
 
     @Override
     public String toString() {
         return "{\"Aircraft\":"
                 + super.toString()
-                + ", \"aircraftType\":\"" + aircraftType + "\""
+                + ", \"aircraftType\":\"" + super.getAircraftType() + "\""
                 + "}";
     }
 }

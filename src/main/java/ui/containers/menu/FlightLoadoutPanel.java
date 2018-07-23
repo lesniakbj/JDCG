@@ -1,20 +1,7 @@
 package ui.containers.menu;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.domain.enums.AircraftType;
-import sim.domain.enums.MunitionType;
-import sim.domain.unit.air.Mission;
-import ui.util.SpringUtilities;
+import static ui.util.ImageScaleUtil.tryLoadImage;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -23,8 +10,20 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static ui.util.ImageScaleUtil.tryLoadImage;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.domain.enums.AircraftType;
+import sim.domain.enums.MunitionType;
+import sim.domain.unit.air.Mission;
+import ui.util.SpringUtilities;
 
 public class FlightLoadoutPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(FlightLoadoutPanel.class);

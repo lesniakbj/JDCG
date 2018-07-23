@@ -1,6 +1,24 @@
 package sim.campaign;
 
 import dcsgen.DCSMissionGenerator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import javax.swing.JButton;
+import javax.swing.border.Border;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatGrid;
@@ -19,25 +37,6 @@ import sim.mission.MissionSimulator;
 import sim.settings.CampaignSettings;
 import sim.settings.GlobalSimSettings;
 import ui.containers.CampaignPanel;
-
-import javax.swing.JButton;
-import javax.swing.border.Border;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
