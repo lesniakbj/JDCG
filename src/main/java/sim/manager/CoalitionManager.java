@@ -2,18 +2,16 @@ package sim.manager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.ai.actions.CommanderAction;
 import sim.ai.threat.gen.ThreatGridGenerator;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
-import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.gen.air.MissionGenerator;
+import sim.gen.air.ATOGenerator;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,13 +28,13 @@ public class CoalitionManager {
     // Campaign Managers
     private ObjectiveManager coalitionObjectiveManager;
     private MissionManager coalitionMissionManager;
-    private MissionGenerator missionGenerator;
+    private ATOGenerator commander;
 
     public CoalitionManager(List<UnitGroup<GroundUnit>> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
         this.coalitionFrontlineGroups = coalitionGroups;
         this.coalitionObjectiveManager = coalitionObjectiveManager;
         this.coalitionMissionManager = coalitionMissionManager;
-        this.missionGenerator = new MissionGenerator();
+        this.commander = new ATOGenerator();
     }
 
     public List<Airfield> getCoalitionAirfields() {
@@ -109,6 +107,10 @@ public class CoalitionManager {
 
         // Let the AI tell us our next action
         log.debug("Running AI / Decision Process...");
+        CommanderAction action = commander.generateATO(this, enemyCoalitionManager);
+        // The AI will generate a CommanderAction, which is a list of
+        // groups and what the AI said for each group to do. From there,
+        // we need to execute what the.
 
         // Respond to that action
         log.debug("Running process that was decided upon...");

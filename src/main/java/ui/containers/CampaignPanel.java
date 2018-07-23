@@ -375,7 +375,7 @@ public class CampaignPanel extends JPanel {
         DrawUtil.drawCampaignAirbases(campaign, g);
 
         // Draw where the battle is happening (generation debugging)
-        // DrawUtil.drawWarfareFront(campaign, g);
+        DrawUtil.drawWarfareFront(campaign, g);
         // DrawUtil.drawWaterMask(campaign, g);
         // DrawUtil.drawExclusionMask(campaign, g);
         if(drawThreatGrid) {

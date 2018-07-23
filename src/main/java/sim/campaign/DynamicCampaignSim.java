@@ -12,7 +12,6 @@ import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.gen.CampaignGenerator;
-import sim.gen.air.MissionGenerator;
 import sim.manager.CoalitionManager;
 import sim.manager.MissionManager;
 import sim.manager.ObjectiveManager;
@@ -303,7 +302,8 @@ public class DynamicCampaignSim {
 
         // Find the South horizontal line of the front
         List<Point2D.Double> line;
-        if(campaignSettings.getSelectedCampaignType().equals(CampaignType.OFFENSIVE) || campaignSettings.getSelectedMap().getMapType().equals(MapType.NORMANDY)) {
+        boolean northLine = (campaignSettings.getSelectedMap().getMapType().equals(MapType.NORMANDY) && campaignSettings.getSelectedCampaignType().equals(CampaignType.OFFENSIVE));
+        if((campaignSettings.getSelectedCampaignType().equals(CampaignType.OFFENSIVE) || campaignSettings.getSelectedMap().getMapType().equals(MapType.NORMANDY)) && !northLine) {
             double maxY = front.stream().mapToDouble(Point2D.Double::getY).max().orElse(0.0);
             line = front.stream().filter(d -> d.getY() == maxY).collect(Collectors.toList());
         } else {

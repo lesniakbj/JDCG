@@ -2,36 +2,27 @@ package sim.gen.air;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.ai.actions.CommanderAction;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Aircraft;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Waypoint;
-import sim.domain.unit.global.Airfield;
-import sim.domain.unit.ground.GroundUnit;
-import sim.domain.unit.ground.Structure;
-import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
-import sim.settings.GlobalSimSettings;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static sim.domain.enums.StaticLists.DEFAULT_LOADOUTS;
 
-public class MissionGenerator {
-    private static final Logger log = LogManager.getLogger(MissionGenerator.class);
+public class ATOGenerator {
+    private static final Logger log = LogManager.getLogger(ATOGenerator.class);
 
     public void generateTestMissionForCoalition(CampaignSettings campaign, CoalitionManager coalitionManager, Date date) {
         List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(AirfieldType.AL_DHAFRA_AIRBASE.getAirfieldMapPosition(), AirfieldType.KHASAB.getAirfieldMapPosition(), SubTaskType.INTERCEPT, MapType.PERSIAN_GULF);
@@ -59,6 +50,11 @@ public class MissionGenerator {
         coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }
 
+    public CommanderAction generateATO(CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
+        return new CommanderAction();
+    }
+
+    /*
     public void updateAndGenerate(CampaignSettings campaignSettings, GlobalSimSettings simSettings, CoalitionManager blueforCoalitionManager, CoalitionManager redforCoalitionManager) {
         generateATOForCoalition(campaignSettings, simSettings, blueforCoalitionManager, redforCoalitionManager, FactionSideType.BLUEFOR);
         generateATOForCoalition(campaignSettings, simSettings, redforCoalitionManager, blueforCoalitionManager, FactionSideType.REDFOR);
@@ -110,4 +106,5 @@ public class MissionGenerator {
         log.debug("Looking at the aircraft from enemy: " + enemyManager.getCoalitionAirGroups());
         return new ArrayList<>();
     }
+    */
 }
