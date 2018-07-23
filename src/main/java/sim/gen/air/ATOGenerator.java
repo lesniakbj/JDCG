@@ -77,8 +77,7 @@ public class ATOGenerator {
         setThreatCellsToIgnore(currentThreatGrid);
 
         // Have our AI commander determine the commands we are to take
-        aiCommander.setLastUpdateDate(currentCampaignDate);
-        return aiCommander.generateCommanderActions(currentThreatGrid, friendlyCoalitionManager, enemyCoalitionManager);
+        return aiCommander.generateCommanderActions(currentThreatGrid, currentCampaignDate, friendlyCoalitionManager, enemyCoalitionManager);
     }
 
     private void setThreatCellsToIgnore(ThreatGrid currentThreatGrid) {

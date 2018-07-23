@@ -3,7 +3,6 @@ package sim.ai.command;
 import java.util.Date;
 import java.util.List;
 import sim.ai.actions.AIAction;
-import sim.ai.actions.CommanderAction;
 import sim.ai.threat.ThreatGrid;
 import sim.manager.CoalitionManager;
 
@@ -20,6 +19,6 @@ import sim.manager.CoalitionManager;
  * Created by Brendan.Lesniak on 7/23/2018.
  */
 public interface AICommander {
-    List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager);
-    void setLastUpdateDate(Date lastUpdateDate);
+    List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, Date currentCampaignDate,
+            CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager);
 }

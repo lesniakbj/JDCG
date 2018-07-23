@@ -1,5 +1,7 @@
 package sim.ai.command;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +35,15 @@ public class RandomAICommander implements AICommander {
     }
 
     @Override
-    public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
+    public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, Date currentCampaignDate,
+            CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
+        // If we're too soon, don't plan any new actions
+        if(getNextPlanningDate().before(currentCampaignDate)) {
+            log.debug("Unable to plan actions! Waiting for planning date...");
+            return new ArrayList<>();
+        }
+        lastUpdateDate = currentCampaignDate;
+
         List<GenerationResult> generatedMoves = ThreatGrid.generateAllPossibleMoves(currentThreatGrid, friendlyCoalitionManager, enemyCoalitionManager);
         if(!generatedMoves.isEmpty()) {
             return generatedMoves.get(DynamicCampaignSim.getRandomGen().nextInt(generatedMoves.size())).getActionsTaken();
@@ -41,8 +51,10 @@ public class RandomAICommander implements AICommander {
         return null;
     }
 
-    @Override
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
+    private Date getNextPlanningDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(lastUpdateDate);
+        cal.add(Calendar.MINUTE, timeBetweenPlanningInMinutes);
+        return cal.getTime();
     }
 }

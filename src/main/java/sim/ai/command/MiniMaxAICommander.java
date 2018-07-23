@@ -1,9 +1,9 @@
 package sim.ai.command;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import sim.ai.actions.AIAction;
-import sim.ai.actions.CommanderAction;
 import sim.ai.threat.ThreatGrid;
 import sim.manager.CoalitionManager;
 
@@ -22,7 +22,8 @@ import sim.manager.CoalitionManager;
 public class MiniMaxAICommander implements AICommander {
 
     @Override
-    public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
+    public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, Date currentCampaignDate,
+            CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
         return new ArrayList<>();
     }
 }
