@@ -1,5 +1,6 @@
 package sim.ai.command;
 
+import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,13 @@ import sim.manager.CoalitionManager;
 public class RandomAICommander implements AICommander {
     private static final Logger log = LogManager.getLogger(RandomAICommander.class);
 
+    private Date lastUpdateDate;
+    private int timeBetweenPlanningInMinutes;
+
+    public RandomAICommander(int timeBetweenPlanningInMinutes) {
+        this.timeBetweenPlanningInMinutes = timeBetweenPlanningInMinutes;
+    }
+
     @Override
     public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
         List<GenerationResult> generatedMoves = ThreatGrid.generateAllPossibleMoves(currentThreatGrid, friendlyCoalitionManager, enemyCoalitionManager);
@@ -31,5 +39,10 @@ public class RandomAICommander implements AICommander {
             return generatedMoves.get(DynamicCampaignSim.getRandomGen().nextInt(generatedMoves.size())).getActionsTaken();
         }
         return null;
+    }
+
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 }

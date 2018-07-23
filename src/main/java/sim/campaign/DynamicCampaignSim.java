@@ -244,8 +244,8 @@ public class DynamicCampaignSim {
         stepMissions(minutesToStep);
 
         // Update the coalition managers
-        blueforCoalitionManager.update(redforCoalitionManager, minutesToStep);
-        redforCoalitionManager.update(blueforCoalitionManager, minutesToStep);
+        blueforCoalitionManager.update(campaignSettings, redforCoalitionManager, minutesToStep);
+        redforCoalitionManager.update(campaignSettings, blueforCoalitionManager, minutesToStep);
     }
 
 

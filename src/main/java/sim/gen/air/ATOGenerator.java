@@ -33,15 +33,14 @@ import sim.settings.CampaignSettings;
 public class ATOGenerator {
     private static final Logger log = LogManager.getLogger(ATOGenerator.class);
 
-    private static final int MEMORY_DEPTH = 50;
+    private AICommander aiCommander;
+
+    private static final int TIME_BETWEEN_PLANNING_MINUTES = 120;
     private static final int[][] NEIGHBOURS = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
 
-    private AICommander aiCommander;
-    private List<GenerationResult> generationMemory;
 
-    public  ATOGenerator() {
-        generationMemory = new LinkedList<>();
-        aiCommander = new RandomAICommander();
+    public ATOGenerator() {
+        aiCommander = new RandomAICommander(TIME_BETWEEN_PLANNING_MINUTES);
     }
 
     public void generateTestMissionForCoalition(CampaignSettings campaign, CoalitionManager coalitionManager, Date date) {
@@ -70,7 +69,7 @@ public class ATOGenerator {
         coalitionManager.getCoalitionMissionManager().addMission(builder.build());
     }
 
-    public List<AIAction> generateATO(CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager, List<AIAction> lastActionsTaken) {
+    public List<AIAction> generateATO(CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager, List<AIAction> lastActionsTaken, Date currentCampaignDate) {
         // Next action...
         ThreatGrid currentThreatGrid = friendlyCoalitionManager.getMissionManager().getThreatGrid();
 
@@ -78,6 +77,7 @@ public class ATOGenerator {
         setThreatCellsToIgnore(currentThreatGrid);
 
         // Have our AI commander determine the commands we are to take
+        aiCommander.setLastUpdateDate(currentCampaignDate);
         return aiCommander.generateCommanderActions(currentThreatGrid, friendlyCoalitionManager, enemyCoalitionManager);
     }
 
