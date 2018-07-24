@@ -1,9 +1,5 @@
 package sim.manager;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -14,7 +10,13 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.gen.air.ATOGenerator;
+import sim.gen.mission.AirUnitMissionGenerator;
 import sim.settings.CampaignSettings;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CoalitionManager {
     private static final Logger log = LogManager.getLogger(CoalitionManager.class);
@@ -95,6 +97,20 @@ public class CoalitionManager {
         return coalitionAirfields.stream().map(Airfield::getStationedAircraft).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
+    public Map<Airfield, List<UnitGroup<AirUnit>>> getCoalitionAirGroupsMap() {
+        return coalitionAirfields.stream().collect(Collectors.toMap(a -> a, Airfield::getStationedAircraft));
+    }
+
+    public void updateCoalitionAirGroups(Airfield field, List<UnitGroup<AirUnit>> unitGroups) {
+        Airfield a = coalitionAirfields.stream().filter(af -> af.getAirfieldType().equals(field.getAirfieldType())).findFirst().orElse(null);
+        if(a == null) {
+            return;
+        }
+        coalitionAirfields.remove(a);
+        a.setStationedAircraft(unitGroups);
+        coalitionAirfields.add(a);
+    }
+
     public List<UnitGroup<AirUnit>> getCoalitionPlayerAirGroups() {
         return coalitionAirfields.stream().map(Airfield::getStationedAircraft).flatMap(Collection::stream).filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
     }
@@ -108,16 +124,20 @@ public class CoalitionManager {
         log.debug(coalitionMissionManager.getThreatGrid());
 
         // Let the AI tell us our next action
-        log.debug("Running AI / Decision Process...");
-        List<AIAction> actions = commander.generateATO(this, enemyCoalitionManager, lastActionsTaken, campaignSettings.getCurrentCampaignDate());
         // The AI will generate a CommanderAction, which is a list of
         // groups and what the AI said for each group to do. From there,
-        // we need to execute what the.
+        // we need to execute what was created.
+        log.debug("Running AI / Decision Process...");
+        List<AIAction> actions = commander.generateATO(this, enemyCoalitionManager, lastActionsTaken, campaignSettings.getCurrentCampaignDate());
 
         // Respond to that action
         log.debug("Running process that was decided upon...");
-        // Might be something like this...
         // missionGenerator.updateAndGenerate(campaignSettings, simSettings, this, enemyCoalitionManager);
+
+        // Test to plan AirUnit removal from airbases when on missions
+        if(coalitionMissionManager.getPlannedMissions().size() == 0) {
+            AirUnitMissionGenerator.generateTestMissionForCoalition(campaignSettings, this,campaignSettings.getCurrentCampaignDate());
+        }
 
         lastActionsTaken = actions;
     }

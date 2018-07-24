@@ -1,10 +1,5 @@
 package sim.domain.unit.air;
 
-import java.awt.geom.Point2D;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
@@ -16,6 +11,12 @@ import sim.domain.unit.SimUnit;
 import sim.domain.unit.Simable;
 import sim.domain.unit.UnitGroup;
 import sim.util.MathUtil;
+
+import java.awt.geom.Point2D;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Mission implements Simable {
     private static final Logger log = LogManager.getLogger(Mission.class);
@@ -38,6 +39,7 @@ public class Mission implements Simable {
     private Waypoint nextWaypoint;
     private Waypoint lastWaypoint;
     private SimUnit target;
+    private double currentDir;
 
     private boolean isClientMission;
     private boolean missionComplete;
@@ -235,8 +237,27 @@ public class Mission implements Simable {
         this.target = target;
     }
 
+    public double getCurrentDir() {
+        return currentDir;
+    }
+
+    public void setCurrentDir(double currentDir) {
+        this.currentDir = currentDir;
+    }
+
     @Override
     public void updateStep() {
+        double currentX = missionAircraft.getMapXLocation();
+        double currentY = missionAircraft.getMapYLocation();
+        double currentDirection = Math.toRadians(getDirectionNextWaypoint() - 90);
+        double currentSpeed = getNextWaypoint().getSpeedMilesPerHour();
+
+        double minutesPerStep = (60.0 / minutesPerUpdate);
+        double pxDistance = currentSpeed / (minutesPerStep * mapType.getMapScalePixelsPerMile());
+
+        double newX = (currentX + (pxDistance * Math.cos(currentDirection)));
+        double newY = (currentY + (pxDistance * Math.sin(currentDirection)));
+
         if(!isActive()) {
             log.debug("Waiting for mission start date...");
             return;
@@ -250,21 +271,12 @@ public class Mission implements Simable {
 
         if(onStationEndDate != null && currentCampaignDate.before(onStationEndDate)) {
             log.debug("We're currently on station...");
+            currentDir += 45;
             return;
         }
 
         if(nextWaypoint != null) {
-            double currentX = missionAircraft.getMapXLocation();
-            double currentY = missionAircraft.getMapYLocation();
-            double currentDirection = Math.toRadians(getDirectionNextWaypoint() - 90);
-            double currentSpeed = getNextWaypoint().getSpeedMilesPerHour();
-
-            double minutesPerStep = (60.0 / minutesPerUpdate);
-            double pxDistance = currentSpeed / (minutesPerStep * mapType.getMapScalePixelsPerMile());
-
-            double newX = (currentX + (pxDistance * Math.cos(currentDirection)));
-            double newY = (currentY + (pxDistance * Math.sin(currentDirection)));
-
+            currentDir = currentDirection;
             // If we are going to collide with the next waypoint on this movement,
             // then remove the waypoint, move the group to that location, and set rotation
             // to the next waypoint

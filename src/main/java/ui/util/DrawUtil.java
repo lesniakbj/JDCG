@@ -1,23 +1,5 @@
 package ui.util;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatGrid;
@@ -36,6 +18,25 @@ import sim.domain.unit.ground.Structure;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.util.mask.MaskFactory;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 ;
 
@@ -154,7 +155,7 @@ public class DrawUtil {
             Rectangle2D.Double backLine = new Rectangle2D.Double(x, y + 4, 0, 6);
 
             // Rotate the image to fit the direction of the mission
-            double angle = mission.getDirectionNextWaypoint();
+            double angle = mission.isOnStation() ? mission.getCurrentDir() : mission.getDirectionNextWaypoint();
             Rectangle bounds = triangle.getBounds();
             AffineTransform transform = new AffineTransform();
             transform.rotate(Math.toRadians(angle), bounds.getX() + (bounds.getWidth() / 2), bounds.getY() + (bounds.getHeight() / 2));

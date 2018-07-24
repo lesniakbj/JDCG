@@ -1,8 +1,8 @@
 package ui.containers.menu;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.util.Arrays;
+import sim.domain.enums.MissionStartType;
+import sim.settings.GlobalSimSettings;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -10,8 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import sim.domain.enums.MissionStartType;
-import sim.settings.GlobalSimSettings;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.Arrays;
 
 public class SimSettingsPanel extends JPanel {
     private GlobalSimSettings simulationSettings;

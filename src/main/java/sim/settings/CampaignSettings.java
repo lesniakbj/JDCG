@@ -1,8 +1,5 @@
 package sim.settings;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
@@ -12,6 +9,10 @@ import sim.domain.enums.MapType;
 import sim.domain.enums.SquadronType;
 import sim.domain.unit.global.Coalition;
 import sim.domain.unit.global.GameMap;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 public class CampaignSettings {
     private GameMap selectedMap;

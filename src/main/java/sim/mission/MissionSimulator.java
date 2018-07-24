@@ -1,11 +1,5 @@
 package sim.mission;
 
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
@@ -22,6 +16,13 @@ import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
+
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MissionSimulator {
     private static final Logger log = LogManager.getLogger(MissionSimulator.class);

@@ -1,14 +1,5 @@
 package sim.gen.ground;
 
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
@@ -27,6 +18,16 @@ import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.settings.CampaignSettings;
 import sim.util.mask.MaskFactory;
+
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GroundUnitGenerator {
     private static final Logger log = LogManager.getLogger(GroundUnitGenerator.class);

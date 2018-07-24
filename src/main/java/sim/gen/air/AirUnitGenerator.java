@@ -1,14 +1,5 @@
 package sim.gen.air;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
@@ -24,6 +15,16 @@ import sim.domain.unit.air.Helicopter;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
 import sim.settings.CampaignSettings;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AirUnitGenerator {
     private static final Logger log = LogManager.getLogger(AirUnitGenerator.class);
@@ -157,6 +158,8 @@ public class AirUnitGenerator {
         for(Airfield airfield : airfields) {
             for(int i = 0; i < total; i++) {
                 UnitGroup<AirUnit> group = airUnits.remove(DynamicCampaignSim.getRandomGen().nextInt(airUnits.size()));
+                group.setMapXLocation(airfield.getAirfieldType().getAirfieldMapPosition().getX());
+                group.setMapYLocation(airfield.getAirfieldType().getAirfieldMapPosition().getY());
                 airfield.addAircraftGroup(group);
             }
         }
@@ -165,6 +168,8 @@ public class AirUnitGenerator {
             log.debug("Assigning spare groups");
             Airfield airfield = airfields.get(DynamicCampaignSim.getRandomGen().nextInt(airfields.size()));
             UnitGroup<AirUnit> group = airUnits.remove(DynamicCampaignSim.getRandomGen().nextInt(airUnits.size()));
+            group.setMapXLocation(airfield.getAirfieldType().getAirfieldMapPosition().getX());
+            group.setMapYLocation(airfield.getAirfieldType().getAirfieldMapPosition().getY());
             airfield.addAircraftGroup(group);
         }
     }

@@ -1,10 +1,5 @@
 package sim.ai.threat;
 
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.unit.UnitGroup;
@@ -21,6 +16,11 @@ import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.manager.CoalitionManager;
+
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ThreatCalculator {
     private static final Logger log = LogManager.getLogger(ThreatCalculator.class);

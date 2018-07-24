@@ -1,8 +1,6 @@
 package sim.ai.actions;
 
 import java.util.List;
-import java.util.Map;
-import sim.domain.unit.UnitGroup;
 
 public class CommanderAction {
     List<AIAction> actionMap;

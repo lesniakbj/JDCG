@@ -1,16 +1,15 @@
 package sim.ai.command;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
-import sim.ai.actions.GenerationResult;
 import sim.ai.threat.ThreatGrid;
 import sim.campaign.DynamicCampaignSim;
 import sim.manager.CoalitionManager;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

@@ -1,9 +1,10 @@
 package sim.domain.unit;
 
+import sim.domain.enums.FactionSideType;
+
 import java.awt.geom.Point2D;
 import java.util.Date;
 import java.util.List;
-import sim.domain.enums.FactionSideType;
 
 public class UnitGroup<T extends SimUnit> extends SimUnit {
     private int id;

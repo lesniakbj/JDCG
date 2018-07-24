@@ -1,11 +1,5 @@
 package sim.ai.threat;
 
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -18,6 +12,11 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.manager.CoalitionManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 public class ThreatGrid {
@@ -132,6 +131,30 @@ public class ThreatGrid {
                 }
             }
         }
+    }
+
+    public List<ThreatGridCell> getCellsGreaterThan(double value) {
+        List<ThreatGridCell> cells = new ArrayList<>();
+        for (ThreatGridCell[] aThreatGrid : threatGrid) {
+            for (ThreatGridCell anAThreatGrid : aThreatGrid) {
+                if (anAThreatGrid.getThreatLevel() > value) {
+                    cells.add(anAThreatGrid);
+                }
+            }
+        }
+        return cells;
+    }
+
+    public List<ThreatGridCell> getCellsLessThan(double value) {
+        List<ThreatGridCell> cells = new ArrayList<>();
+        for (ThreatGridCell[] aThreatGrid : threatGrid) {
+            for (ThreatGridCell anAThreatGrid : aThreatGrid) {
+                if (anAThreatGrid.getThreatLevel() < value) {
+                    cells.add(anAThreatGrid);
+                }
+            }
+        }
+        return cells;
     }
 
     public List<List<AIAction>> generateAllPossibleMoves(CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
@@ -323,29 +346,6 @@ public class ThreatGrid {
         return action;
     }
 
-    private List<ThreatGridCell> getCellsGreaterThan(double value) {
-        List<ThreatGridCell> cells = new ArrayList<>();
-        for (ThreatGridCell[] aThreatGrid : threatGrid) {
-            for (ThreatGridCell anAThreatGrid : aThreatGrid) {
-                if (anAThreatGrid.getThreatLevel() > value) {
-                    cells.add(anAThreatGrid);
-                }
-            }
-        }
-        return cells;
-    }
-
-    private List<ThreatGridCell> getCellsLessThan(double value) {
-        List<ThreatGridCell> cells = new ArrayList<>();
-        for (ThreatGridCell[] aThreatGrid : threatGrid) {
-            for (ThreatGridCell anAThreatGrid : aThreatGrid) {
-                if (anAThreatGrid.getThreatLevel() < value) {
-                    cells.add(anAThreatGrid);
-                }
-            }
-        }
-        return cells;
-    }
 
     private boolean cellHasNoNeighbors(ThreatGridCell searchCell) {
         double totalThreatToCell = 0.0;

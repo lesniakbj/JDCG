@@ -1,11 +1,12 @@
 package sim.ai.command;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import sim.ai.actions.AIAction;
 import sim.ai.threat.ThreatGrid;
 import sim.manager.CoalitionManager;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

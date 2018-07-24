@@ -1,7 +1,8 @@
 package sim.ai.actions;
 
-import java.util.List;
 import sim.ai.threat.ThreatGrid;
+
+import java.util.List;
 
 public class GenerationResult {
     private List<AIAction> actionsToTake;
