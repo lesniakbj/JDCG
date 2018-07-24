@@ -191,56 +191,39 @@ public class ThreatGrid {
             return new ArrayList<>(Collections.singletonList(action));
         }
 
-        List<AIAction> actions;
+        // Variables...
         List<AIActionType> actionsToGenerate = new ArrayList<>(Collections.singletonList(AIActionType.NOTHING));
         AircraftType aircraftType = airUnitGroup.getGroupUnits().get(0).getAircraftType();
         List<SubTaskType> aircraftSubTasks = aircraftType.getPossibleTasks();
-        if(aircraftType.isHelicopter()) {
-            if(aircraftSubTasks.contains(SubTaskType.TRANSPORT) || aircraftSubTasks.contains(SubTaskType.AIRLIFT)) {
-                actionsToGenerate.add(AIActionType.TRANSPORT_AIR_DEFENCE);
-                actionsToGenerate.add(AIActionType.TRANSPORT_GROUND_UNIT);
-            }
 
-            if(aircraftSubTasks.contains(SubTaskType.CAS) || aircraftSubTasks.contains(SubTaskType.GROUND_STRIKE)) {
-                actionsToGenerate.add(AIActionType.ATTACK_AIR_DEFENCE);
-                actionsToGenerate.add(AIActionType.ATTACK_AIRBASE_STRUCTURE);
-                actionsToGenerate.add(AIActionType.ATTACK_GROUND_UNIT);
-                actionsToGenerate.add(AIActionType.DEFEND_AIR_DEFENCE);
-                actionsToGenerate.add(AIActionType.DEFEND_AIRBASE_STRUCTURE);
-                actionsToGenerate.add(AIActionType.DEFEND_GROUND_UNIT);
-            }
-            
-            actions = generateAllPossibleMovesOfType(airUnitGroup, friendlyCoalitionManager, enemyCoalitionManager, actionsToGenerate, offensiveCells, defensiveCells);
-        } else {
-            if(aircraftSubTasks.contains(SubTaskType.TRANSPORT) || aircraftSubTasks.contains(SubTaskType.AIRLIFT)) {
-                actionsToGenerate.add(AIActionType.TRANSPORT_GROUND_UNIT);
-                actionsToGenerate.add(AIActionType.TRANSPORT_AIR_DEFENCE);
-            }
-
-            if(aircraftSubTasks.contains(SubTaskType.CAP) || aircraftSubTasks.contains(SubTaskType.ESCORT) || aircraftSubTasks.contains(SubTaskType.INTERCEPT)) {
-                actionsToGenerate.add(AIActionType.ATTACK_AIR_DEFENCE);
-                actionsToGenerate.add(AIActionType.ATTACK_AIRBASE_STRUCTURE);
-                actionsToGenerate.add(AIActionType.ATTACK_GROUND_UNIT);
-                actionsToGenerate.add(AIActionType.DEFEND_AIR_DEFENCE);
-                actionsToGenerate.add(AIActionType.DEFEND_AIRBASE_STRUCTURE);
-                actionsToGenerate.add(AIActionType.DEFEND_GROUND_UNIT);
-            }
-
-            if(aircraftSubTasks.contains(SubTaskType.CAS) || aircraftSubTasks.contains(SubTaskType.GROUND_STRIKE)) {
-                actionsToGenerate.add(AIActionType.INTERCEPT_FLIGHT);
-                actionsToGenerate.add(AIActionType.DEFEND_AIR_DEFENCE);
-                actionsToGenerate.add(AIActionType.DEFEND_AIRBASE_STRUCTURE);
-                actionsToGenerate.add(AIActionType.DEFEND_GROUND_UNIT);
-            }
-
-            if(aircraftSubTasks.contains(SubTaskType.BOMBER)) {
-                actionsToGenerate.add(AIActionType.STRATEGIC_BOMBING);
-            }
-
-            actions = generateAllPossibleMovesOfType(airUnitGroup, friendlyCoalitionManager, enemyCoalitionManager, actionsToGenerate, offensiveCells, defensiveCells);
+        // Add some default actions to generate
+        if(aircraftSubTasks.contains(SubTaskType.CAS) || aircraftSubTasks.contains(SubTaskType.GROUND_STRIKE)) {
+            actionsToGenerate.add(AIActionType.ATTACK_AIR_DEFENCE);
+            actionsToGenerate.add(AIActionType.ATTACK_AIRBASE_STRUCTURE);
+            actionsToGenerate.add(AIActionType.ATTACK_GROUND_UNIT);
+            actionsToGenerate.add(AIActionType.DEFEND_AIR_DEFENCE);
+            actionsToGenerate.add(AIActionType.DEFEND_AIRBASE_STRUCTURE);
+            actionsToGenerate.add(AIActionType.DEFEND_GROUND_UNIT);
         }
 
-        return actions;
+        if(aircraftSubTasks.contains(SubTaskType.CAP) || aircraftSubTasks.contains(SubTaskType.ESCORT) || aircraftSubTasks.contains(SubTaskType.INTERCEPT)) {
+            actionsToGenerate.add(AIActionType.INTERCEPT_FLIGHT);
+            actionsToGenerate.add(AIActionType.DEFEND_AIR_DEFENCE);
+            actionsToGenerate.add(AIActionType.DEFEND_AIRBASE_STRUCTURE);
+            actionsToGenerate.add(AIActionType.DEFEND_GROUND_UNIT);
+        }
+
+        if(aircraftSubTasks.contains(SubTaskType.TRANSPORT) || aircraftSubTasks.contains(SubTaskType.AIRLIFT)) {
+            actionsToGenerate.add(AIActionType.TRANSPORT_AIR_DEFENCE);
+            actionsToGenerate.add(AIActionType.TRANSPORT_GROUND_UNIT);
+        }
+
+        if(aircraftSubTasks.contains(SubTaskType.BOMBER)) {
+            actionsToGenerate.add(AIActionType.STRATEGIC_BOMBING);
+        }
+
+        // Add other actions that
+        return generateAllPossibleMovesOfType(airUnitGroup, friendlyCoalitionManager, enemyCoalitionManager, actionsToGenerate, offensiveCells, defensiveCells);
     }
 
     private List<AIAction> generateAllPossibleMovesOfType(UnitGroup<AirUnit> airUnitGroup, CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager, List<AIActionType> actionsToGenerate, List<ThreatGridCell> offensiveCells, List<ThreatGridCell> defensiveCells) {
@@ -248,7 +231,6 @@ public class ThreatGrid {
         List<Airfield> friendlyAirfields = friendlyCoalitionManager.getCoalitionAirfields();
         List<UnitGroup<AirDefenceUnit>> friendlyAirDefences = friendlyCoalitionManager.getCoalitionAirDefences();
         List<UnitGroup<GroundUnit>> friendlyGroundUnits = friendlyCoalitionManager.getCoalitionFrontlineGroups();
-
 
         // Enemy Information
         List<Airfield> enemyAirfields = enemyCoalitionManager.getCoalitionAirfields();

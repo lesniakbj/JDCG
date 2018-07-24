@@ -30,8 +30,7 @@ public class ThreatCalculator {
         double maxThreatLevel = 1.0;
         double minThreatLevel = -1.0;
 
-        // Calculate Airfield Threat Levels, this includes stationed aircraft
-        // and their structures
+        // Calculate Airfield Threat Levels, this includes stationed aircraft and their structures
         threat = calculateAirfieldThreat(friendlyCoalition.getCoalitionPointDefenceGroundUnits(),  cellBounds, threat, .20, .0015, true);
         threat = calculateAirfieldThreat(enemyCoalition.getCoalitionPointDefenceGroundUnits(), cellBounds, threat,.20, .0015,false);
 
@@ -44,9 +43,9 @@ public class ThreatCalculator {
         threat = calculateAirDefenceThreat(friendlyCoalition.getCoalitionAirDefences(), cellBounds, threat, .05, true);
         threat = calculateAirDefenceThreat(enemyCoalition.getCoalitionAirDefences(), cellBounds, threat, .05, false);
 
-        // Calculate Threats of Aircraft
-        threat = calculateAirThreat(friendlyCoalition.getCoalitionMissionManager().getPlannedMissions(), cellBounds, threat, .20, true);
-        threat = calculateAirThreat(enemyCoalition.getCoalitionMissionManager().getPlannedMissions(), cellBounds, threat, .20, false);
+        // Calculate Threats of Aircraft (heaviest level of threat, as they are the only ones who can reduce score)
+        threat = calculateAirThreat(friendlyCoalition.getCoalitionMissionManager().getPlannedMissions(), cellBounds, threat, .40, true);
+        threat = calculateAirThreat(enemyCoalition.getCoalitionMissionManager().getPlannedMissions(), cellBounds, threat, .40, false);
 
         if(threat < 0) {
             return Math.max(minThreatLevel, threat);

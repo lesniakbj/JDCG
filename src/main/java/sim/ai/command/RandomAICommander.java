@@ -35,6 +35,7 @@ public class RandomAICommander implements AICommander {
         // "Plan" new actions
         List<List<AIAction>> generatedMoves = currentThreatGrid.generateAllPossibleMoves(friendlyCoalitionManager, enemyCoalitionManager);
         if(!generatedMoves.isEmpty()) {
+            // Choose a random move from each unit's movement list
             List<AIAction> finalList = new ArrayList<>();
             for(List<AIAction> actionList : generatedMoves) {
                 if(!actionList.isEmpty()) {

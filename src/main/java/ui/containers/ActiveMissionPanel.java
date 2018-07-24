@@ -22,8 +22,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ActiveMissionPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(ActiveMissionPanel.class);
@@ -43,13 +41,15 @@ public class ActiveMissionPanel extends JPanel {
             setSelected();
         }
 
+        JPanel topHalfContainer = new JPanel(new BorderLayout());
         JPanel topHalf = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel topHalf2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topHalf.add(new JLabel("Type: " + plannedMission.getMissionType().getTaskName()));
         List<AirUnit> aircraftList = plannedMission.getMissionAircraft().getGroupUnits();
-        Map<AirUnit, Integer> aircraftTypes = aircraftList.stream().collect(Collectors.toMap((a) -> a, (a) -> 1, ( v1, v2) -> (int)v1 + v2));gi
-        for(Map.Entry<AirUnit, Integer> aircraftIntegerEntry : aircraftTypes.entrySet()) {
-            topHalf.add(new JLabel("Aircraft: " + aircraftIntegerEntry.getKey().getAircraftType().getAircraftName() + "(" + aircraftIntegerEntry.getValue() + ")"));
-        }
+        topHalf2.add(new JLabel("Aircraft: " + aircraftList.get(0).getAircraftType().getAircraftName() + "(" + aircraftList.size() + ")"));
+        topHalfContainer.add(topHalf, BorderLayout.NORTH);
+        topHalfContainer.add(topHalf2, BorderLayout.CENTER);
+
 
         JPanel bottomHalf = new JPanel(new FlowLayout(FlowLayout.CENTER));
         SimpleDateFormat sdf = new SimpleDateFormat(campaign.getCampaignSettings().getDateFormat());
@@ -61,8 +61,9 @@ public class ActiveMissionPanel extends JPanel {
         clientMissionPanel.add(Box.createHorizontalGlue());
         clientMissionPanel.add(new ClientComponent());
 
-        setPreferredSize(new Dimension(300, 73));
-        add(topHalf, BorderLayout.NORTH);
+        setPreferredSize(new Dimension(300, 98));
+        setMaximumSize(new Dimension(300, 98));
+        add(topHalfContainer, BorderLayout.NORTH);
         add(bottomHalf, BorderLayout.CENTER);
         add(clientMissionPanel, BorderLayout.SOUTH);
     }

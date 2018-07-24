@@ -8,6 +8,7 @@ import sim.domain.enums.CampaignType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
@@ -289,11 +290,28 @@ public class DynamicCampaignSim {
         blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().removeAll(completedMissions);
         redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().removeAll(completedMissions);
 
+        // Add the completed missions back to their respective airfield
+        for(Mission m : completedMissions) {
+            addMissionAircraftToCoalition(m, blueforCoalitionManager);
+            addMissionAircraftToCoalition(m, redforCoalitionManager);
+        }
+
         // If we determine that we need to generate a mission, generate it and then alert the user
         generateMission = !criticalMissions.isEmpty();
         if(generateMission) {
             dcsMissionGenerator.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, simSettings.getMissionStartType());
             setSimRunning(false);
+        }
+    }
+
+    private void addMissionAircraftToCoalition(Mission m, CoalitionManager coalitionManager) {
+        Map<Airfield, List<UnitGroup<AirUnit>>> airfieldMap = coalitionManager.getCoalitionAirGroupsMap();
+        for(Airfield a : airfieldMap.keySet()) {
+            if(a.getAirfieldType().getAirfieldMapPosition().distance(m.getMissionAircraft().getMapXLocation(), m.getMissionAircraft().getMapYLocation()) == 0) {
+                List<UnitGroup<AirUnit>> groups = airfieldMap.get(a);
+                groups.add(m.getMissionAircraft());
+                coalitionManager.updateCoalitionAirGroups(a, groups);
+            }
         }
     }
 

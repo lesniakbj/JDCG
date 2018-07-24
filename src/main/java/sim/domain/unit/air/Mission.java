@@ -249,14 +249,7 @@ public class Mission implements Simable {
     public void updateStep() {
         double currentX = missionAircraft.getMapXLocation();
         double currentY = missionAircraft.getMapYLocation();
-        double currentDirection = Math.toRadians(getDirectionNextWaypoint() - 90);
-        double currentSpeed = getNextWaypoint().getSpeedMilesPerHour();
-
         double minutesPerStep = (60.0 / minutesPerUpdate);
-        double pxDistance = currentSpeed / (minutesPerStep * mapType.getMapScalePixelsPerMile());
-
-        double newX = (currentX + (pxDistance * Math.cos(currentDirection)));
-        double newY = (currentY + (pxDistance * Math.sin(currentDirection)));
 
         if(!isActive()) {
             log.debug("Waiting for mission start date...");
@@ -276,13 +269,17 @@ public class Mission implements Simable {
         }
 
         if(nextWaypoint != null) {
-            currentDir = currentDirection;
+            currentDir = Math.toRadians(getDirectionNextWaypoint() - 90);
+            double currentSpeed = getNextWaypoint().getSpeedMilesPerHour();
+            double distance = currentSpeed / (minutesPerStep * mapType.getMapScalePixelsPerMile());
+            double newX = (currentX + (distance * Math.cos(currentDir)));
+            double newY = (currentY + (distance * Math.sin(currentDir)));
             // If we are going to collide with the next waypoint on this movement,
             // then remove the waypoint, move the group to that location, and set rotation
             // to the next waypoint
             Waypoint nextWaypoint = getNextWaypoint();
             double waypointDistance = MathUtil.getDistance(currentX, currentY, nextWaypoint.getLocationX(), nextWaypoint.getLocationY());
-            if (pxDistance > waypointDistance) {
+            if (distance > waypointDistance) {
                 nextWaypoint();
                 missionAircraft.setMapXLocation(nextWaypoint.getLocationX());
                 missionAircraft.setMapYLocation(nextWaypoint.getLocationY());

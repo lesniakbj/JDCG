@@ -41,4 +41,14 @@ public class AIAction {
     public void setActionGroup(UnitGroup actionGroup) {
         this.actionGroup = actionGroup;
     }
+
+    @Override
+    public String toString() {
+        return "{\"AIAction\":{"
+                + "\"type\":\"" + type + "\""
+                + ", \"cell\":" + cell
+                + ", \"actionGroup\":" + actionGroup
+                + ", \"mainObjective\":" + mainObjective
+                + "}}";
+    }
 }

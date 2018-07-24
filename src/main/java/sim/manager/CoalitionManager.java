@@ -10,6 +10,7 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.gen.air.ATOGenerator;
+import sim.gen.air.PackageGenerator;
 import sim.gen.mission.AirUnitMissionGenerator;
 import sim.settings.CampaignSettings;
 
@@ -32,6 +33,7 @@ public class CoalitionManager {
     private ObjectiveManager coalitionObjectiveManager;
     private MissionManager coalitionMissionManager;
     private ATOGenerator commander;
+    private PackageGenerator packageGenerator;
 
 
     public CoalitionManager(List<UnitGroup<GroundUnit>> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
@@ -39,6 +41,7 @@ public class CoalitionManager {
         this.coalitionObjectiveManager = coalitionObjectiveManager;
         this.coalitionMissionManager = coalitionMissionManager;
         this.commander = new ATOGenerator();
+        this.packageGenerator = new PackageGenerator();
     }
 
     public List<Airfield> getCoalitionAirfields() {
@@ -130,12 +133,13 @@ public class CoalitionManager {
         log.debug("Running AI / Decision Process...");
         List<AIAction> actions = commander.generateATO(this, enemyCoalitionManager, lastActionsTaken, campaignSettings.getCurrentCampaignDate());
 
-        // Respond to that action
+        // Respond to that list of actions
         log.debug("Running process that was decided upon...");
-        // missionGenerator.updateAndGenerate(campaignSettings, simSettings, this, enemyCoalitionManager);
+        log.debug("Commands to run: " + actions);
+        packageGenerator.generateMissionPackages(campaignSettings, actions, this, campaignSettings.getCurrentCampaignDate());
 
         // Test to plan AirUnit removal from airbases when on missions
-        if(coalitionMissionManager.getPlannedMissions().size() == 0) {
+        if(coalitionMissionManager.getPlannedMissions().size() < 10) {
             AirUnitMissionGenerator.generateTestMissionForCoalition(campaignSettings, this,campaignSettings.getCurrentCampaignDate());
         }
 

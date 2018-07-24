@@ -26,6 +26,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -135,6 +136,7 @@ public class CampaignPanel extends JPanel {
         campaignPlannedActions.setBorder(BorderFactory.createCompoundBorder(padding, bevel));
         campaignPlannedActions.add(new JLabel("<html><u>Active Missions</u></html>", SwingConstants.CENTER), BorderLayout.NORTH);
         JPanel missionPanel = new JPanel();
+        missionPanel.setLayout(new BoxLayout(missionPanel, BoxLayout.Y_AXIS));
         List<Mission> sorted = campaign.getCampaignMissionManager().getPlannedMissions().stream().sorted(Comparator.comparing(Mission::getPlannedMissionDate)).collect(Collectors.toList());
         for(Mission mission : sorted) {
             ActiveMissionPanel sampleMissionPanel = new ActiveMissionPanel(campaign, mission);
@@ -142,7 +144,9 @@ public class CampaignPanel extends JPanel {
             missionPanel.add(sampleMissionPanel);
             campaignActiveMissions.add(sampleMissionPanel);
         }
-        campaignPlannedActions.add(missionPanel, BorderLayout.CENTER);
+        JScrollPane scrollMissionPanel = new JScrollPane(missionPanel);
+        scrollMissionPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        campaignPlannedActions.add(scrollMissionPanel, BorderLayout.CENTER);
 
         // Load the actions we can do to those missions
         JPanel missionActionButtonPanel = new JPanel(new BorderLayout());

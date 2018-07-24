@@ -6,8 +6,6 @@ import sim.ai.threat.ThreatGrid;
 import sim.ai.threat.ThreatGridCell;
 import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.AircraftType;
-import sim.domain.enums.AirfieldType;
-import sim.domain.enums.MapType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
@@ -38,6 +36,9 @@ public class AirUnitMissionGenerator {
 
         // Choose a random unit from the stationed units
         List<UnitGroup<AirUnit>> airfieldUnits = airUnitStationMap.get(airfield);
+        if(airfieldUnits.isEmpty()) {
+            return;
+        }
         UnitGroup<AirUnit> group = airfieldUnits.remove(DynamicCampaignSim.getRandomGen().nextInt(airUnitStationMap.get(airfield).size()));
         log.debug(group.getGroupUnits().size());
 
@@ -52,9 +53,8 @@ public class AirUnitMissionGenerator {
         ThreatGridCell cell = cells.get(DynamicCampaignSim.getRandomGen().nextInt(cells.size()));
         Point2D.Double d = new Point2D.Double(cell.getMapX(), cell.getMapY());
 
-
         // Generate Waypoints
-        List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(airfield.getAirfieldType().getAirfieldMapPosition(), d, type, MapType.PERSIAN_GULF);
+        List<Waypoint> generatedWaypoints = WaypointGenerator.generateMissionWaypoints(airfield.getAirfieldType().getAirfieldMapPosition(), d, type, campaign.getSelectedMap().getMapType());
 
         Mission.Builder builder = new Mission.Builder();
         builder.setMissionMap(campaign.getSelectedMap().getMapType())
