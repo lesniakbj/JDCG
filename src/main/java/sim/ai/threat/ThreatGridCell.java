@@ -1,5 +1,8 @@
 package sim.ai.threat;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
 public class ThreatGridCell {
     private int x;
     private int y;
@@ -7,6 +10,7 @@ public class ThreatGridCell {
     private int mapY;
     private double threatLevel;
     private boolean ignoreDuringThreatCalculations;
+    private ThreatGrid parentGrid;
 
     public int getX() {
         return x;
@@ -40,6 +44,15 @@ public class ThreatGridCell {
         this.ignoreDuringThreatCalculations = ignoreDuringThreatCalculations;
     }
 
+    public boolean contains(double x, double y) {
+        Rectangle2D.Double cellBounds = new Rectangle2D.Double(getMapX(), getMapY(), parentGrid.getCellWidth(), parentGrid.getCellWidth());
+        return cellBounds.contains(x, y);
+    }
+
+    public boolean contains(Point2D.Double pos) {
+        return contains(pos.getX(), pos.getY());
+    }
+
     @Override
     public String toString() {
         return "{\"ThreatGridCell\":{"
@@ -65,4 +78,13 @@ public class ThreatGridCell {
     public int getMapY() {
         return mapY;
     }
+
+    public void setParentGrid(ThreatGrid parentGrid) {
+        this.parentGrid = parentGrid;
+    }
+
+    public ThreatGrid getParentGrid() {
+        return parentGrid;
+    }
+
 }

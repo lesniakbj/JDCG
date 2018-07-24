@@ -325,7 +325,7 @@ public class CampaignPanel extends JPanel {
         campaignDateLabel.setText(String.format("Date: %s", sdf.format(campaign.getCurrentCampaignDate())));
 
         // Planned missions
-        campaignSortiesLabel.setText(String.format("Panned Sorties: %d", campaign.getCampaignMissionManager().getPlannedMissions().size()));
+        campaignSortiesLabel.setText(String.format("Planned Sorties: %d", campaign.getCampaignMissionManager().getPlannedMissions().size()));
 
         // Campaign status
         long enemyCount = getTotalGroundUnits(campaign.getRedforCoalitionManager());

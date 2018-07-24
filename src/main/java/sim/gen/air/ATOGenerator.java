@@ -35,12 +35,10 @@ public class ATOGenerator {
 
     private AICommander aiCommander;
 
-    private static final int TIME_BETWEEN_PLANNING_MINUTES = 120;
-    private static final int[][] NEIGHBOURS = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
-
+    private static final int TIME_BETWEEN_PLANNING_MINUTES = 5;
 
     public ATOGenerator() {
-        aiCommander = new RandomAICommander(TIME_BETWEEN_PLANNING_MINUTES);
+        aiCommander = new RandomAICommander();
     }
 
     public void generateTestMissionForCoalition(CampaignSettings campaign, CoalitionManager coalitionManager, Date date) {
@@ -73,38 +71,7 @@ public class ATOGenerator {
         // Next action...
         ThreatGrid currentThreatGrid = friendlyCoalitionManager.getMissionManager().getThreatGrid();
 
-        // When considering actions, ignore all cells that are 0.0 and are not touching a cell that has a score
-        setThreatCellsToIgnore(currentThreatGrid);
-
         // Have our AI commander determine the commands we are to take
         return aiCommander.generateCommanderActions(currentThreatGrid, currentCampaignDate, friendlyCoalitionManager, enemyCoalitionManager);
-    }
-
-    private void setThreatCellsToIgnore(ThreatGrid currentThreatGrid) {
-        for(int x = 0; x < currentThreatGrid.getNumCellsX(); x++) {
-            for (int y = 0; y < currentThreatGrid.getNumCellsY(); y++) {
-                ThreatGridCell searchCell = currentThreatGrid.getThreatGrid()[x][y];
-                if(cellHasNoNeighbors(searchCell, currentThreatGrid) && searchCell.getThreatLevel() == 0.0) {
-                    searchCell.setIgnoreDuringThreatCalculations(true);
-                }
-            }
-        }
-    }
-
-    private boolean cellHasNoNeighbors(ThreatGridCell searchCell, ThreatGrid currentThreatGrid) {
-        double totalThreatToCell = 0.0;
-        int x = searchCell.getX();
-        int y = searchCell.getY();
-        for(int[] offset : NEIGHBOURS) {
-            int offX = x + offset[0];
-            int offY = y + offset[1];
-            if (offX > 0 && offY > 0 && offX < currentThreatGrid.getNumCellsX() && offY < currentThreatGrid.getNumCellsY()) {
-                ThreatGridCell cell = currentThreatGrid.getThreatGrid()[offX][offY];
-                if(cell.getThreatLevel() != 0.0) {
-                    totalThreatToCell += cell.getThreatLevel();
-                }
-            }
-        }
-        return totalThreatToCell == 0.0;
     }
 }

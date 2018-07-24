@@ -4,10 +4,9 @@ import java.util.Date;
 import sim.domain.enums.AircraftType;
 
 public class Helicopter extends AirUnit {
-    private AircraftType selectedType;
 
     public Helicopter(AircraftType selectedType) {
-        this.selectedType = selectedType;
+        super.setAircraftType(selectedType);
     }
 
     @Override
@@ -27,9 +26,6 @@ public class Helicopter extends AirUnit {
 
     @Override
     public String toString() {
-        return "{\"Helicopter\":"
-                + super.toString()
-                + ", \"selectedType\":\"" + selectedType + "\""
-                + "}";
+        return "{Helicopter}";
     }
 }

@@ -27,34 +27,23 @@ import sim.manager.CoalitionManager;
 public class RandomAICommander implements AICommander {
     private static final Logger log = LogManager.getLogger(RandomAICommander.class);
 
-    private Date lastUpdateDate;
-    private int timeBetweenPlanningInMinutes;
-
-    public RandomAICommander(int timeBetweenPlanningInMinutes) {
-        this.timeBetweenPlanningInMinutes = timeBetweenPlanningInMinutes;
-    }
+    public RandomAICommander() {}
 
     @Override
     public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, Date currentCampaignDate,
             CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
-        // If we're too soon, don't plan any new actions
-        if(getNextPlanningDate().before(currentCampaignDate)) {
-            log.debug("Unable to plan actions! Waiting for planning date...");
-            return new ArrayList<>();
-        }
-        lastUpdateDate = currentCampaignDate;
 
-        List<GenerationResult> generatedMoves = ThreatGrid.generateAllPossibleMoves(currentThreatGrid, friendlyCoalitionManager, enemyCoalitionManager);
+        // "Plan" new actions
+        List<List<AIAction>> generatedMoves = currentThreatGrid.generateAllPossibleMoves(friendlyCoalitionManager, enemyCoalitionManager);
         if(!generatedMoves.isEmpty()) {
-            return generatedMoves.get(DynamicCampaignSim.getRandomGen().nextInt(generatedMoves.size())).getActionsTaken();
+            List<AIAction> finalList = new ArrayList<>();
+            for(List<AIAction> actionList : generatedMoves) {
+                if(!actionList.isEmpty()) {
+                    finalList.add(actionList.get(DynamicCampaignSim.getRandomGen().nextInt(actionList.size())));
+                }
+            }
+            return finalList;
         }
-        return null;
-    }
-
-    private Date getNextPlanningDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(lastUpdateDate);
-        cal.add(Calendar.MINUTE, timeBetweenPlanningInMinutes);
-        return cal.getTime();
+        return new ArrayList<>();
     }
 }
