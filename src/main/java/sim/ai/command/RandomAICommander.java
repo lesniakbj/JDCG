@@ -1,5 +1,6 @@
 package sim.ai.command;
 
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -32,8 +33,10 @@ public class RandomAICommander implements AICommander {
     public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, Date currentCampaignDate,
             CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
 
-        // "Plan" new actions
+        // Get a list of all possible actions per unit
         List<List<AIAction>> generatedMoves = currentThreatGrid.generateAllPossibleMoves(friendlyCoalitionManager, enemyCoalitionManager);
+
+        // "Plan" our next move
         if(!generatedMoves.isEmpty()) {
             // Choose a random move from each unit's movement list
             List<AIAction> finalList = new ArrayList<>();
@@ -42,8 +45,18 @@ public class RandomAICommander implements AICommander {
                     finalList.add(actionList.get(DynamicCampaignSim.getRandomGen().nextInt(actionList.size())));
                 }
             }
-            return finalList;
+
+            // Finally, choose a random set of 3 units to move MAX
+            return pruneList(finalList);
         }
         return new ArrayList<>();
+    }
+
+    private List<AIAction> pruneList(List<AIAction> finalList) {
+        List<AIAction> pruned = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            pruned.add(finalList.get(DynamicCampaignSim.getRandomGen().nextInt(finalList.size())));
+        }
+        return pruned.stream().distinct().collect(Collectors.toList());
     }
 }

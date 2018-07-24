@@ -1,13 +1,16 @@
 package sim.ai.threat;
 
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
 import sim.ai.actions.AIActionType;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.SubTaskType;
+import sim.domain.unit.SimUnit;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
@@ -192,13 +195,12 @@ public class ThreatGrid {
         }
 
         // Variables...
-        List<AIActionType> actionsToGenerate = new ArrayList<>(Collections.singletonList(AIActionType.NOTHING));
+        List<AIActionType> actionsToGenerate = new ArrayList<>();
         AircraftType aircraftType = airUnitGroup.getGroupUnits().get(0).getAircraftType();
         List<SubTaskType> aircraftSubTasks = aircraftType.getPossibleTasks();
 
         // Add some default actions to generate
         if(aircraftSubTasks.contains(SubTaskType.CAS) || aircraftSubTasks.contains(SubTaskType.GROUND_STRIKE)) {
-            actionsToGenerate.add(AIActionType.ATTACK_AIR_DEFENCE);
             actionsToGenerate.add(AIActionType.ATTACK_AIRBASE_STRUCTURE);
             actionsToGenerate.add(AIActionType.ATTACK_GROUND_UNIT);
             actionsToGenerate.add(AIActionType.DEFEND_AIR_DEFENCE);
@@ -218,11 +220,20 @@ public class ThreatGrid {
             actionsToGenerate.add(AIActionType.TRANSPORT_GROUND_UNIT);
         }
 
+        if(aircraftSubTasks.contains(SubTaskType.SEAD) || aircraftSubTasks.contains(SubTaskType.DEAD)) {
+            actionsToGenerate.add(AIActionType.ATTACK_AIR_DEFENCE);
+        }
+
+        if(aircraftSubTasks.contains(SubTaskType.RECON) || aircraftSubTasks.contains(SubTaskType.BDA)) {
+            actionsToGenerate.add(AIActionType.RECON);
+        }
+
         if(aircraftSubTasks.contains(SubTaskType.BOMBER)) {
             actionsToGenerate.add(AIActionType.STRATEGIC_BOMBING);
         }
 
         // Add other actions that
+        actionsToGenerate.add(AIActionType.NOTHING);
         return generateAllPossibleMovesOfType(airUnitGroup, friendlyCoalitionManager, enemyCoalitionManager, actionsToGenerate, offensiveCells, defensiveCells);
     }
 
@@ -236,85 +247,69 @@ public class ThreatGrid {
         List<Airfield> enemyAirfields = enemyCoalitionManager.getCoalitionAirfields();
         List<UnitGroup<AirDefenceUnit>> enemyAirDefences = enemyCoalitionManager.getCoalitionAirDefences();
         List<UnitGroup<GroundUnit>> enemyGroundUnits = enemyCoalitionManager.getCoalitionFrontlineGroups();
-
-        //TODO: Fix this .getCoalitionAirGroups() ie, make it so we can track in progress flights
-        List<UnitGroup<AirUnit>> enemyActiveAirGroups = enemyCoalitionManager.getCoalitionAirGroups();
+        List<UnitGroup<AirUnit>> enemyActiveAirGroups = enemyCoalitionManager.getMissionManager().getPlannedMissions().stream().filter(Mission::isActive).map(Mission::getMissionAircraft).collect(Collectors.toList());
 
         List<AIAction> actions = new ArrayList<>();
         for(AIActionType actionType : actionsToGenerate) {
             // Add possible defensive actions
-            for(ThreatGridCell cell : defensiveCells) {
-                // Defend Air Bases
-                if(actionType == AIActionType.DEFEND_AIRBASE_STRUCTURE) {
-                    addAllAirfieldLocations(actions, actionType, cell, airUnitGroup, friendlyAirfields);
-                }
-
-                // Defend Air Defense
-                if(actionType == AIActionType.DEFEND_AIR_DEFENCE) {
-                    addAllUnitGroups(actions, actionType, cell, airUnitGroup, friendlyAirDefences);
-                }
-
-                // Ground Units
-                if(actionType == AIActionType.DEFEND_GROUND_UNIT) {
-                    addAllGroundUnitGroups(actions, actionType, cell, airUnitGroup, friendlyGroundUnits);
-                }
-
-                // Intercept
-                if(actionType == AIActionType.INTERCEPT_FLIGHT) {
-                    addAllInterceptGroups(actions, actionType, cell, airUnitGroup, enemyActiveAirGroups);
-                }
+            switch (actionType) {
+                case DEFEND_AIRBASE_STRUCTURE:
+                    addAllAirfieldLocations(actions, actionType, defensiveCells, airUnitGroup, friendlyAirfields);
+                    break;
+                case DEFEND_AIR_DEFENCE:
+                case TRANSPORT_AIR_DEFENCE:
+                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, friendlyAirDefences);
+                    break;
+                case DEFEND_GROUND_UNIT:
+                case TRANSPORT_GROUND_UNIT:
+                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, friendlyGroundUnits);
+                    break;
+                case INTERCEPT_FLIGHT:
+                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyActiveAirGroups);
+                    break;
             }
 
             // Add possible attacking actions
-            for(ThreatGridCell cell : offensiveCells) {
-                // Airbases
-                if(actionType == AIActionType.ATTACK_AIRBASE_STRUCTURE) {
-                    addAllAirfieldLocations(actions, actionType, cell, airUnitGroup, enemyAirfields);
-                }
-
-                // Air Defenses
-                if(actionType == AIActionType.ATTACK_AIR_DEFENCE) {
-                    addAllUnitGroups(actions, actionType, cell, airUnitGroup, enemyAirDefences);
-                }
-
-                // Ground Units
-                if(actionType == AIActionType.ATTACK_GROUND_UNIT) {
-                    addAllGroundUnitGroups(actions, actionType, cell, airUnitGroup, enemyGroundUnits);
-                }
+            switch (actionType) {
+                case ATTACK_AIRBASE_STRUCTURE:
+                case STRATEGIC_BOMBING:
+                    addAllAirfieldLocations(actions, actionType, offensiveCells, airUnitGroup, enemyAirfields);
+                    break;
+                case ATTACK_AIR_DEFENCE:
+                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyAirDefences);
+                    break;
+                case ATTACK_GROUND_UNIT:
+                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyGroundUnits);
+                    break;
+                case INTERCEPT_FLIGHT:
+                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyActiveAirGroups);
+                    break;
             }
 
+            // Add default actions
+            if(actionType == AIActionType.NOTHING) {
+                actions.add(generateNewAIAction(actionType, null, airUnitGroup));
+            }
         }
         return actions;
     }
 
-    private void addAllInterceptGroups(List<AIAction> actions, AIActionType actionType, ThreatGridCell cell, UnitGroup<AirUnit> airUnitGroup, List<UnitGroup<AirUnit>> activeAirGroups) {
-        for (UnitGroup<AirUnit> g : activeAirGroups) {
-            if(cell.contains(g.getMapXLocation(), g.getMapYLocation())) {
-                actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
+    private void addAllAirfieldLocations(List<AIAction> actions, AIActionType actionType, List<ThreatGridCell> cells, UnitGroup<AirUnit> airUnitGroup, List<Airfield> airfields) {
+        for(ThreatGridCell cell : cells) {
+            for (Airfield a : airfields) {
+                if (cell.contains(a.getAirfieldType().getAirfieldMapPosition())) {
+                    actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
+                }
             }
         }
     }
 
-    private void addAllGroundUnitGroups(List<AIAction> actions, AIActionType actionType, ThreatGridCell cell, UnitGroup<AirUnit> airUnitGroup, List<UnitGroup<GroundUnit>> groundUnits) {
-        for (UnitGroup<GroundUnit> g : groundUnits) {
-            if(cell.contains(g.getMapXLocation(), g.getMapYLocation())) {
-                actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
-            }
-        }
-    }
-
-    private void addAllUnitGroups(List<AIAction> actions, AIActionType actionType, ThreatGridCell cell, UnitGroup<AirUnit> airUnitGroup, List<UnitGroup<AirDefenceUnit>> airDefences) {
-        for(UnitGroup<AirDefenceUnit> g : airDefences) {
-            if(cell.contains(g.getMapXLocation(), g.getMapYLocation())) {
-                actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
-            }
-        }
-    }
-
-    private void addAllAirfieldLocations(List<AIAction> actions, AIActionType actionType, ThreatGridCell cell, UnitGroup<AirUnit> airUnitGroup, List<Airfield> airfields) {
-        for(Airfield a : airfields) {
-            if(cell.contains(a.getAirfieldType().getAirfieldMapPosition())) {
-                actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
+    private <T extends SimUnit> void addAllLocations(List<AIAction> actions, AIActionType actionType, List<ThreatGridCell> cells, UnitGroup<AirUnit> airUnitGroup, List<UnitGroup<T>> location) {
+        for(ThreatGridCell cell : cells) {
+            for (UnitGroup<T> loc : location) {
+                if (cell.contains(loc.getMapXLocation(), loc.getMapYLocation())) {
+                    actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
+                }
             }
         }
     }
@@ -327,7 +322,6 @@ public class ThreatGrid {
         action.setActionGroup(airUnitGroup);
         return action;
     }
-
 
     private boolean cellHasNoNeighbors(ThreatGridCell searchCell) {
         double totalThreatToCell = 0.0;

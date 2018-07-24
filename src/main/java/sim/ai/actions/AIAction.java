@@ -3,11 +3,12 @@ package sim.ai.actions;
 import sim.ai.threat.ThreatGridCell;
 import sim.domain.unit.SimUnit;
 import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
 
 public class AIAction {
     private AIActionType type;
     private ThreatGridCell cell;
-    private UnitGroup actionGroup;
+    private UnitGroup<AirUnit> actionGroup;
     private SimUnit mainObjective;
 
     public AIActionType getType() {
@@ -34,11 +35,11 @@ public class AIAction {
         this.mainObjective = mainObjective;
     }
 
-    public UnitGroup getActionGroup() {
+    public UnitGroup<AirUnit> getActionGroup() {
         return actionGroup;
     }
 
-    public void setActionGroup(UnitGroup actionGroup) {
+    public void setActionGroup(UnitGroup<AirUnit> actionGroup) {
         this.actionGroup = actionGroup;
     }
 

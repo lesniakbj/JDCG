@@ -144,7 +144,6 @@ public class AirUnitGenerator {
 
         // Assign the units to their various airfields...
         assignToAirfields(airfields, airUnits);
-        log.debug(airUnits);
 
         return airUnits;
     }

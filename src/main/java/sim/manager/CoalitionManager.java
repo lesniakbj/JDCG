@@ -6,6 +6,7 @@ import sim.ai.actions.AIAction;
 import sim.ai.threat.gen.ThreatGridGenerator;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
@@ -132,11 +133,11 @@ public class CoalitionManager {
         // we need to execute what was created.
         log.debug("Running AI / Decision Process...");
         List<AIAction> actions = commander.generateATO(this, enemyCoalitionManager, lastActionsTaken, campaignSettings.getCurrentCampaignDate());
+        log.debug("Actions to run: " + actions.size());
 
         // Respond to that list of actions
         log.debug("Running process that was decided upon...");
-        log.debug("Commands to run: " + actions);
-        packageGenerator.generateMissionPackages(campaignSettings, actions, this, campaignSettings.getCurrentCampaignDate());
+        List<List<Mission>> missionPackages = packageGenerator.generateMissionPackages(campaignSettings, actions, this, enemyCoalitionManager, campaignSettings.getCurrentCampaignDate());
 
         // Test to plan AirUnit removal from airbases when on missions
         if(coalitionMissionManager.getPlannedMissions().size() < 10) {
