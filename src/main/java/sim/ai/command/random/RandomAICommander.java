@@ -1,9 +1,10 @@
-package sim.ai.command;
+package sim.ai.command.random;
 
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
+import sim.ai.command.AICommander;
 import sim.ai.threat.ThreatGrid;
 import sim.campaign.DynamicCampaignSim;
 import sim.manager.CoalitionManager;
@@ -32,6 +33,9 @@ public class RandomAICommander implements AICommander {
     @Override
     public List<AIAction> generateCommanderActions(ThreatGrid currentThreatGrid, Date currentCampaignDate,
             CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {
+        // Before we do our generation, set the cells to ignore (this reduces the state space)
+        // Note: Not needed in the random AI commander
+        // setThreatCellsToIgnore.ignoreEmptyCells();
 
         // Get a list of all possible actions per unit
         List<List<AIAction>> generatedMoves = currentThreatGrid.generateAllPossibleMoves(friendlyCoalitionManager, enemyCoalitionManager);

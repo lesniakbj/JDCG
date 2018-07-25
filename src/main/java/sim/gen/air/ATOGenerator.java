@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
 import sim.ai.command.AICommander;
-import sim.ai.command.RandomAICommander;
+import sim.ai.command.random.RandomAICommander;
 import sim.ai.threat.ThreatGrid;
 import sim.manager.CoalitionManager;
 

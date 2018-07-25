@@ -1,6 +1,7 @@
-package sim.ai.command;
+package sim.ai.command.minimax;
 
 import sim.ai.actions.AIAction;
+import sim.ai.command.AICommander;
 import sim.ai.threat.ThreatGrid;
 import sim.manager.CoalitionManager;
 

@@ -125,7 +125,7 @@ public class ThreatGrid {
         this.numCellsY = numCellsY;
     }
 
-    private void setThreatCellsToIgnore() {
+    public void ignoreEmptyCells() {
         for(int x = 0; x < numCellsX; x++) {
             for (int y = 0; y < numCellsY; y++) {
                 ThreatGridCell searchCell = threatGrid[x][y];
@@ -134,6 +134,11 @@ public class ThreatGrid {
                 }
             }
         }
+    }
+
+
+    public boolean cellHasThreat(ThreatGridCell cell) {
+        return cellHasThreatNeighbors(cell) && cell.getThreatLevel() > 0.0;
     }
 
     public List<ThreatGridCell> getCellsGreaterThan(double value) {
@@ -181,6 +186,40 @@ public class ThreatGrid {
         }
 
         return actionLists;
+    }
+
+    private boolean cellHasNoNeighbors(ThreatGridCell searchCell) {
+        double totalThreatToCell = 0.0;
+        int x = searchCell.getX();
+        int y = searchCell.getY();
+        for(int[] offset : NEIGHBOURS) {
+            int offX = x + offset[0];
+            int offY = y + offset[1];
+            if (offX > 0 && offY > 0 && offX < numCellsX && offY < numCellsY) {
+                ThreatGridCell cell = threatGrid[offX][offY];
+                if(cell.getThreatLevel() != 0.0) {
+                    totalThreatToCell += cell.getThreatLevel();
+                }
+            }
+        }
+        return totalThreatToCell == 0.0;
+    }
+
+    private boolean cellHasThreatNeighbors(ThreatGridCell cell) {
+        double totalThreatToCell = 0.0;
+        int x = cell.getX();
+        int y = cell.getY();
+        for(int[] offset : NEIGHBOURS) {
+            int offX = x + offset[0];
+            int offY = y + offset[1];
+            if (offX > 0 && offY > 0 && offX < numCellsX && offY < numCellsY) {
+                ThreatGridCell offsetCell = threatGrid[offX][offY];
+                if(offsetCell.getThreatLevel() != 0.0) {
+                    totalThreatToCell += offsetCell.getThreatLevel();
+                }
+            }
+        }
+        return totalThreatToCell < 0.0;
     }
 
     private List<AIAction> findActionsForUnit(UnitGroup<AirUnit> airUnitGroup, CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager, List<ThreatGridCell> defensiveCells, List<ThreatGridCell> offensiveCells) {
@@ -262,7 +301,7 @@ public class ThreatGrid {
                     break;
                 case DEFEND_GROUND_UNIT:
                 case TRANSPORT_GROUND_UNIT:
-                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, friendlyGroundUnits);
+                    addLocalThreatLocations(actions, actionType, defensiveCells, airUnitGroup, friendlyGroundUnits);
                     break;
                 case INTERCEPT_FLIGHT:
                     addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyActiveAirGroups);
@@ -276,13 +315,13 @@ public class ThreatGrid {
                     addAllAirfieldLocations(actions, actionType, offensiveCells, airUnitGroup, enemyAirfields);
                     break;
                 case ATTACK_AIR_DEFENCE:
-                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyAirDefences);
+                    addAllLocations(actions, actionType, offensiveCells, airUnitGroup, enemyAirDefences);
                     break;
                 case ATTACK_GROUND_UNIT:
-                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyGroundUnits);
+                    addLocalThreatLocations(actions, actionType, offensiveCells, airUnitGroup, enemyGroundUnits);
                     break;
                 case INTERCEPT_FLIGHT:
-                    addAllLocations(actions, actionType, defensiveCells, airUnitGroup, enemyActiveAirGroups);
+                    addAllLocations(actions, actionType, offensiveCells, airUnitGroup, enemyActiveAirGroups);
                     break;
             }
 
@@ -292,6 +331,14 @@ public class ThreatGrid {
             }
         }
         return actions;
+    }
+
+    private <T extends SimUnit> void addLocalThreatLocations(List<AIAction> actions, AIActionType actionType, List<ThreatGridCell> cells, UnitGroup<AirUnit> airUnitGroup, List<UnitGroup<T>> location) {
+        for(ThreatGridCell cell : cells) {
+            if(cellHasThreat(cell)) {
+                addAllLocationsInner(actions, actionType, cell, airUnitGroup, location);
+            }
+        }
     }
 
     private void addAllAirfieldLocations(List<AIAction> actions, AIActionType actionType, List<ThreatGridCell> cells, UnitGroup<AirUnit> airUnitGroup, List<Airfield> airfields) {
@@ -306,10 +353,14 @@ public class ThreatGrid {
 
     private <T extends SimUnit> void addAllLocations(List<AIAction> actions, AIActionType actionType, List<ThreatGridCell> cells, UnitGroup<AirUnit> airUnitGroup, List<UnitGroup<T>> location) {
         for(ThreatGridCell cell : cells) {
-            for (UnitGroup<T> loc : location) {
-                if (cell.contains(loc.getMapXLocation(), loc.getMapYLocation())) {
-                    actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
-                }
+            addAllLocationsInner(actions, actionType, cell, airUnitGroup, location);
+        }
+    }
+
+    private <T extends SimUnit> void addAllLocationsInner(List<AIAction> actions, AIActionType actionType, ThreatGridCell cell, UnitGroup<AirUnit> airUnitGroup, List<UnitGroup<T>> location) {
+        for (UnitGroup<T> loc : location) {
+            if (cell.contains(loc.getMapXLocation(), loc.getMapYLocation())) {
+                actions.add(generateNewAIAction(actionType, cell, airUnitGroup));
             }
         }
     }
@@ -323,22 +374,6 @@ public class ThreatGrid {
         return action;
     }
 
-    private boolean cellHasNoNeighbors(ThreatGridCell searchCell) {
-        double totalThreatToCell = 0.0;
-        int x = searchCell.getX();
-        int y = searchCell.getY();
-        for(int[] offset : NEIGHBOURS) {
-            int offX = x + offset[0];
-            int offY = y + offset[1];
-            if (offX > 0 && offY > 0 && offX < numCellsX && offY < numCellsY) {
-                ThreatGridCell cell = threatGrid[offX][offY];
-                if(cell.getThreatLevel() != 0.0) {
-                    totalThreatToCell += cell.getThreatLevel();
-                }
-            }
-        }
-        return totalThreatToCell == 0.0;
-    }
 
     private List<List<AIAction>> cartesianProduct(int idx, List<List<AIAction>> lists) {
         List<List<AIAction>> actions = new ArrayList<>();

@@ -195,7 +195,6 @@ public class CampaignGenerator {
         double lowestX = Double.MAX_VALUE, lowestY = Double.MAX_VALUE;
         double highestX = Double.MIN_VALUE, highestY = Double.MIN_VALUE;
         for(Airfield a : airfields) {
-            log.debug(a);
             double x = a.getAirfieldType().getAirfieldMapPosition().getX();
             double y = a.getAirfieldType().getAirfieldMapPosition().getY();
 

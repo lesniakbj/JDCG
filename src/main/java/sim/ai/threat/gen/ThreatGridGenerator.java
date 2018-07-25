@@ -53,7 +53,7 @@ public class ThreatGridGenerator {
             for(int y = 0; y < grid.getNumCellsY(); y++) {
                 ThreatGridCell cell = grid.getThreatGrid()[x][y];
                 Rectangle2D.Double cellBounds = new Rectangle2D.Double(cell.getMapX(), cell.getMapY(), grid.getCellWidth(), grid.getCellWidth());
-                double threatLevel = threatCalculator.calculateThreatLevel(cellBounds, friendlyCoalition, enemyCoalition);
+                double threatLevel = threatCalculator.calculateThreatLevel(cell, friendlyCoalition, enemyCoalition);
                 cell.setThreatLevel(threatLevel);
             }
         }

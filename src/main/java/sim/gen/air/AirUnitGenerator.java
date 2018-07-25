@@ -180,10 +180,10 @@ public class AirUnitGenerator {
             return groups;
         }
 
-        // Create 4 groups of 4 units each
-        for(int n = 0; n < 4; n++) {
+        // Create 8 groups of 2 units each
+        for(int n = 0; n < 8; n++) {
             List<AirUnit> airUnits = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 2; i++) {
                 Aircraft aircraft = new Aircraft(selectedType);
                 airUnits.add(aircraft);
             }
