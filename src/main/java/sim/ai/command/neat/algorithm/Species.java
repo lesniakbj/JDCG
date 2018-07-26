@@ -1,4 +1,4 @@
-package sim.ai.command.neat;
+package sim.ai.command.neat.algorithm;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -43,8 +43,8 @@ public class ThreatCalculator {
         threat = calculateAirDefenceThreat(enemyCoalition.getCoalitionAirDefences(), cell, threat, .05, false);
 
         // Calculate Threats of Aircraft (heaviest level of threat, as they are the only ones who can reduce score)
-        threat = calculateAirThreat(friendlyCoalition.getCoalitionMissionManager().getPlannedMissions(), cell, threat, .40, true);
-        threat = calculateAirThreat(enemyCoalition.getCoalitionMissionManager().getPlannedMissions(), cell, threat, .40, false);
+        threat = calculateAirThreat(friendlyCoalition.getCoalitionMissionManager().getPlannedMissions(), cell, threat, .30, true);
+        threat = calculateAirThreat(enemyCoalition.getCoalitionMissionManager().getPlannedMissions(), cell, threat, .30, false);
 
         if(threat < 0) {
             return Math.max(minThreatLevel, threat);

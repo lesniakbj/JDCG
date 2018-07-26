@@ -128,6 +128,8 @@ public class AirUnitGenerator {
         List<UnitGroup<AirUnit>> transportHeli = createAirGroupsOfType(validAircraftTypes, totalTransportHeli, MajorTaskType.HELI_TRANSPORT, Arrays.asList(SubTaskType.TRANSPORT, SubTaskType.AIRLIFT), side);
         airUnits.addAll(transportHeli);
 
+        // Create squadrons from the created plane types? or do it before/during type creation?
+
         // Calculate the remaining cost
         double totalCost = 0;
         totalCost += playerAircraft.stream().mapToInt(UnitGroup::getNumberOfUnits).sum() * aircraftCost;

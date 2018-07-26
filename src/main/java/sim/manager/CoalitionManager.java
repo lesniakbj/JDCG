@@ -127,6 +127,12 @@ public class CoalitionManager {
         threatGridGenerator.populateThreatGridValues(coalitionMissionManager.getThreatGrid(), this, enemyCoalitionManager);
         log.debug(coalitionMissionManager.getThreatGrid());
 
+
+        // Using the mission state, and last update time, go through a set state transitions to
+        // determine our next action. This will fully determine the missions.
+        List<List<Mission>> packages = commander.generateAllMissions(this, enemyCoalitionManager, campaignSettings);
+
+        /*
         // Let the AI tell us our next action
         // The AI will generate a CommanderAction, which is a list of
         // groups and what the AI said for each group to do. From there,
@@ -138,12 +144,13 @@ public class CoalitionManager {
         // Respond to that list of actions
         log.debug("Running process that was decided upon...");
         List<List<Mission>> missionPackages = packageGenerator.generateMissionPackages(campaignSettings, actions, this, enemyCoalitionManager, campaignSettings.getCurrentCampaignDate());
+        */
 
         // Test to plan AirUnit removal from airbases when on missions
         if(coalitionMissionManager.getPlannedMissions().size() < 10) {
             AirUnitMissionGenerator.generateTestMissionForCoalition(campaignSettings, this,campaignSettings.getCurrentCampaignDate());
         }
 
-        lastActionsTaken = actions;
+        // lastActionsTaken = actions;
     }
 }

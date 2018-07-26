@@ -1,4 +1,4 @@
-package sim.ai.command.neat;
+package sim.ai.command.neat.algorithm;
 
 public class Gene {
     private double input;

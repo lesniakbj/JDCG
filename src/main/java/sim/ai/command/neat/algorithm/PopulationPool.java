@@ -1,4 +1,4 @@
-package sim.ai.command.neat;
+package sim.ai.command.neat.algorithm;
 
 import sim.ai.actions.AIActionType;
 
