@@ -210,6 +210,7 @@ public class CampaignPanel extends JPanel {
             if(loadout == null) {
                 log.debug("No loadout!");
             }
+            log.debug("Setting loadout: " + loadout);
             campaign.getCurrentlySelectedMission().setMissionMunitions(loadout);
         });
         JButton clearMissionButton = new JButton("Clear Selection");

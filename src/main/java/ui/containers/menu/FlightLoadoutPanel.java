@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,8 +36,8 @@ public class FlightLoadoutPanel extends JPanel {
     private JDialog flightLoadoutDialog;
     private Mission flightMission;
     private List<WeaponStation> flightLoadout;
-    private Map<JComboBox,Integer> loadoutSelectors;
-    private Map<JComboBox,JComboBox> totalLoadoutSelectors;
+    private Map<JComboBox<String>, Integer> loadoutSelectors;
+    private Map<JComboBox<String>, JComboBox<Integer>> totalLoadoutSelectors;
     private LoadoutBoxSelectionListener listener;
 
     public FlightLoadoutPanel(Mission flightMission, JDialog flightLoadoutDialog) {
@@ -44,6 +45,7 @@ public class FlightLoadoutPanel extends JPanel {
         this.flightMission = flightMission;
         this.flightLoadout = new ArrayList<>();
         this.loadoutSelectors = new HashMap<>();
+        this.totalLoadoutSelectors = new HashMap<>();
         this.listener = new LoadoutBoxSelectionListener();
 
         setLayout(new BorderLayout());
@@ -73,13 +75,14 @@ public class FlightLoadoutPanel extends JPanel {
             if(alreadySelected != null && containsStationMunition(station, alreadySelected)) {
                 WeaponStation selected = getStationByNumber(station, alreadySelected);
                 comboBox.setSelectedItem(selected.getMunitionType().getMunitionName());
-                WeaponStation ws = alreadySelected.get(station);
+                WeaponStation ws = alreadySelected.stream().filter(w -> w.getStationNumber() == station).findFirst().orElse(null);
                 Integer[] ints = IntStream.rangeClosed(1, ws.getTotalLoaded()).boxed().toArray(Integer[]::new);
                 totalComboBox = new JComboBox<>(ints);
                 totalComboBox.setSelectedItem(selected.getTotalLoaded());
                 flightLoadout.add(selected);
             } else {
                 comboBox.setSelectedIndex(-1);
+                totalComboBox.setSelectedItem(-1);
             }
 
             munitionTable.add(label);
@@ -95,9 +98,12 @@ public class FlightLoadoutPanel extends JPanel {
         JPanel buttons = new JPanel();
         JButton accept = new JButton("Accept");
         JButton cancel = new JButton("Cancel");
-        accept.addActionListener(l -> flightLoadoutDialog.dispose());
+        accept.addActionListener(l -> {
+            setMunitionCounts();
+            flightLoadoutDialog.dispose();
+        });
         cancel.addActionListener(l -> {
-            flightLoadout = flightMission.getMissionMunitions();
+            setMunitionCounts();
             flightLoadoutDialog.dispose();
         });
         buttons.add(accept);
@@ -106,6 +112,26 @@ public class FlightLoadoutPanel extends JPanel {
         add(image, BorderLayout.NORTH);
         add(munitionTable, BorderLayout.CENTER);
         add(buttons, BorderLayout.SOUTH);
+    }
+
+    private void setMunitionCounts() {
+        if(flightLoadout == null) {
+            flightLoadout = new ArrayList<>();
+        }
+        log.debug("Setting munition counts...");
+        for(HashMap.Entry<JComboBox<String>, JComboBox<Integer>> entry : totalLoadoutSelectors.entrySet()) {
+            String selectedName = (String)entry.getKey().getSelectedItem();
+            if(selectedName != null) {
+                JComboBox<Integer> selectedBox = entry.getValue();
+                int totalSelected = (int)selectedBox.getSelectedItem();
+
+                MunitionType mt = MunitionType.fromName(selectedName);
+                Integer station = loadoutSelectors.get(entry.getKey());
+
+                log.debug(String.format("Setting station: %d/%s", station, mt));
+                flightLoadout.add(new WeaponStation(station, new Munition(mt, totalSelected)));
+            }
+        }
     }
 
     private WeaponStation getStationByNumber(int station, List<WeaponStation> alreadySelected) {
@@ -140,11 +166,17 @@ public class FlightLoadoutPanel extends JPanel {
             if(selectedName != null && !selectedName.isEmpty()) {
                 MunitionType mt = MunitionType.fromName(selectedName);
                 Integer station = loadoutSelectors.get(box);
-                JComboBox max = totalLoadoutSelectors.get(box);
+
+                JComboBox<Integer> totalBox = totalLoadoutSelectors.get(box);
+                Map<Integer, List<Munition>> validConfigs = flightMission.getMissionAircraft().getGroupUnits().get(0).getAircraftType().getStationMunitions();
+                Munition munition = validConfigs.get(station).stream().filter(m -> m.getMunitionType().equals(mt)).findFirst().orElse(null);
+                Integer[] ints = IntStream.rangeClosed(1, munition.getTotalLoaded()).boxed().toArray(Integer[]::new);
+                totalBox.setModel(new DefaultComboBoxModel<>(ints));
+                totalBox.setSelectedItem(1);
 
                 log.debug(String.format("Setting station: %d/%s", station, mt));
-                removeStationLoadout(station);
-                flightLoadout.add(new WeaponStation(station, new Munition(mt, 1)));
+                // removeStationLoadout(station);
+                // flightLoadout.add(new WeaponStation(station, new Munition(mt, 1)));
             }
         }
 
