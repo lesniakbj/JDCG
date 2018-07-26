@@ -1,35 +1,8 @@
 package ui.containers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.campaign.DynamicCampaignSim;
-import sim.domain.enums.AirfieldType;
-import sim.domain.enums.MunitionType;
-import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.AirUnit;
-import sim.domain.unit.air.Mission;
-import sim.domain.unit.global.Airfield;
-import sim.domain.unit.global.GameMap;
-import sim.domain.unit.ground.GroundUnit;
-import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.manager.CoalitionManager;
-import ui.containers.menu.FlightLoadoutPanel;
-import ui.util.DrawUtil;
+import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
+import static ui.util.ImageScaleUtil.tryLoadImage;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -45,9 +18,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
-
-import static ui.util.ImageScaleUtil.MAP_IMAGE_HEIGHT_RATIO;
-import static ui.util.ImageScaleUtil.tryLoadImage;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
+import sim.domain.enums.AirfieldType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.WeaponStation;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.global.GameMap;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
+import sim.manager.CoalitionManager;
+import ui.containers.menu.FlightLoadoutPanel;
+import ui.util.DrawUtil;
 
 public class CampaignPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(CampaignPanel.class);
@@ -207,7 +206,7 @@ public class CampaignPanel extends JPanel {
             dialog.setLocationRelativeTo(null);
             dialog.setModal(true);
             dialog.setVisible(true);
-            Map<Integer,MunitionType> loadout = ((FlightLoadoutPanel)dialog.getContentPane().getComponent(0)).getFlightLoadout();
+            List<WeaponStation> loadout = ((FlightLoadoutPanel)dialog.getContentPane().getComponent(0)).getFlightLoadout();
             if(loadout == null) {
                 log.debug("No loadout!");
             }

@@ -1,5 +1,6 @@
 package sim.ai.threat.gen;
 
+import java.awt.geom.Rectangle2D;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatCalculator;
@@ -7,8 +8,6 @@ import sim.ai.threat.ThreatGrid;
 import sim.ai.threat.ThreatGridCell;
 import sim.domain.enums.FactionSideType;
 import sim.manager.CoalitionManager;
-
-import java.awt.geom.Rectangle2D;
 
 public class ThreatGridGenerator {
     private static final Logger log = LogManager.getLogger(ThreatGridGenerator.class);

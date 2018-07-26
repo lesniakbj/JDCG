@@ -2,8 +2,9 @@ package sim.gen.air;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,9 +21,6 @@ import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.gen.mission.AirUnitMissionGenerator;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
-
-import java.util.Date;
-import java.util.List;
 
 public class PackageGenerator {
     private static final Logger log = LogManager.getLogger(PackageGenerator.class);
@@ -112,12 +110,17 @@ public class PackageGenerator {
                 break;
             // Get the maximum number of escorts we can
             case STRATEGIC_BOMBING:
+                supportUnits = findSupportingUnitsForStrategicBombing(missionGroup, isHelicopter, units);
                 break;
             // Goes alone
             case RECON:
                 break;
         }
         return supportUnits;
+    }
+
+    private List<UnitGroup<AirUnit>> findSupportingUnitsForStrategicBombing(UnitGroup<AirUnit> missionGroup, boolean isHelicopter, List<UnitGroup<AirUnit>> units) {
+        return new ArrayList<>();
     }
 
     private List<UnitGroup<AirUnit>> findSupportingUnitsForGroundDefence(UnitGroup<AirUnit> missionGroup, boolean isHelicopter, List<UnitGroup<AirUnit>> units) {
@@ -155,7 +158,6 @@ public class PackageGenerator {
 
     private List<UnitGroup<AirUnit>> findSupportingUnitsForIntercept(UnitGroup<AirUnit> missionGroup, boolean isHelicopter, List<UnitGroup<AirUnit>> units) {
         if(missionGroup.getNumberOfUnits() >= 2) {
-            log.debug("Too many planes in intercept group already!");
             return new ArrayList<>();
         }
 

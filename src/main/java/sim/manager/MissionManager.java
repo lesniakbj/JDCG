@@ -1,10 +1,9 @@
 package sim.manager;
 
-import sim.ai.threat.ThreatGrid;
-import sim.domain.unit.air.Mission;
-
 import java.util.ArrayList;
 import java.util.List;
+import sim.ai.threat.ThreatGrid;
+import sim.domain.unit.air.Mission;
 
 public class MissionManager {
     private List<Mission> plannedMissions;

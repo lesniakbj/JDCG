@@ -1,24 +1,5 @@
 package ui.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.ai.threat.ThreatGrid;
-import sim.ai.threat.ThreatGridCell;
-import sim.campaign.DynamicCampaignSim;
-import sim.domain.enums.FactionSideType;
-import sim.domain.enums.MapType;
-import sim.domain.enums.WaypointType;
-import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.AirUnit;
-import sim.domain.unit.air.Mission;
-import sim.domain.unit.air.Waypoint;
-import sim.domain.unit.global.Airfield;
-import sim.domain.unit.ground.GroundUnit;
-import sim.domain.unit.ground.Structure;
-import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
-import sim.util.mask.MaskFactory;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -37,6 +18,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.ai.threat.ThreatGrid;
+import sim.ai.threat.ThreatGridCell;
+import sim.campaign.DynamicCampaignSim;
+import sim.domain.enums.FactionSideType;
+import sim.domain.enums.MapType;
+import sim.domain.enums.WaypointType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.Waypoint;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.Structure;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
+import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
+import sim.util.mask.MaskFactory;
 
 ;
 

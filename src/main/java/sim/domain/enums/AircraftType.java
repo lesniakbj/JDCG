@@ -1,11 +1,5 @@
 package sim.domain.enums;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import static sim.domain.enums.StaticLists.AIR_SUPERIORITY;
 import static sim.domain.enums.StaticLists.AV8_TASKS;
 import static sim.domain.enums.StaticLists.AWACS;
@@ -31,6 +25,13 @@ import static sim.domain.enums.StaticLists.SU25_TASKS;
 import static sim.domain.enums.StaticLists.TANKER;
 import static sim.domain.enums.StaticLists.UNARMED;
 import static sim.domain.enums.StaticLists.UNARMED_TRANSPORT;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import sim.domain.unit.air.Munition;
 
 public enum AircraftType {
     // Playable Aircraft
@@ -154,10 +155,10 @@ public enum AircraftType {
     private boolean isHelicopter;
     private List<SubTaskType> possibleTasks;
     private List<ConflictEraType> aircraftEras;
-    private Map<Integer, List<MunitionType>> stationMunitions;
+    private Map<Integer, List<Munition>> stationMunitions;
     private List<FactionType> users;
 
-    AircraftType(String aircraftName, boolean playerFlyable, boolean isHelicopter, List<SubTaskType> possibleTasks, List<ConflictEraType> aircraftEras, Map<Integer, List<MunitionType>> stationMunitions, List<FactionType> users) {
+    AircraftType(String aircraftName, boolean playerFlyable, boolean isHelicopter, List<SubTaskType> possibleTasks, List<ConflictEraType> aircraftEras, Map<Integer, List<Munition>> stationMunitions, List<FactionType> users) {
         this.aircraftName = aircraftName;
         this.playerFlyable = playerFlyable;
         this.isHelicopter = isHelicopter;
@@ -175,7 +176,7 @@ public enum AircraftType {
         return aircraftEras;
     }
 
-    public Map<Integer, List<MunitionType>> getStationMunitions() {
+    public Map<Integer, List<Munition>> getStationMunitions() {
         return stationMunitions;
     }
 

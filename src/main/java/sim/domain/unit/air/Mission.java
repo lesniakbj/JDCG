@@ -1,22 +1,19 @@
 package sim.domain.unit.air;
 
+import java.awt.geom.Point2D;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.MapType;
-import sim.domain.enums.MunitionType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.enums.WaypointType;
 import sim.domain.unit.SimUnit;
 import sim.domain.unit.Simable;
 import sim.domain.unit.UnitGroup;
 import sim.util.MathUtil;
-
-import java.awt.geom.Point2D;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 public class Mission implements Simable {
     private static final Logger log = LogManager.getLogger(Mission.class);
@@ -27,7 +24,6 @@ public class Mission implements Simable {
     private SubTaskType missionType;
     private AirfieldType startingAirfield;
     private UnitGroup<AirUnit> missionAircraft;
-    private Map<Integer,MunitionType> missionMunitions;
     private Date plannedMissionDate;
     private Date currentCampaignDate;
 
@@ -133,12 +129,14 @@ public class Mission implements Simable {
         playerAircraft = aircraft;
     }
 
-    public void setMissionMunitions(Map<Integer,MunitionType> missionMunitions) {
-        this.missionMunitions = missionMunitions;
+    public void setMissionMunitions(List<WeaponStation> weaponStationList) {
+        for(AirUnit unit : missionAircraft.getGroupUnits()) {
+            unit.setWeaponStations(weaponStationList);
+        }
     }
 
-    public Map<Integer,MunitionType> getMissionMunitions() {
-        return missionMunitions;
+    public List<WeaponStation> getMissionMunitions() {
+        return missionAircraft.getGroupUnits().get(0).getWeaponStations();
     }
 
     public MapType getMapType() {
@@ -355,7 +353,6 @@ public class Mission implements Simable {
                 + ", \"missionType\":\"" + missionType + "\""
                 + ", \"startingAirfield\":\"" + startingAirfield + "\""
                 + ", \"missionAircraft\":" + missionAircraft
-                + ", \"missionMunitions\":" + missionMunitions
                 + ", \"plannedMissionDate\":" + plannedMissionDate
                 + ", \"currentCampaignDate\":" + currentCampaignDate
                 + ", \"onStationEndDate\":" + onStationEndDate
@@ -448,7 +445,7 @@ public class Mission implements Simable {
             return this;
         }
 
-        public Builder setMissionMunitions(Map<Integer,MunitionType> missionMunitions) {
+        public Builder setMissionMunitions(List<WeaponStation> missionMunitions) {
             mission.setMissionMunitions(missionMunitions);
             return this;
         }

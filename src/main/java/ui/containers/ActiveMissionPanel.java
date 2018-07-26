@@ -1,19 +1,5 @@
 package ui.containers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.campaign.DynamicCampaignSim;
-import sim.domain.unit.air.AirUnit;
-import sim.domain.unit.air.Mission;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +8,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
 
 public class ActiveMissionPanel extends JPanel {
     private static final Logger log = LogManager.getLogger(ActiveMissionPanel.class);

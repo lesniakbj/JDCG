@@ -1,11 +1,10 @@
 package sim.ai.command;
 
+import java.util.Date;
+import java.util.List;
 import sim.ai.actions.AIAction;
 import sim.ai.threat.ThreatGrid;
 import sim.manager.CoalitionManager;
-
-import java.util.Date;
-import java.util.List;
 
 public class HumanCommander implements AICommander {
     @Override

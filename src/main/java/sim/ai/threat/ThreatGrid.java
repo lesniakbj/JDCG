@@ -1,5 +1,10 @@
 package sim.ai.threat;
 
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,11 +20,6 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.manager.CoalitionManager;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 
 public class ThreatGrid {
@@ -163,6 +163,10 @@ public class ThreatGrid {
             }
         }
         return cells;
+    }
+
+    public ThreatGridCell getCellFromLocation(Point2D.Double missionLocation) {
+        return null;
     }
 
     public List<List<AIAction>> generateAllPossibleMoves(CoalitionManager friendlyCoalitionManager, CoalitionManager enemyCoalitionManager) {

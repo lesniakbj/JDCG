@@ -1,5 +1,6 @@
 package sim.domain.unit.air;
 
+import java.util.List;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.MajorTaskType;
 import sim.domain.unit.SimUnit;
@@ -7,6 +8,7 @@ import sim.domain.unit.SimUnit;
 public abstract class AirUnit extends SimUnit {
     private MajorTaskType assignedTaskType;
     private AircraftType aircraftType;
+    private List<WeaponStation> weaponStations;
 
     public MajorTaskType getAssignedTaskType() {
         return assignedTaskType;
@@ -22,6 +24,14 @@ public abstract class AirUnit extends SimUnit {
 
     public void setAircraftType(AircraftType aircraftType) {
         this.aircraftType = aircraftType;
+    }
+
+    public List<WeaponStation> getWeaponStations() {
+        return weaponStations;
+    }
+
+    public void setWeaponStations(List<WeaponStation> weaponStations) {
+        this.weaponStations = weaponStations;
     }
 }
 

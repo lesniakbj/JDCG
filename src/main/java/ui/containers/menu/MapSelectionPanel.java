@@ -1,8 +1,7 @@
 package ui.containers.menu;
 
-import sim.domain.enums.MapType;
-
 import javax.swing.JPanel;
+import sim.domain.enums.MapType;
 
 public class MapSelectionPanel extends JPanel {
     private MapType map;

@@ -1,7 +1,5 @@
 package sim.domain.enums;
 
-import java.util.Arrays;
-
 import static sim.domain.enums.MunitionSubType.AIR_TO_AIR;
 import static sim.domain.enums.MunitionSubType.AIR_TO_SURFACE;
 import static sim.domain.enums.MunitionSubType.ANTI_RADIATION;
@@ -9,6 +7,8 @@ import static sim.domain.enums.MunitionSubType.BOMBS;
 import static sim.domain.enums.MunitionSubType.GUN_POD;
 import static sim.domain.enums.MunitionSubType.NONE;
 import static sim.domain.enums.MunitionSubType.ROCKETS;
+
+import java.util.Arrays;
 
 public enum MunitionType {
     // =============================================
@@ -24,43 +24,46 @@ public enum MunitionType {
     AIM9L("AIM-9L", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
     AIM9M("AIM-9M", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
     AIM9X("AIM-9X", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
-    CAP9MX2("CAP-9M x 2", AIR_TO_AIR, FactionSideType.BLUEFOR, false),
-    AIM9LX2("AIM-9L x 2", AIR_TO_AIR, FactionSideType.BLUEFOR, false),
-    AIM9MX2("AIM-9M x 2", AIR_TO_AIR, FactionSideType.BLUEFOR, false),
-    AIM9XX2("AIM-9X x 2", AIR_TO_AIR, FactionSideType.BLUEFOR, false),
 
     // AIM-120 Family
     AIM120B("AIM-120B", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
-    AIM120C("AIM-120X", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
+    AIM120C("AIM-120C", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
 
     // Mk8X Family
     MK_82("Mk-82", BOMBS, FactionSideType.BLUEFOR, true),
-    MK_82X2("Mk-82 x 2", BOMBS, FactionSideType.BLUEFOR, false),
-    MK_82X3("Mk-82 x 3", BOMBS, FactionSideType.BLUEFOR, false),
     MK_82SE("Mk-82 SnakeEye", BOMBS, FactionSideType.BLUEFOR, true),
-    MK_82SEX2("Mk-82 SnakeEye x 2", BOMBS, FactionSideType.BLUEFOR, false),
+    MK_82AIR("Mk-82 AIR", BOMBS, FactionSideType.BLUEFOR, true),
     MK_83("Mk-83", BOMBS, FactionSideType.BLUEFOR, true),
-    MK_83X2("Mk-83 x 2", BOMBS, FactionSideType.BLUEFOR, false),
-    MK_83X3("Mk-83 x 3", BOMBS, FactionSideType.BLUEFOR, false),
     MK_84("Mk-84", BOMBS, FactionSideType.BLUEFOR, true),
-    MK_84X2("Mk-84 x 2", BOMBS, FactionSideType.BLUEFOR, false),
-    MK_84X3("Mk-84 x 3", BOMBS, FactionSideType.BLUEFOR, false),
+
+    // Illumination Bombs
+    LUU_2("LUU-2", BOMBS, FactionSideType.BLUEFOR, true),
+
+    // Guided Bombs
+    GBU_38("GBU-38", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_31("GBU-31", BOMBS, FactionSideType.BLUEFOR, true),
 
     // Cluster Munitions
     MK_20("Mk-20 RockEye", BOMBS, FactionSideType.BLUEFOR, true),
-    MK_20X2("Mk-20 RockEye x 2", BOMBS, FactionSideType.BLUEFOR, false),
+    CBU_87("CBU-87", BOMBS, FactionSideType.BLUEFOR, true),
+    CBU_97("CBU-97", BOMBS, FactionSideType.BLUEFOR, true),
     CBU_99("CBU-99", BOMBS, FactionSideType.BLUEFOR, true),
-    CBU_99X2("CBU-99 x 2", BOMBS, FactionSideType.BLUEFOR, false),
+
+    // Guided Cluster Munitions
+    CBU_103("CBU-103", BOMBS, FactionSideType.BLUEFOR, true),
+    CBU_105("CBU-105", BOMBS, FactionSideType.BLUEFOR, true),
 
     // Rockets
     ZUNI_MK_71("ZUNI Mk-71", ROCKETS, FactionSideType.BLUEFOR, true),
-    ZUNI_MK_71X2("ZUNI Mk-71 x 2", ROCKETS, FactionSideType.BLUEFOR, false),
     MK_151_HE_19("19 Mk-151 HE", ROCKETS, FactionSideType.BLUEFOR, true),
-    MK_151_HE_19X2("19 Mk-151 HE x 2", ROCKETS, FactionSideType.BLUEFOR, false),
     MK_151_HE_7("7 Mk-151 HE", ROCKETS, FactionSideType.BLUEFOR, true),
-    MK_151_HE_7X2("7 Mk-151 HE x 2", ROCKETS, FactionSideType.BLUEFOR, false),
     MK_5_HE_7("7 Mk-5 HE", ROCKETS, FactionSideType.BLUEFOR, true),
-    MK_5_HE_7X2("7 Mk-5 HE x 2", ROCKETS, FactionSideType.BLUEFOR, false),
+
+    // Missiles
+    AGM_65D("AGM-65D", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_65G("AGM-65G", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_65H("AGM-65H", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_65K("AGM-65K", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
 
     // =============================================
     //              REDFOR WEAPONRY
@@ -77,7 +80,6 @@ public enum MunitionType {
 
     // Bombs
     FAB100("FAB-100", BOMBS, FactionSideType.REDFOR, true),
-    FAB100X4("FAB-100 x 4", BOMBS, FactionSideType.REDFOR, false),
     FAB250("FAB-250", BOMBS, FactionSideType.REDFOR, true),
     FAB500("FAB-500", BOMBS, FactionSideType.REDFOR, true),
     FAB1500("FAB-1500", BOMBS, FactionSideType.REDFOR, true),

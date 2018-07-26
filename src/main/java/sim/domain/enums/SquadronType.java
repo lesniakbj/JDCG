@@ -1,7 +1,5 @@
 package sim.domain.enums;
 
-import java.util.List;
-
 import static sim.domain.enums.StaticLists.AIR_FORCE_AIR_SUPERIORITY_AVAILABLE_AIRCRAFT;
 import static sim.domain.enums.StaticLists.AIR_SUPERIORITY;
 import static sim.domain.enums.StaticLists.ALL_TASK_TYPES;
@@ -18,6 +16,8 @@ import static sim.domain.enums.StaticLists.MODERN_ERAS;
 import static sim.domain.enums.StaticLists.NAVY_COMPLETE_ERA_AIRCRAFT;
 import static sim.domain.enums.StaticLists.NAVY_MODERN_ERA_AIRCRAFT;
 import static sim.domain.enums.StaticLists.STRIKE_FIGHTER;
+
+import java.util.List;
 
 public enum SquadronType {
     // USA Air Force Squadrons

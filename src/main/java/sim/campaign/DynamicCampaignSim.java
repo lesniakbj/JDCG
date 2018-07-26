@@ -1,28 +1,6 @@
 package sim.campaign;
 
 import dcsgen.DCSMissionGenerator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import sim.ai.threat.ThreatGrid;
-import sim.domain.enums.CampaignType;
-import sim.domain.enums.FactionSideType;
-import sim.domain.enums.MapType;
-import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.AirUnit;
-import sim.domain.unit.air.Mission;
-import sim.domain.unit.global.Airfield;
-import sim.domain.unit.ground.GroundUnit;
-import sim.gen.CampaignGenerator;
-import sim.manager.CoalitionManager;
-import sim.manager.MissionManager;
-import sim.manager.ObjectiveManager;
-import sim.mission.MissionSimulator;
-import sim.settings.CampaignSettings;
-import sim.settings.GlobalSimSettings;
-import ui.containers.CampaignPanel;
-
-import javax.swing.JButton;
-import javax.swing.border.Border;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -39,6 +17,28 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.swing.JButton;
+import javax.swing.border.Border;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.ai.threat.ThreatGrid;
+import sim.domain.enums.CampaignType;
+import sim.domain.enums.FactionSideType;
+import sim.domain.enums.MapType;
+import sim.domain.enums.SubTaskType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
+import sim.gen.CampaignGenerator;
+import sim.manager.CoalitionManager;
+import sim.manager.MissionManager;
+import sim.manager.ObjectiveManager;
+import sim.mission.MissionSimulator;
+import sim.settings.CampaignSettings;
+import sim.settings.GlobalSimSettings;
+import ui.containers.CampaignPanel;
 
 public class DynamicCampaignSim {
     private static final Logger log = LogManager.getLogger(DynamicCampaignSim.class);
@@ -250,7 +250,6 @@ public class DynamicCampaignSim {
         redforCoalitionManager.update(campaignSettings, blueforCoalitionManager, minutesToStep);
     }
 
-
     private void stepMissions(int minutesToStep) {
         // Gather all of the planned/running missions
         List<Mission> criticalMissions = new ArrayList<>();
@@ -276,7 +275,11 @@ public class DynamicCampaignSim {
             }
 
             // Check if we need to sim the results of this mission locally
-            if(m.onObjectiveWaypoint()) {
+            // Escort and Intercept missions are always simulated; as they search the current
+            // aircraft's location for threats
+            boolean isAirMission = m.getMissionType().equals(SubTaskType.ESCORT) || m.getMissionType().equals(SubTaskType.INTERCEPT);
+            boolean isTransportMission =  m.getMissionType().equals(SubTaskType.TRANSPORT) || m.getMissionType().equals(SubTaskType.AIRLIFT);
+            if(m.onObjectiveWaypoint() || isAirMission || isTransportMission) {
                 // Simulate the mission...
                 missionSimulator.simulateMission(m, campaignSettings, blueforCoalitionManager, redforCoalitionManager);
             }
@@ -290,7 +293,7 @@ public class DynamicCampaignSim {
         blueforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().removeAll(completedMissions);
         redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().removeAll(completedMissions);
 
-        // Add the completed missions back to their respective airfield
+        // Add the completed mission aircraft back to their respective airfield
         for(Mission m : completedMissions) {
             addMissionAircraftToCoalition(m, blueforCoalitionManager);
             addMissionAircraftToCoalition(m, redforCoalitionManager);

@@ -1,10 +1,9 @@
 package sim.ai.command.neat.algorithm;
 
-import sim.ai.actions.AIActionType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import sim.ai.actions.AIActionType;
 
 public class PopulationPool {
     private List<Species> species;

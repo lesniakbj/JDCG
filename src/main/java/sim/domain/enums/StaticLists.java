@@ -1,10 +1,13 @@
 package sim.domain.enums;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import sim.domain.unit.air.Munition;
+import sim.domain.unit.air.WeaponStation;
 
 public abstract class StaticLists {
     // Commonly used era lists
@@ -40,16 +43,16 @@ public abstract class StaticLists {
     static final List<SubTaskType> STEALTH_BOMBER = Arrays.asList(SubTaskType.GROUND_STRIKE, SubTaskType.INTERDICTION, SubTaskType.STEALTH);
 
     // Aircraft Loadouts (has to be initialized before AircraftType)
-    static final Map<Integer, List<MunitionType>> FA_18_MUNITIONS = new HashMap<Integer, List<MunitionType>>() {{
-        put(1, Arrays.asList(MunitionType.AIM9L, MunitionType.AIM9M, MunitionType.AIM9X, MunitionType.CAP9M));
-        put(2, Arrays.asList(MunitionType.AIM9LX2, MunitionType.AIM9MX2, MunitionType.AIM9XX2, MunitionType.CAP9MX2, MunitionType.AIM7F, MunitionType.AIM7M, MunitionType.MK_82, MunitionType.MK_82SE, MunitionType.MK_83, MunitionType.MK_84, MunitionType.MK_20, MunitionType.CBU_99, MunitionType.MK_82X2, MunitionType.MK_82SEX2, MunitionType.MK_82X2, MunitionType.MK_83X2, MunitionType.MK_20X2, MunitionType.CBU_99X2, MunitionType.ZUNI_MK_71, MunitionType.MK_151_HE_19, MunitionType.MK_151_HE_7, MunitionType.MK_5_HE_7, MunitionType.ZUNI_MK_71X2, MunitionType.MK_151_HE_19X2, MunitionType.MK_151_HE_7X2, MunitionType.MK_5_HE_7X2, MunitionType.REMOVE_PYLON));
-        put(3, Arrays.asList(MunitionType.AIM7F, MunitionType.AIM7M, MunitionType.MK_82, MunitionType.MK_82SE, MunitionType.MK_83, MunitionType.MK_84, MunitionType.MK_20, MunitionType.CBU_99, MunitionType.MK_82X2, MunitionType.MK_82SEX2, MunitionType.MK_82X2, MunitionType.MK_83X2, MunitionType.MK_20X2, MunitionType.CBU_99X2, MunitionType.ZUNI_MK_71, MunitionType.MK_151_HE_19, MunitionType.MK_151_HE_7, MunitionType.ZUNI_MK_71X2, MunitionType.MK_151_HE_19X2, MunitionType.MK_151_HE_7X2, MunitionType.REMOVE_PYLON, MunitionType.FUEL_TANK));
-        put(4, Arrays.asList(MunitionType.AIM7F, MunitionType.AIM7M));
-        put(5, Arrays.asList(MunitionType.MK_82, MunitionType.MK_82SE, MunitionType.MK_83, MunitionType.MK_84, MunitionType.MK_20, MunitionType.CBU_99, MunitionType.MK_82X2, MunitionType.MK_82SEX2, MunitionType.MK_20X2, MunitionType.CBU_99X2, MunitionType.FUEL_TANK));
-        put(6, Arrays.asList(MunitionType.AIM7F, MunitionType.AIM7M));
-        put(7, Arrays.asList(MunitionType.AIM7F, MunitionType.AIM7M, MunitionType.MK_82, MunitionType.MK_82SE, MunitionType.MK_83, MunitionType.MK_84, MunitionType.MK_20, MunitionType.CBU_99, MunitionType.MK_82X2, MunitionType.MK_82SEX2, MunitionType.MK_82X2, MunitionType.MK_83X2, MunitionType.MK_20X2, MunitionType.CBU_99X2, MunitionType.ZUNI_MK_71, MunitionType.MK_151_HE_19, MunitionType.MK_151_HE_7, MunitionType.ZUNI_MK_71X2, MunitionType.MK_151_HE_19X2, MunitionType.MK_151_HE_7X2, MunitionType.REMOVE_PYLON, MunitionType.FUEL_TANK));
-        put(8, Arrays.asList(MunitionType.AIM9LX2, MunitionType.AIM9MX2, MunitionType.AIM9XX2, MunitionType.CAP9MX2, MunitionType.AIM7F, MunitionType.AIM7M, MunitionType.MK_82, MunitionType.MK_82SE, MunitionType.MK_83, MunitionType.MK_84, MunitionType.MK_20, MunitionType.CBU_99, MunitionType.MK_82X2, MunitionType.MK_82SEX2, MunitionType.MK_82X2, MunitionType.MK_83X2, MunitionType.MK_20X2, MunitionType.CBU_99X2, MunitionType.ZUNI_MK_71, MunitionType.MK_151_HE_19, MunitionType.MK_151_HE_7, MunitionType.MK_5_HE_7, MunitionType.ZUNI_MK_71X2, MunitionType.MK_151_HE_19X2, MunitionType.MK_151_HE_7X2, MunitionType.MK_5_HE_7X2, MunitionType.REMOVE_PYLON));
-        put(9, Arrays.asList(MunitionType.AIM9L, MunitionType.AIM9M, MunitionType.AIM9X, MunitionType.CAP9M));
+    static final Map<Integer, List<Munition>> FA_18_MUNITIONS = new HashMap<Integer, List<Munition>>() {{
+        put(1, Arrays.asList(new Munition(MunitionType.AIM9L, 1), new Munition(MunitionType.AIM9M, 1), new Munition(MunitionType.AIM9X, 1), new Munition(MunitionType.CAP9M, 1)));
+        put(2, Arrays.asList(new Munition(MunitionType.AIM7F, 1), new Munition(MunitionType.AIM7M, 1), new Munition(MunitionType.MK_82, 1), new Munition(MunitionType.MK_82SE, 1), new Munition(MunitionType.MK_83, 1), new Munition(MunitionType.MK_84, 1), new Munition(MunitionType.MK_20, 1), new Munition(MunitionType.CBU_99, 1), new Munition(MunitionType.ZUNI_MK_71, 1), new Munition(MunitionType.MK_151_HE_19, 1), new Munition(MunitionType.MK_151_HE_7, 1), new Munition(MunitionType.MK_5_HE_7, 1), new Munition(MunitionType.REMOVE_PYLON, 1)));
+        put(3, Arrays.asList(new Munition(MunitionType.AIM7F, 1), new Munition(MunitionType.AIM7M, 1), new Munition(MunitionType.MK_82, 1), new Munition(MunitionType.MK_82SE, 1), new Munition( MunitionType.MK_83,1), new Munition(MunitionType.MK_84, 1), new Munition(MunitionType.MK_20, 1), new Munition(MunitionType.CBU_99, 1), new Munition(MunitionType.ZUNI_MK_71, 1), new Munition(MunitionType.MK_151_HE_19, 1), new Munition(MunitionType.MK_151_HE_7, 1), new Munition(MunitionType.REMOVE_PYLON, 1), new Munition(MunitionType.FUEL_TANK, 1)));
+        put(4, Arrays.asList(new Munition(MunitionType.AIM7F, 1), new Munition(MunitionType.AIM7M, 1)));
+        put(5, Arrays.asList(new Munition(MunitionType.MK_82, 1), new Munition(MunitionType.MK_82SE, 1), new Munition(MunitionType.MK_83, 1), new Munition(MunitionType.MK_84, 1), new Munition(MunitionType.MK_20, 1), new Munition(MunitionType.CBU_99, 1), new Munition(MunitionType.FUEL_TANK, 1)));
+        put(6, Arrays.asList(new Munition(MunitionType.AIM7F, 1), new Munition(MunitionType.AIM7M, 1)));
+        put(7, Arrays.asList(new Munition(MunitionType.AIM7F, 1), new Munition(MunitionType.AIM7M, 1), new Munition(MunitionType.MK_82, 1), new Munition(MunitionType.MK_82SE, 1), new Munition( MunitionType.MK_83,1), new Munition(MunitionType.MK_84, 1), new Munition(MunitionType.MK_20, 1), new Munition(MunitionType.CBU_99, 1), new Munition(MunitionType.ZUNI_MK_71, 1), new Munition(MunitionType.MK_151_HE_19, 1), new Munition(MunitionType.MK_151_HE_7, 1), new Munition(MunitionType.REMOVE_PYLON, 1), new Munition(MunitionType.FUEL_TANK, 1)));
+        put(8, Arrays.asList(new Munition(MunitionType.AIM7F, 1), new Munition(MunitionType.AIM7M, 1), new Munition(MunitionType.MK_82, 1), new Munition(MunitionType.MK_82SE, 1), new Munition(MunitionType.MK_83, 1), new Munition(MunitionType.MK_84, 1), new Munition(MunitionType.MK_20, 1), new Munition(MunitionType.CBU_99, 1), new Munition(MunitionType.ZUNI_MK_71, 1), new Munition(MunitionType.MK_151_HE_19, 1), new Munition(MunitionType.MK_151_HE_7, 1), new Munition(MunitionType.MK_5_HE_7, 1), new Munition(MunitionType.REMOVE_PYLON, 1)));
+        put(9, Arrays.asList(new Munition(MunitionType.AIM9L, 1), new Munition(MunitionType.AIM9M, 1), new Munition(MunitionType.AIM9X, 1), new Munition(MunitionType.CAP9M, 1)));
     }};
 
     // Commonly used Aircraft Lists
@@ -62,75 +65,75 @@ public abstract class StaticLists {
     static final List<AircraftType> MARINE_STRIKE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.AV_8NA, AircraftType.FA_18C_LOT20);
 
     // Default Loadouts
-    public static final Map<AircraftType, Map<SubTaskType, Map<Integer, MunitionType>>> DEFAULT_LOADOUTS = new HashMap<AircraftType, Map<SubTaskType, Map<Integer, MunitionType>>>() {{
+    public static final Map<AircraftType, Map<SubTaskType, List<WeaponStation>>> DEFAULT_LOADOUTS = new HashMap<AircraftType, Map<SubTaskType, List<WeaponStation>>>() {{
         // F-18C Loadouts
-        Map<SubTaskType, Map<Integer, MunitionType>> f18TaskLoadouts = new HashMap<>();
-        Map<Integer, MunitionType> f18CASLoadout = new HashMap<>();
-        f18CASLoadout.put(1, MunitionType.AIM9M);
-        f18CASLoadout.put(2, MunitionType.MK_82);
-        f18CASLoadout.put(3, MunitionType.MK_82);
-        f18CASLoadout.put(5, MunitionType.FUEL_TANK);
-        f18CASLoadout.put(7, MunitionType.MK_82);
-        f18CASLoadout.put(8, MunitionType.MK_82);
-        f18CASLoadout.put(9, MunitionType.AIM9M);
+        Map<SubTaskType, List<WeaponStation>> f18TaskLoadouts = new HashMap<>();
+        List<WeaponStation> f18CASLoadout = new ArrayList<>();
+        f18CASLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18CASLoadout.add(new WeaponStation(2, new Munition(MunitionType.MK_82, 1)));
+        f18CASLoadout.add(new WeaponStation(3, new Munition(MunitionType.MK_82, 1)));
+        f18CASLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18CASLoadout.add(new WeaponStation(7, new Munition(MunitionType.MK_82, 1)));
+        f18CASLoadout.add(new WeaponStation(8, new Munition(MunitionType.MK_82, 1)));
+        f18CASLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.CAS, f18CASLoadout);
 
-        Map<Integer, MunitionType> f18CAPLoadout = new HashMap<>();
-        f18CAPLoadout.put(1, MunitionType.AIM9M);
-        f18CAPLoadout.put(2, MunitionType.AIM9MX2);
-        f18CAPLoadout.put(4, MunitionType.AIM7M);
-        f18CAPLoadout.put(5, MunitionType.FUEL_TANK);
-        f18CAPLoadout.put(6, MunitionType.AIM7M);
-        f18CAPLoadout.put(8, MunitionType.AIM9MX2);
-        f18CAPLoadout.put(9, MunitionType.AIM9M);
+        List<WeaponStation> f18CAPLoadout = new ArrayList<>();
+        f18CAPLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18CAPLoadout.add(new WeaponStation(2, new Munition(MunitionType.AIM9M, 1)));
+        f18CAPLoadout.add(new WeaponStation(4, new Munition(MunitionType.AIM7M, 1)));
+        f18CAPLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18CAPLoadout.add(new WeaponStation(6, new Munition(MunitionType.AIM7M, 1)));
+        f18CAPLoadout.add(new WeaponStation(8, new Munition(MunitionType.AIM9M, 1)));
+        f18CAPLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.CAP, f18CAPLoadout);
 
-        Map<Integer, MunitionType> f18SEADLoadout = new HashMap<>();
-        f18SEADLoadout.put(1, MunitionType.AIM9M);
-        f18SEADLoadout.put(5, MunitionType.FUEL_TANK);
-        f18SEADLoadout.put(9, MunitionType.AIM9M);
+        List<WeaponStation> f18SEADLoadout = new ArrayList<>();
+        f18SEADLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18SEADLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18SEADLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.SEAD, f18SEADLoadout);
 
-        Map<Integer, MunitionType> f18DEADLoadout = new HashMap<>();
-        f18DEADLoadout.put(1, MunitionType.AIM9M);
-        f18DEADLoadout.put(5, MunitionType.FUEL_TANK);
-        f18DEADLoadout.put(9, MunitionType.AIM9M);
+        List<WeaponStation> f18DEADLoadout = new ArrayList<>();
+        f18SEADLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18SEADLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18SEADLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.DEAD, f18DEADLoadout);
 
-        Map<Integer, MunitionType> f18EscortLoadout = new HashMap<>();
-        f18EscortLoadout.put(1, MunitionType.AIM9M);
-        f18EscortLoadout.put(2, MunitionType.AIM7M);
-        f18EscortLoadout.put(3, MunitionType.FUEL_TANK);
-        f18EscortLoadout.put(5, MunitionType.FUEL_TANK);
-        f18EscortLoadout.put(7, MunitionType.FUEL_TANK);
-        f18EscortLoadout.put(8, MunitionType.AIM7M);
-        f18EscortLoadout.put(9, MunitionType.AIM9M);
+        List<WeaponStation> f18EscortLoadout = new ArrayList<>();
+        f18EscortLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18EscortLoadout.add(new WeaponStation(2, new Munition(MunitionType.AIM7M, 1)));
+        f18EscortLoadout.add(new WeaponStation(3, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18EscortLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18EscortLoadout.add(new WeaponStation(7, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18EscortLoadout.add(new WeaponStation(8, new Munition(MunitionType.AIM7M, 1)));
+        f18EscortLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.ESCORT, f18EscortLoadout);
 
-        Map<Integer, MunitionType> f18GroundStrikeLoadout = new HashMap<>();
-        f18GroundStrikeLoadout.put(1, MunitionType.AIM9M);
-        f18GroundStrikeLoadout.put(2, MunitionType.MK_83X2);
-        f18GroundStrikeLoadout.put(5, MunitionType.FUEL_TANK);
-        f18GroundStrikeLoadout.put(8, MunitionType.MK_83X2);
-        f18GroundStrikeLoadout.put(9, MunitionType.AIM9M);
+        List<WeaponStation> f18GroundStrikeLoadout = new ArrayList<>();
+        f18GroundStrikeLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18GroundStrikeLoadout.add(new WeaponStation(2, new Munition(MunitionType.MK_83, 1)));
+        f18GroundStrikeLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18GroundStrikeLoadout.add(new WeaponStation(8, new Munition(MunitionType.MK_83, 1)));
+        f18GroundStrikeLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.GROUND_STRIKE, f18GroundStrikeLoadout);
 
-        Map<Integer, MunitionType> f18InterceptLoadout = new HashMap<>();
-        f18InterceptLoadout.put(1, MunitionType.AIM9M);
-        f18InterceptLoadout.put(2, MunitionType.AIM9MX2);
-        f18InterceptLoadout.put(4, MunitionType.AIM7M);
-        f18InterceptLoadout.put(5, MunitionType.FUEL_TANK);
-        f18InterceptLoadout.put(6, MunitionType.AIM7M);
-        f18InterceptLoadout.put(8, MunitionType.AIM9MX2);
-        f18InterceptLoadout.put(9, MunitionType.AIM9M);
+        List<WeaponStation> f18InterceptLoadout = new ArrayList<>();
+        f18InterceptLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18InterceptLoadout.add(new WeaponStation(2, new Munition(MunitionType.AIM9M, 1)));
+        f18InterceptLoadout.add(new WeaponStation(4, new Munition(MunitionType.AIM7M, 1)));
+        f18InterceptLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18InterceptLoadout.add(new WeaponStation(6, new Munition(MunitionType.AIM7M, 1)));
+        f18InterceptLoadout.add(new WeaponStation(8, new Munition(MunitionType.AIM9M, 1)));
+        f18InterceptLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.INTERCEPT, f18InterceptLoadout);
 
-        Map<Integer, MunitionType> f18LowLevelStrikeLoadout = new HashMap<>();
-        f18LowLevelStrikeLoadout.put(1, MunitionType.AIM9M);
-        f18LowLevelStrikeLoadout.put(2, MunitionType.MK_82SEX2);
-        f18LowLevelStrikeLoadout.put(5, MunitionType.FUEL_TANK);
-        f18LowLevelStrikeLoadout.put(8, MunitionType.MK_82SEX2);
-        f18LowLevelStrikeLoadout.put(9, MunitionType.AIM9M);
+        List<WeaponStation> f18LowLevelStrikeLoadout = new ArrayList<>();
+        f18LowLevelStrikeLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
+        f18LowLevelStrikeLoadout.add(new WeaponStation(2, new Munition(MunitionType.MK_82SE, 1)));
+        f18LowLevelStrikeLoadout.add(new WeaponStation(5, new Munition(MunitionType.FUEL_TANK, 1)));
+        f18LowLevelStrikeLoadout.add(new WeaponStation(8, new Munition(MunitionType.MK_82SE, 1)));
+        f18LowLevelStrikeLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
         f18TaskLoadouts.put(SubTaskType.LOW_LEVEL_STRIKE, f18LowLevelStrikeLoadout);
         put(AircraftType.FA_18C_LOT20, f18TaskLoadouts);
 

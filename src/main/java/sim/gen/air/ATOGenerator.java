@@ -1,5 +1,8 @@
 package sim.gen.air;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -7,17 +10,11 @@ import sim.ai.command.AICommander;
 import sim.ai.command.random.RandomAICommander;
 import sim.ai.threat.ThreatGrid;
 import sim.ai.threat.ThreatGridCell;
-import sim.campaign.DynamicCampaignSim;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
-
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class ATOGenerator {
     private static final Logger log = LogManager.getLogger(ATOGenerator.class);

@@ -1,10 +1,17 @@
 package sim.mission;
 
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSideType;
+import sim.domain.enums.SubTaskType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
@@ -17,13 +24,6 @@ import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
 
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 public class MissionSimulator {
     private static final Logger log = LogManager.getLogger(MissionSimulator.class);
 
@@ -34,21 +34,35 @@ public class MissionSimulator {
         FactionSideType missionSide = attackingAircraft.getSide();
         CoalitionManager enemyManager = missionSide.equals(campaignSettings.getPlayerSelectedSide()) ? redforCoalitionManager : blueforCoalitionManager;
         Point2D.Double missionLocation = new Point2D.Double(mission.getLastWaypoint().getLocationX(), mission.getLastWaypoint().getLocationY());
-        List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence = searchForAirDefences(missionLocation, enemyManager, 20);
+        List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence = searchForAirDefences(missionLocation, enemyManager, 50);
 
         switch (mission.getMissionType()) {
+            case AIRLIFT:
+            case TRANSPORT:
+                simulateTransportMission(mission, attackingAircraft, enemyManager);
+                break;
+            case BDA:
+                break;
             case CAS:
             case GROUND_STRIKE:
+            case INTERDICTION:
+            case LOW_LEVEL_STRIKE:
                 simulateGroundMission(mission, attackingAircraft, missionEnemyAirDefence, enemyManager);
                 break;
             case CAP:
             case ESCORT:
             case INTERCEPT:
+                simulateAirMission(mission, attackingAircraft, enemyManager);
+                break;
+            case FAC:
+                break;
+            case RECON:
                 break;
             case SEAD:
             case DEAD:
+                simulateSEADMission(mission, attackingAircraft, missionEnemyAirDefence, enemyManager);
                 break;
-            case LOW_LEVEL_STRIKE:
+            case BOMBER:
                 break;
         }
     }
@@ -61,22 +75,73 @@ public class MissionSimulator {
         return returnDefences;
     }
 
+    private void simulateTransportMission(Mission mission, UnitGroup<AirUnit> attackingAircraft, CoalitionManager enemyManager) {
+        log.debug("Simulating a Transport mission....");
+        // If we're near the mission start, pick up a unit/muntions and transport them either
+        // to the cell we were told to go to, or the front.
+
+        // If we're neat the mission point, drop the unit off
+    }
+
     private void simulateGroundMission(Mission mission, UnitGroup<AirUnit> attackingAircraft, List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence, CoalitionManager enemyManager) {
         log.debug("Simulating a ground attack mission....");
 
-        // First, check if we are attacking an airfield
-        AirfieldType airfield = AirfieldType.searchByCoordinates(attackingAircraft.getMapXLocation(), attackingAircraft.getMapYLocation());
-        if(airfield != null) {
-            simulateAttackOnAirfield(airfield, attackingAircraft, missionEnemyAirDefence, enemyManager);
+        // If we're doing ground strike missions, check the various types we can do
+        if(mission.getMissionType().equals(SubTaskType.GROUND_STRIKE)) {
+            log.debug("Simulating ground strike, checking airfield first; then checking for nearby units");
+
+            // First, check if we are attacking an airfield
+            AirfieldType airfield = AirfieldType.searchByCoordinates(attackingAircraft.getMapXLocation(), attackingAircraft.getMapYLocation());
+            if (airfield != null) {
+                simulateAttackOnAirfield(airfield, attackingAircraft, missionEnemyAirDefence, enemyManager);
+            }
+
+            // Check to see if there is an airfield within the threat grid
+
+            // Otherwise, check to see if there are ground units / structures
         }
+
+        if(mission.getMissionType().equals(SubTaskType.CAS) || mission.getMissionType().equals(SubTaskType.INTERDICTION)) {
+            log.debug("Simulating ground unit attack");
+        }
+    }
+
+    private void simulateAirMission(Mission mission, UnitGroup<AirUnit> attackingAircraft, CoalitionManager enemyManager) {
+        log.debug("Simulating an Air Mission...");
+        // Air missions are continuous, IE. run during the entire mission length. Thus,
+        // we need to check for targets and abort if we do not find any.
+    }
+
+    private void simulateSEADMission(Mission mission, UnitGroup<AirUnit> attackingAircraft, List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence, CoalitionManager enemyManager) {
+        log.debug("Simulating a SEAD Mission...");
     }
 
     private void simulateAttackOnAirfield(AirfieldType airfield, UnitGroup<AirUnit> attackingAircraft, List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence, CoalitionManager enemyManager) {
         log.debug("Simulating a ground attack mission on an airfield...");
+
+        boolean attackOnStructure = DynamicCampaignSim.getRandomGen().nextInt(100) + 1 < 75;
+        if(attackOnStructure) {
+            simulateAttackOnAirfieldStructure(airfield, attackingAircraft, missionEnemyAirDefence, enemyManager);
+        } else {
+            simulateAttackOnAirfieldGroundUnitGroups(airfield, attackingAircraft, missionEnemyAirDefence, enemyManager);
+        }
+    }
+
+    private void simulateAttackOnAirfieldStructure(AirfieldType airfield, UnitGroup<AirUnit> attackingAircraft, List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence, CoalitionManager enemyManager) {
+        log.debug("Simulating an attack on Airfield Structures");
+    }
+
+    private void simulateAttackOnAirfieldGroundUnitGroups(AirfieldType airfield, UnitGroup<AirUnit> attackingAircraft, List<UnitGroup<AirDefenceUnit>> missionEnemyAirDefence, CoalitionManager enemyManager) {
+        log.debug("Simulating an attack on Airfield Ground Unit Groups");
+        // Get the data related to what we're attacking
         Map<Airfield, List<UnitGroup<GroundUnit>>> groundUnits = enemyManager.getCoalitionPointDefenceGroundUnits();
-        log.debug("Point Defences: " + groundUnits);
         Airfield airfieldUnderAttack = groundUnits.entrySet().stream().filter(a -> a.getKey().getAirfieldType().equals(airfield)).map(Map.Entry::getKey).findFirst().orElse(null);
         List<UnitGroup<GroundUnit>> groupsUnderAttack = groundUnits.entrySet().stream().filter(a -> a.getKey().getAirfieldType().equals(airfield)).map(Map.Entry::getValue).findFirst().orElse(null);
+
+        // Break out if we didn't find an airfield
+        if(airfieldUnderAttack == null || groupsUnderAttack == null) {
+            return;
+        }
 
         // Choose a random group that we actually will attack
         int rndIdx = DynamicCampaignSim.getRandomGen().nextInt(groupsUnderAttack.size());
@@ -88,12 +153,12 @@ public class MissionSimulator {
         for(UnitGroup<AirDefenceUnit> adGroup : missionEnemyAirDefence) {
             for(AirDefenceUnit u : adGroup.getGroupUnits()) {
                 if(u.getClass().isAssignableFrom(ArtilleryAirDefenceUnit.class)) {
-                    adBoost += 1.75;
+                    adBoost += 2.5;
                     continue;
                 }
 
                 if(u.getClass().isAssignableFrom(MissileAirDefenceUnit.class)) {
-                    adBoost += 5;
+                    adBoost += 10;
                 }
             }
         }
