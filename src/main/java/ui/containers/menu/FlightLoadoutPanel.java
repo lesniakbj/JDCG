@@ -36,6 +36,7 @@ public class FlightLoadoutPanel extends JPanel {
     private Mission flightMission;
     private List<WeaponStation> flightLoadout;
     private Map<JComboBox,Integer> loadoutSelectors;
+    private Map<JComboBox,JComboBox> totalLoadoutSelectors;
     private LoadoutBoxSelectionListener listener;
 
     public FlightLoadoutPanel(Mission flightMission, JDialog flightLoadoutDialog) {
@@ -67,11 +68,14 @@ public class FlightLoadoutPanel extends JPanel {
             JLabel label = new JLabel("Pylon " + station + ":");
             String[] values = entry.getValue().stream().map(Munition::getMunitionType).map(MunitionType::getMunitionName).toArray(String[]::new);
             JComboBox<String> comboBox = new JComboBox<>(values);
-            JComboBox<Integer> totalComboBox = new JComboBox<>(new Integer[]{1, 2, 3, 4});
+            JComboBox<Integer> totalComboBox = new JComboBox<>();
 
             if(alreadySelected != null && containsStationMunition(station, alreadySelected)) {
                 WeaponStation selected = getStationByNumber(station, alreadySelected);
                 comboBox.setSelectedItem(selected.getMunitionType().getMunitionName());
+                WeaponStation ws = alreadySelected.get(station);
+                Integer[] ints = IntStream.rangeClosed(1, ws.getTotalLoaded()).boxed().toArray(Integer[]::new);
+                totalComboBox = new JComboBox<>(ints);
                 totalComboBox.setSelectedItem(selected.getTotalLoaded());
                 flightLoadout.add(selected);
             } else {
@@ -83,6 +87,7 @@ public class FlightLoadoutPanel extends JPanel {
             munitionTable.add(totalComboBox);
             comboBox.addActionListener(listener);
             loadoutSelectors.put(comboBox, station);
+            totalLoadoutSelectors.put(comboBox, totalComboBox);
             rows++;
         }
         SpringUtilities.makeCompactGrid(munitionTable, rows, 3, 10, 10,10, 6);
@@ -135,6 +140,7 @@ public class FlightLoadoutPanel extends JPanel {
             if(selectedName != null && !selectedName.isEmpty()) {
                 MunitionType mt = MunitionType.fromName(selectedName);
                 Integer station = loadoutSelectors.get(box);
+                JComboBox max = totalLoadoutSelectors.get(box);
 
                 log.debug(String.format("Setting station: %d/%s", station, mt));
                 removeStationLoadout(station);
