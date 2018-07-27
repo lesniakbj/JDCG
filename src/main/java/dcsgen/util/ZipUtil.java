@@ -33,7 +33,7 @@ public class ZipUtil {
         try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(mizFile))) {
             for (File file : files) {
                 // Create an entry for this file
-                ZipEntry ze = new ZipEntry(file.getName());
+                ZipEntry ze = new ZipEntry(file.getAbsolutePath());
                 out.putNextEntry(ze);
 
                 // Read the file data to a byte array
@@ -44,11 +44,9 @@ public class ZipUtil {
                 out.closeEntry();
             }
         } catch (FileNotFoundException e) {
-            log.debug("Couldn't find file when writing zip!");
-            log.debug(e);
+            log.debug("Couldn't find file when writing zip!", e);
         } catch (IOException e) {
-            log.debug("IO Exception when trying to write zip!");
-            log.debug(e);
+            log.debug("IO Exception when trying to write zip!", e);
         }
     }
 }

@@ -80,7 +80,7 @@ public class MissionSimulator {
 
     private void simulateTransportMission(Mission mission, UnitGroup<AirUnit> attackingAircraft, CoalitionManager enemyManager) {
         log.debug("Simulating a Transport mission....");
-        // If we're near the mission start, pick up a unit/muntions and transport them either
+        // If we're near the mission start, pick up a unit/munitions and transport them either
         // to the cell we were told to go to, or the front.
 
         // If we're neat the mission point, drop the unit off

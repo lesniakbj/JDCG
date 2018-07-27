@@ -41,8 +41,8 @@ public class DCSMissionGenerator {
         log.debug("Creating DCS Mission File");
 
         // Find all of the missions/ground units within a certain radius of this mission's final WP
-        Waypoint firstWp = mission.getNextWaypoint();
-        Waypoint missionWp = mission.getMissionWaypoint();
+        // Waypoint firstWp = mission.getNextWaypoint();
+        // Waypoint missionWp = mission.getMissionWaypoint();
 
         return new File("mission");
     }
@@ -61,5 +61,10 @@ public class DCSMissionGenerator {
         log.debug("Creating DCS I10N Folder");
         String folder = "l10n\\DEFAULT\\";
         return new File(folder + "test");
+    }
+
+    public static void main(String[] args) {
+        DCSMissionGenerator gen = new DCSMissionGenerator();
+        gen.generateMission(null, null, null, null);
     }
 }
