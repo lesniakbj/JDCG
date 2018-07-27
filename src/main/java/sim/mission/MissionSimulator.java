@@ -11,10 +11,13 @@ import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.AirfieldType;
 import sim.domain.enums.FactionSideType;
+import sim.domain.enums.MunitionSubType;
 import sim.domain.enums.SubTaskType;
+import sim.domain.unit.SimUnit;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.WeaponStation;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.ArmorGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
@@ -166,6 +169,7 @@ public class MissionSimulator {
         // Attack the units within that group
         List<GroundUnit> units = group.getGroupUnits();
         List<GroundUnit> destroyedUnits = new ArrayList<>();
+        List<AirUnit> aircraftDestroyed = new ArrayList<>();
         for(AirUnit attackingCraft : attackingAircraft.getGroupUnits()) {
             double chancePlaneDestroy = adBoost;
             double targets = DynamicCampaignSim.getRandomGen().nextInt(units.size()) + 1;
@@ -175,26 +179,15 @@ public class MissionSimulator {
                 // Get a random unit from the group
                 GroundUnit attackedUnit = units.get(DynamicCampaignSim.getRandomGen().nextInt(units.size()));
 
-                // Set the base chance of destruction
-                double chanceDestroy = 20;
-                if(attackedUnit instanceof ArmorGroundUnit) {
-                    chancePlaneDestroy += 1;
-                    chanceDestroy = 5;
-                }
-
                 // Check the munitions, and see scale chance based on that
-                // mission.getMissionMunitions();
+                boolean wasDestroyed = fireAllGroundWeapons(attackingCraft, attackedUnit);
 
                 // Check if we destroyed the unit
-                int diceRoll = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1);
-                boolean didDestroy = (diceRoll < chanceDestroy);
-                if(didDestroy) {
+                if(wasDestroyed) {
                     log.debug("DESTROYED A VEHICLE...");
-                    log.debug(attackedUnit);
                     destroyedUnits.add(attackedUnit);
-                } else {
-                    log.debug("Nothing destroyed...");
                 }
+                chancePlaneDestroy += 1;
             }
             units.removeAll(destroyedUnits);
 
@@ -203,6 +196,7 @@ public class MissionSimulator {
             boolean planeDestroyed = (diceRoll < chancePlaneDestroy);
             if(planeDestroyed) {
                 log.debug("DESTROYED THE PLANE...");
+                aircraftDestroyed.add(attackingCraft);
             }
         }
 
@@ -216,11 +210,77 @@ public class MissionSimulator {
             groupsUnderAttack.set(rndIdx, group);
         }
 
+        log.debug("Removing destroyed aircraft: " + aircraftDestroyed);
+        log.debug("Removing destroyed aircraft: " + attackingAircraft);
+        attackingAircraft.getGroupUnits().removeAll(aircraftDestroyed);
+        log.debug("Removing destroyed aircraft: " + attackingAircraft);
+        // attackingAircraft.setGroupUnits();
+
         // Set the group back to the manager
         log.debug(airfieldUnderAttack);
         groundUnits.put(airfieldUnderAttack, groupsUnderAttack);
         log.debug("Point Defences: " + groundUnits);
         enemyManager.setCoalitionPointDefenceGroundUnits(groundUnits);
         log.debug("Point Defences: " + enemyManager.getCoalitionPointDefenceGroundUnits());
+    }
+
+    private boolean fireAllGroundWeapons(AirUnit attackingCraft, SimUnit attackedUnit) {
+        List<WeaponStation> validWeapons = attackingCraft.getWeaponStations().stream().filter(ws -> {
+            boolean isAirToSurface = ws.getMunitionType().getSubType().equals(MunitionSubType.AIR_TO_SURFACE);
+            boolean isBombs = ws.getMunitionType().getSubType().equals(MunitionSubType.BOMBS);
+            boolean isGunPod = ws.getMunitionType().getSubType().equals(MunitionSubType.GUN_POD);
+            boolean isRockets = ws.getMunitionType().getSubType().equals(MunitionSubType.ROCKETS);
+            return isAirToSurface || isBombs || isGunPod || isRockets;
+        }).collect(Collectors.toList());
+
+        return fireAllWeapons(validWeapons, attackedUnit);
+    }
+
+    private boolean fireAllAirWeapons(AirUnit attackingCraft, SimUnit attackedUnit) {
+        List<WeaponStation> validWeapons = attackingCraft.getWeaponStations().stream().filter(ws -> {
+            boolean isAirToAir = ws.getMunitionType().getSubType().equals(MunitionSubType.AIR_TO_AIR);
+            boolean isGunPod = ws.getMunitionType().getSubType().equals(MunitionSubType.GUN_POD);
+            return isAirToAir || isGunPod;
+        }).collect(Collectors.toList());
+
+        return fireAllWeapons(validWeapons, attackedUnit);
+    }
+
+    private boolean fireAllWeapons(List<WeaponStation> validWeapons, SimUnit attackedUnit) {
+        // Set the base chance of destruction
+
+        // Fire each weapon, and apply its PK to the base chance
+        double chanceDestroy = 0.0;
+        for(WeaponStation weaponStation : validWeapons) {
+            for(int i = 0; i < weaponStation.getTotalLoaded(); i++) {
+                log.debug("Firing weapon " + i + ": " + weaponStation);
+                switch (weaponStation.getMunitionType().getSubType()) {
+                    // Implement sub types further later
+                    case AIR_TO_AIR:
+                        chanceDestroy += 30.0;
+                        break;
+                    case AIR_TO_SURFACE:
+                        chanceDestroy += 30.0;
+                        break;
+                    case ANTI_RADIATION:
+                        chanceDestroy += 50.0;
+                        break;
+                    case BOMBS:
+                        chanceDestroy += 15.0;
+                        break;
+                    case GUN_POD:
+                        chanceDestroy += 2.5;
+                        break;
+                    case ROCKETS:
+                        chanceDestroy += 2.5;
+                        break;
+                }
+            }
+        }
+        log.debug("Chance: " + chanceDestroy);
+
+        // Determine if we actually destroyed the unit
+        int diceRoll = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1);
+        return (diceRoll < chanceDestroy);
     }
 }
