@@ -1,10 +1,10 @@
 package dcsgen.util;
 
-import dcsgen.DCSMissionGenerator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -33,7 +33,7 @@ public class ZipUtil {
         try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(mizFile))) {
             for (File file : files) {
                 // Create an entry for this file
-                ZipEntry ze = new ZipEntry(file.getAbsolutePath());
+                ZipEntry ze = new ZipEntry(file.getName());
                 out.putNextEntry(ze);
 
                 // Read the file data to a byte array
@@ -42,6 +42,9 @@ public class ZipUtil {
                 // Write data to out
                 out.write(data, 0, data.length);
                 out.closeEntry();
+
+                // Delete the source file
+                Files.delete(file.toPath());
             }
         } catch (FileNotFoundException e) {
             log.debug("Couldn't find file when writing zip!", e);
