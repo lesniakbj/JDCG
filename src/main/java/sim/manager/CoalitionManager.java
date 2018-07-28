@@ -1,9 +1,5 @@
 package sim.manager;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -18,6 +14,11 @@ import sim.gen.air.ATOGenerator;
 import sim.gen.air.PackageGenerator;
 import sim.gen.mission.AirUnitMissionGenerator;
 import sim.settings.CampaignSettings;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CoalitionManager {
     private static final Logger log = LogManager.getLogger(CoalitionManager.class);

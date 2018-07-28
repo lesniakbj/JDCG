@@ -1,7 +1,8 @@
 package ui;
 
-import javax.swing.SwingUtilities;
 import ui.containers.JDCGUIFrame;
+
+import javax.swing.SwingUtilities;
 
 public class JDCGRunner {
     public static void main(String[] args) {

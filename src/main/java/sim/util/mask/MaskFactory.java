@@ -1,6 +1,5 @@
 package sim.util.mask;
 
-import java.awt.geom.Path2D;
 import sim.domain.enums.MapType;
 import sim.util.mask.exclusion.CaucasusExclusionMask;
 import sim.util.mask.exclusion.NevadaExclusionMask;
@@ -10,6 +9,8 @@ import sim.util.mask.water.CaucasusWaterMask;
 import sim.util.mask.water.NevadaWaterMask;
 import sim.util.mask.water.NormandyWaterMask;
 import sim.util.mask.water.PersianGulfWaterMask;
+
+import java.awt.geom.Path2D;
 
 public class MaskFactory {
 

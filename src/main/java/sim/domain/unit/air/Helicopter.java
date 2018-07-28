@@ -1,7 +1,8 @@
 package sim.domain.unit.air;
 
-import java.util.Date;
 import sim.domain.enums.AircraftType;
+
+import java.util.Date;
 
 public class Helicopter extends AirUnit {
 

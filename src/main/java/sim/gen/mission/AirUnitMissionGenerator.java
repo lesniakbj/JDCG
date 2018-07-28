@@ -1,10 +1,5 @@
 package sim.gen.mission;
 
-import java.awt.geom.Point2D;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatGrid;
@@ -20,6 +15,12 @@ import sim.domain.unit.global.Airfield;
 import sim.gen.air.WaypointGenerator;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
+
+import java.awt.geom.Point2D;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class AirUnitMissionGenerator {

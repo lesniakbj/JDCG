@@ -2,7 +2,6 @@ package dcsgen.file.mission.domain.mission;
 
 import dcsgen.file.mission.domain.FilePart;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 

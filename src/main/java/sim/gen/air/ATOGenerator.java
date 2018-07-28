@@ -1,8 +1,5 @@
 package sim.gen.air;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -15,6 +12,10 @@ import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class ATOGenerator {
     private static final Logger log = LogManager.getLogger(ATOGenerator.class);

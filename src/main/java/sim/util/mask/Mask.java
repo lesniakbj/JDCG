@@ -1,8 +1,9 @@
 package sim.util.mask;
 
-import java.awt.geom.Path2D;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.awt.geom.Path2D;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.

@@ -1,15 +1,5 @@
 package sim.gen;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatGrid;
@@ -28,6 +18,17 @@ import sim.gen.ground.AirfieldGenerator;
 import sim.gen.ground.GroundUnitGenerator;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
+
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CampaignGenerator {
     private static final Logger log = LogManager.getLogger(CampaignGenerator.class);

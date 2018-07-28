@@ -1,9 +1,10 @@
 package sim.domain.unit.air;
 
-import java.util.List;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.MajorTaskType;
 import sim.domain.unit.SimUnit;
+
+import java.util.List;
 
 public abstract class AirUnit extends SimUnit {
     private MajorTaskType assignedTaskType;

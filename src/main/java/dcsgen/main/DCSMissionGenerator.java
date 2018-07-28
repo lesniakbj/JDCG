@@ -4,13 +4,11 @@ import dcsgen.file.DCSFileGenerator;
 import dcsgen.file.mission.MissionFileGenerator;
 import dcsgen.file.mission.domain.mission.DCSMission;
 import dcsgen.file.mission.domain.mission.GroundControl;
-import dcsgen.file.mission.domain.mission.MissionDate;
 import dcsgen.file.mission.domain.mission.MissionGoals;
 import dcsgen.file.mission.domain.mission.MissionResults;
 import dcsgen.file.mission.domain.mission.MissionTheatre;
 import dcsgen.file.mission.domain.mission.MissionWeather;
 import dcsgen.file.mission.domain.mission.trigger.MissionTriggers;
-import dcsgen.file.mission.domain.RequiredModules;
 import dcsgen.file.mission.domain.mission.trigger.TriggerLocations;
 import dcsgen.file.options.OptionsFileGenerator;
 import dcsgen.file.translate.DCSMissionTranslator;
@@ -29,10 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class DCSMissionGenerator {
@@ -64,10 +59,11 @@ public class DCSMissionGenerator {
         missionFiles.add(createMissionFile(translatedMission, blueforCoalition, redforCoalition, missionStartType));
         missionFiles.add(createOptionsFile(translatedMission, blueforCoalition, redforCoalition, missionStartType));
         missionFiles.add(createWarehousesFile(translatedMission, blueforCoalition, redforCoalition, missionStartType));
-        // missionFiles.add(createI10NFolder(mission, blueforCoalition, redforCoalition, missionStartType));
+        missionFiles.add(createI10NFolderDictionary(mission, blueforCoalition, redforCoalition, missionStartType));
+        missionFiles.add(createI10NFolderMapResource(mission, blueforCoalition, redforCoalition, missionStartType));
 
         // At the end, zip everything up and call it a .miz file
-        ZipUtil.zipFiles(SAVE_PATH + "\\generated_mission.miz", missionFiles);
+        ZipUtil.zipFiles(SAVE_PATH, SAVE_PATH + "\\generated_mission.miz", missionFiles);
     }
 
     private File createMissionFile(DCSMission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType) {
@@ -109,10 +105,22 @@ public class DCSMissionGenerator {
         return new File(SAVE_PATH + "\\warehouses");
     }
 
-    private File createI10NFolder(Mission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType) {
-        log.debug("Creating DCS I10N Folder");
-        String folder = SAVE_PATH + "\\l10n\\DEFAULT\\";
-        return new File(folder + "test");
+    private File createI10NFolderDictionary(Mission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType) {
+        log.debug("Creating DCS I10N Folder dictionary");
+
+        File dictionaryFile = new File(SAVE_PATH + "\\l10n\\DEFAULT\\dictionary");
+        writeFile(dictionaryFile, Collections.singletonList("Test"));
+
+        return dictionaryFile;
+    }
+
+    private File createI10NFolderMapResource(Mission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType) {
+        log.debug("Creating DCS I10N Folder map resource");
+
+        File dictionaryFile = new File(SAVE_PATH + "\\l10n\\DEFAULT\\mapResource");
+        writeFile(dictionaryFile, Collections.singletonList("Test"));
+
+        return dictionaryFile;
     }
 
     private MissionResults getMissionResults(Mission mission) {
@@ -148,6 +156,7 @@ public class DCSMissionGenerator {
 
         Path path = Paths.get(missionFile.getAbsolutePath());
         try {
+            Files.createDirectories(Paths.get(missionFile.getParent()));
             Files.write(path, dataLines, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();

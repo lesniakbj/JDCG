@@ -1,5 +1,9 @@
 package dcsgen.util;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,9 +12,6 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * (c) Copyright 2018 Calabrio, Inc.
@@ -27,13 +28,18 @@ import org.apache.logging.log4j.Logger;
 public class ZipUtil {
     private static final Logger log = LogManager.getLogger(ZipUtil.class);
 
-    public static void zipFiles(String zipName, List<File> files) {
+    public static void zipFiles(String baseDir, String zipName, List<File> files) {
         File mizFile = new File(zipName);
 
         try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(mizFile))) {
             for (File file : files) {
                 // Create an entry for this file
-                ZipEntry ze = new ZipEntry(file.getName());
+                ZipEntry ze;
+                if (file.getParent().equalsIgnoreCase(baseDir)) {
+                    ze = new ZipEntry(file.getName());
+                } else {
+                    ze = new ZipEntry("l10n\\DEFAULT\\" + file.getName());
+                }
                 out.putNextEntry(ze);
 
                 // Read the file data to a byte array

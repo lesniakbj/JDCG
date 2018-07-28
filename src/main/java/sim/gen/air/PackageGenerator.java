@@ -1,11 +1,5 @@
 package sim.gen.air;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -21,6 +15,13 @@ import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.gen.mission.AirUnitMissionGenerator;
 import sim.manager.CoalitionManager;
 import sim.settings.CampaignSettings;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PackageGenerator {
     private static final Logger log = LogManager.getLogger(PackageGenerator.class);

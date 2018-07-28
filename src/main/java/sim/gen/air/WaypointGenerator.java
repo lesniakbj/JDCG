@@ -1,9 +1,5 @@
 package sim.gen.air;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
@@ -12,6 +8,11 @@ import sim.domain.enums.SubTaskType;
 import sim.domain.enums.WaypointType;
 import sim.domain.unit.air.Waypoint;
 import sim.util.MathUtil;
+
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class WaypointGenerator {
     private static final Logger log = LogManager.getLogger(WaypointGenerator.class);

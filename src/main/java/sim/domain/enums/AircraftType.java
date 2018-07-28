@@ -1,5 +1,13 @@
 package sim.domain.enums;
 
+import sim.domain.unit.air.Munition;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static sim.domain.enums.StaticLists.AIR_SUPERIORITY;
 import static sim.domain.enums.StaticLists.AV8_TASKS;
 import static sim.domain.enums.StaticLists.AWACS;
@@ -25,13 +33,6 @@ import static sim.domain.enums.StaticLists.SU25_TASKS;
 import static sim.domain.enums.StaticLists.TANKER;
 import static sim.domain.enums.StaticLists.UNARMED;
 import static sim.domain.enums.StaticLists.UNARMED_TRANSPORT;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import sim.domain.unit.air.Munition;
 
 public enum AircraftType {
     // Playable Aircraft
