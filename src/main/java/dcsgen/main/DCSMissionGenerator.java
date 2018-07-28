@@ -3,6 +3,7 @@ package dcsgen.main;
 import dcsgen.file.DCSFileGenerator;
 import dcsgen.file.mission.MissionFileGenerator;
 import dcsgen.file.mission.domain.mission.DCSMission;
+import dcsgen.file.mission.domain.mission.DCSMissionFile;
 import dcsgen.file.mission.domain.mission.GroundControl;
 import dcsgen.file.mission.domain.mission.MissionGoals;
 import dcsgen.file.mission.domain.mission.MissionResults;
@@ -16,6 +17,7 @@ import dcsgen.file.warehouses.WarehousesFileGenerator;
 import dcsgen.util.ZipUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.MissionStartType;
 import sim.domain.unit.air.Mission;
 import sim.manager.CoalitionManager;
@@ -53,12 +55,13 @@ public class DCSMissionGenerator {
         List<File> missionFiles = new ArrayList<>();
 
         // Translate the mission to a DCSMission (easier to produce the file from here)
-        DCSMission translatedMission = translator.translateSimMissionToDCSMission(mission, blueforCoalition, redforCoalition);
+        DCSMission dcsMission = translator.translateSimMissionToDCSMission(mission, blueforCoalition, redforCoalition, missionStartType);
+        DCSMissionFile missionFile = translator.getMissionFileFromMission(dcsMission);
 
         // Generate the various mission files and add them to the list of files
-        missionFiles.add(createMissionFile(translatedMission, blueforCoalition, redforCoalition, missionStartType));
-        missionFiles.add(createOptionsFile(translatedMission, blueforCoalition, redforCoalition, missionStartType));
-        missionFiles.add(createWarehousesFile(translatedMission, blueforCoalition, redforCoalition, missionStartType));
+        missionFiles.add(createMissionFile(missionFile, blueforCoalition, redforCoalition, missionStartType));
+        missionFiles.add(createOptionsFile(dcsMission, blueforCoalition, redforCoalition, missionStartType));
+        missionFiles.add(createWarehousesFile(dcsMission, blueforCoalition, redforCoalition, missionStartType));
         missionFiles.add(createI10NFolderDictionary(mission, blueforCoalition, redforCoalition, missionStartType));
         missionFiles.add(createI10NFolderMapResource(mission, blueforCoalition, redforCoalition, missionStartType));
 
@@ -66,7 +69,7 @@ public class DCSMissionGenerator {
         ZipUtil.zipFiles(SAVE_PATH, SAVE_PATH + "\\generated_mission.miz", missionFiles);
     }
 
-    private File createMissionFile(DCSMission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType) {
+    private File createMissionFile(DCSMissionFile mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType) {
         log.debug("Creating DCS Mission File");
 
         // Generate the string that will be the mission file
@@ -147,8 +150,6 @@ public class DCSMissionGenerator {
         return new TriggerLocations();
     }
 
-
-
     private void writeFile(File missionFile, List<String> dataLines) {
         if(dataLines == null) {
             dataLines = Collections.emptyList();
@@ -164,7 +165,18 @@ public class DCSMissionGenerator {
     }
 
     public static void main(String[] args) {
+        DynamicCampaignSim sim = new DynamicCampaignSim();
+        sim.generateNewCampaign();
+        for(int i = 0; i < 5; i++) {
+            sim.stepSimulation();
+        }
+
+        // Get the first mission generate on bluefor
+        Mission m =  sim.getBlueforCoalitionManager().getMissionManager().getPlannedMissions().get(0);
+        CoalitionManager b =  sim.getBlueforCoalitionManager();
+        CoalitionManager r =  sim.getRedforCoalitionManager();
+
         DCSMissionGenerator gen = new DCSMissionGenerator();
-        gen.generateMission(null, null, null, null);
+        gen.generateMission(m, b, r, MissionStartType.PARKING_COLD);
     }
 }

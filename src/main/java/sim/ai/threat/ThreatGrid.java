@@ -167,6 +167,17 @@ public class ThreatGrid {
     }
 
     public ThreatGridCell getCellFromLocation(Point2D.Double missionLocation) {
+        return getCellFromLocation(missionLocation.getX(), missionLocation.getY());
+    }
+
+    public ThreatGridCell getCellFromLocation(double x, double y) {
+        for (ThreatGridCell[] aThreatGrid : threatGrid) {
+            for (ThreatGridCell anAThreatGrid : aThreatGrid) {
+                if(anAThreatGrid.contains(x, y)) {
+                    return anAThreatGrid;
+                }
+            }
+        }
         return null;
     }
 

@@ -9,6 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -32,12 +35,14 @@ public class ZipUtil {
         File mizFile = new File(zipName);
 
         try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(mizFile))) {
+            Path deepRoot = null;
             for (File file : files) {
                 // Create an entry for this file
                 ZipEntry ze;
                 if (file.getParent().equalsIgnoreCase(baseDir)) {
                     ze = new ZipEntry(file.getName());
                 } else {
+                    deepRoot = Paths.get(file.getAbsolutePath() + "\\..\\..");
                     ze = new ZipEntry("l10n\\DEFAULT\\" + file.getName());
                 }
                 out.putNextEntry(ze);
@@ -51,6 +56,10 @@ public class ZipUtil {
 
                 // Delete the source file
                 Files.delete(file.toPath());
+            }
+
+            if(deepRoot != null) {
+                Files.walk(deepRoot).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
             }
         } catch (FileNotFoundException e) {
             log.debug("Couldn't find file when writing zip!", e);

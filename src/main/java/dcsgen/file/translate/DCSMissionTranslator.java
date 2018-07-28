@@ -6,6 +6,7 @@ import dcsgen.file.mission.domain.mission.BlueTaskText;
 import dcsgen.file.mission.domain.mission.CoalitionDetails;
 import dcsgen.file.mission.domain.mission.CurrentKeyText;
 import dcsgen.file.mission.domain.mission.DCSMission;
+import dcsgen.file.mission.domain.mission.DCSMissionFile;
 import dcsgen.file.mission.domain.mission.ForcedOptions;
 import dcsgen.file.mission.domain.mission.GroundControl;
 import dcsgen.file.mission.domain.mission.MapLocation;
@@ -28,16 +29,57 @@ import dcsgen.file.mission.domain.mission.TrigrulesSection;
 import dcsgen.file.mission.domain.mission.VersionText;
 import dcsgen.file.mission.domain.mission.trigger.MissionTriggers;
 import dcsgen.file.mission.domain.mission.trigger.TriggerLocations;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sim.ai.threat.ThreatGridCell;
+import sim.domain.enums.MissionStartType;
+import sim.domain.enums.SubTaskType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
+import sim.domain.unit.air.Waypoint;
+import sim.domain.unit.global.Airfield;
+import sim.domain.unit.ground.GroundUnit;
 import sim.manager.CoalitionManager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DCSMissionTranslator {
+    private static final Logger log = LogManager.getLogger(DCSMissionTranslator.class);
 
-    public DCSMission translateSimMissionToDCSMission(Mission mission, CoalitionManager blueforCoalitionManager, CoalitionManager redforColaitionManager) {
-        DCSMission translatedMission = new DCSMission();
+    public DCSMission translateSimMissionToDCSMission(Mission mission, CoalitionManager blueforCoalitionManager, CoalitionManager redforColaitionManager, MissionStartType missionStartType) {
+        // Get the general mission parameters (type, location, aircraft type)
+        Waypoint start = mission.getNextWaypoint();
+        Waypoint missionWp = mission.getMissionWaypoint();
+        Airfield startingAirfield = blueforCoalitionManager.getCoalitionAirfields().stream().filter(a -> a.getAirfieldType().equals(mission.getStartingAirfield())).findFirst().orElse(null);
+        SubTaskType missionType = mission.getMissionType();
+        UnitGroup<AirUnit> missionAircraft = mission.getMissionAircraft();
+
+        // Search for threats, friendlies, target
+        ThreatGridCell currentCell = blueforCoalitionManager.getMissionManager().getThreatGrid().getCellFromLocation(missionAircraft.getMapXLocation(), missionAircraft.getMapYLocation());
+        List<ThreatGridCell> searchCells = findCellsAlongRoute(currentCell, missionWp);
+        List<UnitGroup<GroundUnit>> enemyGroundUnits = findEnemyGroundUnitsAlongRoute(searchCells, redforColaitionManager.getCoalitionFrontlineGroups());
+        List<UnitGroup<GroundUnit>> enemyAirfieldUnits = findEnemyGroundUnitsAlongRoute(searchCells, redforColaitionManager.getCoalitionFrontlineGroups());
+        List<UnitGroup<GroundUnit>> enemyAirDefence = findEnemyGroundUnitsAlongRoute(searchCells, redforColaitionManager.getCoalitionFrontlineGroups());
+        List<UnitGroup<GroundUnit>> enemyAirUnits = findEnemyGroundUnitsAlongRoute(searchCells, redforColaitionManager.getCoalitionFrontlineGroups());
+        List<UnitGroup<GroundUnit>> enemyAirIntercept = findEnemyGroundUnitsAlongRoute(searchCells, redforColaitionManager.getCoalitionFrontlineGroups());
+
+        log.debug("Creating mission around the following: " + start);
+        log.debug("Creating mission around the following: " + missionWp);
+        log.debug("Creating mission around the following: " + startingAirfield);
+        log.debug("Creating mission around the following: " + missionType);
+        log.debug("Creating mission around the following: " + missionAircraft);
+        log.debug("Creating mission around the following: " + currentCell);
+
+        return new DCSMission();
+    }
+
+    public DCSMissionFile getMissionFileFromMission(DCSMission mission) {
+        DCSMissionFile translatedMission = new DCSMissionFile();
         translatedMission.setRequiredModules(getRequiredModules(mission));
         translatedMission.setMissionDate(getMissionDate(mission));
         translatedMission.setMissionTriggers(getMissionTriggers(mission));
@@ -50,7 +92,7 @@ public class DCSMissionTranslator {
         translatedMission.setMissionTheatre(getMissionTheatre(mission));
         translatedMission.setTriggerLocations(getTriggerLocations(mission));
         translatedMission.setMapLocation(getMapLocation(mission));
-        translatedMission.setMissionCoalitions(getMissionCoalitions(mission, blueforCoalitionManager, redforColaitionManager));
+        translatedMission.setMissionCoalitions(getMissionCoalitions(mission));
         translatedMission.setMissionDescriptionText(getMissionDescription(mission));
         translatedMission.setPictureFileNameR(getMissionPictureR(mission));
         translatedMission.setNeutralTaskText(getMissionNeutralTaskText(mission));
@@ -68,107 +110,115 @@ public class DCSMissionTranslator {
         return translatedMission;
     }
 
-    private AircraftFailures getAircraftFailures(Mission mission) {
+    private List<UnitGroup<GroundUnit>> findEnemyGroundUnitsAlongRoute(List<ThreatGridCell> searchCells, List<UnitGroup<GroundUnit>> coalitionFrontlineGroups) {
+        return new ArrayList<>();
+    }
+
+    private List<ThreatGridCell> findCellsAlongRoute(ThreatGridCell currentCell, Waypoint missionWp) {
+        return new ArrayList<>();
+    }
+
+    private AircraftFailures getAircraftFailures(DCSMission mission) {
         return new AircraftFailures();
     }
 
-    private ForcedOptions getForcedOptions(Mission mission) {
+    private ForcedOptions getForcedOptions(DCSMission mission) {
         return new ForcedOptions();
     }
 
-    private MissionStartTime getMissionStartTime(Mission mission) {
+    private MissionStartTime getMissionStartTime(DCSMission mission) {
         return new MissionStartTime();
     }
 
-    private CurrentKeyText getCurrentKeyText(Mission mission) {
+    private CurrentKeyText getCurrentKeyText(DCSMission mission) {
         return new CurrentKeyText();
     }
 
-    private TrigrulesSection getTrigrulesSection(Mission mission) {
+    private TrigrulesSection getTrigrulesSection(DCSMission mission) {
         return new TrigrulesSection();
     }
 
-    private VersionText getVersionText(Mission mission) {
+    private VersionText getVersionText(DCSMission mission) {
         return new VersionText();
     }
 
-    private SortieText getSortieText(Mission mission) {
+    private SortieText getSortieText(DCSMission mission) {
         return new SortieText();
     }
 
-    private CoalitionDetails getCoalitionDetails(Mission mission) {
+    private CoalitionDetails getCoalitionDetails(DCSMission mission) {
         return new CoalitionDetails();
     }
 
-    private BlueTaskText getMissionBlueTaskText(Mission mission) {
+    private BlueTaskText getMissionBlueTaskText(DCSMission mission) {
         return new BlueTaskText();
     }
 
-    private RedTaskText getMissionRedTaskText(Mission mission) {
+    private RedTaskText getMissionRedTaskText(DCSMission mission) {
         return new RedTaskText();
     }
 
-    private PictureFileNameB getPictureFileNameB(Mission mission) {
+    private PictureFileNameB getPictureFileNameB(DCSMission mission) {
         return new PictureFileNameB();
     }
 
-    private NeutralTaskText getMissionNeutralTaskText(Mission mission) {
+    private NeutralTaskText getMissionNeutralTaskText(DCSMission mission) {
         return new NeutralTaskText();
     }
 
-    private PictureFileNameR getMissionPictureR(Mission mission) {
+    private PictureFileNameR getMissionPictureR(DCSMission mission) {
         return new PictureFileNameR();
     }
 
-    private MissionDescriptionText getMissionDescription(Mission mission) {
+    private MissionDescriptionText getMissionDescription(DCSMission mission) {
         return new MissionDescriptionText();
     }
 
-    private MissionCoalitions getMissionCoalitions(Mission mission, CoalitionManager blueforCoalitionManager, CoalitionManager redforColaitionManager) {
+    private MissionCoalitions getMissionCoalitions(DCSMission mission) {
         return new MissionCoalitions();
     }
 
-    private MapLocation getMapLocation(Mission mission) {
+    private MapLocation getMapLocation(DCSMission mission) {
         return new MapLocation();
     }
 
-    private TriggerLocations getTriggerLocations(Mission mission) {
+    private TriggerLocations getTriggerLocations(DCSMission mission) {
         return new TriggerLocations();
     }
 
-    private MissionTheatre getMissionTheatre(Mission mission) {
+    private MissionTheatre getMissionTheatre(DCSMission mission) {
         return new MissionTheatre();
     }
 
-    private MissionWeather getMissionWeather(Mission mission) {
+    private MissionWeather getMissionWeather(DCSMission mission) {
         return new MissionWeather();
     }
 
-    private PictureFileNameN getPictureFileNameN(Mission mission) {
+    private PictureFileNameN getPictureFileNameN(DCSMission mission) {
         return new PictureFileNameN();
     }
 
-    private MaxGeneratedId getMissionMaxGeneratedId(Mission mission) {
+    private MaxGeneratedId getMissionMaxGeneratedId(DCSMission mission) {
         return new MaxGeneratedId();
     }
 
-    private MissionGoals getMissionGoals(Mission mission) {
+    private MissionGoals getMissionGoals(DCSMission mission) {
         return new MissionGoals();
     }
 
-    private GroundControl getMissionGroundControl(Mission mission) {
+    private GroundControl getMissionGroundControl(DCSMission mission) {
         return new GroundControl();
     }
 
-    private MissionResults getMissionResults(Mission mission) {
+    private MissionResults getMissionResults(DCSMission mission) {
         return new MissionResults();
     }
 
-    private RequiredModules getRequiredModules(Mission mission) {
+    private RequiredModules getRequiredModules(DCSMission mission) {
         return new RequiredModules();
     }
 
-    private MissionDate getMissionDate(Mission mission) {
+    private MissionDate getMissionDate(DCSMission mission) {
         // Get the numeric day, year, month
         Calendar cal = Calendar.getInstance();
         // cal.setTime(mission.getCurrentCampaignDate());
@@ -179,7 +229,7 @@ public class DCSMissionTranslator {
         return new MissionDate(day, year, month);
     }
 
-    private MissionTriggers getMissionTriggers(Mission mission) {
+    private MissionTriggers getMissionTriggers(DCSMission mission) {
         return new MissionTriggers();
     }
 
