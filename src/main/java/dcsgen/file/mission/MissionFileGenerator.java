@@ -18,10 +18,6 @@ import static dcsgen.file.mission.domain.FilePart.OPEN_BRACE;
 public class MissionFileGenerator implements DCSFileGenerator {
     private static final String MISSION_HEADER = "mission = ";
 
-    // Find all of the missions/ground units within a certain radius of this mission's final WP
-    // Waypoint firstWp = mission.getNextWaypoint();
-    // Waypoint missionWp = mission.getMissionWaypoint();
-
     @Override
     public List<String> generateFileString(List<FilePart> fileParts) {
         List<String> fileLines = new LinkedList<>();

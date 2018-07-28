@@ -115,10 +115,6 @@ public class DCSMissionGenerator {
         return new File(folder + "test");
     }
 
-    private int getMaxGeneratedId(Mission mission) {
-        return 0;
-    }
-
     private MissionResults getMissionResults(Mission mission) {
         return new MissionResults();
     }
