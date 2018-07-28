@@ -1,11 +1,9 @@
 package dcsgen.file;
 
-import sim.domain.enums.MissionStartType;
-import sim.domain.unit.air.Mission;
-import sim.manager.CoalitionManager;
+import dcsgen.file.mission.domain.FilePart;
 
 import java.util.List;
 
 public interface DCSFileGenerator {
-    List<String> generateFileString(Mission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType);
+    List<String> generateFileString(List<FilePart> fileParts);
 }

@@ -1,0 +1,12 @@
+package dcsgen.file.mission.domain.mission.trigger;
+
+import dcsgen.file.mission.domain.FilePart;
+
+import java.util.List;
+
+public class TriggerLocations implements FilePart {
+    @Override
+    public List<String> getFileParts() {
+        return null;
+    }
+}
