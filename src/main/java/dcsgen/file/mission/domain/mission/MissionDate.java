@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MissionDate implements FilePart {
-    private static final String DATE_HEADER = "[\"date\"] = ";
+    private static final String HEADER = "[\"date\"] = ";
 
     private int day;
     private int year;
@@ -45,7 +45,7 @@ public class MissionDate implements FilePart {
     @Override
     public List<String> getFileParts() {
         List<String> parts = new LinkedList<>();
-        parts.add("\t" +DATE_HEADER);
+        parts.add("\t" + HEADER);
         parts.add("\t" + OPEN_BRACE);
         parts.add("\t\t[\"Day\"] = " + day);
         parts.add("\t\t[\"Year\"] = " + year);
