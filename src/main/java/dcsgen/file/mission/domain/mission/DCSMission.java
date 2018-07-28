@@ -97,6 +97,7 @@ public class DCSMission {
         parts.add(missionDate);
         parts.add(missionTriggers);
         parts.add(missionResults);
+        parts.add(groundControl);
         return parts;
     }
 }

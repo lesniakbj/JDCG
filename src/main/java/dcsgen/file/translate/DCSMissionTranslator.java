@@ -2,7 +2,9 @@ package dcsgen.file.translate;
 
 import dcsgen.file.mission.domain.RequiredModules;
 import dcsgen.file.mission.domain.mission.DCSMission;
+import dcsgen.file.mission.domain.mission.GroundControl;
 import dcsgen.file.mission.domain.mission.MissionDate;
+import dcsgen.file.mission.domain.mission.MissionGoals;
 import dcsgen.file.mission.domain.mission.MissionResults;
 import dcsgen.file.mission.domain.mission.trigger.MissionTriggers;
 import sim.domain.unit.air.Mission;
@@ -19,7 +21,17 @@ public class DCSMissionTranslator {
         translatedMission.setMissionDate(getMissionDate(mission));
         translatedMission.setMissionTriggers(getMissionTriggers(mission));
         translatedMission.setMissionResults(getMissionResults(mission));
+        translatedMission.setGroundControl(getMissionGroundControl(mission));
+        translatedMission.setMissionGoals(getMissionGoals(mission));
         return translatedMission;
+    }
+
+    private MissionGoals getMissionGoals(Mission mission) {
+        return new MissionGoals();
+    }
+
+    private GroundControl getMissionGroundControl(Mission mission) {
+        return new GroundControl();
     }
 
     private MissionResults getMissionResults(Mission mission) {
