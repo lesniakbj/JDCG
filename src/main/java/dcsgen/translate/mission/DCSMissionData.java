@@ -12,7 +12,7 @@ import sim.settings.CampaignSettings;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DCSMission {
+public class DCSMissionData {
     private DCSMissionIDGenerator idGenerator;
     private Mission playerMission;
     private List<Mission> missions;
@@ -21,7 +21,7 @@ public class DCSMission {
     private List<UnitGroup<AirUnit>> latentInterceptors;
     private CampaignSettings campaignSettings;
 
-    public DCSMission() {
+    public DCSMissionData() {
         this.idGenerator = new DCSMissionIDGenerator();
         this.groundUnits = new ArrayList<>();
         this.airDefenceUnits = new ArrayList<>();

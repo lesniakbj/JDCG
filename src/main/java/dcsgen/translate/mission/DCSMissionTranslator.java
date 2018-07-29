@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class DCSMissionTranslator {
     private static final Logger log = LogManager.getLogger(DCSMissionTranslator.class);
 
-    public DCSMission translateSimMissionToDCSMission(Mission mission, CoalitionManager blueforCoalitionManager, CoalitionManager redforColaitionManager, CampaignSettings campaignSettings, MissionStartType missionStartType) {
+    public DCSMissionData translateSimMissionToDCSMission(Mission mission, CoalitionManager blueforCoalitionManager, CoalitionManager redforColaitionManager, CampaignSettings campaignSettings, MissionStartType missionStartType) {
         // Get the general mission parameters (type, location, aircraft)
         Waypoint missionWp = mission.getMissionWaypoint();
         Airfield startingAirfield = blueforCoalitionManager.getCoalitionAirfields().stream().filter(a -> a.getAirfieldType().equals(mission.getStartingAirfield())).findFirst().orElse(null);
@@ -69,23 +69,23 @@ public class DCSMissionTranslator {
         List<Mission> enemyAirUnits = findEnemyAirUnitsAlongRoute(searchCells, redforColaitionManager.getMissionManager().getPlannedMissions());
 
         // Add the friendly details
-        DCSMission dcsMission = new DCSMission();
-        dcsMission.setCampaignSettings(campaignSettings);
+        DCSMissionData dcsMissionData = new DCSMissionData();
+        dcsMissionData.setCampaignSettings(campaignSettings);
 
-        dcsMission.addGroundUnits(friendlyGroundUnits);
-        dcsMission.addGroundUnits(friendlyAirfieldUnits);
-        dcsMission.addAirDefenceUnits(friendlyAirDefences);
-        dcsMission.addMissions(supportMissions);
-        dcsMission.addPlayerMissions(mission);
+        dcsMissionData.addGroundUnits(friendlyGroundUnits);
+        dcsMissionData.addGroundUnits(friendlyAirfieldUnits);
+        dcsMissionData.addAirDefenceUnits(friendlyAirDefences);
+        dcsMissionData.addMissions(supportMissions);
+        dcsMissionData.addPlayerMissions(mission);
 
         // Add the enemy details
-        dcsMission.addGroundUnits(enemyGroundUnits);
-        dcsMission.addGroundUnits(enemyAirfieldUnits);
-        dcsMission.addAirDefenceUnits(enemyAirDefences);
-        dcsMission.addAirInterceptUnits(enemyAirIntercept);
-        dcsMission.addMissions(enemyAirUnits);
+        dcsMissionData.addGroundUnits(enemyGroundUnits);
+        dcsMissionData.addGroundUnits(enemyAirfieldUnits);
+        dcsMissionData.addAirDefenceUnits(enemyAirDefences);
+        dcsMissionData.addAirInterceptUnits(enemyAirIntercept);
+        dcsMissionData.addMissions(enemyAirUnits);
 
-        return dcsMission;
+        return dcsMissionData;
     }
 
     private List<UnitGroup<AirUnit>> findInterceptUnitsAlongRoute(List<ThreatGridCell> searchCells, Waypoint missionWp, List<Airfield> coalitionAirfields) {

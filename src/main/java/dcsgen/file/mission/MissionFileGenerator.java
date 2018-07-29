@@ -30,11 +30,18 @@ import dcsgen.file.mission.domain.TrigrulesSection;
 import dcsgen.file.mission.domain.VersionText;
 import dcsgen.file.mission.domain.trigger.MissionTriggers;
 import dcsgen.file.mission.domain.trigger.TriggerLocations;
-import dcsgen.translate.mission.DCSMission;
+import dcsgen.translate.group.DCSUnitGroup;
+import dcsgen.translate.mission.DCSMissionData;
+import dcsgen.translate.unit.DCSUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
+import sim.domain.unit.UnitGroup;
+import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.Mission;
+import sim.domain.unit.ground.GroundUnit;
+import sim.domain.unit.ground.defence.AirDefenceUnit;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,7 +77,7 @@ public class MissionFileGenerator implements DCSFileGenerator {
         return fileLines;
     }
 
-    public DCSMissionFile getMissionFileFromMission(DCSMission mission) {
+    public DCSMissionFile getMissionFileFromMission(DCSMissionData mission) {
         if(mission == null) {
             return  new DCSMissionFile();
         }
@@ -83,6 +90,16 @@ public class MissionFileGenerator implements DCSFileGenerator {
         log.debug("Mission Type: " + mission.getPlayerMission().getMissionType());
         log.debug("Mission Airfield: " + mission.getPlayerMission().getStartingAirfield());
         log.debug("Mission Aircraft: " + mission.getPlayerMission().getMissionAircraft());
+
+        // Translate the DCSMissionDate object to DCSFileDomain objects, this should be done in a single pass....
+
+        List<FactionType> blueFactions = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.BLUEFOR).getFactionTypeList();
+        List<FactionType> redFactions = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.REDFOR).getFactionTypeList();
+        List<FactionType> neutralFactions = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.NEUTRAL).getFactionTypeList();
+        blueFactions.sort(Comparator.comparing(FactionType::getDcsFactionName));
+        redFactions.sort(Comparator.comparing(FactionType::getDcsFactionName));
+        neutralFactions.sort(Comparator.comparing(FactionType::getDcsFactionName));
+        List<DCSUnitGroup> groups = parseUnitGroups(mission);
 
         DCSMissionFile translatedMission = new DCSMissionFile();
         translatedMission.setRequiredModules(getRequiredModules(mission));
@@ -97,14 +114,14 @@ public class MissionFileGenerator implements DCSFileGenerator {
         translatedMission.setMissionTheatre(getMissionTheatre(mission));
         translatedMission.setTriggerLocations(getTriggerLocations(mission));
         translatedMission.setMapLocation(getMapLocation(mission));
-        translatedMission.setMissionCoalitions(getMissionCoalitions(mission));
+        translatedMission.setMissionCoalitions(getMissionCoalitions(blueFactions, redFactions, neutralFactions));
         translatedMission.setMissionDescriptionText(getMissionDescription(mission));
         translatedMission.setPictureFileNameR(getMissionPictureR(mission));
         translatedMission.setNeutralTaskText(getMissionNeutralTaskText(mission));
         translatedMission.setBlueTaskText(getMissionBlueTaskText(mission));
         translatedMission.setRedTaskText(getMissionRedTaskText(mission));
         translatedMission.setPictureFileNameB(getPictureFileNameB(mission));
-        translatedMission.setCoalitionDetails(getCoalitionDetails(mission));
+        translatedMission.setCoalitionDetails(getCoalitionDetails(blueFactions, redFactions));
         translatedMission.setSortieText(getSortieText(mission));
         translatedMission.setVersionText(getVersionText(mission));
         translatedMission.setTrigrulesSection(getTrigrulesSection(mission));
@@ -115,118 +132,131 @@ public class MissionFileGenerator implements DCSFileGenerator {
         return translatedMission;
     }
 
-    private AircraftFailures getAircraftFailures(DCSMission mission) {
+    private List<DCSUnitGroup> parseUnitGroups(DCSMissionData mission) {
+        List<UnitGroup<GroundUnit>> gUnits = mission.getGroundUnits();
+        List<UnitGroup<AirDefenceUnit>> aUnits = mission.getAirDefenceUnits();
+        List<UnitGroup<AirUnit>> iUnits = mission.getLatentInterceptors();
+        List<Mission> missions = mission.getMissions();
+        Mission playerMission = mission.getPlayerMission();
+
+        // Return List...
+        List<DCSUnitGroup> groups = new ArrayList<>();
+
+        // Various checking...
+        for(UnitGroup<GroundUnit> g : gUnits) {
+            // Create the Group
+            DCSUnitGroup group = new DCSUnitGroup();
+
+            // Get each unit in the group
+            List<DCSUnit> groupUnits = new ArrayList<>();
+            for(GroundUnit gu : g.getGroupUnits()) {
+                DCSUnit unit = new DCSUnit();
+                unit.setType("GROUND_UNIT");
+                groupUnits.add(unit);
+            }
+            group.setUnits(groupUnits);
+        }
+
+        return groups;
+    }
+
+    private MissionCoalitions getMissionCoalitions(List<FactionType> blueFactions, List<FactionType> redFactions, List<FactionType> neutralFactions) {
+        return new MissionCoalitions(blueFactions, redFactions, neutralFactions);
+    }
+
+    private AircraftFailures getAircraftFailures(DCSMissionData mission) {
         return new AircraftFailures();
     }
 
-    private ForcedOptions getForcedOptions(DCSMission mission) {
+    private ForcedOptions getForcedOptions(DCSMissionData mission) {
         return new ForcedOptions();
     }
 
-    private CurrentKeyText getCurrentKeyText(DCSMission mission) {
+    private CurrentKeyText getCurrentKeyText(DCSMissionData mission) {
         return new CurrentKeyText();
     }
 
-    private TrigrulesSection getTrigrulesSection(DCSMission mission) {
+    private TrigrulesSection getTrigrulesSection(DCSMissionData mission) {
         return new TrigrulesSection();
     }
 
-    private VersionText getVersionText(DCSMission mission) {
+    private VersionText getVersionText(DCSMissionData mission) {
         return new VersionText();
     }
 
-    private SortieText getSortieText(DCSMission mission) {
+    private SortieText getSortieText(DCSMissionData mission) {
         return new SortieText();
     }
 
-    private CoalitionDetails getCoalitionDetails(DCSMission mission) {
-        List<FactionType> blue = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.BLUEFOR).getFactionTypeList();
-        List<FactionType> red = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.REDFOR).getFactionTypeList();
-        List<FactionType> neutral = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.NEUTRAL).getFactionTypeList();
-        blue.sort(Comparator.comparing(FactionType::getDcsFactionName));
-        red.sort(Comparator.comparing(FactionType::getDcsFactionName));
-
-        // I need to get every group from the mission associated with each coalition
-        List<DCSUnitGroup> blueUnitGroups = new ArrayList<>();
-
-        return new CoalitionDetails(blue, red);
+    private CoalitionDetails getCoalitionDetails(List<FactionType> blueFactions, List<FactionType> redFactions) {
+        return new CoalitionDetails(blueFactions, redFactions);
     }
 
-    private BlueTaskText getMissionBlueTaskText(DCSMission mission) {
+    private BlueTaskText getMissionBlueTaskText(DCSMissionData mission) {
         return new BlueTaskText();
     }
 
-    private RedTaskText getMissionRedTaskText(DCSMission mission) {
+    private RedTaskText getMissionRedTaskText(DCSMissionData mission) {
         return new RedTaskText();
     }
 
-    private PictureFileNameB getPictureFileNameB(DCSMission mission) {
+    private PictureFileNameB getPictureFileNameB(DCSMissionData mission) {
         return new PictureFileNameB();
     }
 
-    private NeutralTaskText getMissionNeutralTaskText(DCSMission mission) {
+    private NeutralTaskText getMissionNeutralTaskText(DCSMissionData mission) {
         return new NeutralTaskText();
     }
 
-    private PictureFileNameR getMissionPictureR(DCSMission mission) {
+    private PictureFileNameR getMissionPictureR(DCSMissionData mission) {
         return new PictureFileNameR();
     }
 
-    private MissionDescriptionText getMissionDescription(DCSMission mission) {
+    private MissionDescriptionText getMissionDescription(DCSMissionData mission) {
         return new MissionDescriptionText();
     }
 
-    private MissionCoalitions getMissionCoalitions(DCSMission mission) {
-        List<FactionType> blue = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.BLUEFOR).getFactionTypeList();
-        List<FactionType> red = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.REDFOR).getFactionTypeList();
-        List<FactionType> neutral = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.NEUTRAL).getFactionTypeList();
-        blue.sort(Comparator.comparing(FactionType::getDcsFactionName));
-        red.sort(Comparator.comparing(FactionType::getDcsFactionName));
-        neutral.sort(Comparator.comparing(FactionType::getDcsFactionName));
-        return new MissionCoalitions(blue, red, neutral);
-    }
-
-    private MapLocation getMapLocation(DCSMission mission) {
+    private MapLocation getMapLocation(DCSMissionData mission) {
         return new MapLocation();
     }
 
-    private TriggerLocations getTriggerLocations(DCSMission mission) {
+    private TriggerLocations getTriggerLocations(DCSMissionData mission) {
         return new TriggerLocations();
     }
 
-    private MissionTheatre getMissionTheatre(DCSMission mission) {
+    private MissionTheatre getMissionTheatre(DCSMissionData mission) {
         return new MissionTheatre();
     }
 
-    private MissionWeather getMissionWeather(DCSMission mission) {
+    private MissionWeather getMissionWeather(DCSMissionData mission) {
         return new MissionWeather();
     }
 
-    private PictureFileNameN getPictureFileNameN(DCSMission mission) {
+    private PictureFileNameN getPictureFileNameN(DCSMissionData mission) {
         return new PictureFileNameN();
     }
 
-    private MaxGeneratedId getMissionMaxGeneratedId(DCSMission mission) {
+    private MaxGeneratedId getMissionMaxGeneratedId(DCSMissionData mission) {
         return new MaxGeneratedId();
     }
 
-    private MissionGoals getMissionGoals(DCSMission mission) {
+    private MissionGoals getMissionGoals(DCSMissionData mission) {
         return new MissionGoals();
     }
 
-    private GroundControl getMissionGroundControl(DCSMission mission) {
+    private GroundControl getMissionGroundControl(DCSMissionData mission) {
         return new GroundControl();
     }
 
-    private MissionResults getMissionResults(DCSMission mission) {
+    private MissionResults getMissionResults(DCSMissionData mission) {
         return new MissionResults();
     }
 
-    private RequiredModules getRequiredModules(DCSMission mission) {
+    private RequiredModules getRequiredModules(DCSMissionData mission) {
         return new RequiredModules();
     }
 
-    private MissionDate getMissionDate(DCSMission mission) {
+    private MissionDate getMissionDate(DCSMissionData mission) {
         // Get the numeric day, year, month
         Calendar cal = Calendar.getInstance();
         // cal.setTime(mission.getCurrentCampaignDate());
@@ -237,7 +267,7 @@ public class MissionFileGenerator implements DCSFileGenerator {
         return new MissionDate(day, year, month);
     }
 
-    private MissionStartTime getMissionStartTime(DCSMission mission) {
+    private MissionStartTime getMissionStartTime(DCSMissionData mission) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(mission.getPlayerMission().getPlannedMissionDate());
         int hour = cal.get(Calendar.HOUR);
@@ -247,7 +277,7 @@ public class MissionFileGenerator implements DCSFileGenerator {
         return new MissionStartTime(totalSeconds);
     }
 
-    private MissionTriggers getMissionTriggers(DCSMission mission) {
+    private MissionTriggers getMissionTriggers(DCSMissionData mission) {
         return new MissionTriggers();
     }
 }
