@@ -1,5 +1,9 @@
 package sim.ai.threat;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -49,18 +53,19 @@ public class ThreatGridCell {
         return cellBounds.contains(x, y);
     }
 
+    public boolean intersects(Line2D.Double line) {
+        Rectangle2D.Double cellBounds = new Rectangle2D.Double(getMapX(), getMapY(), parentGrid.getCellWidth(), parentGrid.getCellWidth());
+        return line.intersects(cellBounds);
+    }
+
     public boolean contains(Point2D.Double pos) {
         return contains(pos.getX(), pos.getY());
     }
 
     @Override
     public String toString() {
-        return "{\"ThreatGridCell\":{"
-                + "\"x\":\"" + x + "\""
-                + ", \"y\":\"" + y + "\""
-                + ", \"threatLevel\":\"" + threatLevel + "\""
-                + ", \"ignoreDuringThreatCalculations\":\"" + ignoreDuringThreatCalculations + "\""
-                + "}}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 
     public void setMapX(int mapX) {
@@ -86,5 +91,4 @@ public class ThreatGridCell {
     public ThreatGrid getParentGrid() {
         return parentGrid;
     }
-
 }

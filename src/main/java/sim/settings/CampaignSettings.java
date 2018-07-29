@@ -1,5 +1,7 @@
 package sim.settings;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
@@ -157,19 +159,7 @@ public class CampaignSettings {
 
     @Override
     public String toString() {
-        return "{\"CampaignSettings\":{"
-                + "\"selectedMap\":" + selectedMap
-                + ", \"redforCoalition\":" + redforCoalition
-                + ", \"blueforCoalition\":" + blueforCoalition
-                + ", \"neutralCoalition\":" + neutralCoalition
-                + ", \"selectedEra\":\"" + selectedEra + "\""
-                + ", \"selectedCampaignType\":\"" + selectedCampaignType + "\""
-                + ", \"playerSelectedSide\":\"" + playerSelectedSide + "\""
-                + ", \"selectedSquadron\":\"" + selectedSquadron + "\""
-                + ", \"selectedAircraft\":\"" + selectedAircraft + "\""
-                + ", \"isComplete\":\"" + isComplete + "\""
-                + ", \"currentCampaignDate\":" + currentCampaignDate
-                + ", \"dateFormat\":\"" + dateFormat + "\""
-                + "}}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 }

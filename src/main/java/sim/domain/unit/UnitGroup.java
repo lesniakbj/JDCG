@@ -1,5 +1,7 @@
 package sim.domain.unit;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import sim.domain.enums.FactionSideType;
 
 import java.awt.geom.Point2D;
@@ -95,14 +97,8 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
 
     @Override
     public String toString() {
-        return "{\"UnitGroup\":"
-                + super.toString()
-                + ", \"id\":\"" + id + "\""
-                + ", \"side\":\"" + side + "\""
-                + ", \"groupUnits\":" + groupUnits
-                + ", \"shouldGenerate\":\"" + shouldGenerate + "\""
-                + ", \"playerGeneratedGroup\":\"" + playerGeneratedGroup + "\""
-                + "}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 
 

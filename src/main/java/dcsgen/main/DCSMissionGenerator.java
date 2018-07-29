@@ -1,18 +1,10 @@
 package dcsgen.main;
 
-import dcsgen.file.DCSFileGenerator;
 import dcsgen.file.mission.MissionFileGenerator;
-import dcsgen.file.mission.domain.mission.DCSMission;
-import dcsgen.file.mission.domain.mission.DCSMissionFile;
-import dcsgen.file.mission.domain.mission.GroundControl;
-import dcsgen.file.mission.domain.mission.MissionGoals;
-import dcsgen.file.mission.domain.mission.MissionResults;
-import dcsgen.file.mission.domain.mission.MissionTheatre;
-import dcsgen.file.mission.domain.mission.MissionWeather;
-import dcsgen.file.mission.domain.mission.trigger.MissionTriggers;
-import dcsgen.file.mission.domain.mission.trigger.TriggerLocations;
+import dcsgen.translate.DCSMission;
+import dcsgen.file.mission.domain.DCSMissionFile;
 import dcsgen.file.options.OptionsFileGenerator;
-import dcsgen.file.translate.DCSMissionTranslator;
+import dcsgen.translate.DCSMissionTranslator;
 import dcsgen.file.warehouses.WarehousesFileGenerator;
 import dcsgen.util.ZipUtil;
 import org.apache.logging.log4j.LogManager;
@@ -37,9 +29,9 @@ public class DCSMissionGenerator {
     private static final String SAVE_PATH = System.getProperty("user.home") + "\\Saved Games\\Java DCS Campaign Generator";
 
     private DCSMissionTranslator translator;
-    private DCSFileGenerator missionFileGenerator;
-    private DCSFileGenerator optionsFileGenerator;
-    private DCSFileGenerator warehousesFileGenerator;
+    private MissionFileGenerator missionFileGenerator;
+    private OptionsFileGenerator optionsFileGenerator;
+    private WarehousesFileGenerator warehousesFileGenerator;
 
     public DCSMissionGenerator() {
         this.translator = new DCSMissionTranslator();
@@ -56,7 +48,8 @@ public class DCSMissionGenerator {
 
         // Translate the mission to a DCSMission (easier to produce the file from here)
         DCSMission dcsMission = translator.translateSimMissionToDCSMission(mission, blueforCoalition, redforCoalition, missionStartType);
-        DCSMissionFile missionFile = translator.getMissionFileFromMission(dcsMission);
+        log.debug("Generated the following mission: " + dcsMission);
+        DCSMissionFile missionFile = missionFileGenerator.getMissionFileFromMission(dcsMission);
 
         // Generate the various mission files and add them to the list of files
         missionFiles.add(createMissionFile(missionFile, blueforCoalition, redforCoalition, missionStartType));
@@ -124,30 +117,6 @@ public class DCSMissionGenerator {
         writeFile(dictionaryFile, Collections.singletonList("Test"));
 
         return dictionaryFile;
-    }
-
-    private MissionResults getMissionResults(Mission mission) {
-        return new MissionResults();
-    }
-
-    private GroundControl getMissionGroundControl(Mission mission) {
-        return new GroundControl();
-    }
-
-    private MissionGoals getMissionGoals(Mission mission) {
-        return new MissionGoals();
-    }
-
-    private MissionWeather getMissionWeather(Mission mission) {
-        return new MissionWeather();
-    }
-
-    private MissionTheatre getMissionTheatre(Mission mission) {
-        return new MissionTheatre();
-    }
-
-    private TriggerLocations getTriggerLocations(MissionTriggers missionTriggers, Mission mission) {
-        return new TriggerLocations();
     }
 
     private void writeFile(File missionFile, List<String> dataLines) {

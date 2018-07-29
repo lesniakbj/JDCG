@@ -5,8 +5,8 @@ import dcsgen.file.mission.domain.FilePart;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RequiredModules implements FilePart {
-    private static final String HEADER = "[\"requiredModules\"] = ";
+public class ForcedOptions implements FilePart {
+    private static final String HEADER = "[\"forcedOptions\"] = ";
 
     @Override
     public List<String> getFileParts() {

@@ -1,5 +1,7 @@
 package sim.domain.unit.air;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.domain.enums.AirfieldType;
@@ -349,24 +351,8 @@ public class Mission implements Simable {
 
     @Override
     public String toString() {
-        return "{\"Mission\":{"
-                + "\"mapType\":\"" + mapType + "\""
-                + ", \"missionType\":\"" + missionType + "\""
-                + ", \"startingAirfield\":\"" + startingAirfield + "\""
-                + ", \"missionAircraft\":" + missionAircraft
-                + ", \"plannedMissionDate\":" + plannedMissionDate
-                + ", \"currentCampaignDate\":" + currentCampaignDate
-                + ", \"onStationEndDate\":" + onStationEndDate
-                + ", \"isOnStation\":\"" + isOnStation + "\""
-                + ", \"timeOnStation\":\"" + timeOnStation + "\""
-                + ", \"missionWaypoints\":" + missionWaypoints
-                + ", \"nextWaypoint\":" + nextWaypoint
-                + ", \"lastWaypoint\":" + lastWaypoint
-                + ", \"isClientMission\":\"" + isClientMission + "\""
-                + ", \"missionComplete\":\"" + missionComplete + "\""
-                + ", \"shouldGenerate\":\"" + shouldGenerate + "\""
-                + ", \"playerAircraft\":\"" + playerAircraft + "\""
-                + "}}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 
     public static class Builder {

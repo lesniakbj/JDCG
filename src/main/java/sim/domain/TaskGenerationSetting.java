@@ -1,5 +1,7 @@
 package sim.domain;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import sim.domain.enums.MajorTaskType;
 
 public class TaskGenerationSetting {
@@ -39,10 +41,7 @@ public class TaskGenerationSetting {
 
     @Override
     public String toString() {
-        return "{\"TaskGenerationSetting\":{"
-                + "\"taskType\":\"" + taskType + "\""
-                + ", \"generationChance\":\"" + generationChance + "\""
-                + ", \"generationPriority\":\"" + generationPriority + "\""
-                + "}}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 }

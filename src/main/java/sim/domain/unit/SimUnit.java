@@ -52,4 +52,16 @@ public abstract class SimUnit implements Simable {
     public void setMinutesPerUpdate(int minutesPerUpdate) {
         this.minutesPerStep = minutesPerUpdate;
     }
+
+    @Override
+    public String toString() {
+        return "{\"SimUnit\":{"
+                + "\"isClientUnit\":\"" + isClientUnit + "\""
+                + ", \"speedMilesPerHour\":\"" + speedMilesPerHour + "\""
+                + ", \"direction\":\"" + direction + "\""
+                + ", \"mapXLocation\":\"" + mapXLocation + "\""
+                + ", \"mapYLocation\":\"" + mapYLocation + "\""
+                + ", \"minutesPerStep\":\"" + minutesPerStep + "\""
+                + "}}";
+    }
 }

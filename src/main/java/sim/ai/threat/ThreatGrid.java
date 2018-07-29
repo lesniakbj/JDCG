@@ -1,5 +1,7 @@
 package sim.ai.threat;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
@@ -409,12 +411,7 @@ public class ThreatGrid {
 
     @Override
     public String toString() {
-        return "{\"ThreatGrid\":{"
-                + "\"threatGrid\":" + Arrays.deepToString(threatGrid)
-                + ", \"x\":\"" + x + "\""
-                + ", \"y\":\"" + y + "\""
-                + ", \"w\":\"" + w + "\""
-                + ", \"h\":\"" + h + "\""
-                + "}}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 }

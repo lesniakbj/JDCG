@@ -1,5 +1,7 @@
 package sim.domain.unit.air;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import sim.domain.enums.AircraftType;
 import sim.domain.enums.MajorTaskType;
 import sim.domain.unit.SimUnit;
@@ -33,6 +35,12 @@ public abstract class AirUnit extends SimUnit {
 
     public void setWeaponStations(List<WeaponStation> weaponStations) {
         this.weaponStations = weaponStations;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 }
 

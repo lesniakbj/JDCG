@@ -5,15 +5,11 @@ import dcsgen.file.mission.domain.FilePart;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RequiredModules implements FilePart {
-    private static final String HEADER = "[\"requiredModules\"] = ";
-
+public class MaxGeneratedId implements FilePart {
     @Override
     public List<String> getFileParts() {
         List<String> parts = new LinkedList<>();
-        parts.add("\t" + HEADER);
-        parts.add("\t" + OPEN_BRACE);
-        parts.add("\t" + CLOSE_BRACE_COMMA);
+        parts.add("\t[\"maxDictId\"] = " + 5 + ",");
         return parts;
     }
 }
