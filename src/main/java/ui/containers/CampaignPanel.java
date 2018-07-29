@@ -13,7 +13,6 @@ import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.manager.CoalitionManager;
-import sun.awt.ScrollPaneWheelScroller;
 import ui.containers.menu.FlightLoadoutPanel;
 import ui.util.DrawUtil;
 
@@ -35,8 +34,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
