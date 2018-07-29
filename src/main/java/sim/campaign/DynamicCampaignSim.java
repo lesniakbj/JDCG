@@ -303,7 +303,7 @@ public class DynamicCampaignSim {
         // If we determine that we need to generate a mission, generate it and then alert the user
         generateMission = !criticalMissions.isEmpty();
         if (generateMission) {
-            dcsMissionGenerator.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, simSettings.getMissionStartType());
+            dcsMissionGenerator.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, campaignSettings, simSettings.getMissionStartType());
             setSimRunning(false);
             setAllowRun(false);
         }

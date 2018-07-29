@@ -15,6 +15,7 @@ import sim.domain.unit.global.GameMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class CampaignSettings {
     private GameMap selectedMap;
@@ -34,7 +35,7 @@ public class CampaignSettings {
         selectedMap = new GameMap(MapType.CAUCASUS);
         redforCoalition = new Coalition(new ArrayList<>(Arrays.asList(FactionType.RUSSIA)));
         blueforCoalition = new Coalition(new ArrayList<>(Arrays.asList(FactionType.USA)));
-        neutralCoalition = new Coalition(new ArrayList<>());
+        neutralCoalition = new Coalition(new ArrayList<>(Arrays.stream(FactionType.values()).filter(ft -> !ft.equals(FactionType.RUSSIA) && !ft.equals(FactionType.USA) && !ft.equals(FactionType.ALL)).collect(Collectors.toList())));
         selectedEra = ConflictEraType.MODERN;
         selectedCampaignType = CampaignType.OFFENSIVE;
         playerSelectedSide = FactionSideType.BLUEFOR;

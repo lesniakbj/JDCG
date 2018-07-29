@@ -6,4 +6,8 @@ public class IDGenerator {
     public static long generateNextId() {
         return ++currentId;
     }
+
+    public static long getCurrentId() {
+        return currentId;
+    }
 }

@@ -9,6 +9,7 @@ import static sim.domain.enums.MunitionSubType.BOMBS;
 import static sim.domain.enums.MunitionSubType.GUN_POD;
 import static sim.domain.enums.MunitionSubType.NONE;
 import static sim.domain.enums.MunitionSubType.ROCKETS;
+import static sim.domain.enums.MunitionSubType.SENSOR_PODS;
 
 public enum MunitionType {
     // =============================================
@@ -21,6 +22,7 @@ public enum MunitionType {
 
     // AIM-9 Family
     CAP9M("CAP-9M", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
+    AIM9P5("AIM-9P5", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
     AIM9L("AIM-9L", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
     AIM9M("AIM-9M", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
     AIM9X("AIM-9X", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
@@ -38,10 +40,15 @@ public enum MunitionType {
 
     // Illumination Bombs
     LUU_2("LUU-2", BOMBS, FactionSideType.BLUEFOR, true),
+    MK_257_7("7 M257 Illumination", ROCKETS, FactionSideType.BLUEFOR, true),
 
     // Guided Bombs
-    GBU_38("GBU-38", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_10("GBU-10", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_12("GBU-12", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_16("GBU-16", BOMBS, FactionSideType.BLUEFOR, true),
     GBU_31("GBU-31", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_313B("GBU-31(V)3/B", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_38("GBU-38", BOMBS, FactionSideType.BLUEFOR, true),
 
     // Cluster Munitions
     MK_20("Mk-20 RockEye", BOMBS, FactionSideType.BLUEFOR, true),
@@ -57,13 +64,25 @@ public enum MunitionType {
     ZUNI_MK_71("ZUNI Mk-71", ROCKETS, FactionSideType.BLUEFOR, true),
     MK_151_HE_19("19 Mk-151 HE", ROCKETS, FactionSideType.BLUEFOR, true),
     MK_151_HE_7("7 Mk-151 HE", ROCKETS, FactionSideType.BLUEFOR, true),
+    MK_156_WP_7("7 Mk-156 WP", ROCKETS, FactionSideType.BLUEFOR, true),
     MK_5_HE_7("7 Mk-5 HE", ROCKETS, FactionSideType.BLUEFOR, true),
 
     // Missiles
+    AGM_62("AGM-62", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
     AGM_65D("AGM-65D", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_65E("AGM-65E", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
     AGM_65G("AGM-65G", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
     AGM_65H("AGM-65H", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
     AGM_65K("AGM-65K", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_84A("AGM-84A", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_84E("AGM-84E", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_88C("AGM-88C", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+    AGM_154C("AGM-154C", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
+
+    // Pods
+    ANAAQ_28("AN/AAQ-28 LITENING", SENSOR_PODS, FactionSideType.BLUEFOR, true),
+    ANAAS_38("AN/AAS-38 FLIR", SENSOR_PODS, FactionSideType.BLUEFOR, true),
+    ANASQ_173("AN/ASQ-173 LST/SCAM", SENSOR_PODS, FactionSideType.BLUEFOR, true),
 
     // =============================================
     //              REDFOR WEAPONRY

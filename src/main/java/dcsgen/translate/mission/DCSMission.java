@@ -1,4 +1,4 @@
-package dcsgen.translate;
+package dcsgen.translate.mission;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -7,18 +7,22 @@ import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
+import sim.settings.CampaignSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DCSMission {
+    private DCSMissionIDGenerator idGenerator;
     private Mission playerMission;
     private List<Mission> missions;
     private List<UnitGroup<GroundUnit>> groundUnits;
     private List<UnitGroup<AirDefenceUnit>> airDefenceUnits;
     private List<UnitGroup<AirUnit>> latentInterceptors;
+    private CampaignSettings campaignSettings;
 
     public DCSMission() {
+        this.idGenerator = new DCSMissionIDGenerator();
         this.groundUnits = new ArrayList<>();
         this.airDefenceUnits = new ArrayList<>();
         this.latentInterceptors = new ArrayList<>();
@@ -83,6 +87,14 @@ public class DCSMission {
 
     public void setLatentInterceptors(List<UnitGroup<AirUnit>> latentInterceptors) {
         this.latentInterceptors = latentInterceptors;
+    }
+
+    public void setCampaignSettings(CampaignSettings campaignSettings) {
+        this.campaignSettings = campaignSettings;
+    }
+
+    public CampaignSettings getCampaignSettings() {
+        return campaignSettings;
     }
 
     @Override

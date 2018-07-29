@@ -1,4 +1,4 @@
-package dcsgen.translate;
+package dcsgen.translate.mission;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +15,7 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.manager.CoalitionManager;
+import sim.settings.CampaignSettings;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 public class DCSMissionTranslator {
     private static final Logger log = LogManager.getLogger(DCSMissionTranslator.class);
 
-    public DCSMission translateSimMissionToDCSMission(Mission mission, CoalitionManager blueforCoalitionManager, CoalitionManager redforColaitionManager, MissionStartType missionStartType) {
+    public DCSMission translateSimMissionToDCSMission(Mission mission, CoalitionManager blueforCoalitionManager, CoalitionManager redforColaitionManager, CampaignSettings campaignSettings, MissionStartType missionStartType) {
         // Get the general mission parameters (type, location, aircraft)
         Waypoint missionWp = mission.getMissionWaypoint();
         Airfield startingAirfield = blueforCoalitionManager.getCoalitionAirfields().stream().filter(a -> a.getAirfieldType().equals(mission.getStartingAirfield())).findFirst().orElse(null);
@@ -69,6 +70,8 @@ public class DCSMissionTranslator {
 
         // Add the friendly details
         DCSMission dcsMission = new DCSMission();
+        dcsMission.setCampaignSettings(campaignSettings);
+
         dcsMission.addGroundUnits(friendlyGroundUnits);
         dcsMission.addGroundUnits(friendlyAirfieldUnits);
         dcsMission.addAirDefenceUnits(friendlyAirDefences);

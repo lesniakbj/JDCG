@@ -8,5 +8,6 @@ public enum  MunitionSubType {
     ROCKETS,
     GUN_POD,
     FUEL_TANK,
+    SENSOR_PODS,
     NONE;
 }

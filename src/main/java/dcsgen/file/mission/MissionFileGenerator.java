@@ -30,14 +30,19 @@ import dcsgen.file.mission.domain.TrigrulesSection;
 import dcsgen.file.mission.domain.VersionText;
 import dcsgen.file.mission.domain.trigger.MissionTriggers;
 import dcsgen.file.mission.domain.trigger.TriggerLocations;
-import dcsgen.translate.DCSMission;
+import dcsgen.translate.mission.DCSMission;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sim.domain.enums.FactionSideType;
+import sim.domain.enums.FactionType;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static dcsgen.file.mission.domain.FilePart.CLOSE_BRACE;
 import static dcsgen.file.mission.domain.FilePart.OPEN_BRACE;
@@ -118,10 +123,6 @@ public class MissionFileGenerator implements DCSFileGenerator {
         return new ForcedOptions();
     }
 
-    private MissionStartTime getMissionStartTime(DCSMission mission) {
-        return new MissionStartTime();
-    }
-
     private CurrentKeyText getCurrentKeyText(DCSMission mission) {
         return new CurrentKeyText();
     }
@@ -139,7 +140,16 @@ public class MissionFileGenerator implements DCSFileGenerator {
     }
 
     private CoalitionDetails getCoalitionDetails(DCSMission mission) {
-        return new CoalitionDetails();
+        List<FactionType> blue = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.BLUEFOR).getFactionTypeList();
+        List<FactionType> red = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.REDFOR).getFactionTypeList();
+        List<FactionType> neutral = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.NEUTRAL).getFactionTypeList();
+        blue.sort(Comparator.comparing(FactionType::getDcsFactionName));
+        red.sort(Comparator.comparing(FactionType::getDcsFactionName));
+
+        // I need to get every group from the mission associated with each coalition
+        List<DCSUnitGroup> blueUnitGroups = new ArrayList<>();
+
+        return new CoalitionDetails(blue, red);
     }
 
     private BlueTaskText getMissionBlueTaskText(DCSMission mission) {
@@ -167,7 +177,13 @@ public class MissionFileGenerator implements DCSFileGenerator {
     }
 
     private MissionCoalitions getMissionCoalitions(DCSMission mission) {
-        return new MissionCoalitions();
+        List<FactionType> blue = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.BLUEFOR).getFactionTypeList();
+        List<FactionType> red = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.REDFOR).getFactionTypeList();
+        List<FactionType> neutral = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.NEUTRAL).getFactionTypeList();
+        blue.sort(Comparator.comparing(FactionType::getDcsFactionName));
+        red.sort(Comparator.comparing(FactionType::getDcsFactionName));
+        neutral.sort(Comparator.comparing(FactionType::getDcsFactionName));
+        return new MissionCoalitions(blue, red, neutral);
     }
 
     private MapLocation getMapLocation(DCSMission mission) {
@@ -219,6 +235,16 @@ public class MissionFileGenerator implements DCSFileGenerator {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
         return new MissionDate(day, year, month);
+    }
+
+    private MissionStartTime getMissionStartTime(DCSMission mission) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(mission.getPlayerMission().getPlannedMissionDate());
+        int hour = cal.get(Calendar.HOUR);
+        int minute = cal.get(Calendar.MINUTE);
+        int seconds = cal.get(Calendar.SECOND);
+        long totalSeconds = TimeUnit.HOURS.toSeconds(hour) + TimeUnit.MINUTES.toSeconds(minute) + seconds;
+        return new MissionStartTime(totalSeconds);
     }
 
     private MissionTriggers getMissionTriggers(DCSMission mission) {

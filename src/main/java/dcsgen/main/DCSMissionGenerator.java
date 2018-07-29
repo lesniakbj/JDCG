@@ -4,8 +4,8 @@ import dcsgen.file.mission.MissionFileGenerator;
 import dcsgen.file.mission.domain.DCSMissionFile;
 import dcsgen.file.options.OptionsFileGenerator;
 import dcsgen.file.warehouses.WarehousesFileGenerator;
-import dcsgen.translate.DCSMission;
-import dcsgen.translate.DCSMissionTranslator;
+import dcsgen.translate.mission.DCSMission;
+import dcsgen.translate.mission.DCSMissionTranslator;
 import dcsgen.util.ZipUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +13,7 @@ import sim.campaign.DynamicCampaignSim;
 import sim.domain.enums.MissionStartType;
 import sim.domain.unit.air.Mission;
 import sim.manager.CoalitionManager;
+import sim.settings.CampaignSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,14 +41,14 @@ public class DCSMissionGenerator {
         this.warehousesFileGenerator = new WarehousesFileGenerator();
     }
 
-    public void generateMission(Mission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, MissionStartType missionStartType) {
+    public void generateMission(Mission mission, CoalitionManager blueforCoalition, CoalitionManager redforCoalition, CampaignSettings settings, MissionStartType missionStartType) {
         log.debug("I am supposed to generate a mission!");
 
         // All of the files needed to generate the mission
         List<File> missionFiles = new ArrayList<>();
 
         // Translate the mission to a DCSMission (easier to produce the file from here)
-        DCSMission dcsMission = translator.translateSimMissionToDCSMission(mission, blueforCoalition, redforCoalition, missionStartType);
+        DCSMission dcsMission = translator.translateSimMissionToDCSMission(mission, blueforCoalition, redforCoalition, settings, missionStartType);
         DCSMissionFile missionFile = missionFileGenerator.getMissionFileFromMission(dcsMission);
 
         // Generate the various mission files and add them to the list of files
@@ -145,6 +146,6 @@ public class DCSMissionGenerator {
         CoalitionManager r =  sim.getRedforCoalitionManager();
 
         DCSMissionGenerator gen = new DCSMissionGenerator();
-        gen.generateMission(m, b, r, MissionStartType.PARKING_COLD);
+        gen.generateMission(m, b, r, sim.getCampaignSettings(), MissionStartType.PARKING_COLD);
     }
 }
