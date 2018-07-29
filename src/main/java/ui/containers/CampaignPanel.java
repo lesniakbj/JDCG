@@ -13,6 +13,7 @@ import sim.domain.unit.global.GameMap;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.manager.CoalitionManager;
+import sun.awt.ScrollPaneWheelScroller;
 import ui.containers.menu.FlightLoadoutPanel;
 import ui.util.DrawUtil;
 
@@ -34,8 +35,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,6 +72,8 @@ public class CampaignPanel extends JPanel {
     private JLabel campaignEnemyStatusLabel;
     private JLabel campaignFriendlyStatusLabel;
     private JLabel campaignObjectivesLabel;
+    private JScrollPane scrollMissionPanel;
+    private int yMissionScroll;
     private List<ActiveMissionPanel> campaignActiveMissions;
     private boolean drawThreatGrid;
 
@@ -144,8 +151,10 @@ public class CampaignPanel extends JPanel {
             missionPanel.add(sampleMissionPanel);
             campaignActiveMissions.add(sampleMissionPanel);
         }
-        JScrollPane scrollMissionPanel = new JScrollPane(missionPanel);
+        scrollMissionPanel = new JScrollPane(missionPanel);
         scrollMissionPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollMissionPanel.getVerticalScrollBar().addMouseListener(new ScrollPaneListener());
+        scrollMissionPanel.getVerticalScrollBar().addMouseWheelListener(new ScrollPaneWheelListener());
         campaignPlannedActions.add(scrollMissionPanel, BorderLayout.CENTER);
 
         // Load the actions we can do to those missions
@@ -189,6 +198,7 @@ public class CampaignPanel extends JPanel {
 
             loadCampaignImage(imageWidth, imageHeight, padding, bevel);
             hostFrame.refreshUiElements();
+            scrollMissionPanel.getVerticalScrollBar().setValue(yMissionScroll);
         });
         JButton recallFlight = new JButton("Recall");
         recallFlight.addActionListener(l -> {
@@ -287,11 +297,16 @@ public class CampaignPanel extends JPanel {
         addHorizontalComponent(campaignObjectivesLabel);
         JPanel buttonContainer = new JPanel();
         JButton stepSimButton = new JButton("Step Simulation");
+        JButton runSim = new JButton("Run Simulation");
         stepSimButton.addActionListener(l -> {
             campaign.stepSimulation();
+            if(!campaign.isAllowRun()) {
+                JOptionPane.showMessageDialog(null, "Please play the generated mission to continue!", "Play Mission", JOptionPane.INFORMATION_MESSAGE);
+            }
+            stepSimButton.setEnabled(campaign.isAllowRun());
+            runSim.setEnabled(campaign.isAllowRun());
             updateSimulationGUI(imageWidth, imageHeight, padding, bevel);
         });
-        JButton runSim = new JButton("Run Simulation");
         runSim.addActionListener(l -> {
             if(campaign.isSimRunning()) {
                 campaign.setSimRunning(false);
@@ -301,6 +316,11 @@ public class CampaignPanel extends JPanel {
                 ScheduledFuture future = campaign.runSimulation(this, imageWidth, imageHeight, padding, bevel, runSim);
                 runSim.setText("Stop Simulation");
             }
+            if(!campaign.isAllowRun()) {
+                JOptionPane.showMessageDialog(null, "Please play the generated mission to continue!", "Play Mission", JOptionPane.INFORMATION_MESSAGE);
+            }
+            stepSimButton.setEnabled(campaign.isAllowRun());
+            runSim.setEnabled(campaign.isAllowRun());
         });
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         buttonContainer.add(stepSimButton);
@@ -323,6 +343,7 @@ public class CampaignPanel extends JPanel {
         loadActiveMissions(imageWidth, imageHeight, padding, bevel);
         loadCampaignActions(imageWidth, imageHeight, padding, bevel);
         hostFrame.refreshUiElements();
+        scrollMissionPanel.getVerticalScrollBar().setValue(yMissionScroll);
     }
 
     private void updateCampaignStatusLabels() {
@@ -480,6 +501,7 @@ public class CampaignPanel extends JPanel {
             int imageHeight = (int) (imageWidth * MAP_IMAGE_HEIGHT_RATIO);
             loadCampaignImage(imageWidth, imageHeight, padding, bevel);
             hostFrame.refreshUiElements();
+            scrollMissionPanel.getVerticalScrollBar().setValue(yMissionScroll);
         }
 
         @Override
@@ -493,5 +515,40 @@ public class CampaignPanel extends JPanel {
 
         @Override
         public void mouseExited(MouseEvent e) {}
+    }
+
+    private class ScrollPaneListener implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            log.debug("Clicked");
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            log.debug("Pressed");
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            log.debug("Released");
+            yMissionScroll = scrollMissionPanel.getVerticalScrollBar().getValue();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            log.debug("Entered");
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            log.debug("Exit");
+        }
+    }
+
+    private class ScrollPaneWheelListener implements MouseWheelListener {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            yMissionScroll = scrollMissionPanel.getVerticalScrollBar().getValue();
+        }
     }
 }

@@ -48,6 +48,7 @@ public class DCSMissionTranslator {
         // Get the cells that we will use to generate ground units
         ThreatGrid grid = blueforCoalitionManager.getMissionManager().getThreatGrid();
         List<ThreatGridCell> searchCells = findCellsAlongRoute(grid, startingAirfield, missionWp);
+        log.debug("Searching: " + searchCells.size());
 
         // Get supporting Aircraft, and friendly ground units
         log.debug("Getting Support Units");
@@ -64,7 +65,7 @@ public class DCSMissionTranslator {
         List<UnitGroup<AirUnit>> enemyAirIntercept = findInterceptUnitsAlongRoute(searchCells, missionWp, redforColaitionManager.getCoalitionAirfields());
 
         // Find any currently flying air groups near our path
-        List<UnitGroup<AirUnit>> enemyAirUnits = findEnemyAirUnitsAlongRoute(searchCells, redforColaitionManager.getCoalitionAirGroups());
+        List<Mission> enemyAirUnits = findEnemyAirUnitsAlongRoute(searchCells, redforColaitionManager.getMissionManager().getPlannedMissions());
 
         // Add the friendly details
         DCSMission dcsMission = new DCSMission();
@@ -79,7 +80,7 @@ public class DCSMissionTranslator {
         dcsMission.addGroundUnits(enemyAirfieldUnits);
         dcsMission.addAirDefenceUnits(enemyAirDefences);
         dcsMission.addAirInterceptUnits(enemyAirIntercept);
-        dcsMission.addAirUnits(enemyAirUnits);
+        dcsMission.addMissions(enemyAirUnits);
 
         return dcsMission;
     }
@@ -149,12 +150,19 @@ public class DCSMissionTranslator {
         return cal.getTime();
     }
 
-    private List<UnitGroup<AirUnit>> findEnemyAirUnitsAlongRoute(List<ThreatGridCell> searchCells, List<UnitGroup<AirUnit>> coalitionAirGroups) {
-        log.debug("Searching for enemy air units within cells: " + searchCells);
-
-        //TODO: Only search units in flight
-
-        return new ArrayList<>();
+    private List<Mission> findEnemyAirUnitsAlongRoute(List<ThreatGridCell> searchCells, List<Mission> coalitionAirGroups) {
+        List<Mission> activeMissions = coalitionAirGroups.stream().filter(Mission::isActive).collect(Collectors.toList());
+        List<Mission> missions = new ArrayList<>();
+        for(ThreatGridCell cell : searchCells) {
+            for(Mission m : activeMissions) {
+                UnitGroup<AirUnit> unit = m.getMissionAircraft();
+                if(cell.contains(unit.getMapXLocation(), unit.getMapYLocation())) {
+                    missions.add(m);
+                }
+            }
+        }
+        log.debug("Found " + missions.size() + " active missions along route...");
+        return missions;
     }
 
     private List<UnitGroup<GroundUnit>> findAirfieldGroundUnitsAlongRoute(List<ThreatGridCell> searchCells, Map<Airfield, List<UnitGroup<GroundUnit>>> coalitionPointDefenceGroundUnits) {
@@ -203,7 +211,6 @@ public class DCSMissionTranslator {
             for(int y = 0; y < grid.getNumCellsY(); y++) {
                 ThreatGridCell cell = grid.getThreatGrid()[x][y];
                 if(cell.intersects(line)) {
-                    log.debug("Found a cell to add to route!: " + cell);
                     routeCells.add(cell);
                 }
             }

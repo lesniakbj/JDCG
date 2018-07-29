@@ -66,6 +66,7 @@ public class DynamicCampaignSim {
     private transient ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
     private transient ScheduledFuture<?> scheduledFuture;
     private transient boolean simRunning;
+    private boolean allowRun;
 
     public DynamicCampaignSim() {
         this.simSettings = new GlobalSimSettings();
@@ -75,6 +76,7 @@ public class DynamicCampaignSim {
         this.redforCoalitionManager = new CoalitionManager(new ArrayList<>(), new ObjectiveManager(), new MissionManager());
         this.currentlySelectedMission = null;
         this.generateMission = false;
+        this.allowRun = true;
         this.missionSimulator = new MissionSimulator();
         this.dcsMissionGenerator = new DCSMissionGenerator();
     }
@@ -233,22 +235,24 @@ public class DynamicCampaignSim {
     *
      */
     public void stepSimulation() {
-        int minutesToStep = simSettings.getMinutesPerSimulationStep();
+        if(allowRun) {
+            int minutesToStep = simSettings.getMinutesPerSimulationStep();
 
-        // Step the current simulation time
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(campaignSettings.getCurrentCampaignDate());
-        cal.add(Calendar.MINUTE, minutesToStep);
-        campaignSettings.setCurrentCampaignDate(cal.getTime());
+            // Step the current simulation time
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(campaignSettings.getCurrentCampaignDate());
+            cal.add(Calendar.MINUTE, minutesToStep);
+            campaignSettings.setCurrentCampaignDate(cal.getTime());
 
 
-        // Step all the missions before having the AI/Coalition Managers Update
-        log.debug("Stepping Missions...");
-        stepMissions(minutesToStep);
+            // Step all the missions before having the AI/Coalition Managers Update
+            log.debug("Stepping Missions...");
+            stepMissions(minutesToStep);
 
-        // Update the coalition managers
-        blueforCoalitionManager.update(campaignSettings, redforCoalitionManager, minutesToStep);
-        redforCoalitionManager.update(campaignSettings, blueforCoalitionManager, minutesToStep);
+            // Update the coalition managers
+            blueforCoalitionManager.update(campaignSettings, redforCoalitionManager, minutesToStep);
+            redforCoalitionManager.update(campaignSettings, blueforCoalitionManager, minutesToStep);
+        }
     }
 
     private void stepMissions(int minutesToStep) {
@@ -261,32 +265,28 @@ public class DynamicCampaignSim {
 
         // Simulate each of the gathered missions
         List<Mission> completedMissions = new ArrayList<>();
-        for(Mission m : allMissions) {
+        for (Mission m : allMissions) {
             // Update the mission
             m.setCurrentCampaignDate(campaignSettings.getCurrentCampaignDate());
             m.setMinutesPerUpdate(minutesToStep);
             m.updateStep();
 
             // Check if we need to generate a DCS mission
-            boolean missionShouldGen = m.shouldGenerateMission();
-            boolean missionOnSide = m.getMissionAircraft().getSide().equals(campaignSettings.getPlayerSelectedSide());
-            boolean generateSettingOn = simSettings.isGenerateMissionsOnMissionWaypoint();
-            if(missionShouldGen && missionOnSide && generateSettingOn) {
+            if (shouldGenerateDCSMission(m, campaignSettings, simSettings)) {
                 criticalMissions.add(m);
+                m.setAlreadyGenerated(true);
             }
 
             // Check if we need to sim the results of this mission locally
             // Escort and Intercept missions are always simulated; as they search the current
             // aircraft's location for threats
-            boolean isAirMission = m.getMissionType().equals(SubTaskType.ESCORT) || m.getMissionType().equals(SubTaskType.INTERCEPT);
-            boolean isTransportMission =  m.getMissionType().equals(SubTaskType.TRANSPORT) || m.getMissionType().equals(SubTaskType.AIRLIFT);
-            if(m.onObjectiveWaypoint() || isAirMission || isTransportMission) {
+            if (shouldSimulateMission(m)) {
                 // Simulate the mission...
                 missionSimulator.simulateMission(m, campaignSettings, blueforCoalitionManager, redforCoalitionManager);
             }
 
             // If the mission is complete, remove it from the active missions
-            if(m.isMissionComplete()) {
+            if (m.isMissionComplete()) {
                 // Remove the element
                 completedMissions.add(m);
             }
@@ -295,17 +295,38 @@ public class DynamicCampaignSim {
         redforCoalitionManager.getCoalitionMissionManager().getPlannedMissions().removeAll(completedMissions);
 
         // Add the completed mission aircraft back to their respective airfield
-        for(Mission m : completedMissions) {
+        for (Mission m : completedMissions) {
             addMissionAircraftToCoalition(m, blueforCoalitionManager);
             addMissionAircraftToCoalition(m, redforCoalitionManager);
         }
 
         // If we determine that we need to generate a mission, generate it and then alert the user
         generateMission = !criticalMissions.isEmpty();
-        if(generateMission) {
+        if (generateMission) {
             dcsMissionGenerator.generateMission(criticalMissions.get(0), blueforCoalitionManager, redforCoalitionManager, simSettings.getMissionStartType());
             setSimRunning(false);
+            setAllowRun(false);
         }
+    }
+
+    private boolean shouldSimulateMission(Mission m) {
+        boolean isAirMission = m.getMissionType().equals(SubTaskType.ESCORT) || m.getMissionType().equals(SubTaskType.INTERCEPT);
+        boolean isTransportMission =  m.getMissionType().equals(SubTaskType.TRANSPORT) || m.getMissionType().equals(SubTaskType.AIRLIFT);
+        return m.onObjectiveWaypoint() || isAirMission || isTransportMission;
+    }
+
+    private boolean shouldGenerateDCSMission(Mission m, CampaignSettings campaignSettings, GlobalSimSettings simSettings) {
+        boolean missionShouldGen = m.shouldGenerateMission();
+        boolean missionAlreadyGen = m.isAlreadyGenerated();
+        boolean missionOnSide = m.getMissionAircraft().getSide().equals(campaignSettings.getPlayerSelectedSide());
+        boolean generateSettingOn = simSettings.isGenerateMissionsOnMissionWaypoint();
+        boolean isOnWaypoint = m.getMissionWaypoint().getLocationX() == m.getMissionAircraft().getMapXLocation() && m.getMissionWaypoint().getLocationY() == m.getMissionAircraft().getMapYLocation();
+        return !missionAlreadyGen && missionShouldGen && missionOnSide || ((generateSettingOn && isOnWaypoint) && missionOnSide);
+    }
+
+    private void integrateDCSMissionResults() {
+        // After we integrate a mission back into this campaign, we can allow the user to continue again
+        setAllowRun(true);
     }
 
     private void addMissionAircraftToCoalition(Mission m, CoalitionManager coalitionManager) {
@@ -361,5 +382,13 @@ public class DynamicCampaignSim {
 
     public boolean isSimRunning() {
         return simRunning;
+    }
+
+    public void setAllowRun(boolean allowRun) {
+        this.allowRun = allowRun;
+    }
+
+    public boolean isAllowRun() {
+        return allowRun;
     }
 }

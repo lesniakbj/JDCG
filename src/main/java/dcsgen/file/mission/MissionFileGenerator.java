@@ -1,14 +1,12 @@
 package dcsgen.file.mission;
 
 import dcsgen.file.DCSFileGenerator;
-import dcsgen.file.mission.domain.FilePart;
-import dcsgen.file.mission.domain.RequiredModules;
 import dcsgen.file.mission.domain.AircraftFailures;
 import dcsgen.file.mission.domain.BlueTaskText;
 import dcsgen.file.mission.domain.CoalitionDetails;
 import dcsgen.file.mission.domain.CurrentKeyText;
-import dcsgen.translate.DCSMission;
 import dcsgen.file.mission.domain.DCSMissionFile;
+import dcsgen.file.mission.domain.FilePart;
 import dcsgen.file.mission.domain.ForcedOptions;
 import dcsgen.file.mission.domain.GroundControl;
 import dcsgen.file.mission.domain.MapLocation;
@@ -26,12 +24,13 @@ import dcsgen.file.mission.domain.PictureFileNameB;
 import dcsgen.file.mission.domain.PictureFileNameN;
 import dcsgen.file.mission.domain.PictureFileNameR;
 import dcsgen.file.mission.domain.RedTaskText;
+import dcsgen.file.mission.domain.RequiredModules;
 import dcsgen.file.mission.domain.SortieText;
 import dcsgen.file.mission.domain.TrigrulesSection;
 import dcsgen.file.mission.domain.VersionText;
 import dcsgen.file.mission.domain.trigger.MissionTriggers;
 import dcsgen.file.mission.domain.trigger.TriggerLocations;
-import dcsgen.translate.DCSMissionTranslator;
+import dcsgen.translate.DCSMission;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,7 +73,6 @@ public class MissionFileGenerator implements DCSFileGenerator {
         log.debug("Mission to generate with the following params: ");
         log.debug("Total Ground Units: " + mission.getGroundUnits().size());
         log.debug("Total Air Defence Units: " + mission.getAirDefenceUnits().size());
-        log.debug("Total Flying Units: " + mission.getFlyingUnits().size());
         log.debug("Total Interceptors Units: " + mission.getLatentInterceptors().size());
         log.debug("Total Missions: " + mission.getMissions().size());
         log.debug("Mission Type: " + mission.getPlayerMission().getMissionType());

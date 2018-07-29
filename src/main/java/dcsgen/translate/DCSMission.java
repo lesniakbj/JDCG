@@ -17,13 +17,11 @@ public class DCSMission {
     private List<UnitGroup<GroundUnit>> groundUnits;
     private List<UnitGroup<AirDefenceUnit>> airDefenceUnits;
     private List<UnitGroup<AirUnit>> latentInterceptors;
-    private List<UnitGroup<AirUnit>> flyingUnits;
 
     public DCSMission() {
         this.groundUnits = new ArrayList<>();
         this.airDefenceUnits = new ArrayList<>();
         this.latentInterceptors = new ArrayList<>();
-        this.flyingUnits = new ArrayList<>();
         this.missions = new ArrayList<>();
     }
 
@@ -37,10 +35,6 @@ public class DCSMission {
 
     public void addAirInterceptUnits(List<UnitGroup<AirUnit>> latentInterceptors) {
         this.latentInterceptors.addAll(latentInterceptors);
-    }
-
-    public void addAirUnits(List<UnitGroup<AirUnit>> flyingUnits) {
-        this.flyingUnits.addAll(flyingUnits);
     }
 
     public void addMissions(List<Mission> missions) {
@@ -89,14 +83,6 @@ public class DCSMission {
 
     public void setLatentInterceptors(List<UnitGroup<AirUnit>> latentInterceptors) {
         this.latentInterceptors = latentInterceptors;
-    }
-
-    public List<UnitGroup<AirUnit>> getFlyingUnits() {
-        return flyingUnits;
-    }
-
-    public void setFlyingUnits(List<UnitGroup<AirUnit>> flyingUnits) {
-        this.flyingUnits = flyingUnits;
     }
 
     @Override

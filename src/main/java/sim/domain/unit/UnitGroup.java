@@ -3,13 +3,14 @@ package sim.domain.unit;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import sim.domain.enums.FactionSideType;
+import sim.util.IDGenerator;
 
 import java.awt.geom.Point2D;
 import java.util.Date;
 import java.util.List;
 
 public class UnitGroup<T extends SimUnit> extends SimUnit {
-    private int id;
+    private long id;
     private FactionSideType side;
     private List<T> groupUnits;
     private boolean shouldGenerate;
@@ -33,11 +34,11 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
         this.side = side;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -89,7 +90,7 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int)id;
         result = 31 * result + (side != null ? side.hashCode() : 0);
         result = 31 * result + (groupUnits != null ? groupUnits.hashCode() : 0);
         return result;
@@ -101,12 +102,12 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
                 ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 
-
     public static class Builder<T extends SimUnit> {
         private UnitGroup<T> unitGroup;
 
         public Builder() {
             this.unitGroup = new UnitGroup<>();
+            unitGroup.setId(IDGenerator.generateNextId());
         }
 
         public Builder setUnits(List<T> units) {

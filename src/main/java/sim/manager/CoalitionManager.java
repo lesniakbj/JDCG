@@ -123,10 +123,7 @@ public class CoalitionManager {
         // Update the Threat Grid
         log.debug("Updating threat grid...");
         ThreatGridGenerator threatGridGenerator = new ThreatGridGenerator();
-        log.debug(coalitionMissionManager.getThreatGrid());
         threatGridGenerator.populateThreatGridValues(coalitionMissionManager.getThreatGrid(), this, enemyCoalitionManager);
-        log.debug(coalitionMissionManager.getThreatGrid());
-
 
         // Using the mission state, and last update time, go through a set state transitions to
         // determine our next action. This will fully determine the missions.

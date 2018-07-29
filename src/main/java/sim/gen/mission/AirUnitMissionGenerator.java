@@ -32,7 +32,7 @@ public class AirUnitMissionGenerator {
 
         // Choose a random airfield from the map
         Airfield airfield = airUnitStationMap.keySet().stream().sorted(((o1, o2) -> ThreadLocalRandom.current().nextInt(-1, 2))).findAny().get();
-        log.debug("Airfield to use: " + airfield);
+        log.debug("Airfield to use: " + airfield.getAirfieldType().name());
 
         // Choose a random unit from the stationed units
         List<UnitGroup<AirUnit>> airfieldUnits = airUnitStationMap.get(airfield);

@@ -45,6 +45,7 @@ public class Mission implements Simable {
     private boolean shouldGenerate;
 
     private int playerAircraft;
+    private boolean alreadyGenerated;
 
     private Mission() {}
 
@@ -353,6 +354,14 @@ public class Mission implements Simable {
     public String toString() {
         return ReflectionToStringBuilder.toString(this,
                 ToStringStyle.MULTI_LINE_STYLE, true, true);
+    }
+
+    public boolean isAlreadyGenerated() {
+        return alreadyGenerated;
+    }
+
+    public void setAlreadyGenerated(boolean alreadyGenerated) {
+        this.alreadyGenerated = alreadyGenerated;
     }
 
     public static class Builder {

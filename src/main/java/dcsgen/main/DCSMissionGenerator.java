@@ -1,11 +1,11 @@
 package dcsgen.main;
 
 import dcsgen.file.mission.MissionFileGenerator;
-import dcsgen.translate.DCSMission;
 import dcsgen.file.mission.domain.DCSMissionFile;
 import dcsgen.file.options.OptionsFileGenerator;
-import dcsgen.translate.DCSMissionTranslator;
 import dcsgen.file.warehouses.WarehousesFileGenerator;
+import dcsgen.translate.DCSMission;
+import dcsgen.translate.DCSMissionTranslator;
 import dcsgen.util.ZipUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +48,6 @@ public class DCSMissionGenerator {
 
         // Translate the mission to a DCSMission (easier to produce the file from here)
         DCSMission dcsMission = translator.translateSimMissionToDCSMission(mission, blueforCoalition, redforCoalition, missionStartType);
-        log.debug("Generated the following mission: " + dcsMission);
         DCSMissionFile missionFile = missionFileGenerator.getMissionFileFromMission(dcsMission);
 
         // Generate the various mission files and add them to the list of files

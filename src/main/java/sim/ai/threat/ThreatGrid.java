@@ -19,7 +19,6 @@ import sim.manager.CoalitionManager;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
