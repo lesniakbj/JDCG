@@ -30,22 +30,11 @@ import dcsgen.file.mission.domain.TrigrulesSection;
 import dcsgen.file.mission.domain.VersionText;
 import dcsgen.file.mission.domain.trigger.MissionTriggers;
 import dcsgen.file.mission.domain.trigger.TriggerLocations;
-import dcsgen.translate.group.DCSUnitGroup;
 import dcsgen.translate.mission.DCSMissionData;
-import dcsgen.translate.unit.DCSUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sim.domain.enums.FactionSideType;
-import sim.domain.enums.FactionType;
-import sim.domain.unit.UnitGroup;
-import sim.domain.unit.air.AirUnit;
-import sim.domain.unit.air.Mission;
-import sim.domain.unit.ground.GroundUnit;
-import sim.domain.unit.ground.defence.AirDefenceUnit;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,24 +71,8 @@ public class MissionFileGenerator implements DCSFileGenerator {
             return  new DCSMissionFile();
         }
 
-        log.debug("Mission to generate with the following params: ");
-        log.debug("Total Ground Units: " + mission.getGroundUnits().size());
-        log.debug("Total Air Defence Units: " + mission.getAirDefenceUnits().size());
-        log.debug("Total Interceptors Units: " + mission.getLatentInterceptors().size());
-        log.debug("Total Missions: " + mission.getMissions().size());
-        log.debug("Mission Type: " + mission.getPlayerMission().getMissionType());
-        log.debug("Mission Airfield: " + mission.getPlayerMission().getStartingAirfield());
-        log.debug("Mission Aircraft: " + mission.getPlayerMission().getMissionAircraft());
-
         // Translate the DCSMissionDate object to DCSFileDomain objects, this should be done in a single pass....
-
-        List<FactionType> blueFactions = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.BLUEFOR).getFactionTypeList();
-        List<FactionType> redFactions = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.REDFOR).getFactionTypeList();
-        List<FactionType> neutralFactions = mission.getCampaignSettings().getCoalitionBySide(FactionSideType.NEUTRAL).getFactionTypeList();
-        blueFactions.sort(Comparator.comparing(FactionType::getDcsFactionName));
-        redFactions.sort(Comparator.comparing(FactionType::getDcsFactionName));
-        neutralFactions.sort(Comparator.comparing(FactionType::getDcsFactionName));
-        List<DCSUnitGroup> groups = parseUnitGroups(mission);
+        mission.generate();
 
         DCSMissionFile translatedMission = new DCSMissionFile();
         translatedMission.setRequiredModules(getRequiredModules(mission));
@@ -114,14 +87,14 @@ public class MissionFileGenerator implements DCSFileGenerator {
         translatedMission.setMissionTheatre(getMissionTheatre(mission));
         translatedMission.setTriggerLocations(getTriggerLocations(mission));
         translatedMission.setMapLocation(getMapLocation(mission));
-        translatedMission.setMissionCoalitions(getMissionCoalitions(blueFactions, redFactions, neutralFactions));
+        translatedMission.setMissionCoalitions(getMissionCoalitions(mission));
         translatedMission.setMissionDescriptionText(getMissionDescription(mission));
         translatedMission.setPictureFileNameR(getMissionPictureR(mission));
         translatedMission.setNeutralTaskText(getMissionNeutralTaskText(mission));
         translatedMission.setBlueTaskText(getMissionBlueTaskText(mission));
         translatedMission.setRedTaskText(getMissionRedTaskText(mission));
         translatedMission.setPictureFileNameB(getPictureFileNameB(mission));
-        translatedMission.setCoalitionDetails(getCoalitionDetails(blueFactions, redFactions));
+        translatedMission.setCoalitionDetails(getCoalitionDetails(mission));
         translatedMission.setSortieText(getSortieText(mission));
         translatedMission.setVersionText(getVersionText(mission));
         translatedMission.setTrigrulesSection(getTrigrulesSection(mission));
@@ -132,36 +105,8 @@ public class MissionFileGenerator implements DCSFileGenerator {
         return translatedMission;
     }
 
-    private List<DCSUnitGroup> parseUnitGroups(DCSMissionData mission) {
-        List<UnitGroup<GroundUnit>> gUnits = mission.getGroundUnits();
-        List<UnitGroup<AirDefenceUnit>> aUnits = mission.getAirDefenceUnits();
-        List<UnitGroup<AirUnit>> iUnits = mission.getLatentInterceptors();
-        List<Mission> missions = mission.getMissions();
-        Mission playerMission = mission.getPlayerMission();
-
-        // Return List...
-        List<DCSUnitGroup> groups = new ArrayList<>();
-
-        // Various checking...
-        for(UnitGroup<GroundUnit> g : gUnits) {
-            // Create the Group
-            DCSUnitGroup group = new DCSUnitGroup();
-
-            // Get each unit in the group
-            List<DCSUnit> groupUnits = new ArrayList<>();
-            for(GroundUnit gu : g.getGroupUnits()) {
-                DCSUnit unit = new DCSUnit();
-                unit.setType("GROUND_UNIT");
-                groupUnits.add(unit);
-            }
-            group.setUnits(groupUnits);
-        }
-
-        return groups;
-    }
-
-    private MissionCoalitions getMissionCoalitions(List<FactionType> blueFactions, List<FactionType> redFactions, List<FactionType> neutralFactions) {
-        return new MissionCoalitions(blueFactions, redFactions, neutralFactions);
+    private MissionCoalitions getMissionCoalitions(DCSMissionData mission) {
+        return new MissionCoalitions(mission.getBlueFactions(), mission.getRedFactions(), mission.getNeutralFactions());
     }
 
     private AircraftFailures getAircraftFailures(DCSMissionData mission) {
@@ -188,8 +133,8 @@ public class MissionFileGenerator implements DCSFileGenerator {
         return new SortieText();
     }
 
-    private CoalitionDetails getCoalitionDetails(List<FactionType> blueFactions, List<FactionType> redFactions) {
-        return new CoalitionDetails(blueFactions, redFactions);
+    private CoalitionDetails getCoalitionDetails(DCSMissionData  mission) {
+        return new CoalitionDetails(mission.getBlueFactions(), mission.getRedFactions());
     }
 
     private BlueTaskText getMissionBlueTaskText(DCSMissionData mission) {
@@ -259,7 +204,7 @@ public class MissionFileGenerator implements DCSFileGenerator {
     private MissionDate getMissionDate(DCSMissionData mission) {
         // Get the numeric day, year, month
         Calendar cal = Calendar.getInstance();
-        // cal.setTime(mission.getCurrentCampaignDate());
+        cal.setTime(mission.getCurrentCampaignDate());
         cal.setTime(new Date());
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int year = cal.get(Calendar.YEAR);

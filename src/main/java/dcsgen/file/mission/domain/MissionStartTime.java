@@ -1,7 +1,5 @@
 package dcsgen.file.mission.domain;
 
-import sim.domain.enums.MissionStartType;
-
 import java.util.LinkedList;
 import java.util.List;
 
