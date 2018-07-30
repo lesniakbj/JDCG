@@ -3,11 +3,16 @@ package sim.gen.ground;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.campaign.DynamicCampaignSim;
+import sim.domain.enums.AirDefenceUnitType;
+import sim.domain.enums.AirDefenceWeaponType;
 import sim.domain.enums.CampaignType;
+import sim.domain.enums.ConflictEraType;
 import sim.domain.enums.FactionSideType;
+import sim.domain.enums.FactionType;
 import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
+import sim.domain.unit.global.Coalition;
 import sim.domain.unit.ground.ArmedShipGroundUnit;
 import sim.domain.unit.ground.ArmorGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
@@ -28,6 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GroundUnitGenerator {
     private static final Logger log = LogManager.getLogger(GroundUnitGenerator.class);
@@ -184,8 +190,8 @@ public class GroundUnitGenerator {
         // Generation loop
         List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
         try {
-            airDefenceGroups.addAll(generateAirDefenceGroups(ArtilleryAirDefenceUnit.class, targetAAAIterations, waterMask, groundUnits, airfields, side, true, aaaCost));
-            airDefenceGroups.addAll(generateAirDefenceGroups(MissileAirDefenceUnit.class, targetSAMIterations, waterMask, groundUnits, airfields, side, false, samCost));
+            airDefenceGroups.addAll(generateAirDefenceGroups(campaignSettings, ArtilleryAirDefenceUnit.class, targetAAAIterations, waterMask, groundUnits, airfields, side, true, aaaCost));
+            airDefenceGroups.addAll(generateAirDefenceGroups(campaignSettings, MissileAirDefenceUnit.class, targetSAMIterations, waterMask, groundUnits, airfields, side, false, samCost));
         }  catch (IllegalAccessException | InstantiationException e) {
             log.debug(e);
         }
@@ -193,7 +199,7 @@ public class GroundUnitGenerator {
         return airDefenceGroups;
     }
 
-    private List<UnitGroup<AirDefenceUnit>> generateAirDefenceGroups(Class<? extends AirDefenceUnit> airDefenceClass, int iterations, Path2D.Double waterMask, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSideType side, boolean isAAA, double cost) throws IllegalAccessException, InstantiationException {
+    private List<UnitGroup<AirDefenceUnit>> generateAirDefenceGroups(CampaignSettings campaignSettings, Class<? extends AirDefenceUnit> airDefenceClass, int iterations, Path2D.Double waterMask, List<UnitGroup<GroundUnit>> groundUnits, List<Airfield> airfields, FactionSideType side, boolean isAAA, double cost) throws IllegalAccessException, InstantiationException {
         List<UnitGroup<AirDefenceUnit>> airDefenceGroups = new ArrayList<>();
 
         double total = 0;
@@ -221,7 +227,7 @@ public class GroundUnitGenerator {
                 }
             } while (waterMask.contains(x, y));
 
-            List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass, 2);
+            List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass, 2, side, campaignSettings);
             UnitGroup.Builder<AirDefenceUnit> b = new UnitGroup.Builder<>();
             UnitGroup<AirDefenceUnit> ad = b.setMapXLocation(x).setMapYLocation(y).setSide(side)
                                             .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -314,7 +320,6 @@ public class GroundUnitGenerator {
     }
 
     private Point2D.Double generateXYFromMask(double mapY, double mapX, Path2D.Double mask, boolean genSouth) {
-
         double startY = mapY;
         int density = 20;
         int maxDistance = 125;
@@ -362,7 +367,31 @@ public class GroundUnitGenerator {
         return new ArrayList<>(Arrays.asList(new UnarmedShipGroundUnit(), new ArmedShipGroundUnit(), new ArmedShipGroundUnit(), new UnarmedShipGroundUnit()));
     }
 
-    private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, int amount) throws IllegalAccessException, InstantiationException {
+    private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, int amount, FactionSideType side, CampaignSettings campaignSettings) throws IllegalAccessException, InstantiationException {
+        ConflictEraType selectedEra = campaignSettings.getSelectedEra();
+        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+        List<AirDefenceUnitType> validTypes = AirDefenceUnitType.getTypesByEra(selectedEra);
+        validTypes = validTypes.stream().filter(t -> {
+            for(FactionType ft : t.getFactions()) {
+                if(sideCoalition.getFactionTypeList().contains(ft)) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+
+        if(clazz.isAssignableFrom(ArtilleryAirDefenceUnit.class)) {
+            validTypes = validTypes.stream().filter(t -> t.getWeaponType().equals(AirDefenceWeaponType.AAA)).collect(Collectors.toList());
+        } else {
+            validTypes = validTypes.stream().filter(t -> !t.getWeaponType().equals(AirDefenceWeaponType.AAA)).collect(Collectors.toList());
+        }
+
+        log.debug("Found types: " + validTypes);
+
+        // If its a AAA type, create the amount.
+
+        // If its a SAM type, choose a group and create all the support vehicles too
+
         List<AirDefenceUnit> list = new ArrayList<>();
         for(int i = 0; i < amount; i++) {
             list.add(clazz.newInstance());

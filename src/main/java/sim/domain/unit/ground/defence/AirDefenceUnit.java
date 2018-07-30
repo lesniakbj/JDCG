@@ -1,5 +1,6 @@
 package sim.domain.unit.ground.defence;
 
+import sim.domain.enums.AirDefenceUnitType;
 import sim.domain.unit.SimUnit;
 
 /**
@@ -15,5 +16,13 @@ import sim.domain.unit.SimUnit;
  * Created by Brendan.Lesniak on 7/19/2018.
  */
 public abstract class AirDefenceUnit extends SimUnit {
+    private AirDefenceUnitType unitType;
 
+    public AirDefenceUnitType getUnitType() {
+        return unitType;
+    }
+
+    public void setUnitType(AirDefenceUnitType unitType) {
+        this.unitType = unitType;
+    }
 }
