@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sim.ai.actions.AIAction;
 import sim.ai.threat.gen.ThreatGridGenerator;
+import sim.domain.enums.AirfieldType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
 import sim.domain.unit.air.Mission;
@@ -35,6 +36,7 @@ public class CoalitionManager {
     private MissionManager coalitionMissionManager;
     private ATOGenerator commander;
     private PackageGenerator packageGenerator;
+    private AirfieldType coalitionHomeAirfield;
 
 
     public CoalitionManager(List<UnitGroup<GroundUnit>> coalitionGroups, ObjectiveManager coalitionObjectiveManager, MissionManager coalitionMissionManager) {
@@ -105,6 +107,10 @@ public class CoalitionManager {
         return coalitionAirfields.stream().collect(Collectors.toMap(a -> a, Airfield::getStationedAircraft));
     }
 
+    public void setCoalitionHomeAirfield(AirfieldType coalitionHomeAirfield) {
+        this.coalitionHomeAirfield = coalitionHomeAirfield;
+    }
+
     public void updateCoalitionAirGroups(Airfield field, List<UnitGroup<AirUnit>> unitGroups) {
         Airfield a = coalitionAirfields.stream().filter(af -> af.getAirfieldType().equals(field.getAirfieldType())).findFirst().orElse(null);
         if(a == null) {
@@ -117,6 +123,10 @@ public class CoalitionManager {
 
     public List<UnitGroup<AirUnit>> getCoalitionPlayerAirGroups() {
         return coalitionAirfields.stream().map(Airfield::getStationedAircraft).flatMap(Collection::stream).filter(UnitGroup::isPlayerGeneratedGroup).collect(Collectors.toList());
+    }
+
+    public AirfieldType getCoalitionHomeAirfield() {
+        return coalitionHomeAirfield;
     }
 
     public void update(CampaignSettings campaignSettings, CoalitionManager enemyCoalitionManager, int minutesToStep) {

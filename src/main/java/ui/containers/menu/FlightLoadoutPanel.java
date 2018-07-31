@@ -7,6 +7,9 @@ import sim.domain.enums.MunitionType;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Munition;
 import sim.domain.unit.air.WeaponStation;
+import sim.domain.unit.air.Station;
+import sim.domain.unit.air.StationPossibleMunitions;
+import sim.domain.unit.air.Stations;
 import ui.util.SpringUtilities;
 
 import javax.swing.DefaultComboBoxModel;
@@ -53,7 +56,7 @@ public class FlightLoadoutPanel extends JPanel {
 
         assert flightMission != null;
         AircraftType type = flightMission.getMissionAircraft().getGroupUnits().get(0).getAircraftType();
-        Map<Integer, List<Munition>> validConfigs = type.getStationMunitions();
+        Stations validConfigs = type.getStationMunitions();
         log.debug("Valid munitions: " + validConfigs);
 
         // Load the image associated with the loadout
@@ -66,10 +69,10 @@ public class FlightLoadoutPanel extends JPanel {
         int rows = 0;
         JPanel munitionTable = new JPanel(new SpringLayout());
         List<WeaponStation> alreadySelected = flightMission.getMissionMunitions();
-        for(Map.Entry<Integer, List<Munition>> entry : validConfigs.entrySet()) {
-            int station = entry.getKey();
+        for(Station entry : validConfigs.getStations()) {
+            int station = entry.getStationNumber();
             JLabel label = new JLabel("Pylon " + station + ":");
-            String[] values = entry.getValue().stream().map(Munition::getMunitionType).map(MunitionType::getMunitionName).toArray(String[]::new);
+            String[] values = entry.getPossibleMunitions().stream().map(StationPossibleMunitions::getMunitionType).map(MunitionType::getMunitionName).toArray(String[]::new);
             JComboBox<String> comboBox = new JComboBox<>(values);
             JComboBox<Integer> totalComboBox = new JComboBox<>();
 
@@ -169,10 +172,9 @@ public class FlightLoadoutPanel extends JPanel {
                 Integer station = loadoutSelectors.get(box);
 
                 JComboBox<Integer> totalBox = totalLoadoutSelectors.get(box);
-                Map<Integer, List<Munition>> validConfigs = flightMission.getMissionAircraft().getGroupUnits().get(0).getAircraftType().getStationMunitions();
-                Munition munition = validConfigs.get(station).stream().filter(m -> m.getMunitionType().equals(mt)).findFirst().orElse(null);
-                Integer[] ints = IntStream.rangeClosed(1, munition.getTotalLoaded()).boxed().toArray(Integer[]::new);
-                totalBox.setModel(new DefaultComboBoxModel<>(ints));
+                Stations validConfigs = flightMission.getMissionAircraft().getGroupUnits().get(0).getAircraftType().getStationMunitions();
+                StationPossibleMunitions munition = validConfigs.getStations().stream().filter(s -> s.getStationNumber() == station).flatMap(m -> m.getPossibleMunitions().stream()).filter(m -> m.getMunitionType().equals(mt)).findFirst().orElse(null);
+                totalBox.setModel(new DefaultComboBoxModel<>(munition.getValidConfigurations().toArray(new Integer[0])));
                 totalBox.setSelectedItem(1);
 
                 log.debug(String.format("Setting station: %d/%s", station, mt));

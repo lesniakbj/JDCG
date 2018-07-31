@@ -1,0 +1,349 @@
+{
+  "stations": [
+    {
+      "stationNumber": 1,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM9L",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM9M",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM9X",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "CAP9M",
+          "possibleConfigurations": [1]
+        }
+      ]
+    },
+    {
+      "stationNumber": 2,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM9L",
+          "possibleConfigurations": [2]
+        },
+        {
+          "munitionType": "AIM9M",
+          "possibleConfigurations": [2]
+        },
+        {
+          "munitionType": "AIM9X",
+          "possibleConfigurations": [2]
+        },
+        {
+          "munitionType": "AIM7F",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM7M",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_82",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_82SE",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_83",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_84",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_20",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "CBU_99",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "ZUNI_MK_71",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_151_HE_19",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_5_HE_7",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "REMOVE_PYLON",
+          "possibleConfigurations": [1]
+        }
+      ]
+    },
+    {
+      "stationNumber": 3,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM7F",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM7M",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_82",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_82SE",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_83",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_84",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_20",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "CBU_99",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "ZUNI_MK_71",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_151_HE_19",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_151_HE_7",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "REMOVE_PYLON",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "FUEL_TANK",
+          "possibleConfigurations": [1, 2]
+        }
+      ]
+    },
+    {
+      "stationNumber": 4,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM7F",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM7M",
+          "possibleConfigurations": [1]
+        }
+      ]
+    },
+    {
+      "stationNumber": 5,
+      "possibleMunitions": [
+        {
+          "munitionType": "MK_82",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_82SE",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_83",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_84",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_20",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "CBU_99",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "FUEL_TANK",
+          "possibleConfigurations": [1]
+        }
+      ]
+    },
+    {
+      "stationNumber": 6,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM7F",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM7M",
+          "possibleConfigurations": [1]
+        }
+      ]
+    },
+    {
+      "stationNumber": 7,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM7F",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM7M",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_82",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_82SE",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_83",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_84",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_20",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "CBU_99",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "ZUNI_MK_71",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_151_HE_19",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_151_HE_7",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "REMOVE_PYLON",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "FUEL_TANK",
+          "possibleConfigurations": [1, 2]
+        }
+      ]
+    },
+    {
+      "stationNumber": 8,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM9L",
+          "possibleConfigurations": [2]
+        },
+        {
+          "munitionType": "AIM9M",
+          "possibleConfigurations": [2]
+        },
+        {
+          "munitionType": "AIM9X",
+          "possibleConfigurations": [2]
+        },
+        {
+          "munitionType": "AIM7F",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM7M",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_82",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_82SE",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_83",
+          "possibleConfigurations": [1, 2, 3]
+        },
+        {
+          "munitionType": "MK_84",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "MK_20",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "CBU_99",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "ZUNI_MK_71",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_151_HE_19",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "MK_5_HE_7",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "REMOVE_PYLON",
+          "possibleConfigurations": [1]
+        }
+      ]
+    },
+    {
+      "stationNumber": 9,
+      "possibleMunitions": [
+        {
+          "munitionType": "AIM9L",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM9M",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM9X",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "CAP9M",
+          "possibleConfigurations": [1]
+        }
+      ]
+    }
+  ]
+}

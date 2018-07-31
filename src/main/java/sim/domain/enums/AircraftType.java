@@ -1,11 +1,17 @@
 package sim.domain.enums;
 
-import sim.domain.unit.air.Munition;
+import sim.util.save.JSONUtil;
+import sim.domain.unit.air.StationPossibleMunitions;
+import sim.domain.unit.air.Stations;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static sim.domain.enums.StaticLists.AIR_SUPERIORITY;
@@ -18,8 +24,6 @@ import static sim.domain.enums.StaticLists.COLD_WAR_ERAS;
 import static sim.domain.enums.StaticLists.EARLY_COLD_WAR_ERAS;
 import static sim.domain.enums.StaticLists.EXTENDED_COLD_WAR;
 import static sim.domain.enums.StaticLists.EXTENDED_ERAS;
-import static sim.domain.enums.StaticLists.FA_18C_MUNITIONS;
-import static sim.domain.enums.StaticLists.FA_18LOT20_MUNITIONS;
 import static sim.domain.enums.StaticLists.GROUND_STRIKE;
 import static sim.domain.enums.StaticLists.GROUND_STRIKE_CONTROLLER;
 import static sim.domain.enums.StaticLists.HELI_ARMED_TRANSPORT;
@@ -63,7 +67,7 @@ public enum AircraftType {
     SPITFIRE_LFMKIX_CW("Spitfire L.F. Mk.IX Clipped Wing", true, false, CLASSIC_TASKS, CLASSIC_ERAS, null, Arrays.asList(FactionType.AUSTRALIA, FactionType.BELGIUM, FactionType.CANADA, FactionType.CHINA, FactionType.DENMARK, FactionType.EGYPT, FactionType.FRANCE, FactionType.GREECE, FactionType.INDIA, FactionType.INDONESIA, FactionType.ISRAEL, FactionType.ITALIAN_SOCIAL_REPUBLIC, FactionType.NETHERLANDS, FactionType.NORWAY, FactionType.PAKISTAN, FactionType.POLAND, FactionType.USSR, FactionType.SWEDEN, FactionType.SYRIA, FactionType.THAILAND, FactionType.TURKEY, FactionType.UK, FactionType.USA, FactionType.YUGOSLAVIA)),
     AJS_37("AJS-37", true, false, GROUND_STRIKE, LATE_COLD_EXTENDED_WAR_ERAS, null, Collections.singletonList(FactionType.SWEDEN)),
     AV_8NA("AV-8NA", true, false, AV8_TASKS, MODERN_ERAS, null, Arrays.asList(FactionType.ITALY, FactionType.SPAIN, FactionType.UK, FactionType.USA, FactionType.USAF_AGGRESSORS)),
-    FA_18C_LOT20("F/A-18C Lot 20", true, false, STRIKE_FIGHTER, MODERN_ERAS, FA_18LOT20_MUNITIONS, Arrays.asList(FactionType.AUSTRALIA, FactionType.CANADA, FactionType.KUWAIT, FactionType.SPAIN, FactionType.SWITZERLAND, FactionType.USA, FactionType.USAF_AGGRESSORS)),
+    FA_18C_LOT20("F/A-18C Lot 20", true, false, STRIKE_FIGHTER, MODERN_ERAS, readPossibleLoadouts("fa_18c_lot20"), Arrays.asList(FactionType.AUSTRALIA, FactionType.CANADA, FactionType.KUWAIT, FactionType.SPAIN, FactionType.SWITZERLAND, FactionType.USA, FactionType.USAF_AGGRESSORS)),
 
     KA_50("Ka-50", true, true, GROUND_STRIKE_CONTROLLER, MODERN_ERAS, null, Arrays.asList(FactionType.EGYPT, FactionType.RUSSIA)),
     MI_8MTV2("MI-8MTv2", true, true, HELI_UNARMED_TRANSPORT, EXTENDED_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BELARUS, FactionType.BULGARIA, FactionType.CANADA, FactionType.CHINA, FactionType.CZECH_REPUBLIC, FactionType.CROATIA, FactionType.EGYPT, FactionType.ETHIOPIA, FactionType.GEORGIA, FactionType.GERMANY, FactionType.HUNGARY, FactionType.INDIA, FactionType.INDONESIA, FactionType.IRAQ, FactionType.IRAN, FactionType.LIBYA, FactionType.MEXICO, FactionType.NORTH_KOREA, FactionType.PAKISTAN, FactionType.POLAND, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.SERBIA, FactionType.USSR, FactionType.SUDAN, FactionType.SYRIA, FactionType.TURKEY, FactionType.UKRAINE, FactionType.USA, FactionType.USAF_AGGRESSORS, FactionType.VIETNAM, FactionType.YUGOSLAVIA)),
@@ -96,7 +100,7 @@ public enum AircraftType {
     F_4E("F-4E", false, false, STRIKE_FIGHTER, EXTENDED_COLD_WAR, null, Arrays.asList(FactionType.AUSTRALIA, FactionType.EGYPT, FactionType.GERMANY, FactionType.GREECE, FactionType.IRAN, FactionType.ISRAEL, FactionType.JAPAN, FactionType.SPAIN, FactionType.SOUTH_KOREA, FactionType.TURKEY, FactionType.UK, FactionType.USA, FactionType.USAF_AGGRESSORS)),
     F_5E("F-5E", false, false, STRIKE_FIGHTER, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.AUSTRIA, FactionType.BAHRAIN, FactionType.BRAZIL, FactionType.CANADA, FactionType.CHILE, FactionType.GREECE, FactionType.HONDURAS, FactionType.INDONESIA, FactionType.IRAN, FactionType.JORDAN, FactionType.SOUTH_KOREA, FactionType.LIBYA, FactionType.MEXICO, FactionType.MOROCCO, FactionType.MALAYSIA, FactionType.NETHERLANDS, FactionType.NORWAY, FactionType.PHILIPPINES, FactionType.SAUDI_ARABIA, FactionType.VIETNAM, FactionType.SPAIN, FactionType.SUDAN, FactionType.SWITZERLAND, FactionType.THAILAND, FactionType.TUNISIA, FactionType.TURKEY, FactionType.USSR, FactionType.USA, FactionType.USAF_AGGRESSORS)),
 
-    FA_18C("F/A-18C", false, false, STRIKE_FIGHTER, MODERN_ERAS, FA_18C_MUNITIONS, Arrays.asList(FactionType.AUSTRALIA, FactionType.CANADA, FactionType.KUWAIT, FactionType.SPAIN, FactionType.SWITZERLAND, FactionType.USA, FactionType.USAF_AGGRESSORS)),
+    FA_18C("F/A-18C", false, false, STRIKE_FIGHTER, MODERN_ERAS, readPossibleLoadouts("fa_18_c"), Arrays.asList(FactionType.AUSTRALIA, FactionType.CANADA, FactionType.KUWAIT, FactionType.SPAIN, FactionType.SWITZERLAND, FactionType.USA, FactionType.USAF_AGGRESSORS)),
 
     IL_76MD("IL-76MD", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BAHRAIN, FactionType.BELARUS, FactionType.CHINA, FactionType.GEORGIA, FactionType.HUNGARY, FactionType.INDIA, FactionType.IRAN, FactionType.IRAQ, FactionType.JORDAN, FactionType.LIBYA, FactionType.NORTH_KOREA, FactionType.RUSSIA, FactionType.SERBIA, FactionType.USSR, FactionType.SUDAN, FactionType.SYRIA, FactionType.UKRAINE, FactionType.UAE, FactionType.YEMEN)),
     IL_78M("IL-78M", false, false, TANKER, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.CHINA, FactionType.INDIA, FactionType.LIBYA, FactionType.PAKISTAN, FactionType.RUSSIA, FactionType.UKRAINE)),
@@ -159,15 +163,31 @@ public enum AircraftType {
     UH_60A("UH-60A", false, true, HELI_ARMED_TRANSPORT, MODERN_ERAS, null, Arrays.asList(FactionType.AUSTRALIA, FactionType.AUSTRIA, FactionType.BAHRAIN, FactionType.BRAZIL, FactionType.CHILE, FactionType.CHINA, FactionType.EGYPT, FactionType.ISRAEL, FactionType.JAPAN, FactionType.JORDAN, FactionType.MALAYSIA, FactionType.MEXICO, FactionType.MOROCCO, FactionType.PHILIPPINES, FactionType.SOUTH_KOREA, FactionType.SAUDI_ARABIA, FactionType.SLOVAKIA, FactionType.SWEDEN, FactionType.THAILAND, FactionType.TUNISIA, FactionType.TURKEY, FactionType.UAE, FactionType.USA, FactionType.USAF_AGGRESSORS)),
     ;
 
+    private static Stations readPossibleLoadouts(String aircraftName){
+        try {
+            URL l = StationPossibleMunitions.class.getResource("/loadouts/" + aircraftName + "/loadouts.json");
+
+            if(l == null) {
+                return new Stations();
+            }
+
+            File f = new File(l.toURI());
+            return JSONUtil.fromJson(new String(Files.readAllBytes(f.toPath())), Stations.class);
+        } catch (URISyntaxException | IOException ignored) {
+
+        }
+        return new Stations();
+    }
+
     private String aircraftName;
     private boolean playerFlyable;
     private boolean isHelicopter;
     private List<SubTaskType> possibleTasks;
     private List<ConflictEraType> aircraftEras;
-    private Map<Integer, List<Munition>> stationMunitions;
+    private Stations stationMunitions;
     private List<FactionType> users;
 
-    AircraftType(String aircraftName, boolean playerFlyable, boolean isHelicopter, List<SubTaskType> possibleTasks, List<ConflictEraType> aircraftEras, Map<Integer, List<Munition>> stationMunitions, List<FactionType> users) {
+    AircraftType(String aircraftName, boolean playerFlyable, boolean isHelicopter, List<SubTaskType> possibleTasks, List<ConflictEraType> aircraftEras, Stations stationMunitions, List<FactionType> users) {
         this.aircraftName = aircraftName;
         this.playerFlyable = playerFlyable;
         this.isHelicopter = isHelicopter;
@@ -185,7 +205,7 @@ public enum AircraftType {
         return aircraftEras;
     }
 
-    public Map<Integer, List<Munition>> getStationMunitions() {
+    public Stations getStationMunitions() {
         return stationMunitions;
     }
 

@@ -211,13 +211,16 @@ public class GroundUnitGenerator {
             }
             boolean isAtAirfield = (DynamicCampaignSim.getRandomGen().nextInt(100) + 1) < airfieldPercent;
 
-            // Get the coordinates for this group
+
+
+            // Get the coordinates and units for this group
             double x, y;
             boolean xNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
             boolean yNeg = DynamicCampaignSim.getRandomGen().nextBoolean();
+            Airfield airfield = null;
             do {
                 if (isAtAirfield) {
-                    Airfield airfield = airfields.get(DynamicCampaignSim.getRandomGen().nextInt(airfields.size()));
+                    airfield = airfields.get(DynamicCampaignSim.getRandomGen().nextInt(airfields.size()));
                     x = airfield.getAirfieldType().getAirfieldMapPosition().getX() - (DynamicCampaignSim.getRandomGen().nextInt(3) * (xNeg ? -1 : 1));
                     y = airfield.getAirfieldType().getAirfieldMapPosition().getY() - (DynamicCampaignSim.getRandomGen().nextInt(3) * (yNeg ? -1 : 1));
                 } else {
@@ -227,13 +230,15 @@ public class GroundUnitGenerator {
                 }
             } while (waterMask.contains(x, y));
 
-            List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass, 2, side, campaignSettings);
+            List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass, 2, side, campaignSettings, airfield);
             UnitGroup.Builder<AirDefenceUnit> b = new UnitGroup.Builder<>();
             UnitGroup<AirDefenceUnit> ad = b.setMapXLocation(x).setMapYLocation(y).setSide(side)
                                             .setPlayerGeneratedGroup(false).setSpeed(0.0)
                                             .setDirection(0.0).setUnits(units).build();
-            airDefenceGroups.add(ad);
-            total += units.size();
+            if(ad != null) {
+                airDefenceGroups.add(ad);
+                total += units.size();
+            }
         }
 
         double current = overallForceStrength.get(side);
@@ -367,7 +372,8 @@ public class GroundUnitGenerator {
         return new ArrayList<>(Arrays.asList(new UnarmedShipGroundUnit(), new ArmedShipGroundUnit(), new ArmedShipGroundUnit(), new UnarmedShipGroundUnit()));
     }
 
-    private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, int amount, FactionSideType side, CampaignSettings campaignSettings) throws IllegalAccessException, InstantiationException {
+    private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, int amount, FactionSideType side, CampaignSettings campaignSettings, Airfield airfield) throws IllegalAccessException, InstantiationException {
+        // Get the valid units we can generate for era and factions
         ConflictEraType selectedEra = campaignSettings.getSelectedEra();
         Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
         List<AirDefenceUnitType> validTypes = AirDefenceUnitType.getTypesByEra(selectedEra);
@@ -380,22 +386,42 @@ public class GroundUnitGenerator {
             return false;
         }).collect(Collectors.toList());
 
+        // Create the type (AAA or SAM)
+        List<AirDefenceUnit> list = new ArrayList<>();
         if(clazz.isAssignableFrom(ArtilleryAirDefenceUnit.class)) {
             validTypes = validTypes.stream().filter(t -> t.getWeaponType().equals(AirDefenceWeaponType.AAA)).collect(Collectors.toList());
+
+            if (!validTypes.isEmpty()) {
+                AirDefenceUnitType type = validTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validTypes.size()));
+                for (int i = 0; i < amount; i++) {
+                    ArtilleryAirDefenceUnit unit = (ArtilleryAirDefenceUnit) clazz.newInstance();
+                    unit.setUnitType(type);
+                    list.add(unit);
+                }
+            }
         } else {
             validTypes = validTypes.stream().filter(t -> !t.getWeaponType().equals(AirDefenceWeaponType.AAA)).collect(Collectors.toList());
+
+            if(!validTypes.isEmpty()) {
+                // Since it's a SAM, see if we're generating an IR or RADAR SAM (much lower prob of Radar)
+                double radarChance = 15;
+                boolean isAirfield = (airfield != null);
+                boolean isHomeAirfield = (airfield != null) && airfield.isHomeAirfield();
+                if(isAirfield) {
+                    radarChance = 50;
+                }
+
+                // If it's the Home Airfield, create the most powerful SAM group we can
+                if(isHomeAirfield) {
+                    log.debug("I am generating a group of the strongest SAM");
+                } else {
+                    log.debug("I am generating a standard SAM group");
+                }
+            }
         }
-
-        log.debug("Found types: " + validTypes);
-
-        // If its a AAA type, create the amount.
 
         // If its a SAM type, choose a group and create all the support vehicles too
 
-        List<AirDefenceUnit> list = new ArrayList<>();
-        for(int i = 0; i < amount; i++) {
-            list.add(clazz.newInstance());
-        }
         return list;
     }
 }

@@ -255,4 +255,12 @@ public class AirfieldGenerator {
         type.setMunitionStockpile(stockpile);
         return totalAdded;
     }
+
+    public AirfieldType getBlueHomeAirfield() {
+        return blueHomeAirfield;
+    }
+
+    public AirfieldType getRedHomeAirfield() {
+        return redHomeAirfield;
+    }
 }

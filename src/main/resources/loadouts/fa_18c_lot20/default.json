@@ -1,0 +1,16 @@
+{
+  "defaultLoadouts": [
+    {
+      "subTaskType": "CAP",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9L",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    }
+  ]
+}
