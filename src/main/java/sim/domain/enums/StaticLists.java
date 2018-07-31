@@ -50,6 +50,7 @@ public abstract class StaticLists {
     // ===================================================
     //             AIRCRAFT POSSIBLE LOADOUTS
     // ===================================================
+    // TODO: Move these to an external config (JSON)
     static final Map<Integer, List<Munition>> FA_18LOT20_MUNITIONS = new HashMap<Integer, List<Munition>>() {{
         put(1, Arrays.asList(new Munition(MunitionType.AIM9L, 1), new Munition(MunitionType.AIM9M, 1), new Munition(MunitionType.AIM9X, 1), new Munition(MunitionType.CAP9M, 1)));
         put(2, Arrays.asList(new Munition(MunitionType.AIM9L, 2), new Munition(MunitionType.AIM9M, 2), new Munition(MunitionType.AIM9X, 2), new Munition(MunitionType.AIM7F, 1), new Munition(MunitionType.AIM7M, 1), new Munition(MunitionType.MK_82, 3), new Munition(MunitionType.MK_82SE, 3), new Munition(MunitionType.MK_83, 3), new Munition(MunitionType.MK_84, 1), new Munition(MunitionType.MK_20, 2), new Munition(MunitionType.CBU_99, 2), new Munition(MunitionType.ZUNI_MK_71, 2), new Munition(MunitionType.MK_151_HE_19, 2), new Munition(MunitionType.MK_151_HE_7, 2), new Munition(MunitionType.MK_5_HE_7, 2), new Munition(MunitionType.REMOVE_PYLON, 1)));
@@ -88,6 +89,7 @@ public abstract class StaticLists {
     // ===================================================
     //             AIRCRAFT DEFAULT LOADOUTS
     // ===================================================
+    // TODO: Move these to an external config (JSON)
     public static final Map<AircraftType, Map<SubTaskType, List<WeaponStation>>> DEFAULT_LOADOUTS = new HashMap<AircraftType, Map<SubTaskType, List<WeaponStation>>>() {{
         // F-18CLOT20 Loadouts
         Map<SubTaskType, List<WeaponStation>> f18Lot20TaskLoadouts = new HashMap<>();
