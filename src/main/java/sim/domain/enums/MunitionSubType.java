@@ -5,9 +5,10 @@ public enum  MunitionSubType {
     AIR_TO_SURFACE,
     ANTI_RADIATION,
     BOMBS,
-    ROCKETS,
-    GUN_POD,
     FUEL_TANK,
+    GUN_POD,
+    GUN_INTERNAL,
+    ROCKETS,
     SENSOR_PODS,
     NONE;
 }

@@ -6,6 +6,7 @@ import static sim.domain.enums.MunitionSubType.AIR_TO_AIR;
 import static sim.domain.enums.MunitionSubType.AIR_TO_SURFACE;
 import static sim.domain.enums.MunitionSubType.ANTI_RADIATION;
 import static sim.domain.enums.MunitionSubType.BOMBS;
+import static sim.domain.enums.MunitionSubType.GUN_INTERNAL;
 import static sim.domain.enums.MunitionSubType.GUN_POD;
 import static sim.domain.enums.MunitionSubType.NONE;
 import static sim.domain.enums.MunitionSubType.ROCKETS;
@@ -15,6 +16,12 @@ public enum MunitionType {
     // =============================================
     //              BLUEFOR WEAPONRY
     // =============================================
+
+    // Internal Cannons
+    M61A1_VULCAN("M61A1 Vulcan", GUN_INTERNAL, FactionSideType.BLUEFOR, false),
+    GAU8A_AVENGER("GAU-8/A Avenger", GUN_INTERNAL, FactionSideType.BLUEFOR, false),
+    M134_MINIGUN("M-134 Minigun", GUN_INTERNAL, FactionSideType.BLUEFOR, false),
+    M60_MG("M-60 Machine Gun", GUN_INTERNAL, FactionSideType.BLUEFOR, false),
 
     // AIM-7 Family
     AIM7M("AIM-7M", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
@@ -32,6 +39,7 @@ public enum MunitionType {
     AIM120C("AIM-120C", AIR_TO_AIR, FactionSideType.BLUEFOR, true),
 
     // Mk8X Family
+    AN_M64("AN-M64", BOMBS, FactionSideType.BLUEFOR, true),
     MK_82("Mk-82", BOMBS, FactionSideType.BLUEFOR, true),
     MK_82SE("Mk-82 SnakeEye", BOMBS, FactionSideType.BLUEFOR, true),
     MK_82AIR("Mk-82 AIR", BOMBS, FactionSideType.BLUEFOR, true),
@@ -43,9 +51,9 @@ public enum MunitionType {
     MK_257_7("7 M257 Illumination", ROCKETS, FactionSideType.BLUEFOR, true),
 
     // Guided Bombs
-    GBU_10("GBU-10", BOMBS, FactionSideType.BLUEFOR, true),
-    GBU_12("GBU-12", BOMBS, FactionSideType.BLUEFOR, true),
-    GBU_16("GBU-16", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_10("GBU-10 Paveway II", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_12("GBU-12 Paveway II", BOMBS, FactionSideType.BLUEFOR, true),
+    GBU_16("GBU-16 Paveway II", BOMBS, FactionSideType.BLUEFOR, true),
     GBU_31("GBU-31", BOMBS, FactionSideType.BLUEFOR, true),
     GBU_313B("GBU-31(V)3/B", BOMBS, FactionSideType.BLUEFOR, true),
     GBU_38("GBU-38", BOMBS, FactionSideType.BLUEFOR, true),
@@ -61,11 +69,12 @@ public enum MunitionType {
     CBU_105("CBU-105", BOMBS, FactionSideType.BLUEFOR, true),
 
     // Rockets
+    HVAR("HVAR", ROCKETS, FactionSideType.BLUEFOR, true),
     ZUNI_MK_71("ZUNI Mk-71", ROCKETS, FactionSideType.BLUEFOR, true),
-    MK_151_HE_19("19 Mk-151 HE", ROCKETS, FactionSideType.BLUEFOR, true),
-    MK_151_HE_7("7 Mk-151 HE", ROCKETS, FactionSideType.BLUEFOR, true),
-    MK_156_WP_7("7 Mk-156 WP", ROCKETS, FactionSideType.BLUEFOR, true),
-    MK_5_HE_7("7 Mk-5 HE", ROCKETS, FactionSideType.BLUEFOR, true),
+    MK_151_HE_19("19 Mk-151 HE Hydra", ROCKETS, FactionSideType.BLUEFOR, true),
+    MK_151_HE_7("7 Mk-151 HE Hydra", ROCKETS, FactionSideType.BLUEFOR, true),
+    MK_156_WP_7("7 Mk-156 WP Hydra", ROCKETS, FactionSideType.BLUEFOR, true),
+    MK_5_HE_7("7 Mk-5 HEAT Hydra", ROCKETS, FactionSideType.BLUEFOR, true),
 
     // Missiles
     AGM_62("AGM-62", AIR_TO_SURFACE, FactionSideType.BLUEFOR, true),
@@ -88,14 +97,25 @@ public enum MunitionType {
     //              REDFOR WEAPONRY
     // =============================================
 
+    // Internal Cannons
+    GSH_30("GSh-30 Single Barrel", GUN_INTERNAL, FactionSideType.REDFOR, false),
+    GSH_30_2("GSh-30 Dual Barrel", GUN_INTERNAL, FactionSideType.REDFOR, false),
+    AC_2A42("2A42 Autocannon", GUN_INTERNAL, FactionSideType.REDFOR, false),
+
     // R27 Family
     R27R("R-27R", AIR_TO_AIR, FactionSideType.REDFOR, true),
     R27ER("R-27ER", AIR_TO_AIR, FactionSideType.REDFOR, true),
     R27T("R-27T", AIR_TO_AIR, FactionSideType.REDFOR, true),
     R27ET("R-27ET", AIR_TO_AIR, FactionSideType.REDFOR, true),
 
+    // R60 Family
+    R60M("R-60M", AIR_TO_AIR, FactionSideType.REDFOR, true),
+
     // R73 Family
     R73("R-73", AIR_TO_AIR, FactionSideType.REDFOR, true),
+
+    // R77 Family
+    R77("R-77", AIR_TO_AIR, FactionSideType.REDFOR, true),
 
     // Bombs
     FAB100("FAB-100", BOMBS, FactionSideType.REDFOR, true),
@@ -107,6 +127,7 @@ public enum MunitionType {
     KAB500KR("KAB-500kr", BOMBS, FactionSideType.REDFOR, true),
 
     // Anti-Runway / Concrete
+    BETAB500("BetAB-500", BOMBS, FactionSideType.REDFOR, true),
     BETAB500SHP("BetAB-500ShP", BOMBS, FactionSideType.REDFOR, true),
 
     // Illumination
@@ -121,12 +142,19 @@ public enum MunitionType {
 
     // Gun Pods
     SPPU22("SPPU-22-1", GUN_POD, FactionSideType.REDFOR, true),
+    UPK_23_250("UPK-23-250", GUN_POD, FactionSideType.REDFOR, true),
+    GUV_8700_9A800("GUV-8700 9-A-800", GUN_POD, FactionSideType.REDFOR, true),
+    GUV_8700_9A624("GUV-8700 9-A-624/622", GUN_POD, FactionSideType.REDFOR, true),
 
     // Rockets
-    S8("S-8", ROCKETS, FactionSideType.REDFOR, true),
-    S13("S-13", ROCKETS, FactionSideType.REDFOR, true),
-    S24B("S-24B", ROCKETS, FactionSideType.REDFOR, true),
+    S5KO("S-5 KO", ROCKETS, FactionSideType.REDFOR, true),
+    S8KOM("S-8 KOM", ROCKETS, FactionSideType.REDFOR, true),
+    S8OFP2("S-8O FP2", ROCKETS, FactionSideType.REDFOR, true),
+    S130("S-130 F", ROCKETS, FactionSideType.REDFOR, true),
+    S24B("S-24 B", ROCKETS, FactionSideType.REDFOR, true),
     S25OFM("S-25 OMF", ROCKETS, FactionSideType.REDFOR, true),
+    S8TSM("S-8 TSM Marker", ROCKETS, FactionSideType.REDFOR, true),
+    S8OM("S-8 OM Illumination", ROCKETS, FactionSideType.REDFOR, true),
 
     // Air to Surface Missile
     KH25ML("Kh-25ML", AIR_TO_SURFACE, FactionSideType.REDFOR, true),
@@ -138,6 +166,10 @@ public enum MunitionType {
     // Anti-Radiation
     KH58U("Kh-58U", ANTI_RADIATION, FactionSideType.REDFOR, true),
     KH25MPU("Kh-25MPU", ANTI_RADIATION, FactionSideType.REDFOR, true),
+
+    // Sensor Pods
+    L081("L-081 ELINT", SENSOR_PODS, FactionSideType.REDFOR, true),
+    MERCURY_LLTV("Mercury LLTV", SENSOR_PODS, FactionSideType.REDFOR, true),
 
     // =============================================
     //                      BOTH

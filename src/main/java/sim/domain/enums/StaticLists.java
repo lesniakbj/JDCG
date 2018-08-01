@@ -47,7 +47,6 @@ public abstract class StaticLists {
     static final List<SubTaskType> BOMBER = Arrays.asList(SubTaskType.GROUND_STRIKE, SubTaskType.INTERDICTION, SubTaskType.BOMBER);
     static final List<SubTaskType> STEALTH_BOMBER = Arrays.asList(SubTaskType.GROUND_STRIKE, SubTaskType.INTERDICTION, SubTaskType.STEALTH);
 
-
     // ===================================================
     //             SQUADRON AIRCRAFT TYPES
     // ===================================================
