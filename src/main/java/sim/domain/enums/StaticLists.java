@@ -58,27 +58,4 @@ public abstract class StaticLists {
     static final List<AircraftType> MARINE_GROUND_STRIKE_COMPLETE_ERAS = Collections.singletonList(AircraftType.AV_8NA);
     static final List<AircraftType> MARINE_FIGHTER_COMPLETE_ERAS = Collections.singletonList(AircraftType.FA_18C_LOT20);
     static final List<AircraftType> MARINE_STRIKE_FIGHTER_COMPLETE_ERAS = Arrays.asList(AircraftType.AV_8NA, AircraftType.FA_18C_LOT20);
-
-    // ===================================================
-    //             AIRCRAFT DEFAULT LOADOUTS
-    // ===================================================
-    // TODO: Move these to an external config (JSON)
-    public static final Map<AircraftType, Map<SubTaskType, List<WeaponStation>>> DEFAULT_LOADOUTS = new HashMap<AircraftType, Map<SubTaskType, List<WeaponStation>>>() {{
-        // F-18C Loadouts
-        Map<SubTaskType, List<WeaponStation>> f18TaskLoadouts = new HashMap<>();
-        List<WeaponStation> f18CASLoadout = new ArrayList<>();
-        f18CASLoadout.add(new WeaponStation(1, new Munition(MunitionType.AIM9M, 1)));
-        f18CASLoadout.add(new WeaponStation(2, new Munition(MunitionType.GBU_12, 1)));
-        f18CASLoadout.add(new WeaponStation(4, new Munition(MunitionType.ANAAS_38, 1)));
-        f18CASLoadout.add(new WeaponStation(5, new Munition(MunitionType.ANAAQ_28, 1)));
-        f18CASLoadout.add(new WeaponStation(6, new Munition(MunitionType.ANASQ_173, 1)));
-        f18CASLoadout.add(new WeaponStation(8, new Munition(MunitionType.GBU_12, 1)));
-        f18CASLoadout.add(new WeaponStation(9, new Munition(MunitionType.AIM9M, 1)));
-        f18TaskLoadouts.put(SubTaskType.CAS, f18CASLoadout);
-        put(AircraftType.FA_18C, f18Lot20TaskLoadouts);
-
-        // A-10C Loadouts
-
-        // A-10A Loadouts
-    }};
 }

@@ -7,6 +7,7 @@ import sim.domain.unit.air.Stations;
 import sim.util.LogUtil;
 import sim.util.save.JSONUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -168,35 +169,6 @@ public enum AircraftType {
     UH_60A("UH-60A", false, true, HELI_ARMED_TRANSPORT, MODERN_ERAS, null, Arrays.asList(FactionType.AUSTRALIA, FactionType.AUSTRIA, FactionType.BAHRAIN, FactionType.BRAZIL, FactionType.CHILE, FactionType.CHINA, FactionType.EGYPT, FactionType.ISRAEL, FactionType.JAPAN, FactionType.JORDAN, FactionType.MALAYSIA, FactionType.MEXICO, FactionType.MOROCCO, FactionType.PHILIPPINES, FactionType.SOUTH_KOREA, FactionType.SAUDI_ARABIA, FactionType.SLOVAKIA, FactionType.SWEDEN, FactionType.THAILAND, FactionType.TUNISIA, FactionType.TURKEY, FactionType.UAE, FactionType.USA, FactionType.USAF_AGGRESSORS)),
     ;
 
-    private static DefaultLoadouts readDefaultLoadouts(String aircraftName) {
-        try {
-            InputStream is = StationPossibleMunitions.class.getResourceAsStream("/loadouts/" + aircraftName + "/default.json");
-            if(is == null) {
-                return new DefaultLoadouts();
-            }
-
-            return JSONUtil.fromJson(IOUtils.toString(is, StandardCharsets.UTF_8), DefaultLoadouts.class);
-        } catch (IOException ignored) {
-            LogUtil.log("Error when reading a loadout for: " + aircraftName);
-        }
-        return new DefaultLoadouts();
-    }
-
-
-    private static Stations readPossibleLoadouts(String aircraftName) {
-        try {
-            InputStream is = StationPossibleMunitions.class.getResourceAsStream("/loadouts/" + aircraftName + "/loadouts.json");
-            if(is == null) {
-                return new Stations();
-            }
-
-            return JSONUtil.fromJson(IOUtils.toString(is, StandardCharsets.UTF_8), Stations.class);
-        } catch (IOException ignored) {
-            LogUtil.log("Error when reading a loadout for: " + aircraftName);
-        }
-        return new Stations();
-    }
-
     private String aircraftName;
     private boolean playerFlyable;
     private boolean isHelicopter;
@@ -255,6 +227,10 @@ public enum AircraftType {
         return possibleTasks;
     }
 
+    public DefaultLoadouts getDefaultLoadouts() {
+        return defaultLoadouts;
+    }
+
     public static AircraftType fromName(String selectedItem) {
         return Arrays.stream(AircraftType.values()).filter(at -> at.getAircraftName().equalsIgnoreCase(selectedItem)).findFirst().orElse(null);
     }
@@ -285,5 +261,43 @@ public enum AircraftType {
 
     public static List<AircraftType> getAircraftByTask(List<AircraftType> list, SubTaskType type) {
         return list.stream().filter(a -> a.getPossibleTasks().contains(type)).collect(Collectors.toList());
+    }
+
+    private static DefaultLoadouts readDefaultLoadouts(String aircraftName) {
+        try {
+            InputStream is = StationPossibleMunitions.class.getResourceAsStream("/loadouts/" + aircraftName + "/default.json");
+            if(is == null) {
+                return new DefaultLoadouts();
+            }
+
+            return JSONUtil.fromJson(convertStreamToString(is), DefaultLoadouts.class);
+        } catch (IOException ignored) {
+            LogUtil.log("Error when reading a loadout for: " + aircraftName);
+        }
+        return new DefaultLoadouts();
+    }
+
+    private static Stations readPossibleLoadouts(String aircraftName) {
+        try {
+            InputStream is = StationPossibleMunitions.class.getResourceAsStream("/loadouts/" + aircraftName + "/loadouts.json");
+            if(is == null) {
+                return new Stations();
+            }
+
+            return JSONUtil.fromJson(convertStreamToString(is), Stations.class);
+        } catch (IOException ignored) {
+            LogUtil.log("Error when reading a loadout for: " + aircraftName);
+        }
+        return new Stations();
+    }
+
+    private static String convertStreamToString(InputStream is) throws IOException {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = is.read(buffer)) != -1) {
+            result.write(buffer, 0, length);
+        }
+        return result.toString(StandardCharsets.UTF_8.name());
     }
 }

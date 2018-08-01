@@ -9,8 +9,11 @@ import sim.domain.enums.AircraftType;
 import sim.domain.enums.SubTaskType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.air.AirUnit;
+import sim.domain.unit.air.DefaultLoadouts;
+import sim.domain.unit.air.Loadout;
 import sim.domain.unit.air.Mission;
 import sim.domain.unit.air.Waypoint;
+import sim.domain.unit.air.WeaponStation;
 import sim.domain.unit.global.Airfield;
 import sim.gen.air.WaypointGenerator;
 import sim.manager.CoalitionManager;
@@ -46,6 +49,11 @@ public class AirUnitMissionGenerator {
         AircraftType aircraftType = group.getGroupUnits().get(0).getAircraftType();
         List<SubTaskType> tasks = aircraftType.getPossibleTasks();
         SubTaskType type = tasks.get(DynamicCampaignSim.getRandomGen().nextInt(tasks.size()));
+        DefaultLoadouts loadouts = aircraftType.getDefaultLoadouts();
+        List<WeaponStation> defaultMissionWeapons = null;
+        if(loadouts != null) {
+            defaultMissionWeapons = loadouts.getDefaultLoadouts().stream().filter(dl -> dl.getSubTaskType().equals(type)).map(Loadout::getWeaponStations).findFirst().orElse(null);
+        }
 
         // Choose a random enemy airfield from the threat grid
         ThreatGrid grd = manager.getMissionManager().getThreatGrid();
@@ -68,8 +76,8 @@ public class AirUnitMissionGenerator {
                 .setUpdateRate(1)
                 .setShouldGenerateMission(false)
                 .setStartingAirfield(airfield.getAirfieldType())
-                .setTimeOnStation(30);
-                // .setMissionMunitions(DEFAULT_LOADOUTS.get(aircraftType).get(type));
+                .setTimeOnStation(30)
+                .setMissionMunitions(defaultMissionWeapons);
 
         // Update the various parts of the coalition manager
         manager.getCoalitionMissionManager().addMission(builder.build());

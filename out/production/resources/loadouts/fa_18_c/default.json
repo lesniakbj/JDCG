@@ -1,0 +1,58 @@
+{
+  "defaultLoadouts": [
+    {
+      "subTaskType": "CAS",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 2,
+          "munition": {
+            "munitionType": "GBU_12",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 4,
+          "munition": {
+            "munitionType": "ANAAS_38",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "ANAAQ_28",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 6,
+          "munition": {
+            "munitionType": "ANASQ_173",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 8,
+          "munition": {
+            "munitionType": "GBU_12",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    }
+  ]
+}
