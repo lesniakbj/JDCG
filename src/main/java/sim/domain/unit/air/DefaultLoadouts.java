@@ -5,15 +5,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class Stations {
-    private List<Station> stations;
+public class DefaultLoadouts {
+    private List<Loadout> defaultLoadouts;
 
-    public List<Station> getStations() {
-        return stations;
+    public List<Loadout> getDefaultLoadouts() {
+        return defaultLoadouts;
     }
 
-    public void gsetStations(List<Station> stations) {
-        this.stations = stations;
+    public void setDefaultLoadouts(List<Loadout> defaultLoadouts) {
+        this.defaultLoadouts = defaultLoadouts;
     }
 
     @Override

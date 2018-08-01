@@ -1,5 +1,8 @@
 package sim.domain.unit.air;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.List;
 
 public class Station {
@@ -24,9 +27,7 @@ public class Station {
 
     @Override
     public String toString() {
-        return "{\"Station\":{"
-                + "\"stationNumber\":\"" + stationNumber + "\""
-                + ", \"possibleMunitions\":" + possibleMunitions
-                + "}}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 }

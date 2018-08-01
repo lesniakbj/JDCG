@@ -1,12 +1,348 @@
 {
   "defaultLoadouts": [
     {
+      "subTaskType": "CAS",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 2,
+          "munition": {
+            "munitionType": "MK_82",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 3,
+          "munition": {
+            "munitionType": "MK_82",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 7,
+          "munition": {
+            "munitionType": "MK_82",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 8,
+          "munition": {
+            "munitionType": "MK_82",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    },
+    {
       "subTaskType": "CAP",
       "weaponStations": [
         {
           "stationNumber": 1,
           "munition": {
-            "munitionType": "AIM9L",
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 2,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 4,
+          "munition": {
+            "munitionType": "AIM7M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 6,
+          "munition": {
+            "munitionType": "AIM7M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 8,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    },
+    {
+      "subTaskType": "SEAD",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    },
+    {
+      "subTaskType": "DEAD",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    },
+    {
+      "subTaskType": "ESCORT",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 2,
+          "munition": {
+            "munitionType": "AIM7M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 3,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 7,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 8,
+          "munition": {
+            "munitionType": "AIM7M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    },
+    {
+      "subTaskType": "GROUND_STRIKE",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 2,
+          "munition": {
+            "munitionType": "MK_83",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 8,
+          "munition": {
+            "munitionType": "MK_83",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    },
+    {
+      "subTaskType": "INTERCEPT",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 2,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 4,
+          "munition": {
+            "munitionType": "AIM7M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 6,
+          "munition": {
+            "munitionType": "AIM7M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 8,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        }
+      ]
+    },
+    {
+      "subTaskType": "LOW_LEVEL_STRIKE",
+      "weaponStations": [
+        {
+          "stationNumber": 1,
+          "munition": {
+            "munitionType": "AIM9M",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 2,
+          "munition": {
+            "munitionType": "MK_82SE",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 5,
+          "munition": {
+            "munitionType": "FUEL_TANK",
+            "totalLoaded": 1
+          }
+        },
+        {
+          "stationNumber": 8,
+          "munition": {
+            "munitionType": "MK_82SE",
+            "totalLoaded": 2
+          }
+        },
+        {
+          "stationNumber": 9,
+          "munition": {
+            "munitionType": "AIM9M",
             "totalLoaded": 1
           }
         }

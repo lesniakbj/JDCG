@@ -1,11 +1,9 @@
 package sim.domain.enums;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static sim.domain.enums.StaticLists.EXTENDED_COLD_WAR;
 import static sim.domain.enums.StaticLists.EXTENDED_ERAS;
 import static sim.domain.enums.StaticLists.LATE_COLD_EXTENDED_WAR_ERAS;
 import static sim.domain.enums.StaticLists.MODERN_ERAS;

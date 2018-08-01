@@ -1,12 +1,11 @@
 package sim.domain.enums;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static sim.domain.enums.StaticLists.EXTENDED_ERAS;
 import static sim.domain.enums.StaticLists.LATE_COLD_EXTENDED_WAR_ERAS;
 import static sim.domain.enums.StaticLists.MODERN_ERAS;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
 
 public enum GroundUnitType {
     // Unarmed Units

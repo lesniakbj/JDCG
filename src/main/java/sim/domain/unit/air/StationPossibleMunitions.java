@@ -1,6 +1,9 @@
 package sim.domain.unit.air;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import sim.domain.enums.MunitionType;
+
 import java.util.List;
 
 public class StationPossibleMunitions {
@@ -25,9 +28,7 @@ public class StationPossibleMunitions {
 
     @Override
     public String toString() {
-        return "{\"StationPossibleMunitions\":{"
-                + "\"munitionType\":\"" + munitionType + "\""
-                + ", \"possibleConfigurations\":" + possibleConfigurations
-                + "}}";
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.MULTI_LINE_STYLE, true, true);
     }
 }
