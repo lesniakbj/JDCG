@@ -1,8 +1,11 @@
 package sim.domain.enums;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static sim.domain.enums.StaticLists.COMPLETE_ERAS;
 import static sim.domain.enums.StaticLists.EXTENDED_ERAS;
 import static sim.domain.enums.StaticLists.LATE_COLD_EXTENDED_WAR_ERAS;
 import static sim.domain.enums.StaticLists.MODERN_ERAS;
@@ -93,33 +96,37 @@ public enum GroundUnitType {
     MBT_T90("MBT T-90", GroundUnitSubType.ARMOR, null, null),
 
     // Ships
-    ARMED_SPEEDBOAT("Armed Speedboat", GroundUnitSubType.SHIP, null, null),
-    CG_60_NORMANDY("CG-60 Normandy", GroundUnitSubType.SHIP, null, null),
-    CVN_70("CVN-70 Carl Vinson", GroundUnitSubType.SHIP, null, null),
-    FFG_7("FFG-7 O.H. Perry", GroundUnitSubType.SHIP, null, null),
-    BULK_CARGO_SHIP("Bulk Cargo ship Yakusev", GroundUnitSubType.SHIP, null, null),
-    CG_1174("CG 1174 Mskva", GroundUnitSubType.SHIP, null, null),
-    CGN_1144("CGN 1144.2 Pyotr Velikly", GroundUnitSubType.SHIP, null, null),
-    CV_1143("CV 1143.5 Admiral Kutnesov", GroundUnitSubType.SHIP, null, null),
-    CIVIL_BOAT("Civil boat Zvezdny", GroundUnitSubType.SHIP, null, null),
-    DRY_CARGO_SHIP("Dry cargo ship Ivanov", GroundUnitSubType.SHIP, null, null),
-    FF_1135M("FF 1135M Rezky", GroundUnitSubType.SHIP, null, null),
-    FFG_11540("FFG 11540 Neustrashimy", GroundUnitSubType.SHIP, null, null),
-    FFL_1124("FFL 1124.4 Grisha", GroundUnitSubType.SHIP, null, null),
-    FSG_1141("FSG 1141.1MP Molniya", GroundUnitSubType.SHIP, null, null),
-    SSK_641B("SSK 641B", GroundUnitSubType.SHIP, null, null),
-    SSK_877("SSK 877", GroundUnitSubType.SHIP, null, null),
-    TANKER("Tanker Elinya 160", GroundUnitSubType.SHIP, null, null),
+    //TODO: CHECK IN GAME
+    ARMED_SPEEDBOAT("Armed Speedboat", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Collections.emptyList()),
+    CG_60_NORMANDY("CG-60 Normandy", GroundUnitSubType.SHIP, MODERN_ERAS, Arrays.asList(FactionType.USA, FactionType.USAF_AGGRESSORS)),
+    CVN_70("CVN-70 Carl Vinson", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.USA, FactionType.USAF_AGGRESSORS)),
+    FFG_7("FFG-7 O.H. Perry", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.USA, FactionType.USAF_AGGRESSORS)),
+    BULK_CARGO_SHIP("Bulk Cargo ship Yakushev", GroundUnitSubType.SHIP, COMPLETE_ERAS, Arrays.asList(FactionType.USA, FactionType.USAF_AGGRESSORS, FactionType.RUSSIA, FactionType.USSR)),
+    CG_1174("CG 1174 Mskva", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    CGN_1144("CGN 1144.2 Pyotr Velikly", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    CV_1143("CV 1143.5 Admiral Kutnesov", GroundUnitSubType.SHIP, MODERN_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    CIVIL_BOAT("Civil boat Zvezdny", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.USA, FactionType.USAF_AGGRESSORS,FactionType.RUSSIA, FactionType.USSR)),
+    DRY_CARGO_SHIP("Dry cargo ship Ivanov", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.USA, FactionType.USAF_AGGRESSORS, FactionType.RUSSIA, FactionType.USSR)),
+    FF_1135M("FF 1135M Rezky", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    FFG_11540("FFG 11540 Neustrashimy", GroundUnitSubType.SHIP, MODERN_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    FFL_1124("FFL 1124.4 Grisha", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    FSG_1141("FSG 1141.1MP Molniya", GroundUnitSubType.SHIP, MODERN_ERAS,Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    SSK_641B("SSK 641B", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    SSK_877("SSK 877", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
+    TANKER("Tanker Elinya 160", GroundUnitSubType.SHIP, LATE_COLD_EXTENDED_WAR_ERAS, Arrays.asList(FactionType.RUSSIA, FactionType.USSR)),
     ;
 
 
     private String unitName;
     private GroundUnitSubType subType;
+    private List<ConflictEraType> eras;
     private List<FactionType> factions;
+
 
     GroundUnitType(String unitName, GroundUnitSubType subType, List<ConflictEraType> eras, List<FactionType> factions) {
         this.unitName = unitName;
         this.subType = subType;
+        this.eras = eras;
         this.factions = factions;
     }
 
@@ -133,5 +140,13 @@ public enum GroundUnitType {
 
     public List<FactionType> getFactions() {
         return factions;
+    }
+
+    public List<ConflictEraType> getEras() {
+        return eras;
+    }
+
+    public static List<GroundUnitType> getTypesByEra(ConflictEraType selectedEra) {
+        return Arrays.stream(GroundUnitType.values()).filter(t -> t.getEras() != null && t.getEras().contains(selectedEra)).collect(Collectors.toList());
     }
 }

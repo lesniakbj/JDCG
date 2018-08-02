@@ -9,16 +9,15 @@ import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
+import sim.domain.enums.GroundUnitSubType;
 import sim.domain.enums.GroundUnitType;
 import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
-import sim.domain.unit.ground.ArmedShipGroundUnit;
 import sim.domain.unit.ground.ArmorGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.UnarmedGroundUnit;
-import sim.domain.unit.ground.UnarmedShipGroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
@@ -318,7 +317,6 @@ public class GroundUnitGenerator {
         }
 
         List<GroundUnit> groundUnits = generateGroundUnitsForFront(campaignSettings, side);
-        log.debug("FIX THIS");
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
         UnitGroup<GroundUnit> g = b.setMapXLocation(point.getX()).setMapYLocation(point.getY()).setSide(side)
                                     .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -357,6 +355,7 @@ public class GroundUnitGenerator {
         // If the point we generated is within water, generate a water group
         if(waterMask.contains(mapX, mapY) && !exclusionMask.contains(mapX, mapY)) {
             List<GroundUnit> groundUnits = generateWaterUnits(campaignSettings, side);
+            log.debug("Ships generated: " + groundUnits);
             UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
             UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
                                         .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -371,27 +370,30 @@ public class GroundUnitGenerator {
         // Since we're at an airfield, we will generally try to opt to generate
         // units that are unarmed support units, and minimally some armor.
         log.debug("FIX ME");
-        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
-        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
-            for(FactionType ft : sideCoalition.getFactionTypeList()) {
-                if(gut.getFactions().contains(ft)) {
-                    return true;
-                }
-            }
-            return false;
-        }).collect(Collectors.toList());
-        log.debug("Generating support units for an airfield for: " + side);
-        log.debug("Generating support units for an airfield for: " + validTypes);
+//        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+//        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
+//            for(FactionType ft : sideCoalition.getFactionTypeList()) {
+//                if(gut.getFactions().contains(ft)) {
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }).collect(Collectors.toList());
+//        log.debug("Generating support units for an airfield for: " + side);
+//        log.debug("Generating support units for an airfield for: " + validTypes);
         return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
     }
 
     private List<GroundUnit> generateWaterUnits(CampaignSettings campaignSettings, FactionSideType side) {
-        // We will prefer to generate a group that has 1-2 Medium/Small combat ships
-        // with 1-2 support ships along with it. We will occasionally (5% or less)
-        // generate a water group that has a number of Larger or CV vessels.
-        log.debug("FIX ME");
+        ConflictEraType selectedEra = campaignSettings.getSelectedEra();
         Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
-        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
+        List<GroundUnitType> validTypes = GroundUnitType.getTypesByEra(selectedEra);
+        validTypes = validTypes.stream().filter(gut -> gut.getSubType().equals(GroundUnitSubType.SHIP)).collect(Collectors.toList());
+        validTypes = validTypes.stream().filter(gut -> {
+            if(gut.getFactions().size() == 0) {
+                return true;
+            }
+
             for(FactionType ft : sideCoalition.getFactionTypeList()) {
                 if(gut.getFactions().contains(ft)) {
                     return true;
@@ -399,26 +401,33 @@ public class GroundUnitGenerator {
             }
             return false;
         }).collect(Collectors.toList());
-        log.debug("Generating water units for: " + side);
-        log.debug("Generating  water units for: " + validTypes);
-        return new ArrayList<>(Arrays.asList(new UnarmedShipGroundUnit(), new ArmedShipGroundUnit(), new ArmedShipGroundUnit(), new UnarmedShipGroundUnit()));
+
+        // We will prefer to generate a group that has 1-2 Medium/Small combat ships
+        // with 1-2 support ships along with it. We will occasionally (5% or less)
+        // generate a water group that has a number of Larger or CV vessels.
+        double chanceLarge = 5.0;
+        boolean isLargeCombatGroup = DynamicCampaignSim.getRandomGen().nextInt(100) + 1 < chanceLarge;
+        if(isLargeCombatGroup) {
+            return ShipFleetGenerator.generateLargeCombatFleet(validTypes);
+        }
+        return ShipFleetGenerator.generateScoutFleet(validTypes);
     }
 
     private List<GroundUnit> generateGroundUnitsForFront(CampaignSettings campaignSettings, FactionSideType side) {
         // Since we're not at an airfield, we will generally try to opt to generate
         // units that are armed support units, and minimally some unarmed support.
         log.debug("FIX ME");
-        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
-        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
-            for(FactionType ft : sideCoalition.getFactionTypeList()) {
-                if(gut.getFactions().contains(ft)) {
-                    return true;
-                }
-            }
-            return false;
-        }).collect(Collectors.toList());
-        log.debug("Generating support units for: " + side);
-        log.debug("Generating  support units for: " + validTypes);
+//        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+//        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
+//            for(FactionType ft : sideCoalition.getFactionTypeList()) {
+//                if(gut.getFactions().contains(ft)) {
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }).collect(Collectors.toList());
+        // log.debug("Generating support units for: " + side);
+        //log.debug("Generating  support units for: " + validTypes);
         return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
     }
 
