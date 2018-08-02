@@ -8,7 +8,6 @@ import sim.domain.unit.ground.defence.AirDefenceUnit;
 import sim.domain.unit.ground.defence.MissileAirDefenceUnit;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AirDefenceBatteryGenerator {

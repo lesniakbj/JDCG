@@ -9,6 +9,7 @@ import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.FactionType;
+import sim.domain.enums.GroundUnitType;
 import sim.domain.enums.MapType;
 import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
@@ -70,7 +71,7 @@ public class GroundUnitGenerator {
                 double mapY = loc.getY() + (DynamicCampaignSim.getRandomGen().nextInt(6) * (yNeg ? -1 : 1));
                 double dir = (side == FactionSideType.BLUEFOR) ? 0.0 : 180.0;
 
-                List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
+                List<GroundUnit> groundUnits = generateGroundUnitsForAirfield(campaignSettings, side);
                 UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
                 UnitGroup<GroundUnit> g = b.setUnits(groundUnits).setMapXLocation(mapX).setMapYLocation(mapY)
                                                 .setSide(side).setPlayerGeneratedGroup(false)
@@ -143,18 +144,18 @@ public class GroundUnitGenerator {
             // Generate the unit and return the number generated
             int unitsGenerated;
             if(isWaterUnit) {
-                unitsGenerated = generateWaterUnit(waterMask, exclusionMask, mapX, mapY, groundGroups, dir, side);
+                unitsGenerated = generateWaterUnit(campaignSettings, waterMask, exclusionMask, mapX, mapY, groundGroups, dir, side);
             } else {
                 int generateCloseToFront = DynamicCampaignSim.getRandomGen().nextInt(100) + 1;
 
                 if(!type.equals(CampaignType.ALL_OUT_WAR)) {
                     if (generateCloseToFront < 35) {
-                        unitsGenerated = generateUnitCloseToFront(waterMask, exclusionMask, mapX, mapY, groundGroups, dir, side, genSouth);
+                        unitsGenerated = generateUnitCloseToFront(campaignSettings, waterMask, exclusionMask, mapX, mapY, groundGroups, dir, side, genSouth);
                     } else {
-                        unitsGenerated = generateGeneralAreaUnit(type, waterMask, exclusionMask, groundGroups, dir, side, safeArea, airfields);
+                        unitsGenerated = generateGeneralAreaUnit(campaignSettings, type, waterMask, exclusionMask, groundGroups, dir, side, safeArea, airfields);
                     }
                 } else {
-                    unitsGenerated = generateGeneralAreaUnit(type, waterMask, exclusionMask, groundGroups, dir, side, safeArea, airfields);
+                    unitsGenerated = generateGeneralAreaUnit(campaignSettings, type, waterMask, exclusionMask, groundGroups, dir, side, safeArea, airfields);
                 }
             }
 
@@ -249,7 +250,7 @@ public class GroundUnitGenerator {
         return airDefenceGroups;
     }
 
-    private int generateGeneralAreaUnit(CampaignType type, Path2D.Double waterMask, Path2D.Double exclusionMask, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side, List<Point2D.Double> safeArea, List<Airfield> airfields) {
+    private int generateGeneralAreaUnit(CampaignSettings campaignSettings, CampaignType type, Path2D.Double waterMask, Path2D.Double exclusionMask, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side, List<Point2D.Double> safeArea, List<Airfield> airfields) {
         // Generate the bounding area that we want to keep units within if possible
         double x = safeArea.get(0).getX();
         double y = safeArea.get(0).getY();
@@ -298,7 +299,7 @@ public class GroundUnitGenerator {
             return 0;
         }
 
-        List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
+        List<GroundUnit> groundUnits = generateGroundUnitsForFront(campaignSettings, side);
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
         UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
                                     .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -308,7 +309,7 @@ public class GroundUnitGenerator {
         return groundUnits.size();
     }
 
-    private int generateUnitCloseToFront(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side, boolean genSouth) {
+    private int generateUnitCloseToFront(CampaignSettings campaignSettings, Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side, boolean genSouth) {
         // While we are in the water mask, move away from the front line until we find a valid location,
         // we only want to search in the Y direction for 150 miles, otherwise we'll search the X direction
         Point2D.Double point = generateXYFromMask(mapY, mapX, waterMask, genSouth);
@@ -316,7 +317,8 @@ public class GroundUnitGenerator {
             point = generateXYFromMask(point.getX(), point.getY(), exclusionMask, genSouth);
         }
 
-        List<GroundUnit> groundUnits = generateGroundUnitsForAirfield();
+        List<GroundUnit> groundUnits = generateGroundUnitsForFront(campaignSettings, side);
+        log.debug("FIX THIS");
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
         UnitGroup<GroundUnit> g = b.setMapXLocation(point.getX()).setMapYLocation(point.getY()).setSide(side)
                                     .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -351,10 +353,10 @@ public class GroundUnitGenerator {
         return new Point2D.Double(mapX, mapY);
     }
 
-    private int generateWaterUnit(Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side) {
+    private int generateWaterUnit(CampaignSettings campaignSettings, Path2D.Double waterMask, Path2D.Double exclusionMask, double mapX, double mapY, List<UnitGroup<GroundUnit>> groundGroups, double dir, FactionSideType side) {
         // If the point we generated is within water, generate a water group
         if(waterMask.contains(mapX, mapY) && !exclusionMask.contains(mapX, mapY)) {
-            List<GroundUnit> groundUnits = generateWaterUnits();
+            List<GroundUnit> groundUnits = generateWaterUnits(campaignSettings, side);
             UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
             UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
                                         .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -365,12 +367,59 @@ public class GroundUnitGenerator {
         return 0;
     }
 
-    private List<GroundUnit> generateGroundUnitsForAirfield() {
+    private List<GroundUnit> generateGroundUnitsForAirfield(CampaignSettings campaignSettings, FactionSideType side) {
+        // Since we're at an airfield, we will generally try to opt to generate
+        // units that are unarmed support units, and minimally some armor.
+        log.debug("FIX ME");
+        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
+            for(FactionType ft : sideCoalition.getFactionTypeList()) {
+                if(gut.getFactions().contains(ft)) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+        log.debug("Generating support units for an airfield for: " + side);
+        log.debug("Generating support units for an airfield for: " + validTypes);
         return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
     }
 
-    private List<GroundUnit> generateWaterUnits() {
+    private List<GroundUnit> generateWaterUnits(CampaignSettings campaignSettings, FactionSideType side) {
+        // We will prefer to generate a group that has 1-2 Medium/Small combat ships
+        // with 1-2 support ships along with it. We will occasionally (5% or less)
+        // generate a water group that has a number of Larger or CV vessels.
+        log.debug("FIX ME");
+        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
+            for(FactionType ft : sideCoalition.getFactionTypeList()) {
+                if(gut.getFactions().contains(ft)) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+        log.debug("Generating water units for: " + side);
+        log.debug("Generating  water units for: " + validTypes);
         return new ArrayList<>(Arrays.asList(new UnarmedShipGroundUnit(), new ArmedShipGroundUnit(), new ArmedShipGroundUnit(), new UnarmedShipGroundUnit()));
+    }
+
+    private List<GroundUnit> generateGroundUnitsForFront(CampaignSettings campaignSettings, FactionSideType side) {
+        // Since we're not at an airfield, we will generally try to opt to generate
+        // units that are armed support units, and minimally some unarmed support.
+        log.debug("FIX ME");
+        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
+            for(FactionType ft : sideCoalition.getFactionTypeList()) {
+                if(gut.getFactions().contains(ft)) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+        log.debug("Generating support units for: " + side);
+        log.debug("Generating  support units for: " + validTypes);
+        return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
     }
 
     private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, FactionSideType side, CampaignSettings campaignSettings, Airfield airfield) throws IllegalAccessException, InstantiationException {

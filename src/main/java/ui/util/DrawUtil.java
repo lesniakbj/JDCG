@@ -18,7 +18,6 @@ import sim.domain.unit.global.Airfield;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.Structure;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
-import sim.domain.unit.ground.defence.ArtilleryAirDefenceUnit;
 import sim.util.mask.MaskFactory;
 
 import java.awt.BasicStroke;
@@ -348,7 +347,7 @@ public class DrawUtil {
             Color color = (unitGroup.getSide().equals(FactionSideType.BLUEFOR)) ? BLUEFOR_COLOR : REDFOR_COLOR;
             AirDefenceUnitType type = unitGroup.getGroupUnits().get(0).getUnitType();
             boolean isAAA = type.getWeaponType().equals(AirDefenceWeaponType.AAA);
-            double range = isAAA ? 20 : type.getRange() * 5;
+            double range = isAAA ? 20 : type.getRange() * 6;
 
             double pointX = unitGroup.getMapXLocation();
             double pointY = unitGroup.getMapYLocation() - GUTTER_HEIGHT;

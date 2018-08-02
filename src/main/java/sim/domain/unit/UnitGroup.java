@@ -110,48 +110,48 @@ public class UnitGroup<T extends SimUnit> extends SimUnit {
             unitGroup.setId(IDGenerator.generateNextId());
         }
 
-        public Builder setUnits(List<T> units) {
+        public Builder<T> setUnits(List<T> units) {
             unitGroup.setGroupUnits(units);
             return this;
         }
 
-        public Builder setSide(FactionSideType side) {
+        public Builder<T> setSide(FactionSideType side) {
             unitGroup.setSide(side);
             return this;
         }
 
-        public Builder setGenerate(boolean generateMission) {
+        public Builder<T> setGenerate(boolean generateMission) {
             unitGroup.setShouldGenerate(generateMission);
             return this;
         }
 
-        public Builder setMapLocation(Point2D.Double point) {
+        public Builder<T> setMapLocation(Point2D.Double point) {
             unitGroup.setMapXLocation(point.getX());
             unitGroup.setMapYLocation(point.getY());
             return this;
         }
 
-        public Builder setMapXLocation(double x) {
+        public Builder<T> setMapXLocation(double x) {
             unitGroup.setMapXLocation(x);
             return this;
         }
 
-        public Builder setMapYLocation(double y) {
+        public Builder<T> setMapYLocation(double y) {
             unitGroup.setMapYLocation(y);
             return this;
         }
 
-        public Builder setSpeed(double speed) {
+        public Builder<T> setSpeed(double speed) {
             unitGroup.setSpeedMilesPerHour(speed);
             return this;
         }
 
-        public Builder setDirection(double dir) {
+        public Builder<T> setDirection(double dir) {
             unitGroup.setDirection(dir);
             return this;
         }
 
-        public Builder setPlayerGeneratedGroup(boolean isPlayer) {
+        public Builder<T> setPlayerGeneratedGroup(boolean isPlayer) {
             unitGroup.setPlayerGeneratedGroup(isPlayer);
             return this;
         }
