@@ -1,6 +1,5 @@
 package sim.domain.enums;
 
-import org.apache.commons.io.IOUtils;
 import sim.domain.unit.air.DefaultLoadouts;
 import sim.domain.unit.air.StationPossibleMunitions;
 import sim.domain.unit.air.Stations;
@@ -8,13 +7,9 @@ import sim.util.LogUtil;
 import sim.util.save.JSONUtil;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

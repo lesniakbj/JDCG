@@ -1,5 +1,7 @@
 package sim.domain.unit.ground.defence;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import sim.domain.enums.AirDefenceUnitType;
 import sim.domain.unit.SimUnit;
 
@@ -24,5 +26,11 @@ public abstract class AirDefenceUnit extends SimUnit {
 
     public void setUnitType(AirDefenceUnitType unitType) {
         this.unitType = unitType;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this,
+                ToStringStyle.JSON_STYLE, true, true);
     }
 }

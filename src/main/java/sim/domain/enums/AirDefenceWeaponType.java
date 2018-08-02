@@ -4,5 +4,6 @@ public enum AirDefenceWeaponType {
     AAA,
     IR_MISSILE,
     RADAR_MISSILE,
+    MANPADS,
     NONE
 }

@@ -1,6 +1,15 @@
 {
   "stations": [
     {
+      "stationNumber": 0,
+      "possibleMunitions": [
+        {
+          "munitionType": "M61A1_VULCAN",
+          "possibleConfigurations": [1]
+        }
+      ]
+    },
+    {
       "stationNumber": 1,
       "possibleMunitions": [
         {

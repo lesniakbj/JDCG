@@ -230,7 +230,8 @@ public class GroundUnitGenerator {
                 }
             } while (waterMask.contains(x, y));
 
-            List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass, 2, side, campaignSettings, airfield);
+            List<AirDefenceUnit> units = generateAirDefenceUnit(airDefenceClass,  side, campaignSettings, airfield);
+            log.debug("Following AD Units generated: " + units);
             UnitGroup.Builder<AirDefenceUnit> b = new UnitGroup.Builder<>();
             UnitGroup<AirDefenceUnit> ad = b.setMapXLocation(x).setMapYLocation(y).setSide(side)
                                             .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -372,7 +373,7 @@ public class GroundUnitGenerator {
         return new ArrayList<>(Arrays.asList(new UnarmedShipGroundUnit(), new ArmedShipGroundUnit(), new ArmedShipGroundUnit(), new UnarmedShipGroundUnit()));
     }
 
-    private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, int amount, FactionSideType side, CampaignSettings campaignSettings, Airfield airfield) throws IllegalAccessException, InstantiationException {
+    private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, FactionSideType side, CampaignSettings campaignSettings, Airfield airfield) throws IllegalAccessException, InstantiationException {
         // Get the valid units we can generate for era and factions
         ConflictEraType selectedEra = campaignSettings.getSelectedEra();
         Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
@@ -393,7 +394,9 @@ public class GroundUnitGenerator {
 
             if (!validTypes.isEmpty()) {
                 AirDefenceUnitType type = validTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validTypes.size()));
-                for (int i = 0; i < amount; i++) {
+
+                // For AAA create groups of size 2
+                for (int i = 0; i < 2; i++) {
                     ArtilleryAirDefenceUnit unit = (ArtilleryAirDefenceUnit) clazz.newInstance();
                     unit.setUnitType(type);
                     list.add(unit);
@@ -403,6 +406,7 @@ public class GroundUnitGenerator {
             validTypes = validTypes.stream().filter(t -> !t.getWeaponType().equals(AirDefenceWeaponType.AAA)).collect(Collectors.toList());
 
             if(!validTypes.isEmpty()) {
+
                 // Since it's a SAM, see if we're generating an IR or RADAR SAM (much lower prob of Radar)
                 double radarChance = 15;
                 boolean isAirfield = (airfield != null);
@@ -413,9 +417,29 @@ public class GroundUnitGenerator {
 
                 // If it's the Home Airfield, create the most powerful SAM group we can
                 if(isHomeAirfield) {
-                    log.debug("I am generating a group of the strongest SAM");
+                    radarChance = 80;
+                    boolean isRadarSAM = DynamicCampaignSim.getRandomGen().nextInt(100) < radarChance;
+
+                    // Generate a SAM Battery of the best SAM's for this side
+                    if(isRadarSAM) {
+                        validTypes = validTypes.stream().filter(t -> t.getWeaponType().equals(AirDefenceWeaponType.RADAR_MISSILE)).collect(Collectors.toList());
+                        list.addAll(AirDefenceBatteryGenerator.getLongRangeBatteryFrom(validTypes, 2));
+                    } else {
+                        validTypes = validTypes.stream().filter(t -> t.getWeaponType().equals(AirDefenceWeaponType.IR_MISSILE)).collect(Collectors.toList());
+                        list.addAll(AirDefenceBatteryGenerator.getIRBatteryFrom(validTypes, 2));
+                    }
                 } else {
-                    log.debug("I am generating a standard SAM group");
+                    // Generate a group of units based on the type
+                    boolean isRadarSAM = DynamicCampaignSim.getRandomGen().nextInt(100) < radarChance;
+
+                    // Generate a medium range IR battery for this side
+                    if(isRadarSAM) {
+                        validTypes = validTypes.stream().filter(t -> t.getWeaponType().equals(AirDefenceWeaponType.RADAR_MISSILE)).collect(Collectors.toList());
+                        list.addAll(AirDefenceBatteryGenerator.getMediumRangeBatteryFrom(validTypes, 1 + DynamicCampaignSim.getRandomGen().nextInt(2)));
+                    } else {
+                        validTypes = validTypes.stream().filter(t -> t.getWeaponType().equals(AirDefenceWeaponType.IR_MISSILE)).collect(Collectors.toList());
+                        list.addAll(AirDefenceBatteryGenerator.getIRBatteryFrom(validTypes, 2));
+                    }
                 }
             }
         }

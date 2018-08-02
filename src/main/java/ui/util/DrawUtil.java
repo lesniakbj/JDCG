@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import sim.ai.threat.ThreatGrid;
 import sim.ai.threat.ThreatGridCell;
 import sim.campaign.DynamicCampaignSim;
+import sim.domain.enums.AirDefenceUnitType;
+import sim.domain.enums.AirDefenceWeaponType;
 import sim.domain.enums.FactionSideType;
 import sim.domain.enums.MapType;
 import sim.domain.enums.WaypointType;
@@ -344,8 +346,9 @@ public class DrawUtil {
         defenceGroups.addAll(campaign.getRedforCoalitionManager().getCoalitionAirDefences());
         for(UnitGroup<AirDefenceUnit> unitGroup : defenceGroups) {
             Color color = (unitGroup.getSide().equals(FactionSideType.BLUEFOR)) ? BLUEFOR_COLOR : REDFOR_COLOR;
-            boolean isAAA = unitGroup.getGroupUnits().get(0).getClass().isAssignableFrom(ArtilleryAirDefenceUnit.class);
-            double range = isAAA ? 20 : 50;
+            AirDefenceUnitType type = unitGroup.getGroupUnits().get(0).getUnitType();
+            boolean isAAA = type.getWeaponType().equals(AirDefenceWeaponType.AAA);
+            double range = isAAA ? 20 : type.getRange() * 5;
 
             double pointX = unitGroup.getMapXLocation();
             double pointY = unitGroup.getMapYLocation() - GUTTER_HEIGHT;

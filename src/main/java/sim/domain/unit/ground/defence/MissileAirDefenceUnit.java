@@ -1,5 +1,7 @@
 package sim.domain.unit.ground.defence;
 
+import sim.domain.enums.AirDefenceUnitType;
+
 import java.util.Date;
 
 /**
@@ -15,6 +17,10 @@ import java.util.Date;
  * Created by Brendan.Lesniak on 7/19/2018.
  */
 public class MissileAirDefenceUnit extends AirDefenceUnit {
+
+    public MissileAirDefenceUnit(AirDefenceUnitType type) {
+        setUnitType(type);
+    }
 
     @Override
     public void updateStep() {
