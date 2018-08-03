@@ -22,17 +22,17 @@ public class ShipFleetGenerator {
         boolean hasRedCruiser = validTypes.contains(FFG_11540);
 
         if(hasBlueCruiser) {
-            return blueCombatFleet();
+            return blueCombatFleet(validTypes);
         }
 
         if(hasRedCruiser) {
-            return redCombatFleet();
+            return redCombatFleet(validTypes);
         }
 
         return new ArrayList<>();
     }
 
-    private static List<GroundUnit> redCombatFleet() {
+    private static List<GroundUnit> redCombatFleet(List<GroundUnitType> validTypes) {
         List<GroundUnit> units = new ArrayList<>();
 
         units.add(new ArmedShipGroundUnit(CG_1174));
@@ -45,7 +45,7 @@ public class ShipFleetGenerator {
         return units;
     }
 
-    private static List<GroundUnit> blueCombatFleet() {
+    private static List<GroundUnit> blueCombatFleet(List<GroundUnitType> validTypes) {
         List<GroundUnit> units = new ArrayList<>();
 
         units.add(new ArmedShipGroundUnit(CG_60_NORMANDY));

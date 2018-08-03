@@ -8,7 +8,6 @@ import sim.domain.enums.AirDefenceWeaponType;
 import sim.domain.enums.CampaignType;
 import sim.domain.enums.ConflictEraType;
 import sim.domain.enums.FactionSideType;
-import sim.domain.enums.FactionType;
 import sim.domain.enums.GroundUnitSubType;
 import sim.domain.enums.GroundUnitType;
 import sim.domain.enums.MapType;
@@ -16,6 +15,7 @@ import sim.domain.unit.UnitGroup;
 import sim.domain.unit.global.Airfield;
 import sim.domain.unit.global.Coalition;
 import sim.domain.unit.ground.ArmorGroundUnit;
+import sim.domain.unit.ground.ArtilleryGroundUnit;
 import sim.domain.unit.ground.GroundUnit;
 import sim.domain.unit.ground.UnarmedGroundUnit;
 import sim.domain.unit.ground.defence.AirDefenceUnit;
@@ -28,6 +28,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,7 +43,6 @@ public class GroundUnitGenerator {
     private double groundUnitCost;
     private double aaaCost;
     private double samCost;
-
 
     public GroundUnitGenerator(Map<FactionSideType, Double> overallForceStrength, double groundUnitCost, double aaaCost, double samCost) {
         this.overallForceStrength = overallForceStrength;
@@ -299,6 +299,7 @@ public class GroundUnitGenerator {
         }
 
         List<GroundUnit> groundUnits = generateGroundUnitsForFront(campaignSettings, side);
+        log.debug("Following Units generated: " + groundUnits);
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
         UnitGroup<GroundUnit> g = b.setMapXLocation(mapX).setMapYLocation(mapY).setSide(side)
                                     .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -317,6 +318,7 @@ public class GroundUnitGenerator {
         }
 
         List<GroundUnit> groundUnits = generateGroundUnitsForFront(campaignSettings, side);
+        log.debug("Following Units generated: " + groundUnits);
         UnitGroup.Builder<GroundUnit> b = new UnitGroup.Builder<>();
         UnitGroup<GroundUnit> g = b.setMapXLocation(point.getX()).setMapYLocation(point.getY()).setSide(side)
                                     .setPlayerGeneratedGroup(false).setSpeed(0.0)
@@ -367,40 +369,39 @@ public class GroundUnitGenerator {
     }
 
     private List<GroundUnit> generateGroundUnitsForAirfield(CampaignSettings campaignSettings, FactionSideType side) {
+        ConflictEraType selectedEra = campaignSettings.getSelectedEra();
+        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+        List<GroundUnitType> validTypes = GroundUnitType.getTypesByEraAndFactionTypes(selectedEra, sideCoalition.getFactionTypeList());
+        List<GroundUnitType> validUnarmedTypes = validTypes.stream().filter(gut -> gut.getSubType().equals(GroundUnitSubType.UNARMED)).collect(Collectors.toList());
+        List<GroundUnitType> validArmorTypes = validTypes.stream().filter(gut -> gut.getSubType().equals(GroundUnitSubType.ARMOR)).collect(Collectors.toList());
+
         // Since we're at an airfield, we will generally try to opt to generate
         // units that are unarmed support units, and minimally some armor.
-        log.debug("FIX ME");
-//        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
-//        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
-//            for(FactionType ft : sideCoalition.getFactionTypeList()) {
-//                if(gut.getFactions().contains(ft)) {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }).collect(Collectors.toList());
-//        log.debug("Generating support units for an airfield for: " + side);
-//        log.debug("Generating support units for an airfield for: " + validTypes);
-        return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
+        double chanceArmor = 20;
+        boolean isArmor = DynamicCampaignSim.getRandomGen().nextInt(100) + 1 < chanceArmor;
+
+        List<GroundUnit> units = new ArrayList<>();
+        GroundUnitType gutUnarmed = validUnarmedTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validUnarmedTypes.size()));
+        for(int i = 0; i < 3 + DynamicCampaignSim.getRandomGen().nextInt(3); i++) {
+            UnarmedGroundUnit unit = new UnarmedGroundUnit(gutUnarmed);
+            units.add(unit);
+        }
+
+        if(isArmor) {
+            GroundUnitType gutArmed = validArmorTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validUnarmedTypes.size()));
+            for(int i = 0; i < 2; i++) {
+                ArmorGroundUnit unit = new ArmorGroundUnit(gutArmed);
+                units.add(unit);
+            }
+        }
+
+        return units;
     }
 
     private List<GroundUnit> generateWaterUnits(CampaignSettings campaignSettings, FactionSideType side) {
         ConflictEraType selectedEra = campaignSettings.getSelectedEra();
         Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
-        List<GroundUnitType> validTypes = GroundUnitType.getTypesByEra(selectedEra);
-        validTypes = validTypes.stream().filter(gut -> gut.getSubType().equals(GroundUnitSubType.SHIP)).collect(Collectors.toList());
-        validTypes = validTypes.stream().filter(gut -> {
-            if(gut.getFactions().size() == 0) {
-                return true;
-            }
-
-            for(FactionType ft : sideCoalition.getFactionTypeList()) {
-                if(gut.getFactions().contains(ft)) {
-                    return true;
-                }
-            }
-            return false;
-        }).collect(Collectors.toList());
+        List<GroundUnitType> validTypes = GroundUnitType.getTypesByEraAndFactionTypes(selectedEra, sideCoalition.getFactionTypeList());
 
         // We will prefer to generate a group that has 1-2 Medium/Small combat ships
         // with 1-2 support ships along with it. We will occasionally (5% or less)
@@ -416,34 +417,51 @@ public class GroundUnitGenerator {
     private List<GroundUnit> generateGroundUnitsForFront(CampaignSettings campaignSettings, FactionSideType side) {
         // Since we're not at an airfield, we will generally try to opt to generate
         // units that are armed support units, and minimally some unarmed support.
-        log.debug("FIX ME");
-//        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
-//        List<GroundUnitType> validTypes = Arrays.stream(GroundUnitType.values()).filter(gut -> {
-//            for(FactionType ft : sideCoalition.getFactionTypeList()) {
-//                if(gut.getFactions().contains(ft)) {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }).collect(Collectors.toList());
-        // log.debug("Generating support units for: " + side);
-        //log.debug("Generating  support units for: " + validTypes);
-        return new ArrayList<>(Arrays.asList(new UnarmedGroundUnit(), new ArmorGroundUnit(), new ArmorGroundUnit(), new UnarmedGroundUnit()));
+        ConflictEraType selectedEra = campaignSettings.getSelectedEra();
+        Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
+        List<GroundUnitType> validTypes = GroundUnitType.getTypesByEraAndFactionTypes(selectedEra, sideCoalition.getFactionTypeList());
+        List<GroundUnitType> validUnarmedTypes = validTypes.stream().filter(gut -> gut.getSubType().equals(GroundUnitSubType.UNARMED)).collect(Collectors.toList());
+        List<GroundUnitType> validArmorTypes = validTypes.stream().filter(gut -> gut.getSubType().equals(GroundUnitSubType.ARMOR)).collect(Collectors.toList());
+        List<GroundUnitType> validArtilleryTypes = validTypes.stream().filter(gut -> gut.getSubType().equals(GroundUnitSubType.ARTILLERY)).collect(Collectors.toList());
+
+
+        // Roll the dice to determine what kind of group we'll produce,
+        // with us preferring to generate Armor, then Artillery, then
+        // rarely Unarmed groups
+        double chanceArmor = 65;
+        double chanceArtillery = 25;
+        int roll = DynamicCampaignSim.getRandomGen().nextInt(100) + 1;
+        int groupSize = DynamicCampaignSim.getRandomGen().nextInt(4) + 2;
+
+        List<GroundUnit> units = new ArrayList<>();
+        if(roll < chanceArmor) {
+            // Generate a group of armor
+            for(int i = 0; i < groupSize; i++) {
+                ArmorGroundUnit unit = new ArmorGroundUnit(validArmorTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validArmorTypes.size())));
+                units.add(unit);
+            }
+        } else if (roll < chanceArmor + chanceArtillery) {
+            // Generate a group of Artillery
+            for(int i = 0; i < groupSize; i++) {
+                ArtilleryGroundUnit unit = new ArtilleryGroundUnit(validArtilleryTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validArtilleryTypes.size())));
+                units.add(unit);
+            }
+        } else {
+            // Generate an unarmed group
+            for(int i = 0; i < groupSize; i++) {
+                UnarmedGroundUnit unit = new UnarmedGroundUnit(validUnarmedTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validUnarmedTypes.size())));
+                units.add(unit);
+            }
+        }
+
+        return units;
     }
 
     private List<AirDefenceUnit> generateAirDefenceUnit(Class<? extends AirDefenceUnit> clazz, FactionSideType side, CampaignSettings campaignSettings, Airfield airfield) throws IllegalAccessException, InstantiationException {
         // Get the valid units we can generate for era and factions
         ConflictEraType selectedEra = campaignSettings.getSelectedEra();
         Coalition sideCoalition = campaignSettings.getCoalitionBySide(side);
-        List<AirDefenceUnitType> validTypes = AirDefenceUnitType.getTypesByEra(selectedEra);
-        validTypes = validTypes.stream().filter(t -> {
-            for(FactionType ft : t.getFactions()) {
-                if(sideCoalition.getFactionTypeList().contains(ft)) {
-                    return true;
-                }
-            }
-            return false;
-        }).collect(Collectors.toList());
+        List<AirDefenceUnitType> validTypes = AirDefenceUnitType.getTypesByEraAndFactionTypes(selectedEra, sideCoalition.getFactionTypeList());
 
         // Create the type (AAA or SAM)
         List<AirDefenceUnit> list = new ArrayList<>();
@@ -501,8 +519,6 @@ public class GroundUnitGenerator {
                 }
             }
         }
-
-        // If its a SAM type, choose a group and create all the support vehicles too
 
         return list;
     }

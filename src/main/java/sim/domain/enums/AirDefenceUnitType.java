@@ -128,4 +128,17 @@ public enum AirDefenceUnitType {
     public static List<AirDefenceUnitType> getTypesByEra(ConflictEraType selectedEra) {
         return Arrays.stream(AirDefenceUnitType.values()).filter(t -> t.getEras().contains(selectedEra)).collect(Collectors.toList());
     }
+
+    public static List<AirDefenceUnitType> getTypesByEraAndFactionTypes(ConflictEraType selectedEra, List<FactionType> factionTypeList) {
+        List<AirDefenceUnitType> validTypes = AirDefenceUnitType.getTypesByEra(selectedEra);
+        validTypes = validTypes.stream().filter(gut -> {
+            for(FactionType ft : factionTypeList) {
+                if(gut.getFactions().contains(ft)) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+        return validTypes;
+    }
 }
