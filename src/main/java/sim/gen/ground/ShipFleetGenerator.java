@@ -15,6 +15,7 @@ import static sim.domain.enums.GroundUnitType.CG_60_NORMANDY;
 import static sim.domain.enums.GroundUnitType.FFG_11540;
 import static sim.domain.enums.GroundUnitType.FFG_7;
 import static sim.domain.enums.GroundUnitType.FF_1135M;
+import static sim.domain.enums.GroundUnitType.MOLNIYA;
 
 public class ShipFleetGenerator {
     public static List<GroundUnit> generateLargeCombatFleet(List<GroundUnitType> validTypes) {
@@ -36,7 +37,7 @@ public class ShipFleetGenerator {
         List<GroundUnit> units = new ArrayList<>();
 
         units.add(new ArmedShipGroundUnit(CG_1174));
-        units.add(new ArmedShipGroundUnit(FF_1135M));
+        units.add(new ArmedShipGroundUnit(MOLNIYA));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
         units.add(new ArmedShipGroundUnit(FFG_11540));

@@ -54,6 +54,14 @@
           "possibleConfigurations": [1]
         },
         {
+          "munitionType": "AIM120B",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "AIM120C",
+          "possibleConfigurations": [1, 2]
+        },
+        {
           "munitionType": "MK_82",
           "possibleConfigurations": [1, 2, 3]
         },
@@ -105,6 +113,14 @@
         {
           "munitionType": "AIM7M",
           "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM120B",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "AIM120C",
+          "possibleConfigurations": [1, 2]
         },
         {
           "munitionType": "MK_82",
@@ -162,6 +178,14 @@
         {
           "munitionType": "AIM7M",
           "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM120B",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM120C",
+          "possibleConfigurations": [1]
         }
       ]
     },
@@ -208,6 +232,14 @@
         {
           "munitionType": "AIM7M",
           "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM120B",
+          "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM120C",
+          "possibleConfigurations": [1]
         }
       ]
     },
@@ -221,6 +253,14 @@
         {
           "munitionType": "AIM7M",
           "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM120B",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "AIM120C",
+          "possibleConfigurations": [1, 2]
         },
         {
           "munitionType": "MK_82",
@@ -290,6 +330,14 @@
         {
           "munitionType": "AIM7M",
           "possibleConfigurations": [1]
+        },
+        {
+          "munitionType": "AIM120B",
+          "possibleConfigurations": [1, 2]
+        },
+        {
+          "munitionType": "AIM120C",
+          "possibleConfigurations": [1, 2]
         },
         {
           "munitionType": "MK_82",
