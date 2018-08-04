@@ -10,17 +10,16 @@ import java.util.List;
 
 import static sim.domain.enums.GroundUnitType.ARMED_SPEEDBOAT;
 import static sim.domain.enums.GroundUnitType.BULK_CARGO_SHIP;
-import static sim.domain.enums.GroundUnitType.CG_1174;
+import static sim.domain.enums.GroundUnitType.CGN_1144_PYOTR_VELIKIY;
 import static sim.domain.enums.GroundUnitType.CG_60_NORMANDY;
-import static sim.domain.enums.GroundUnitType.FFG_11540;
-import static sim.domain.enums.GroundUnitType.FFG_7;
-import static sim.domain.enums.GroundUnitType.FF_1135M;
-import static sim.domain.enums.GroundUnitType.MOLNIYA;
+import static sim.domain.enums.GroundUnitType.FFG_11540_NEUSTRASHIMY;
+import static sim.domain.enums.GroundUnitType.FFG_7CL_OH_PERRY;
+import static sim.domain.enums.GroundUnitType.FSG_1241_MOLNIYA;
 
 public class ShipFleetGenerator {
     public static List<GroundUnit> generateLargeCombatFleet(List<GroundUnitType> validTypes) {
         boolean hasBlueCruiser = validTypes.contains(CG_60_NORMANDY);
-        boolean hasRedCruiser = validTypes.contains(FFG_11540);
+        boolean hasRedCruiser = validTypes.contains(FFG_11540_NEUSTRASHIMY);
 
         if(hasBlueCruiser) {
             return blueCombatFleet(validTypes);
@@ -36,11 +35,11 @@ public class ShipFleetGenerator {
     private static List<GroundUnit> redCombatFleet(List<GroundUnitType> validTypes) {
         List<GroundUnit> units = new ArrayList<>();
 
-        units.add(new ArmedShipGroundUnit(CG_1174));
-        units.add(new ArmedShipGroundUnit(MOLNIYA));
+        units.add(new ArmedShipGroundUnit(CGN_1144_PYOTR_VELIKIY));
+        units.add(new ArmedShipGroundUnit(FSG_1241_MOLNIYA));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
-        units.add(new ArmedShipGroundUnit(FFG_11540));
+        units.add(new ArmedShipGroundUnit(FFG_11540_NEUSTRASHIMY));
         units.add(new UnarmedShipGroundUnit(BULK_CARGO_SHIP));
 
         return units;
@@ -50,10 +49,10 @@ public class ShipFleetGenerator {
         List<GroundUnit> units = new ArrayList<>();
 
         units.add(new ArmedShipGroundUnit(CG_60_NORMANDY));
-        units.add(new ArmedShipGroundUnit(FFG_7));
+        units.add(new ArmedShipGroundUnit(FFG_7CL_OH_PERRY));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
-        units.add(new ArmedShipGroundUnit(FFG_7));
+        units.add(new ArmedShipGroundUnit(FFG_7CL_OH_PERRY));
         units.add(new UnarmedShipGroundUnit(BULK_CARGO_SHIP));
 
         return units;
@@ -61,7 +60,7 @@ public class ShipFleetGenerator {
 
     public static List<GroundUnit> generateScoutFleet(List<GroundUnitType> validTypes) {
         boolean hasBlueCruiser = validTypes.contains(CG_60_NORMANDY);
-        boolean hasRedCruiser = validTypes.contains(FFG_11540);
+        boolean hasRedCruiser = validTypes.contains(FFG_11540_NEUSTRASHIMY);
 
         if(hasBlueCruiser) {
             return blueScoutFleet();
@@ -88,7 +87,7 @@ public class ShipFleetGenerator {
     private static List<GroundUnit> redScoutFleet() {
         List<GroundUnit> units = new ArrayList<>();
 
-        units.add(new ArmedShipGroundUnit(FFG_11540));
+        units.add(new ArmedShipGroundUnit(FFG_11540_NEUSTRASHIMY));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
         units.add(new ArmedShipGroundUnit(ARMED_SPEEDBOAT));
         units.add(new UnarmedShipGroundUnit(BULK_CARGO_SHIP));

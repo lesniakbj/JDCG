@@ -49,8 +49,8 @@ public class AirDefenceBatteryGenerator {
         switch (samType) {
             case SAM_HAWK_LN_M192:
                 return createHawkBattery(numLaunchers);
-            case SAM_ROLAND_ADS:
-                return createRolandBattery(numLaunchers);
+            // case SAM_ROLAND_ADS:
+            //    return createRolandBattery(numLaunchers);
             case SAM_SA11_BUK_LN_9A310M1:
                 return createBukBattery(numLaunchers);
             case SAM_SA15_TOR:
@@ -120,8 +120,8 @@ public class AirDefenceBatteryGenerator {
         List<AirDefenceUnit> units = new ArrayList<>();
 
         // Create a standard battery with the requested number of launchers
-        units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_ROLAND_EWR));
-        generateLaunchersOfType(units, AirDefenceUnitType.SAM_ROLAND_ADS, numLaunchers);
+        // units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_ROLAND_EWR));
+        // generateLaunchersOfType(units, AirDefenceUnitType.SAM_ROLAND_ADS, numLaunchers);
 
         return units;
     }
@@ -132,6 +132,8 @@ public class AirDefenceBatteryGenerator {
         // Create a standard battery with the requested number of launchers
         units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_HAWK_SR_ANSPQ50));
         units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_HAWK_TR_ANMPQ46));
+        units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_HAWK_CWAR));
+        units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_HAWK_PCP));
         generateLaunchersOfType(units, AirDefenceUnitType.SAM_HAWK_LN_M192, numLaunchers);
 
         return units;
@@ -142,8 +144,9 @@ public class AirDefenceBatteryGenerator {
 
         // Create a standard battery with the requested number of launchers
         units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_PATRIOT_AMG_ANMRC137));
-        units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_PATRIOT_ECS_ANMPQ104));
+        units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_PATRIOT_ECS_ANMSQ104));
         units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_PATRIOT_EPP_3));
+        units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_PATRIOT_ICC));
         units.add(new MissileAirDefenceUnit(AirDefenceUnitType.SAM_PATRIOT_STR_ANMPQ53));
         generateLaunchersOfType(units, AirDefenceUnitType.SAM_PATRIOT_LN_M901, numLaunchers);
 

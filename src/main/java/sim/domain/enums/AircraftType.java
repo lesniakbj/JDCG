@@ -54,7 +54,15 @@ public enum AircraftType {
     FA_18C_LOT20("F/A-18C Lot 20", "FA-18C_hornet", true, false, STRIKE_FIGHTER, MODERN_ERAS, readPossibleLoadouts("fa_18c_lot20"), readDefaultLoadouts("fa_18c_lot20"), Arrays.asList(FactionType.USA)),
     P_51D("P-51D", "P-51D", true, false, CLASSIC_TASKS, CLASSIC_ERAS, null, null, Arrays.asList(FactionType.USA)),
 
+    MIG_15BIS("MiG-15bis", "MiG-15bis", true, false, STRIKE_FIGHTER, EARLY_COLD_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_21BIS("MiG-21bis", "MiG-21Bis", true, false, STRIKE_FIGHTER, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_29A("MiG-29A", "MiG-29A", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_29S("MiG-29S", "MiG-29S", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
     J_11("J-11A", "J-11A", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, null, Collections.singletonList(FactionType.CHINA)),
+    SU_25("Su-25", "Su-25", true, false, SU25_TASKS, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_25T("Su-25A5T", "Su-25T", true, false, SU25_TASKS, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_27("Su-27", "Su-27", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_33("Su-33", "Su-33", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
 
     // Playable Helicopters
     UH_1H("UH-1H", "UH-1H", true, true, HELI_UNARMED_TRANSPORT, EXTENDED_ERAS, null, null, Arrays.asList(FactionType.USA)),
@@ -85,7 +93,27 @@ public enum AircraftType {
     S_3B("S-3B", "S-3B", false, false, UNARMED, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.USA)),
     S_3B_TANKER("S-3B Tanker", "S-3B Tanker", false, false, TANKER, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.USA)),
 
-    KJ_2000("KJ-2000", "", true, false, AWACS, MODERN_ERAS, null, null, Collections.singletonList(FactionType.CHINA)),
+    A_50("A-50", "A-50", false, false, AWACS, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    AN_26B("An-26B", "An-26B", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    AN_30M("An-30M", "An-30M", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_23MLD("MiG-23MLD", "MiG-23MLD", false, false, STRIKE_FIGHTER, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_25PD("MiG-25PD", "MiG-25PD", false, false, AIR_SUPERIORITY, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_25RBT("MiG-25RBT", "MiG-25RBT", false, false, AIR_SUPERIORITY, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_27K("MiG-27K", "MiG-27K", false, false, GROUND_STRIKE, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    MIG_31("MiG-31", "MiG-31", false, false, AIR_SUPERIORITY, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    IL_76MD("IL-76MD", "IL-76MD", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    IL_78M("IL-78M", "IL-78M", false, false, TANKER, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    KJ_2000("KJ-2000", "KJ-2000", false, false, AWACS, MODERN_ERAS, null, null, Collections.singletonList(FactionType.CHINA)),
+    SU_17M4("Su-17M4", "Su-17M4", false, false, STRIKE_FIGHTER, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_24M("Su-24M", "Su-24M", false, false, GROUND_STRIKE, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_24MR("Su-24MR", "Su-24MR", false, false, RECON, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_25TM("Su-2A5TM", "Su-25TM", false, false, SU25_TASKS, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_30("Su-30", "Su-30", false, false, AIR_SUPERIORITY, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    SU_34("Su-34", "Su-34", false, false, STRIKE_FIGHTER, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    TU_22M3("Tu-22M3", "Tu-22M3", false, false, BOMBER, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    TU_95MS("Tu-95MS", "Tu-95MS", false, false, BOMBER, EXTENDED_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    TU_142("Tu-142", "Tu-142", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
+    TU_160("Tu-160", "Tu-160", false, false, BOMBER, MODERN_ERAS, null, null, Arrays.asList(FactionType.RUSSIA)),
 
     // Non-Playable Helicopters
     AH_1W("AH-1W", "AH-1W", false, true, GROUND_STRIKE_CONTROLLER, MODERN_ERAS, null, null, Arrays.asList(FactionType.USA)),
@@ -106,17 +134,9 @@ public enum AircraftType {
     /*
     // Playable Aircraft
     TF_51D("TF-51D", true, false, UNARMED, CLASSIC_ERAS, null, Arrays.asList(FactionType.AUSTRALIA, FactionType.CANADA, FactionType.CHINA, FactionType.FRANCE, FactionType.GERMANY, FactionType.INDONESIA, FactionType.ISRAEL, FactionType.ITALY, FactionType.JAPAN, FactionType.NETHERLANDS, FactionType.PHILIPPINES, FactionType.POLAND, FactionType.SOUTH_KOREA, FactionType.SWEDEN, FactionType.USSR, FactionType.USA, FactionType.USAF_AGGRESSORS)),
-    SU_25T("Su-25A5T", true, false, SU25_TASKS, MODERN_ERAS, null, Arrays.asList(FactionType.BELARUS, FactionType.BULGARIA, FactionType.CZECH_REPUBLIC, FactionType.ETHIOPIA, FactionType.GEORGIA, FactionType.IRAN, FactionType.IRAQ, FactionType.NORTH_KOREA, FactionType.RUSSIA, FactionType.SLOVAKIA, FactionType.USSR, FactionType.SUDAN, FactionType.UKRAINE)),
-    SU_25("Su-25", true, false, SU25_TASKS, MODERN_ERAS, null, Arrays.asList(FactionType.BELARUS, FactionType.BULGARIA, FactionType.CZECH_REPUBLIC, FactionType.ETHIOPIA, FactionType.GEORGIA, FactionType.IRAN, FactionType.IRAQ, FactionType.NORTH_KOREA, FactionType.RUSSIA, FactionType.SLOVAKIA, FactionType.USSR, FactionType.SUDAN, FactionType.UKRAINE)),
-    MIG_29A("MiG-29A", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BELARUS, FactionType.BULGARIA, FactionType.INDIA, FactionType.IRAN, FactionType.MALAYSIA, FactionType.NORTH_KOREA, FactionType.POLAND, FactionType.RUSSIA, FactionType.SERBIA, FactionType.SLOVAKIA, FactionType.SUDAN, FactionType.SYRIA, FactionType.UKRAINE, FactionType.USAF_AGGRESSORS, FactionType.YEMEN, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.HUNGARY, FactionType.IRAQ, FactionType.ISRAEL, FactionType.ROMANIA, FactionType.SERBIA, FactionType.USSR, FactionType.YUGOSLAVIA)),
-    MIG_29S("MiG-29S", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BELARUS, FactionType.BULGARIA, FactionType.INDIA, FactionType.IRAN, FactionType.MALAYSIA, FactionType.NORTH_KOREA, FactionType.POLAND, FactionType.RUSSIA, FactionType.SERBIA, FactionType.SLOVAKIA, FactionType.SUDAN, FactionType.SYRIA, FactionType.UKRAINE, FactionType.USAF_AGGRESSORS, FactionType.YEMEN, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.HUNGARY, FactionType.IRAQ, FactionType.ISRAEL, FactionType.ROMANIA, FactionType.SERBIA, FactionType.USSR, FactionType.YUGOSLAVIA)),
-    SU_27("Su-27", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, Arrays.asList(FactionType.CHINA, FactionType.INDONESIA, FactionType.RUSSIA, FactionType.UKRAINE, FactionType.VIETNAM, FactionType.USAF_AGGRESSORS, FactionType.BELARUS, FactionType.USSR)),
-    SU_33("Su-33", true, false, AIR_SUPERIORITY, MODERN_ERAS, null, Arrays.asList(FactionType.RUSSIA, FactionType.USAF_AGGRESSORS)),
     FW_190D9("FW-190D-9", true, false, CLASSIC_TASKS, CLASSIC_ERAS, null, Arrays.asList(FactionType.CZECH_REPUBLIC, FactionType.FRANCE, FactionType.THIRD_REICH, FactionType.GERMANY, FactionType.HUNGARY, FactionType.JAPAN, FactionType.SPAIN, FactionType.ROMANIA, FactionType.TURKEY, FactionType.USAF_AGGRESSORS, FactionType.YUGOSLAVIA)),
-    MIG_21BIS("MiG-21bis", true, false, STRIKE_FIGHTER, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.CROATIA, FactionType.EGYPT, FactionType.INDIA, FactionType.LIBYA, FactionType.NORTH_KOREA, FactionType.ROMANIA, FactionType.SERBIA, FactionType.SUDAN, FactionType.SYRIA, FactionType.ALGERIA, FactionType.BELARUS, FactionType.BULGARIA, FactionType.CHINA, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.FINLAND, FactionType.GEORGIA, FactionType.HUNGARY, FactionType.INDONESIA, FactionType.IRAN, FactionType.IRAQ, FactionType.INSURGENTS, FactionType.POLAND, FactionType.RUSSIA, FactionType.SERBIA, FactionType.SLOVAKIA, FactionType.USSR, FactionType.USAF_AGGRESSORS, FactionType.UKRAINE, FactionType.VIETNAM, FactionType.YUGOSLAVIA, FactionType.YEMEN)),
     BF_109K4("Bf-109-K-4", true, false, CLASSIC_TASKS, CLASSIC_ERAS, null, Arrays.asList(FactionType.BULGARIA, FactionType.CROATIA, FactionType.CZECH_REPUBLIC, FactionType.FINLAND, FactionType.THIRD_REICH, FactionType.HUNGARY, FactionType.ISRAEL, FactionType.ITALY, FactionType.ITALIAN_SOCIAL_REPUBLIC, FactionType.JAPAN, FactionType.ROMANIA, FactionType.SLOVAKIA, FactionType.SPAIN, FactionType.SWITZERLAND, FactionType.YUGOSLAVIA)),
     C_101("C-101", true, false, UNARMED, MODERN_ERAS, null, Arrays.asList(FactionType.CHILE, FactionType.HONDURAS, FactionType.JORDAN, FactionType.SPAIN)),
-    MIG_15BIS("MiG-15bis", true, false, STRIKE_FIGHTER, EARLY_COLD_WAR_ERAS, null, Arrays.asList(FactionType.NORTH_KOREA, FactionType.ALGERIA, FactionType.BULGARIA, FactionType.CHINA, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.EGYPT, FactionType.HUNGARY, FactionType.IRAQ, FactionType.MOROCCO, FactionType.VIETNAM, FactionType.YEMEN, FactionType.PAKISTAN, FactionType.POLAND, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.USSR,  FactionType.SUDAN, FactionType.SYRIA, FactionType.USAF_AGGRESSORS, FactionType.VIETNAM, FactionType.YEMEN)),
     HAWK_T1A("Hawk T.1A", true, false, UNARMED, MODERN_ERAS, null, Arrays.asList(FactionType.AUSTRALIA, FactionType.BAHRAIN, FactionType.CANADA, FactionType.FINLAND, FactionType.INDIA, FactionType.INDONESIA, FactionType.JORDAN, FactionType.KUWAIT, FactionType.MALAYSIA, FactionType.OMAN, FactionType.SAUDI_ARABIA, FactionType.UK, FactionType.UAE, FactionType.SOUTH_KOREA, FactionType.SWITZERLAND)),
     L_39C("L-39C", true, false, UNARMED, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BELARUS, FactionType.BULGARIA, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.EGYPT, FactionType.ETHIOPIA, FactionType.GEORGIA, FactionType.IRAQ, FactionType.LIBYA, FactionType.NORTH_KOREA, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.SLOVAKIA, FactionType.SYRIA, FactionType.THAILAND, FactionType.TUNISIA, FactionType.UKRAINE, FactionType.USAF_AGGRESSORS, FactionType.VIETNAM, FactionType.YEMEN)),
     L_39ZA("L-39ZA", true, false, GROUND_STRIKE, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BELARUS, FactionType.BULGARIA, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.EGYPT, FactionType.ETHIOPIA, FactionType.GEORGIA, FactionType.IRAQ, FactionType.LIBYA, FactionType.NORTH_KOREA, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.SLOVAKIA, FactionType.SYRIA, FactionType.THAILAND, FactionType.TUNISIA, FactionType.UKRAINE, FactionType.USAF_AGGRESSORS, FactionType.VIETNAM, FactionType.YEMEN)),
@@ -128,10 +148,7 @@ public enum AircraftType {
     SA342("SA342 Gazelle", true, true, HELI_UNARMED_TRANSPORT, EXTENDED_ERAS, null, Arrays.asList(FactionType.CHILE, FactionType.EGYPT, FactionType.FRANCE, FactionType.IRAQ, FactionType.KUWAIT, FactionType.MOROCCO, FactionType.QATAR, FactionType.SERBIA, FactionType.SYRIA, FactionType.TUNISIA, FactionType.UK, FactionType.YUGOSLAVIA)),
 
     // Traditional Aircraft
-    A_50("A-50", false, false, AWACS, MODERN_ERAS, null, Arrays.asList(FactionType.RUSSIA, FactionType.USSR, FactionType.INDIA)),
 
-    AN_26B("An-26B", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.BELARUS, FactionType.CHINA, FactionType.ETHIOPIA, FactionType.HUNGARY, FactionType.LIBYA, FactionType.RUSSIA, FactionType.SERBIA, FactionType.SUDAN, FactionType.SYRIA, FactionType.UKRAINE, FactionType.VIETNAM, FactionType.YEMEN)),
-    AN_30M("An-30M", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.BULGARIA, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.UKRAINE, FactionType.CZECH_REPUBLIC, FactionType.CHINA, FactionType.USSR, FactionType.VIETNAM)),
 
 
     E_3C("E-3C", false, false, AWACS, MODERN_ERAS, null, Arrays.asList(FactionType.FRANCE, FactionType.SAUDI_ARABIA, FactionType.UK, FactionType.USA, FactionType.USAF_AGGRESSORS)),
@@ -141,38 +158,17 @@ public enum AircraftType {
     // F_16AMLU("F-16A MLU", false, false, STRIKE_FIGHTER, MODERN_ERAS, null, Arrays.asList(FactionType.BAHRAIN, FactionType.BELGIUM, FactionType.CHILE, FactionType.CROATIA, FactionType.DENMARK, FactionType.EGYPT, FactionType.GREECE, FactionType.ISRAEL, FactionType.INDONESIA, FactionType.IRAQ, FactionType.JORDAN, FactionType.MOROCCO, FactionType.NETHERLANDS, FactionType.NORWAY, FactionType.OMAN, FactionType.PAKISTAN, FactionType.POLAND, FactionType.ROMANIA, FactionType.SLOVAKIA, FactionType.SOUTH_KOREA, FactionType.THAILAND, FactionType.TURKEY, FactionType.UAE, FactionType.VENEZUELA)),
     F_4E("F-4E", false, false, STRIKE_FIGHTER, EXTENDED_COLD_WAR, null, Arrays.asList(FactionType.AUSTRALIA, FactionType.EGYPT, FactionType.GERMANY, FactionType.GREECE, FactionType.IRAN, FactionType.ISRAEL, FactionType.JAPAN, FactionType.SPAIN, FactionType.SOUTH_KOREA, FactionType.TURKEY, FactionType.UK, FactionType.USA, FactionType.USAF_AGGRESSORS)),
 
-    IL_76MD("IL-76MD", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BAHRAIN, FactionType.BELARUS, FactionType.CHINA, FactionType.GEORGIA, FactionType.HUNGARY, FactionType.INDIA, FactionType.IRAN, FactionType.IRAQ, FactionType.JORDAN, FactionType.LIBYA, FactionType.NORTH_KOREA, FactionType.RUSSIA, FactionType.SERBIA, FactionType.USSR, FactionType.SUDAN, FactionType.SYRIA, FactionType.UKRAINE, FactionType.UAE, FactionType.YEMEN)),
-    IL_78M("IL-78M", false, false, TANKER, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.CHINA, FactionType.INDIA, FactionType.LIBYA, FactionType.PAKISTAN, FactionType.RUSSIA, FactionType.UKRAINE)),
 
     MIRAGE_20005("Mirage 2000-5", false, false, AIR_SUPERIORITY, MODERN_ERAS, null, Arrays.asList(FactionType.FRANCE, FactionType.INDIA, FactionType.UAE, FactionType.CHINA, FactionType.GREECE, FactionType.EGYPT, FactionType.BRAZIL, FactionType.QATAR)),
 
 
     MIG_17("MiG-17", false, false, STRIKE_FIGHTER, COLD_WAR_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BULGARIA, FactionType.CHINA, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.EGYPT, FactionType.ETHIOPIA, FactionType.HUNGARY, FactionType.IRAQ, FactionType.MOROCCO, FactionType.YEMEN, FactionType.PAKISTAN, FactionType.POLAND, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.USSR, FactionType.SYRIA,  FactionType.USAF_AGGRESSORS, FactionType.VIETNAM)),
     MIG_19("MiG-19", false, false, STRIKE_FIGHTER, COLD_WAR_ERAS, null, Arrays.asList(FactionType.BULGARIA, FactionType.CHINA, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.EGYPT, FactionType.HUNGARY, FactionType.INDONESIA, FactionType.IRAQ, FactionType.NORTH_KOREA, FactionType.PAKISTAN, FactionType.POLAND, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.USSR, FactionType.SUDAN, FactionType.SYRIA, FactionType.VIETNAM)),
-    MIG_23MLD("MiG-23MLD", false, false, STRIKE_FIGHTER, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.ETHIOPIA, FactionType.LIBYA, FactionType.NORTH_KOREA, FactionType.SUDAN, FactionType.SYRIA, FactionType.ALGERIA, FactionType.BELARUS, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.EGYPT, FactionType.HUNGARY, FactionType.INDIA, FactionType.IRAQ, FactionType.IRAN, FactionType.POLAND, FactionType.ROMANIA, FactionType.RUSSIA, FactionType.USSR, FactionType.UKRAINE)),
-    MIG_25PD("MiG-25PD", false, false, AIR_SUPERIORITY, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.SYRIA, FactionType.LIBYA, FactionType.BULGARIA, FactionType.BELARUS, FactionType.INDIA, FactionType.IRAQ, FactionType.GEORGIA, FactionType.RUSSIA, FactionType.USSR, FactionType.UKRAINE)),
-    MIG_25RBT("MiG-25RBT", false, false, AIR_SUPERIORITY, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.SYRIA, FactionType.LIBYA, FactionType.BULGARIA, FactionType.BELARUS, FactionType.INDIA, FactionType.IRAQ, FactionType.GEORGIA, FactionType.RUSSIA, FactionType.USSR, FactionType.UKRAINE)),
-    MIG_27K("MiG-27K", false, false, GROUND_STRIKE, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.INDIA, FactionType.USSR, FactionType.RUSSIA, FactionType.UKRAINE)),
-    // MIG_29G("MiG-29G", false, false, GROUND_STRIKE, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.BELARUS, FactionType.BULGARIA, FactionType.INDIA, FactionType.IRAN, FactionType.MALAYSIA, FactionType.NORTH_KOREA, FactionType.POLAND, FactionType.RUSSIA, FactionType.SERBIA, FactionType.SLOVAKIA, FactionType.SUDAN, FactionType.SYRIA, FactionType.UKRAINE, FactionType.USAF_AGGRESSORS, FactionType.YEMEN, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.HUNGARY, FactionType.IRAQ, FactionType.ISRAEL, FactionType.ROMANIA, FactionType.SERBIA, FactionType.USSR, FactionType.YUGOSLAVIA)),
-    MIG_31("MiG-31", false, false, AIR_SUPERIORITY, MODERN_ERAS, null, Arrays.asList(FactionType.KAZAKHSTAN, FactionType.RUSSIA, FactionType.USSR)),
-
-    SU_17M4("Su-17M4", false, false, STRIKE_FIGHTER, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.LIBYA, FactionType.POLAND, FactionType.SYRIA, FactionType.VIETNAM, FactionType.IRAN, FactionType.CZECH_REPUBLIC, FactionType.GERMANY, FactionType.EGYPT, FactionType.HUNGARY, FactionType.IRAQ, FactionType.YEMEN, FactionType.SLOVAKIA, FactionType.USSR, FactionType.UKRAINE, FactionType.YEMEN)),
-    SU_24M("Su-24M", false, false, GROUND_STRIKE, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.IRAN, FactionType.LIBYA, FactionType.RUSSIA, FactionType.SYRIA, FactionType.SUDAN, FactionType.UKRAINE)),
-    SU_24MR("Su-24MR", false, false, GROUND_STRIKE, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.IRAN, FactionType.LIBYA, FactionType.RUSSIA, FactionType.SYRIA, FactionType.SUDAN, FactionType.UKRAINE)),
-    // SU_25A("Su-2A5", false, false, SU25_TASKS, MODERN_ERAS, null, Arrays.asList(FactionType.BELARUS, FactionType.BULGARIA, FactionType.CZECH_REPUBLIC, FactionType.ETHIOPIA, FactionType.GEORGIA, FactionType.IRAN, FactionType.IRAQ, FactionType.NORTH_KOREA, FactionType.RUSSIA, FactionType.SLOVAKIA, FactionType.USSR, FactionType.SUDAN, FactionType.UKRAINE)),
-    SU_25TM("Su-2A5TM", false, false, SU25_TASKS, MODERN_ERAS, null, Arrays.asList(FactionType.BELARUS, FactionType.BULGARIA, FactionType.CZECH_REPUBLIC, FactionType.ETHIOPIA, FactionType.GEORGIA, FactionType.IRAN, FactionType.IRAQ, FactionType.NORTH_KOREA, FactionType.RUSSIA, FactionType.SLOVAKIA, FactionType.USSR, FactionType.SUDAN, FactionType.UKRAINE)),
-    SU_30("Su-30", false, false, AIR_SUPERIORITY, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.CHINA, FactionType.INDIA, FactionType.INDONESIA, FactionType.MALAYSIA, FactionType.RUSSIA, FactionType.VENEZUELA, FactionType.VIETNAM)),
-    SU_34("Su-34", false, false, STRIKE_FIGHTER, MODERN_ERAS, null, Arrays.asList(FactionType.ALGERIA, FactionType.RUSSIA)),
 
     TORNADO_IDS("Tornado IDS", false, false, STRIKE_FIGHTER, MODERN_ERAS, null, Arrays.asList(FactionType.GERMANY, FactionType.ITALY, FactionType.SAUDI_ARABIA, FactionType.UK)),
     // TORNADO_GR4("Tornado GR.4", false, false, STRIKE_FIGHTER, MODERN_ERAS, null, Arrays.asList(FactionType.GERMANY, FactionType.ITALY, FactionType.SAUDI_ARABIA, FactionType.UK)),
 
-    TU_142("Tu-142", false, false, UNARMED_TRANSPORT, LATE_COLD_EXTENDED_WAR_ERAS, null, Arrays.asList(FactionType.RUSSIA, FactionType.INDIA, FactionType.USSR, FactionType.UKRAINE)),
-    TU_160("Tu-160", false, false, BOMBER, MODERN_ERAS, null, Arrays.asList(FactionType.RUSSIA, FactionType.USSR, FactionType.UKRAINE)),
-    TU_22M3("Tu-22M3", false, false, BOMBER, MODERN_ERAS, null, Arrays.asList(FactionType.RUSSIA, FactionType.USSR, FactionType.UKRAINE)),
-    // TU_95MS("Tu-95MS", false, false, BOMBER, EXTENDED_ERAS, null, Arrays.asList(FactionType.RUSSIA, FactionType.USSR, FactionType.UKRAINE)),
-    TU_95("Tu-95", false, false, BOMBER, EXTENDED_ERAS, null, Arrays.asList(FactionType.RUSSIA, FactionType.USSR, FactionType.UKRAINE)),
-    */
+   */
     ;
 
     private String aircraftName;

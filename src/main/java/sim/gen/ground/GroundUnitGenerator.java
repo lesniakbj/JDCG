@@ -388,7 +388,7 @@ public class GroundUnitGenerator {
         }
 
         if(isArmor) {
-            GroundUnitType gutArmed = validArmorTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validUnarmedTypes.size()));
+            GroundUnitType gutArmed = validArmorTypes.get(DynamicCampaignSim.getRandomGen().nextInt(validArmorTypes.size()));
             for(int i = 0; i < 2; i++) {
                 ArmorGroundUnit unit = new ArmorGroundUnit(gutArmed);
                 units.add(unit);
